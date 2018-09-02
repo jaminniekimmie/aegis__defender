@@ -19,7 +19,7 @@ private:
 	RECT _rcCamera;
 	RECT _rcDrag;
 	RECT _rcRange;
-	LONG _dragX, _dragY;
+	LONG _dragStartX, _dragStartY;
 	LONG _rangeEnd;
 	POINT _globalPtMouse;
 	tagImage _arrowButton[2];
@@ -27,8 +27,8 @@ private:
 	tagImage _blackSolid;
 	tagImage _buildAMapText;
 	tagImage _textBubble_amber;
-	tagImage _descBubble_terrain[2];
-	tagImage _descBubble_object[1];
+	tagImage _descBubble_terrain[1];
+	tagImage _descBubble_object[3];
 	tagImage _button[5];
 	tagImage _cursorIcon[2];
 	float _sampleTileStartX, _sampleTileEndX;
@@ -59,7 +59,7 @@ public:
 
 	void tileSelectPageSetup(void);
 	void UIsetup(void);
-	void descBubble(RECT *rcBackdrop);
+	void descBubble(RECT* rcBackdrop);
 	void cameraAdjustment(void);
 
 	//지형, 오브젝트 셋터

@@ -117,10 +117,6 @@ void tileMap::update(void)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		//if (PtInRect(&_rcObject, _ptMouse))
-		//{
-		//	_ctrlSelect = CTRL_OBJDRAW;
-		//}
 		if (_ctrlSelect == CTRL_ERASER)
 			_cursorIcon[1].img->setFrameX(1);
 
@@ -153,14 +149,14 @@ void tileMap::update(void)
 			{
 				if (!_dragStart)
 				{
-					_dragX = _ptMouse.x + CAMERAMANAGER->getCamera().left;
-					_dragY = _ptMouse.y + CAMERAMANAGER->getCamera().top;
-					_rcDrag = { _dragX, _dragY, (LONG)_ptMouse.x + CAMERAMANAGER->getCamera().left, (LONG)_ptMouse.y + CAMERAMANAGER->getCamera().top };
+					_dragStartX = _globalPtMouse.x;
+					_dragStartY = _globalPtMouse.y;
+					_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
 					_dragStart = true;
 				}
 				else
 				{
-					_rcDrag = { _dragX, _dragY, (LONG)_ptMouse.x + CAMERAMANAGER->getCamera().left, (LONG)_ptMouse.y + CAMERAMANAGER->getCamera().top };
+					_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
 				}
 			}
 			else
@@ -195,23 +191,6 @@ void tileMap::update(void)
 				}
 			}
 		}
-		//else
-		//{
-		//	_sampleTileType = _delta;
-		//
-		//	if (!_moveSampleTiles)
-		//	{
-		//		for (int i = 0; i < 2; i++)
-		//		{
-		//			if (PtInRect(&_arrowButton[i].rc, _ptMouse))
-		//			{
-		//				_moveSampleTiles = true;
-		//				_isLeft = i ? true : false;
-		//				_count = 0;
-		//			}
-		//		}
-		//	}
-		//}
 
 		this->setMap();
 	}
@@ -255,9 +234,16 @@ void tileMap::update(void)
 void tileMap::render(void)
 {
 	SelectObject(getMemDC(), GetStockObject(NULL_BRUSH));
-	
 	SelectObject(getMemDC(), GetStockObject(DC_PEN));
 	SetDCPenColor(getMemDC(), RGB(20, 20, 20));
+
+	if (KEYMANAGER->isToggleKey('I'))
+	{
+		SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
+		SetDCBrushColor(getMemDC(), RGB(255, 255, 255));
+		SelectObject(getMemDC(), GetStockObject(DC_PEN));
+		SetDCPenColor(getMemDC(), RGB(235, 235, 235));
+	}
 
 	//게임타일 렉트 렌더
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -356,7 +342,6 @@ void tileMap::render(void)
 			_sampleTiles[i].backdrop->alphaFrameRender(getMemDC(), _sampleTiles[i].rc.left - 3, _sampleTiles[i].rc.top - 3, _sampleTiles[i].alpha);
 			if (KEYMANAGER->isToggleKey(VK_F2))
 			{
-				//Rectangle(getMemDC(), _sampleTiles[i].rc);
 				char str[128];
 				sprintf(str, "%d", i);
 				TextOut(getMemDC(), _sampleTiles[i].rc.left, _sampleTiles[i].rc.top, str, strlen(str));
@@ -365,10 +350,10 @@ void tileMap::render(void)
 		
 		if (_terrain != TR_NONE)
 			_descBubble_terrain[_terrain].img->render(getMemDC(), _descBubble_terrain[_terrain].rc.left, _descBubble_terrain[_terrain].rc.top);
-		if (_object != OBJECT_NONE)
+		else if (_object != OBJECT_NONE)
 			_descBubble_object[_object].img->render(getMemDC(), _descBubble_object[_object].rc.left, _descBubble_object[_object].rc.top);
-	
-		_textBubble_amber.img->alphaRender(getMemDC(), _textBubble_amber.rc.left, _textBubble_amber.rc.top, _textBubble_amber.alpha);
+		else
+			_textBubble_amber.img->alphaRender(getMemDC(), _textBubble_amber.rc.left, _textBubble_amber.rc.top, _textBubble_amber.alpha);
 
 		if (_sampleTiles[0].rc.left < _sampleTileStartX)
 			_arrowButton[0].img->alphaFrameRender(getMemDC(), _arrowButton[0].rc.left, _arrowButton[0].rc.top, _arrowButton[0].alpha);
@@ -392,7 +377,7 @@ void tileMap::render(void)
 		_cursorIcon[0].img->render(getMemDC(), _cursorIcon[0].rc.left, _cursorIcon[0].rc.top);
 
 	char str[128];
-	sprintf(str, "%d", _delta);
+	sprintf(str, "%d", _ctrlSelect);
 	TextOut(getMemDC(), 100, 100, str, strlen(str));
 }
 
@@ -472,8 +457,7 @@ void tileMap::maptoolSetup(void)
 
 	_terrain = TR_NONE;
 	_descBubble_terrain[TR_GROUND].img = IMAGEMANAGER->addImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255));
-	_descBubble_terrain[TR_ROCK].img = IMAGEMANAGER->addImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		_descBubble_terrain[i].rc = RectMake(456, 27, _descBubble_terrain[i].img->getWidth(), _descBubble_terrain[i].img->getHeight());
 		_descBubble_terrain[i].alpha = 0;
@@ -481,7 +465,9 @@ void tileMap::maptoolSetup(void)
 
 	_object = OBJECT_NONE;
 	_descBubble_object[OBJECT_TREE].img = IMAGEMANAGER->addImage("textBubble_desc_tile_tree", "tex/UI/description_trees_01.bmp", 802, 252, true, RGB(255, 0, 255));
-	for (int i = 0; i < 1; i++)
+	_descBubble_object[OBJECT_ROCK].img = IMAGEMANAGER->addImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	_descBubble_object[OBJECT_BGROCK].img = IMAGEMANAGER->addImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	for (int i = 0; i < 3; i++)
 	{
 		_descBubble_object[i].rc = RectMake(456, 27, _descBubble_object[i].img->getWidth(), _descBubble_object[i].img->getHeight());
 		_descBubble_object[i].alpha = 0;
@@ -516,6 +502,12 @@ void tileMap::setMap(void)
 			{
 				_currentTile.x = _sampleTiles[i].terrainFrameX;
 				_currentTile.y = _sampleTiles[i].terrainFrameY;
+
+				if (_sampleTiles[i].obj != OBJECT_NONE)
+					_ctrlSelect = CTRL_OBJDRAW;
+				else
+					_ctrlSelect = CTRL_TERRAINDRAW;
+
 				break;
 			}
 		}
@@ -595,7 +587,7 @@ void tileMap::tileSelectPageSetup(void)
 		if (_tileSelectPage)
 		{
 			_saveDelta = _delta;
-			_ctrlSelect = CTRL_TERRAINDRAW;
+			//_ctrlSelect = CTRL_TERRAINDRAW;
 
 			if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
 			{
@@ -905,20 +897,24 @@ void tileMap::cameraAdjustment(void)
 
 TERRAIN tileMap::terrainSelect(int frameX, int frameY)
 {
-	if (frameX < 24 && frameY <= 1)
+	if (frameX <= 23 && frameY <= 1)
 	{
 		return TR_GROUND;
-	}
-	if (23 < frameX && frameX < 60 && frameY <= 1)
-	{
-		return TR_ROCK;
 	}
 	return TR_NONE;
 }
 
 OBJECT tileMap::objectSelect(int frameX, int frameY)
 {
-	if (59 < frameX && frameX < SAMPLETILEX && frameY <= 1)
+	if (24 <= frameX && frameX <= 41 && frameY <= 1)
+	{
+		return OBJECT_ROCK;
+	}
+	else if (42 <= frameX && frameX <= 59 && frameY <= 1)
+	{
+		return OBJECT_BGROCK;
+	}
+	else if (60 <= frameX && frameX < SAMPLETILEX && frameY <= 1)
 	{
 		return OBJECT_TREE;
 	}
