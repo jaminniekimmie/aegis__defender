@@ -8,7 +8,7 @@
 #define TILESIZEY (TILEY * TILESIZE)
 
 //이미지타일
-#define SAMPLETILEX 78
+#define SAMPLETILEX 93
 #define SAMPLETILEY 2
 
 //맵툴에서 사용할 이넘문

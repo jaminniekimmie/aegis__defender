@@ -7,8 +7,8 @@ HRESULT tileMap::init(void)
 	//타일맵 이미지 초기화
 	for (int i = 0; i < 10; i++)
 	{
-		str = "tex/tiles/surfaceTile_78x2_" + to_string(i + 1) + ".bmp";
-		IMAGEMANAGER->addFrameImage("tile_map" + to_string(i + 1), str.c_str(), 9360, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+		str = "tex/tiles/surfaceTile_93x2_" + to_string(i + 1) + ".bmp";
+		IMAGEMANAGER->addFrameImage("tile_map" + to_string(i + 1), str.c_str(), 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
 	}
 	IMAGEMANAGER->addFrameImage("tile_map", "tex/tiles/surfaceTile_76x3_01.bmp", 9120, 360, SAMPLETILEX, SAMPLETILEY);
 	IMAGEMANAGER->addImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));
