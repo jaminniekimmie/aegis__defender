@@ -180,7 +180,7 @@
     <ClInclude Include="soundManager.h" />
     <ClInclude Include="soundTestScene.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="tankGameScene.h" />
+    <ClInclude Include="buildAMapScene.h" />
     <ClInclude Include="tileMap.h" />
     <ClInclude Include="tileNode.h" />
     <ClInclude Include="timeManager.h" />
@@ -223,7 +223,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="tankGameScene.cpp" />
+    <ClCompile Include="buildAMapScene.cpp" />
     <ClCompile Include="tileMap.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="txtData.cpp" />

@@ -78,7 +78,7 @@
     <Filter Include="MainGame\로테이트">
       <UniqueIdentifier>{78ec6bad-644d-4edb-a2bc-928cffc998ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\탱크탱크">
+    <Filter Include="MainGame\타일타일">
       <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -188,17 +188,17 @@
     <ClInclude Include="rotateTestScene.h">
       <Filter>MainGame\로테이트</Filter>
     </ClInclude>
-    <ClInclude Include="tankGameScene.h">
-      <Filter>MainGame\탱크탱크</Filter>
-    </ClInclude>
     <ClInclude Include="tileNode.h">
-      <Filter>MainGame\탱크탱크</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="tileMap.h">
-      <Filter>MainGame\탱크탱크</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="cameraManager.h">
       <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
+    <ClInclude Include="buildAMapScene.h">
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,14 +301,14 @@
     <ClCompile Include="rotateTestScene.cpp">
       <Filter>MainGame\로테이트</Filter>
     </ClCompile>
-    <ClCompile Include="tankGameScene.cpp">
-      <Filter>MainGame\탱크탱크</Filter>
-    </ClCompile>
     <ClCompile Include="tileMap.cpp">
-      <Filter>MainGame\탱크탱크</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
+    </ClCompile>
+    <ClCompile Include="buildAMapScene.cpp">
+      <Filter>MainGame\타일타일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -104,12 +104,12 @@ HRESULT loadItem::initForSound(string keyName, const char * fileName, bool bgm, 
 HRESULT loading::init(void)
 {
 	//로딩화면 백그라운드 이미지 초기화
-	_background = IMAGEMANAGER->addImage("bgLoadingScene", "bgLoadingScene.bmp", WINSIZEX, WINSIZEY);
+	_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
 	
-	//로딩바 클래스 초기화
-	_loadingBar = new progressBar;
-	_loadingBar->init("loadingBarFront", "loadingBarBack", 100, 430, 600, 20);
-	_loadingBar->setGauge(0, 0);
+	////로딩바 클래스 초기화
+	//_loadingBar = new progressBar;
+	//_loadingBar->init("loadingBarFront", "loadingBarBack", 100, 430, 600, 20);
+	//_loadingBar->setGauge(0, 0);
 	//현재 게이지 초기화
 	_currentGauge = 0;
 
@@ -119,14 +119,14 @@ HRESULT loading::init(void)
 void loading::release(void)
 {
 	//로딩바 클래스 해제
-	_loadingBar->release();
-	SAFE_DELETE(_loadingBar);
+	//_loadingBar->release();
+	//SAFE_DELETE(_loadingBar);
 }
 
 void loading::update(void)
 {
 	//로딩바 클래스 업데이트
-	_loadingBar->update();
+	//_loadingBar->update();
 }
 
 void loading::render(void)
@@ -134,7 +134,7 @@ void loading::render(void)
 	//백그라운드 렌더
 	_background->render(getMemDC());
 	//로딩바 클래스 렌더
-	_loadingBar->render();
+	//_loadingBar->render();
 }
 
 void loading::loadImage(string keyName, int width, int height)
@@ -231,7 +231,7 @@ BOOL loading::loadingDone()
 	_currentGauge++;
 
 	//로딩바 이미지 변경
-	_loadingBar->setGauge(_currentGauge, _vLoadItem.size());
+	//_loadingBar->setGauge(_currentGauge, _vLoadItem.size());
 
 	return 0;
 }

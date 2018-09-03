@@ -67,6 +67,8 @@ public:
 	void tileSelectPageSetup(void);
 	void UIsetup(void);
 	void descBubble(RECT* rcBackdrop);
+	void drawRcRange(void);
+	void drawRcDrag(void);
 	void cameraAdjustment(void);
 
 	//지형, 오브젝트 셋터

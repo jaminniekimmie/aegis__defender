@@ -84,7 +84,7 @@ private:
 
 	//이곳에 로딩화면에서 사용할 이미지와 로딩바 수정할것!!!
 	image* _background;
-	progressBar* _loadingBar;
+	//progressBar* _loadingBar;
 	int _currentGauge;
 
 public:
@@ -111,7 +111,7 @@ public:
 
 	//로드아이템 클래스를 담은 벡터 가져오기
 	arrLoadItem getLoadItem() { return _vLoadItem; }
-	int getCurrnetGauge() { return _currentGauge; }
+	int getCurrentGauge() { return _currentGauge; }
 
 	loading() {}
 	~loading() {}

@@ -11,43 +11,24 @@ HRESULT tileMap::init(void)
 		IMAGEMANAGER->addFrameImage("tile_map" + to_string(i + 1), str.c_str(), 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
 	}
 	IMAGEMANAGER->addFrameImage("tile_map", "tex/tiles/surfaceTile_76x3_01.bmp", 9120, 360, SAMPLETILEX, SAMPLETILEY);
-	IMAGEMANAGER->addImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("character_minor", "tex/characters/character_minor_01.bmp", 443, 605, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("text_buildAMap", "tex/UI/text_build_a_map_01.bmp", 514, 92, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("solid_black", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
-	IMAGEMANAGER->addImage("textBubble_amber", "tex/characters/amber_text_bubble_01.bmp", 680, 289, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("temp", "tex/UI/build_a_map_page_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
-	_resource_yellowMineral.img = IMAGEMANAGER->addImage("resource_yellowMineral", "tex/objects/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
-	_resource_blueFlowers.img = IMAGEMANAGER->addImage("resource_blueFlowers", "tex/objects/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
-	_resource_redFlower.img = IMAGEMANAGER->addImage("resource_redFlower", "tex/objects/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
-	
-	IMAGEMANAGER->addImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_grass", "tex/tiles/Debris_Single1_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_bluePlant", "tex/tiles/Debris_Single4_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_mushrooms", "tex/tiles/Debris_Single5_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_whitePlant", "tex/tiles/Debris_Single6_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_yellowMineral", "tex/tiles/Resource_Multi1_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_blueFlowers", "tex/tiles/Resource_Multi4_tile_01.bmp", 120, 120);
-	IMAGEMANAGER->addImage("tile_redFlower", "tex/tiles/Resource_Multi5_tile_01.bmp", 120, 120);
-
-	_object_grass[0].img = IMAGEMANAGER->addImage("object_grass0",  "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
-	_object_grass[1].img = IMAGEMANAGER->addImage("object_grass1",  "tex/objects/Debris3_1.bmp", 114, 74, true, RGB(255, 0, 255));
-	_object_grass[2].img = IMAGEMANAGER->addImage("object_grass2",  "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
-	_object_grass[3].img = IMAGEMANAGER->addImage("object_grass3",  "tex/objects/Debris3_3.bmp", 114, 68, true, RGB(255, 0, 255));
-	_object_grass[4].img = IMAGEMANAGER->addImage("object_grass4",  "tex/objects/Debris3_4.bmp", 100, 72, true, RGB(255, 0, 255));
+	_resource_yellowMineral.img = IMAGEMANAGER->findImage("resource_yellowMineral");
+	_resource_blueFlowers.img = IMAGEMANAGER->findImage("resource_blueFlowers");
+	_resource_redFlower.img = IMAGEMANAGER->findImage("resource_redFlower");
 
 	for (int i = 0; i < 9; i++)
 	{
 		if (i < 5)
+		{
+			_object_grass[i].img = IMAGEMANAGER->findImage("object_grass" + to_string(i));
 			_object_grass[i].rc = RectMake(0, 0, _object_grass[i].img->getWidth(), _object_grass[i].img->getHeight());
-		str = "tex/objects/Debris_Single4_" + to_string(i) + ".bmp";
-		_object_bluePlant[i].img = IMAGEMANAGER->addImage("object_bluePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
-		str = "tex/objects/Debris_Single5_" + to_string(i) + ".bmp";
-		_object_mushrooms[i].img = IMAGEMANAGER->addImage("object_mushrooms" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
-		str = "tex/objects/Debris_Single6_" + to_string(i) + ".bmp";
-		_object_whitePlant[i].img = IMAGEMANAGER->addImage("object_whitePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
+		}
+		_object_bluePlant[i].img = IMAGEMANAGER->findImage("object_bluePlant" + to_string(i));
+		//_object_bluePlant[i].rc = RectMake(0, 0, _object_bluePlant[i].img->getWidth(), _object_bluePlant[i].img->getHeight());
+		_object_mushrooms[i].img = IMAGEMANAGER->findImage("object_mushrooms" + to_string(i));
+		//_object_mushrooms[i].rc = RectMake(0, 0, _object_mushrooms[i].img->getWidth(), _object_mushrooms[i].img->getHeight());
+		_object_whitePlant[i].img = IMAGEMANAGER->findImage("object_whitePlant" + to_string(i));
+		//_object_whitePlant[i].rc = RectMake(0, 0, _object_whitePlant[i].img->getWidth(), _object_whitePlant[i].img->getHeight());
 	}
 	
 	//¸ÊÅø¼ÂÆÃ
@@ -60,9 +41,9 @@ HRESULT tileMap::init(void)
 	CAMERAMANAGER->setCamera(_rcCamera);
 
 	ShowCursor(false);
-	_cursorIcon[0].img = IMAGEMANAGER->addImage("cursorIcon_idle", "tex/icons/ATK_Hammer2_12_02.bmp", 34, 34, true, RGB(255, 0, 255));
+	_cursorIcon[0].img = IMAGEMANAGER->findImage("cursorIcon_idle");
 	_cursorIcon[0].rc = RectMake(_ptMouse.x, _ptMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
-	_cursorIcon[1].img = IMAGEMANAGER->addFrameImage("cursorIcon_erase", "tex/icons/ATK_Hammer3_03_01.bmp", 108, 63, 2, 1, true, RGB(255, 0, 255));
+	_cursorIcon[1].img = IMAGEMANAGER->findImage("cursorIcon_erase");
 	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17, _ptMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
 	_cursorIcon[1].img->setFrameX(0);
 	
@@ -91,30 +72,6 @@ void tileMap::update(void)
 	_cursorIcon[0].rc = RectMake(_ptMouse.x, _ptMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
 	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17, _ptMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
 
-	if (KEYMANAGER->isOnceKeyDown('Z'))
-	{
-		if (!_tileSelectPage)
-		{
-			_button[CTRL_SAVE].img->setFrameX(1);
-			_ctrlSelect = CTRL_SAVE;
-			this->save();
-		}
-	}
-	if (KEYMANAGER->isOnceKeyUp('Z'))
-		_button[CTRL_SAVE].img->setFrameX(0);
-
-	if (KEYMANAGER->isOnceKeyDown('X'))
-	{
-		if (!_tileSelectPage)
-		{
-			_button[CTRL_LOAD].img->setFrameX(1);
-			_ctrlSelect = CTRL_LOAD;
-			this->load();
-		}
-	}
-	if (KEYMANAGER->isOnceKeyUp('X'))
-		_button[CTRL_LOAD].img->setFrameX(0);
-
 	if (KEYMANAGER->isOnceKeyDown('C'))
 	{
 		_button[CTRL_TERRAINDRAW].img->setFrameX(1);
@@ -123,26 +80,6 @@ void tileMap::update(void)
 		_count = 0;
 		if (!_pageSwitch)
 			_delta = 0;
-	}
-
-	if (KEYMANAGER->isOnceKeyDown('V'))
-	{
-		if (!_tileSelectPage)
-		{
-			if (_ctrlSelect != CTRL_ERASER)
-			{
-				_button[CTRL_ERASER].img->setFrameX(1);
-				_delta = 0;
-				_oldCtrl = _ctrlSelect;
-				_ctrlSelect = CTRL_ERASER;
-			}
-			else
-			{
-				_delta = 0;
-				_button[CTRL_ERASER].img->setFrameX(0);
-				_ctrlSelect = _oldCtrl;
-			}
-		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
@@ -175,24 +112,7 @@ void tileMap::update(void)
 
 		if (!_tileSelectPage)
 		{
-			if (KEYMANAGER->isStayKeyDown(VK_SHIFT))
-			{
-				if (!_dragStart)
-				{
-					_dragStartX = _globalPtMouse.x;
-					_dragStartY = _globalPtMouse.y;
-					_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
-					_dragStart = true;
-				}
-				else
-				{
-					_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
-				}
-			}
-			else
-			{
-				_dragStart = false;
-			}
+			this->drawRcDrag();
 
 			for (int i = 0; i < TILEX * TILEY; i++)
 			{
@@ -231,31 +151,70 @@ void tileMap::update(void)
 			_cursorIcon[1].img->setFrameX(0);
 	}
 
-	if (KEYMANAGER->isStayKeyDown('A'))
+	if (_tileSelectPage)
 	{
-		_moveSampleTiles = true;
-		_isLeft = false;
-		_count = 0;
-	}
-
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		_moveSampleTiles = true;
-		_isLeft = true;
-		_count = 0;
-	}
-
-
-	if (!_tileSelectPage)
-	{
-		_rangeEnd = (_delta + 1) * 1.5;
-		for (int i = 0; i < TILEX * TILEY; i++)
+		if (KEYMANAGER->isStayKeyDown('A'))
 		{
-			if (PtInRect(&_tiles[i].rc, _globalPtMouse))
+			_moveSampleTiles = true;
+			_isLeft = false;
+			_count = 0;
+		}
+
+		if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			_moveSampleTiles = true;
+			_isLeft = true;
+			_count = 0;
+		}
+	}
+	else
+	{
+		if (KEYMANAGER->isOnceKeyDown('Z'))
+		{
+			if (!_tileSelectPage)
 			{
-				_rcRange = RectMakeCenter(_tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2, _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2, TILESIZE * _rangeEnd, TILESIZE * _rangeEnd);
+				_button[CTRL_SAVE].img->setFrameX(1);
+				_ctrlSelect = CTRL_SAVE;
+				this->save();
 			}
 		}
+		if (KEYMANAGER->isOnceKeyUp('Z'))
+			_button[CTRL_SAVE].img->setFrameX(0);
+
+		if (KEYMANAGER->isOnceKeyDown('X'))
+		{
+			if (!_tileSelectPage)
+			{
+				_button[CTRL_LOAD].img->setFrameX(1);
+				_ctrlSelect = CTRL_LOAD;
+				this->load();
+			}
+		}
+		if (KEYMANAGER->isOnceKeyUp('X'))
+			_button[CTRL_LOAD].img->setFrameX(0);
+
+
+		if (KEYMANAGER->isOnceKeyDown('V'))
+		{
+			if (!_tileSelectPage)
+			{
+				if (_ctrlSelect != CTRL_ERASER)
+				{
+					_button[CTRL_ERASER].img->setFrameX(1);
+					_delta = 0;
+					_oldCtrl = _ctrlSelect;
+					_ctrlSelect = CTRL_ERASER;
+				}
+				else
+				{
+					_delta = 0;
+					_button[CTRL_ERASER].img->setFrameX(0);
+					_ctrlSelect = _oldCtrl;
+				}
+			}
+		}
+
+		this->drawRcRange();
 	}
 
 	this->cameraAdjustment();
@@ -456,13 +415,13 @@ void tileMap::maptoolSetup(void)
 	_rangeEnd = _delta + 1;
 	_rcRange = RectMakeCenter(_globalPtMouse.x, _globalPtMouse.y, _rangeEnd, _rangeEnd);
 
-	_button[CTRL_SAVE].img = IMAGEMANAGER->addFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
+	_button[CTRL_SAVE].img = IMAGEMANAGER->findImage("button_save");
 	_button[CTRL_SAVE].rc = RectMake(140, WINSIZEY * 1.1, _button[CTRL_SAVE].img->getFrameWidth(), _button[CTRL_SAVE].img->getFrameHeight());
-	_button[CTRL_LOAD].img = IMAGEMANAGER->addFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
+	_button[CTRL_LOAD].img = IMAGEMANAGER->findImage("button_load");
 	_button[CTRL_LOAD].rc = RectMake(347, WINSIZEY * 1.13, _button[CTRL_LOAD].img->getFrameWidth(), _button[CTRL_LOAD].img->getFrameHeight());
-	_button[CTRL_TERRAINDRAW].img = IMAGEMANAGER->addFrameImage("button_select", "tex/UI/button_select_01.bmp", 518, 45, 2, 1, true, RGB(255, 0, 255));
+	_button[CTRL_TERRAINDRAW].img = IMAGEMANAGER->findImage("button_select");
 	_button[CTRL_TERRAINDRAW].rc = RectMake(552, WINSIZEY * 1.16, _button[CTRL_TERRAINDRAW].img->getFrameWidth(), _button[CTRL_TERRAINDRAW].img->getFrameHeight());
-	_button[CTRL_ERASER].img = IMAGEMANAGER->addFrameImage("button_erase", "tex/UI/button_erase_01.bmp", 408, 45, 2, 1, true, RGB(255, 0, 255));
+	_button[CTRL_ERASER].img = IMAGEMANAGER->findImage("button_erase");
 	_button[CTRL_ERASER].rc = RectMake(871, WINSIZEY * 1.19, _button[CTRL_ERASER].img->getFrameWidth(), _button[CTRL_ERASER].img->getFrameHeight());
 	
 	for (int i = 0; i < 5; i++)
@@ -470,7 +429,7 @@ void tileMap::maptoolSetup(void)
 
 	for (int i = 0; i < 2; i++)
 	{
-		_arrowButton[i].img = IMAGEMANAGER->addFrameImage("button_arrow" + to_string(i + 1), "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
+		_arrowButton[i].img = IMAGEMANAGER->findImage("button_arrow" + to_string(i + 1));
 		_arrowButton[i].img->setFrameX(0);
 		_arrowButton[i].img->setFrameY(i);
 		_arrowButton[i].alpha = 0;
@@ -486,7 +445,7 @@ void tileMap::maptoolSetup(void)
 	_textBubble_amber.alpha = 0;
 
 	_terrain = TR_NONE;
-	_descBubble_terrain[TR_GROUND].img = IMAGEMANAGER->addImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	_descBubble_terrain[TR_GROUND].img = IMAGEMANAGER->findImage("textBubble_desc_tile_ground");
 	for (int i = 0; i < 1; i++)
 	{
 		_descBubble_terrain[i].rc = RectMake(456, 27, _descBubble_terrain[i].img->getWidth(), _descBubble_terrain[i].img->getHeight());
@@ -494,9 +453,9 @@ void tileMap::maptoolSetup(void)
 	}
 
 	_object = OBJECT_NONE;
-	_descBubble_object[OBJECT_TREE].img = IMAGEMANAGER->addImage("textBubble_desc_tile_tree", "tex/UI/description_trees_01.bmp", 802, 252, true, RGB(255, 0, 255));
-	_descBubble_object[OBJECT_ROCK].img = IMAGEMANAGER->addImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
-	_descBubble_object[OBJECT_BGROCK].img = IMAGEMANAGER->addImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	_descBubble_object[OBJECT_TREE].img = IMAGEMANAGER->findImage("textBubble_desc_tile_tree");
+	_descBubble_object[OBJECT_ROCK].img = IMAGEMANAGER->findImage("textBubble_desc_tile_rock");
+	_descBubble_object[OBJECT_BGROCK].img = IMAGEMANAGER->findImage("textBubble_desc_tile_rock");
 	for (int i = 0; i < 3; i++)
 	{
 		_descBubble_object[i].rc = RectMake(456, 27, _descBubble_object[i].img->getWidth(), _descBubble_object[i].img->getHeight());
@@ -679,9 +638,11 @@ void tileMap::tileSelectPageSetup(void)
 
 				if (_moveSampleTiles)
 				{
+					_arrowButton[_isLeft].img->setFrameX(1);
+
 					speed = TILESIZE + TILESIZE / 6;
 					angle = _isLeft ? PI : 0.0f;
-
+					
 					_sampleTiles[i].rc.left += cosf(angle) * speed;
 					_sampleTiles[i].rc.right += cosf(angle) * speed;
 				}
@@ -847,78 +808,110 @@ void tileMap::descBubble(RECT *rcBackdrop)
 	}
 }
 
+void tileMap::drawRcRange(void)
+{
+	_rangeEnd = (_delta + 1) * 1.5;
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (PtInRect(&_tiles[i].rc, _globalPtMouse))
+		{
+			_rcRange = RectMakeCenter(_tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2, _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2, TILESIZE * _rangeEnd, TILESIZE * _rangeEnd);
+		}
+	}
+}
+
+void tileMap::drawRcDrag(void)
+{
+	if (KEYMANAGER->isStayKeyDown(VK_SHIFT))
+	{
+		if (!_dragStart)
+		{
+			_dragStartX = _globalPtMouse.x;
+			_dragStartY = _globalPtMouse.y;
+			_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
+			_dragStart = true;
+		}
+		else
+		{
+			_rcDrag = { _dragStartX, _dragStartY, (LONG)_globalPtMouse.x, (LONG)_globalPtMouse.y };
+		}
+	}
+	else
+	{
+		_dragStart = false;
+	}
+}
+
 void tileMap::cameraAdjustment(void)
 {
-	if (!_tileSelectPage)
+	/*for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		/*for (int i = 0; i < TILEX * TILEY; i++)
+		if (PtInRect(&_tiles[i].rc, _globalPtMouse))
 		{
-			if (PtInRect(&_tiles[i].rc, _globalPtMouse))
+			if (_tiles[i].rc.left <= _rcCamera.left && _tiles[i].rc.right > _rcCamera.left)
 			{
-				if (_tiles[i].rc.left <= _rcCamera.left && _tiles[i].rc.right > _rcCamera.left)
-				{
-					_rcCamera.left = _tiles[i].rc.left - TILESIZE / 2;
-					_rcCamera.right = _rcCamera.left + WINSIZEX;
-				}
-				else if (_tiles[i].rc.left < _rcCamera.right && _tiles[i].rc.right >= _rcCamera.right)
-				{
-					_rcCamera.right = _tiles[i].rc.right + TILESIZE / 2;
-					_rcCamera.left = _rcCamera.right - WINSIZEX;
-				}
-				if (_tiles[i].rc.top <= _rcCamera.top && _tiles[i].rc.bottom > _rcCamera.top)
-				{
-					_rcCamera.top = _tiles[i].rc.top - TILESIZE / 2;
-					_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-				}
-				else if (_tiles[i].rc.top < _rcCamera.bottom && _tiles[i].rc.bottom >= _rcCamera.bottom)
-				{
-					_rcCamera.bottom = _tiles[i].rc.bottom + TILESIZE / 2;
-					_rcCamera.top = _rcCamera.bottom - WINSIZEY;
-				}
+				_rcCamera.left = _tiles[i].rc.left - TILESIZE / 2;
+				_rcCamera.right = _rcCamera.left + WINSIZEX;
 			}
-		}*/
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			_rcCamera.left -= 30;
-			_rcCamera.right -= 30;
+			else if (_tiles[i].rc.left < _rcCamera.right && _tiles[i].rc.right >= _rcCamera.right)
+			{
+				_rcCamera.right = _tiles[i].rc.right + TILESIZE / 2;
+				_rcCamera.left = _rcCamera.right - WINSIZEX;
+			}
+			if (_tiles[i].rc.top <= _rcCamera.top && _tiles[i].rc.bottom > _rcCamera.top)
+			{
+				_rcCamera.top = _tiles[i].rc.top - TILESIZE / 2;
+				_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+			}
+			else if (_tiles[i].rc.top < _rcCamera.bottom && _tiles[i].rc.bottom >= _rcCamera.bottom)
+			{
+				_rcCamera.bottom = _tiles[i].rc.bottom + TILESIZE / 2;
+				_rcCamera.top = _rcCamera.bottom - WINSIZEY;
+			}
 		}
+	}*/
 
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			_rcCamera.left += 30;
-			_rcCamera.right += 30;
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			_rcCamera.top -= 30;
-			_rcCamera.bottom -= 30;
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_rcCamera.top += 30;
-			_rcCamera.bottom += 30;
-		}
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+		_rcCamera.left -= 30;
+		_rcCamera.right -= 30;
+	}
 
-		if (_rcCamera.left <= 0)
-		{
-			_rcCamera.left = 0;
-			_rcCamera.right = _rcCamera.left + WINSIZEX;
-		}
-		else if (_rcCamera.right >= TILESIZEX)
-		{
-			_rcCamera.left = TILESIZEX - WINSIZEX;
-			_rcCamera.right = _rcCamera.left + WINSIZEX;
-		}
-		if (_rcCamera.top <= 0)
-		{
-			_rcCamera.top = 0;
-			_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-		}
-		else if (_rcCamera.bottom >= TILESIZEY)
-		{
-			_rcCamera.top = TILESIZEY - WINSIZEY;
-			_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-		}
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+		_rcCamera.left += 30;
+		_rcCamera.right += 30;
+	}
+	if (KEYMANAGER->isStayKeyDown('W'))
+	{
+		_rcCamera.top -= 30;
+		_rcCamera.bottom -= 30;
+	}
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		_rcCamera.top += 30;
+		_rcCamera.bottom += 30;
+	}
+
+	if (_rcCamera.left <= 0)
+	{
+		_rcCamera.left = 0;
+		_rcCamera.right = _rcCamera.left + WINSIZEX;
+	}
+	else if (_rcCamera.right >= TILESIZEX)
+	{
+		_rcCamera.left = TILESIZEX - WINSIZEX;
+		_rcCamera.right = _rcCamera.left + WINSIZEX;
+	}
+	if (_rcCamera.top <= 0)
+	{
+		_rcCamera.top = 0;
+		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+	}
+	else if (_rcCamera.bottom >= TILESIZEY)
+	{
+		_rcCamera.top = TILESIZEY - WINSIZEY;
+		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
 	}
 
 	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);

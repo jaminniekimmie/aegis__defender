@@ -9,7 +9,7 @@
 #include "aniTestScene.h"
 #include "effectTestScene.h"
 #include "rotateTestScene.h"
-#include "tankGameScene.h"
+#include "buildAMapScene.h"
 
 class mainGame : public gameNode
 {

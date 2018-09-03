@@ -21,10 +21,10 @@ HRESULT mainGame::init(void)
 	SCENEMANAGER->addScene("애니메이션", new aniTestScene);
 	SCENEMANAGER->addScene("이펙트", new effectTestScene);
 	SCENEMANAGER->addScene("로테이트", new rotateTestScene);
-	SCENEMANAGER->addScene("탱크게임", new tankGameScene);
+	SCENEMANAGER->addScene("맵툴", new buildAMapScene);
 
 	/*현재씬 설정*/
-	SCENEMANAGER->loadScene("탱크게임");
+	SCENEMANAGER->loadScene("로딩화면");
 
 	return S_OK;
 }
