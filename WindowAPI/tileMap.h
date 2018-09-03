@@ -31,6 +31,13 @@ private:
 	tagImage _descBubble_object[3];
 	tagImage _button[5];
 	tagImage _cursorIcon[2];
+	tagImage _resource_yellowMineral;
+	tagImage _resource_blueFlowers;
+	tagImage _resource_redFlower;
+	tagImage _object_grass[5];
+	tagImage _object_bluePlant[9];
+	tagImage _object_mushrooms[9];
+	tagImage _object_whitePlant[9];
 	float _sampleTileStartX, _sampleTileEndX;
 	bool _tileSelectPage;
 	bool _pageSwitch;

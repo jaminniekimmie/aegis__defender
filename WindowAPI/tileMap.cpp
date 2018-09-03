@@ -17,9 +17,39 @@ HRESULT tileMap::init(void)
 	IMAGEMANAGER->addImage("solid_black", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
 	IMAGEMANAGER->addImage("textBubble_amber", "tex/characters/amber_text_bubble_01.bmp", 680, 289, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("temp", "tex/UI/build_a_map_page_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+
+	_resource_yellowMineral.img = IMAGEMANAGER->addImage("resource_yellowMineral", "tex/objects/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
+	_resource_blueFlowers.img = IMAGEMANAGER->addImage("resource_blueFlowers", "tex/objects/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
+	_resource_redFlower.img = IMAGEMANAGER->addImage("resource_redFlower", "tex/objects/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
+	
 	IMAGEMANAGER->addImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
 	IMAGEMANAGER->addImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_grass", "tex/tiles/Debris_Single1_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_bluePlant", "tex/tiles/Debris_Single4_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_mushrooms", "tex/tiles/Debris_Single5_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_whitePlant", "tex/tiles/Debris_Single6_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_yellowMineral", "tex/tiles/Resource_Multi1_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_blueFlowers", "tex/tiles/Resource_Multi4_tile_01.bmp", 120, 120);
+	IMAGEMANAGER->addImage("tile_redFlower", "tex/tiles/Resource_Multi5_tile_01.bmp", 120, 120);
 
+	_object_grass[0].img = IMAGEMANAGER->addImage("object_grass0",  "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
+	_object_grass[1].img = IMAGEMANAGER->addImage("object_grass1",  "tex/objects/Debris3_1.bmp", 114, 74, true, RGB(255, 0, 255));
+	_object_grass[2].img = IMAGEMANAGER->addImage("object_grass2",  "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
+	_object_grass[3].img = IMAGEMANAGER->addImage("object_grass3",  "tex/objects/Debris3_3.bmp", 114, 68, true, RGB(255, 0, 255));
+	_object_grass[4].img = IMAGEMANAGER->addImage("object_grass4",  "tex/objects/Debris3_4.bmp", 100, 72, true, RGB(255, 0, 255));
+
+	for (int i = 0; i < 9; i++)
+	{
+		if (i < 5)
+			_object_grass[i].rc = RectMake(0, 0, _object_grass[i].img->getWidth(), _object_grass[i].img->getHeight());
+		str = "tex/objects/Debris_Single4_" + to_string(i) + ".bmp";
+		_object_bluePlant[i].img = IMAGEMANAGER->addImage("object_bluePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
+		str = "tex/objects/Debris_Single5_" + to_string(i) + ".bmp";
+		_object_mushrooms[i].img = IMAGEMANAGER->addImage("object_mushrooms" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
+		str = "tex/objects/Debris_Single6_" + to_string(i) + ".bmp";
+		_object_whitePlant[i].img = IMAGEMANAGER->addImage("object_whitePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
+	}
+	
 	//¸ÊÅø¼ÂÆÃ
 	this->maptoolSetup();
 
@@ -595,7 +625,7 @@ void tileMap::tileSelectPageSetup(void)
 				_rcLetterBox[1].top += -sinf(PI_2) * 5.0f;
 			}
 			
-			if (_blackSolid.alpha < 100)
+			if (_blackSolid.alpha < 150)
 				_blackSolid.alpha += 5;
 			
 			if (_characterMinor.alpha < 255)
