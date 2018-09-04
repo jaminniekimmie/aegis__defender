@@ -4,6 +4,8 @@
 
 HRESULT effectManager::init(void)
 {
+	//this->addEffect("landDust", "fx_landDust", 5, 5);
+	//this->addEffect("jumpDust", "fx_jumpDust", 5, 5);
 	return S_OK;
 }
 

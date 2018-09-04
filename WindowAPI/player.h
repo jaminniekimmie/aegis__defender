@@ -43,6 +43,9 @@ public:
 	PLAYERSTATE getState() { return _playerState; }
 	RECT getPlayerRc() { return _rc; }
 	DIRECTION getDirection() { return _direction; }
+	image* getPlayerImage(int playerState) { return _player_clu[playerState].img; }
+	int getAnimationSpeed() { return _animationSpeed; }
+	int getIndex() { return _index; }
 	float getX() { return _x; }
 	float getY() { return _y; }
 	float getGravity() { return _gravity; }
@@ -56,6 +59,8 @@ public:
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
+	void setAnimationSpeed(int animationSpeed) { _animationSpeed = animationSpeed; }
+	void setIndex(int index) { _index = index; }
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }
 	void setGravity(float gravity) { _gravity = gravity; }
@@ -68,7 +73,6 @@ public:
 	
 	void frameChangeLoop();
 	void frameChangeOnce();
-	void fromStateToIdle();
 
 	player() {}
 	~player() {}

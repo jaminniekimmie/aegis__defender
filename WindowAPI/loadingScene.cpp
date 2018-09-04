@@ -151,6 +151,8 @@ void loadingScene::loadingImage()
 	_loading->loadFrameImage("button_erase", "tex/UI/button_erase_01.bmp", 408, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow1", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow2", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust", "tex/fx/JumpDust_01.bmp", 1080, 360, 9, 3, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_landDust", "tex/fx/Land_01.bmp", 928, 42, 8, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("cursorIcon_erase", "tex/icons/ATK_Hammer3_03_01.bmp", 108, 63, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("cursorIcon_idle", "tex/icons/ATK_Hammer2_12_02.bmp", 34, 34, true, RGB(255, 0, 255));
 	_loading->loadImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));

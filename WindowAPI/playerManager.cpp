@@ -38,10 +38,13 @@ void playerManager::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		if (!_player->getIsJump() && _player->getOnLand())
+		{
 			_player->setIsJump(true);
+			//EFFECTMANAGER->play("jumpDust", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight());
+		}
 	}
 
-	this->playerJump();
+	this->playerJumpFall();
 
 	if (_player->getY() >= TILESIZEY - WINSIZEY / 2)
 	{
@@ -50,8 +53,9 @@ void playerManager::update(void)
 		_player->setAngle(-PI_2);
 		_player->setY(TILESIZEY - WINSIZEY / 2);
 		_player->setIsJump(false);
-		_player->setState(LAND);
+		_player->setOnLand(true);
 	}
+	this->fromStateToIdle();
 }
 
 void playerManager::render(void)
@@ -59,7 +63,7 @@ void playerManager::render(void)
 	_player->render();
 }
 
-void playerManager::playerJump()
+void playerManager::playerJumpFall()
 {
 	_player->setGravity(_player->getGravity() + 0.55f);
 	if (_player->getIsJump())
@@ -73,4 +77,38 @@ void playerManager::playerJump()
 			_player->setState(JUMP_FALL);
 	}
 	_player->setY(_player->getY() - sinf(_player->getAngle()) * _player->getSpeed() + _player->getGravity());
+}
+
+void playerManager::fromStateToIdle()
+{
+	if (_player->getOnLand())
+	{
+		if (_player->getState() == JUMP_FALL || _player->getState() == JUMPFIRE_FALL || _player->getState() == JUMPFIREDIAGONAL_FALL)
+		{
+			_player->setState(LAND);
+			if (_player->getIsLeft())
+				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			else
+				_player->setIndex(0);
+		}
+		else if (_player->getState() == LAND)
+		{
+			if (_player->getIsLeft())
+			{
+				if (_player->getIndex() <= 0)
+				{
+					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+					_player->setState(IDLE);
+				}
+			}
+			else
+			{
+				if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+				{
+					_player->setIndex(0);
+					_player->setState(IDLE);
+				}
+			}
+		}
+	}
 }
