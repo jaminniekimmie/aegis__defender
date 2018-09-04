@@ -156,8 +156,6 @@
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="effectTestScene.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="enemyManager.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
@@ -167,9 +165,9 @@
     <ClInclude Include="loading.h" />
     <ClInclude Include="loadingScene.h" />
     <ClInclude Include="mainGame.h" />
-    <ClInclude Include="minion.h" />
     <ClInclude Include="pixelCollision.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerManager.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="rotateTestScene.h" />
@@ -196,8 +194,6 @@
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="effectTestScene.cpp" />
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
@@ -207,9 +203,9 @@
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mainGame.cpp" />
-    <ClCompile Include="minion.cpp" />
     <ClCompile Include="pixelCollision.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="rotateTestScene.cpp" />
     <ClCompile Include="saveData.cpp" />

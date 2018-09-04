@@ -1,20 +1,32 @@
 #pragma once
 #include "gameNode.h"
+#include "tileNode.h"
 #include "bullet.h"			//미사일 클래스 사용하기 위해
 #include "progressBar.h"	//체력바 클래스 사용하기 위해
 
 //#include "enemyManager.h"
 //적매니져 상호참조하기 위해 클래스 전방선언
-class enemyManager;
+
+#define ANGLE getAngle()
 
 class player : public gameNode
 {
 private:
-	image * _rocket;			//로켓(플레이어) 이미지
-	missile* _missile;			//미사일 클래스
-	missileM1* _missileM1;		//미사일M1 클래스
-	
-	enemyManager* _em;			//동적할당 하면 안된다!!!
+	PLAYERSTATE _playerState;
+	DIRECTION _direction;
+	RECT _rc;
+	tagImage _player_clu[24];
+	float _x, _y;
+	float _gravity;
+	float _speed;
+	float _angle;
+	int _animationSpeed;
+	int _index;
+	int _count;
+	bool _isLeft;
+	bool _isJump;
+	bool _isFall;
+	bool _onLand;
 
 	progressBar* _hpBar;		//체력바
 	float _maxHp, _currentHp;	//최대체력, 현재체력
@@ -25,24 +37,38 @@ public:
 	void update(void);
 	void render(void);
 
-	//미사일M1 총알삭제
-	void removeMissileM1(int index);
-
-	//충돌함수
-	void collision();
-
 	//체력바 피통깍기
 	void hitDamage(float damage);
 
+	PLAYERSTATE getState() { return _playerState; }
+	RECT getPlayerRc() { return _rc; }
+	DIRECTION getDirection() { return _direction; }
+	float getX() { return _x; }
+	float getY() { return _y; }
+	float getGravity() { return _gravity; }
+	float getSpeed() { return _speed; }
+	float getAngle() { return _angle; }
+	bool getIsLeft() { return _isLeft; }
+	bool getIsJump() { return _isJump; }
+	bool getIsFall() { return _isFall; }
+	bool getOnLand() { return _onLand; }
 
-	//미사일M1 클래스 가져오기
-	missileM1* getMissile() { return _missileM1; }
-
-	//로켓이미지 가져오기
-	image* getPlayerImage() { return _rocket; }
-
-	//상호참조시 적매니져포인터를 넘길 셋터함수
-	void setEMLink(enemyManager* em) { _em = em; }
+	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
+	void setPlayerRc(RECT rc) { _rc = rc; }
+	void setDirection(DIRECTION direction) { _direction = direction; }
+	void setX(float x) { _x = x; }
+	void setY(float y) { _y = y; }
+	void setGravity(float gravity) { _gravity = gravity; }
+	void setSpeed(float speed) { _speed = speed; }
+	void setAngle(float angle) { _angle = angle; }
+	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
+	void setIsJump(bool isJump) { _isJump = isJump; }
+	void setIsFall(bool isFall) { _isFall = isFall; }
+	void setOnLand(bool onLand) { _onLand = onLand; }
+	
+	void frameChangeLoop();
+	void frameChangeOnce();
+	void fromStateToIdle();
 
 	player() {}
 	~player() {}

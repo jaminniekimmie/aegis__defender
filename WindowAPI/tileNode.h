@@ -78,5 +78,13 @@ struct tagImage
 {
 	RECT rc;
 	image* img;
+	image* shadow;
 	BYTE alpha;
 };
+
+//struct tagImage
+//{
+//	RECT rc;
+//	image* img;
+//	BYTE alpha;
+//};

@@ -95,6 +95,56 @@ void loadingScene::loadingImage()
 	//}
 	string str;
 
+	_loading->loadFrameImage("Clu_aim_diagonal", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonalFire", "tex/characters/Clu_aim_diagonalFire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_fire", "tex/characters/Clu_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_idle", "tex/characters/Clu_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_backStep", "tex/characters/Clu_backStep_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored", "tex/characters/Clu_bored_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_charge", "tex/characters/Clu_charge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_faint", "tex/characters/Clu_faint_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_faint_idle", "tex/characters/Clu_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_fullCharge", "tex/characters/Clu_fullCharge_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_hit", "tex/characters/Clu_hit_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_idle", "tex/characters/Clu_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jump_fall", "tex/characters/Clu_jump_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jump_rise", "tex/characters/Clu_jump_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFire_fall", "tex/characters/Clu_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFire_rise", "tex/characters/Clu_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFireDiagonal_fall", "tex/characters/Clu_jumpFireDiagonal_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFireDiagonal_rise", "tex/characters/Clu_jumpFireDiagonal_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_land", "tex/characters/Clu_land_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab", "tex/characters/Clu_ledgeGrab_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_lookup", "tex/characters/Clu_lookup_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_push", "tex/characters/Clu_push_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_run", "tex/characters/Clu_run_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("Clu_aim_diagonal_shadow", "tex/characters/Clu_aim_diagonal_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_shadow", "tex/characters/Clu_aim_diagonal_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonalFire_shadow", "tex/characters/Clu_aim_diagonalFire_shadow_01.bmp", 232 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_fire_shadow", "tex/characters/Clu_aim_fire_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_idle_shadow", "tex/characters/Clu_aim_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_backStep_shadow", "tex/characters/Clu_backStep_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored_shadow", "tex/characters/Clu_bored_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_charge_shadow", "tex/characters/Clu_charge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_faint_shadow", "tex/characters/Clu_faint_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_faint_idle_shadow", "tex/characters/Clu_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_fullCharge_shadow", "tex/characters/Clu_fullCharge_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_hit_shadow", "tex/characters/Clu_hit_shadow_01.bmp", 16 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_idle_shadow", "tex/characters/Clu_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jump_fall_shadow", "tex/characters/Clu_jump_fall_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jump_rise_shadow", "tex/characters/Clu_jump_rise_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFire_fall_shadow", "tex/characters/Clu_jumpFire_fall_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFire_rise_shadow", "tex/characters/Clu_jumpFire_rise_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFireDiagonal_fall_shadow", "tex/characters/Clu_jumpFireDiagonal_shadow_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_jumpFireDiagonal_rise_shadow", "tex/characters/Clu_jumpFireDiagonal_shadow_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_land_shadow", "tex/characters/Clu_land_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_shadow", "tex/characters/Clu_ledgeGrab_shadow_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_lookup_shadow", "tex/characters/Clu_lookup_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	
 	_loading->loadFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_select", "tex/UI/button_select_01.bmp", 518, 45, 2, 1, true, RGB(255, 0, 255));

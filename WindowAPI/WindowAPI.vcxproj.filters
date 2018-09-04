@@ -24,9 +24,6 @@
     <Filter Include="GameFramework2D\이미지">
       <UniqueIdentifier>{1851a966-ba68-4f2f-8ebc-640729b7e225}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\슈팅게임">
-      <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\총알">
       <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     <Filter Include="MainGame\타일타일">
       <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\플레이어">
+      <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h">
@@ -114,19 +114,10 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>MainGame\슈팅게임</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>GameFramework2D\총알</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>MainGame\슈팅게임</Filter>
-    </ClInclude>
-    <ClInclude Include="minion.h">
-      <Filter>MainGame\슈팅게임</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyManager.h">
-      <Filter>MainGame\슈팅게임</Filter>
     </ClInclude>
     <ClInclude Include="pixelCollision.h">
       <Filter>MainGame\픽셀충돌</Filter>
@@ -200,6 +191,9 @@
     <ClInclude Include="buildAMapScene.h">
       <Filter>MainGame\타일타일</Filter>
     </ClInclude>
+    <ClInclude Include="playerManager.h">
+      <Filter>MainGame\플레이어</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -227,19 +221,10 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>MainGame\슈팅게임</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>GameFramework2D\총알</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>MainGame\슈팅게임</Filter>
-    </ClCompile>
-    <ClCompile Include="minion.cpp">
-      <Filter>MainGame\슈팅게임</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyManager.cpp">
-      <Filter>MainGame\슈팅게임</Filter>
     </ClCompile>
     <ClCompile Include="pixelCollision.cpp">
       <Filter>MainGame\픽셀충돌</Filter>
@@ -309,6 +294,9 @@
     </ClCompile>
     <ClCompile Include="buildAMapScene.cpp">
       <Filter>MainGame\타일타일</Filter>
+    </ClCompile>
+    <ClCompile Include="playerManager.cpp">
+      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
