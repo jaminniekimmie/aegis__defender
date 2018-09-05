@@ -100,6 +100,7 @@ HRESULT effectManager::init(void)
 	this->addEffect("jumpDust2", "fx_jumpDust2", 0.2f, 5);
 	this->addEffect("jumpDust3", "fx_jumpDust3", 0.2f, 5);
 	this->addEffect("runDust", "fx_runDust", 0.2f, 5);
+
 	return S_OK;
 }
 
