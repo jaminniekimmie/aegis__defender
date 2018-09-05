@@ -27,7 +27,7 @@ void buildAMapScene::update(void)
 	_tileMap->update();
 	_playerManager->update();
 
-	EFFECTMANAGER->update();
+	//EFFECTMANAGER->update();
 }
 
 void buildAMapScene::render(void)
@@ -35,5 +35,5 @@ void buildAMapScene::render(void)
 	_tileMap->render();
 	_playerManager->render();
 
-	EFFECTMANAGER->render();
+	//EFFECTMANAGER->render();
 }

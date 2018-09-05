@@ -68,13 +68,13 @@ HRESULT player::init(void)
 	_x = WINSIZEX / 2;
 	_y = TILESIZEY - WINSIZEY / 2;
 
-	_animationSpeed = 10;
+	_frameSpeed = 5;
 	_count = _index = 0;
 	_gravity = 0.0f;
 	_angle = -PI_2;
 	_speed = 8.0f;
 
-	_isFall = _isJump = _isBackstep = false;
+	_isFall = _isJump = _isBackstep = _isFaceDown = false;
 	_onLand = true;
 
 	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
@@ -137,7 +137,7 @@ void player::frameChangeLoop()
 
 	if (_isLeft)
 	{
-		if (_count % _animationSpeed == 0)
+		if (_count % _frameSpeed == 0)
 		{
 			_index--;
 			if (_index < 0)
@@ -150,7 +150,7 @@ void player::frameChangeLoop()
 	}
 	else
 	{
-		if (_count % _animationSpeed == 0)
+		if (_count % _frameSpeed == 0)
 		{
 			_index++;
 			if (_index > _player_clu[_playerState].img->getMaxFrameX())

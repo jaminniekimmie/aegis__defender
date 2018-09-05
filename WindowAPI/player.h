@@ -1,7 +1,6 @@
 #pragma once
 #include "gameNode.h"
 #include "tileNode.h"
-#include "bullet.h"			//미사일 클래스 사용하기 위해
 #include "progressBar.h"	//체력바 클래스 사용하기 위해
 
 //#include "enemyManager.h"
@@ -21,13 +20,14 @@ private:
 	float _gravity;
 	float _speed;
 	float _angle;
-	int _animationSpeed;
+	int _frameSpeed;
 	int _index;
 	int _count;
 	bool _isLeft;
 	bool _isJump;
 	bool _isFall;
 	bool _isBackstep;
+	bool _isFaceDown;
 	bool _onLand;
 
 	progressBar* _hpBar;		//체력바
@@ -46,8 +46,9 @@ public:
 	RECT getPlayerRc() { return _rc; }
 	DIRECTION getDirection() { return _direction; }
 	image* getPlayerImage(int playerState) { return _player_clu[playerState].img; }
-	int getAnimationSpeed() { return _animationSpeed; }
+	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
+	int getCount() { return _count; }
 	float getX() { return _x; }
 	float getY() { return _y; }
 	float getOldX() { return _oldX; }
@@ -60,12 +61,14 @@ public:
 	bool getIsFall() { return _isFall; }
 	bool getOnLand() { return _onLand; }
 	bool getIsBackstep() { return _isBackstep; }
+	bool getIsFaceDown() { return _isFaceDown; }
 
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
-	void setAnimationSpeed(int animationSpeed) { _animationSpeed = animationSpeed; }
+	void setFrameSpeed(int animationSpeed) { _frameSpeed = animationSpeed; }
 	void setIndex(int index) { _index = index; }
+	void setCount(int count) { _count = count; }
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }
 	void setOldX(float oldX) { _x = oldX; }
@@ -78,6 +81,7 @@ public:
 	void setIsFall(bool isFall) { _isFall = isFall; }
 	void setOnLand(bool onLand) { _onLand = onLand; }
 	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
+	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
 	
 	void frameChangeLoop();
 	void frameChangeOnce();

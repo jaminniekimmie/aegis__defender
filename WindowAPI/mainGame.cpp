@@ -49,7 +49,7 @@ void mainGame::update(void)
 	SOUNDMANAGER->update();
 
 	//이펙트매니져 업데이트
-	//EFFECTMANAGER->update();
+	EFFECTMANAGER->update();
 }
 
 //=============================================================
@@ -65,7 +65,7 @@ void mainGame::render(void)
 	SCENEMANAGER->render();
 
 	//이펙트매니져 렌더
-	//EFFECTMANAGER->render();
+	EFFECTMANAGER->render();
 
 	//타임매니져 렌더
 	TIMEMANAGER->render(getMemDC());

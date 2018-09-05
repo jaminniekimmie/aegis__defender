@@ -149,20 +149,35 @@ void loadingOpenScene::loadingImage()
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
 
+	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust3", "tex/fx/JumpDust_03.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust", "tex/fx/JumpDust.bmp", 1080, 360, 9, 3, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_runDust_left", "tex/fx/RunDust_left.bmp", 216, 24, 6, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_runDust_right", "tex/fx/RunDust_right.bmp", 216, 24, 6, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_landDust", "tex/fx/Land_01.bmp", 928, 42, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_run1", "tex/fx/Run1.bmp", 160, 20, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_run2", "tex/fx/Run2.bmp", 160, 20, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_run3", "tex/fx/Run3.bmp", 160, 20, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_run4", "tex/fx/Run4.bmp", 160, 20, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletPuff1", "tex/fx/bulletPuff1.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletPuff2", "tex/fx/bulletPuff2.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletPuff3", "tex/fx/bulletPuff3.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletPuff4", "tex/fx/bulletPuff4.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletPuff5", "tex/fx/bulletPuff5.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletFire_left", "tex/fx/projectileFire_left.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_bulletFire_right", "tex/fx/projectileFire_right.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadImage("bullet_blue", "tex/weapons/Bullet1.bmp", 16, 16, true, RGB(255, 0, 255));
+	_loading->loadImage("clu_gun", "tex/weapons/ATK_Firearm1_01.bmp", 56, 28, true, RGB(255, 0, 255));
+	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
+
+	//Å¸ÀÏ¸Ê
 	_loading->loadFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_select", "tex/UI/button_select_01.bmp", 518, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_erase", "tex/UI/button_erase_01.bmp", 408, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow1", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow2", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_jumpDust3", "tex/fx/JumpDust_03.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_jumpDust", "tex/fx/JumpDust.bmp", 1080, 360, 9, 3, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_landDust", "tex/fx/Land_01.bmp", 928, 42, 8, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_runDust", "tex/fx/RunDust.bmp", 216, 24, 6, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_jumpDust", "tex/fx/JumpDust_01.bmp", 1080, 360, 9, 3, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_landDust", "tex/fx/Land_01.bmp", 928, 42, 8, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("cursorIcon_erase", "tex/icons/ATK_Hammer3_03_01.bmp", 108, 63, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("cursorIcon_idle", "tex/icons/ATK_Hammer2_12_02.bmp", 34, 34, true, RGB(255, 0, 255));
 	_loading->loadImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));

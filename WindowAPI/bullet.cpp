@@ -28,7 +28,7 @@ void bullet::render(void)
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
-		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left, _viBullet->rc.top);
+		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left - CAMERAMANAGER->getCamera().left, _viBullet->rc.top - CAMERAMANAGER->getCamera().top);
 	}
 }
 
@@ -68,6 +68,7 @@ void bullet::move()
 			_viBullet->x, _viBullet->y);
 		if (_range < distance)
 		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viBullet->rc.left, _viBullet->rc.top);
 			_viBullet = _vBullet.erase(_viBullet);
 		}
 		else
