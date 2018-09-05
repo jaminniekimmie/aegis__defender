@@ -14,7 +14,9 @@ public:
 
 	player * getPlayer() { return _player; }
 	
-	void playerJump();
+	void playerJumpFall();
+	void playerBackstep();
+	void fromStateToIdle();
 
 	playerManager() {}
 	~playerManager() {}

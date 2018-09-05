@@ -104,7 +104,7 @@ HRESULT loadItem::initForSound(string keyName, const char * fileName, bool bgm, 
 HRESULT loading::init(void)
 {
 	//로딩화면 백그라운드 이미지 초기화
-	_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
+	//_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
 	
 	////로딩바 클래스 초기화
 	//_loadingBar = new progressBar;
@@ -132,7 +132,7 @@ void loading::update(void)
 void loading::render(void)
 {
 	//백그라운드 렌더
-	_background->render(getMemDC());
+	//_background->render(getMemDC());
 	//로딩바 클래스 렌더
 	//_loadingBar->render();
 }

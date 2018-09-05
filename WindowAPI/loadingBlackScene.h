@@ -2,10 +2,11 @@
 #include "gameNode.h"
 #include "loading.h"
 
-class loadingScene : public gameNode
+class loadingBlackScene : public gameNode
 {
 private:
 	loading * _loading;
+	image* _background;
 
 public:
 	HRESULT init(void);
@@ -18,7 +19,7 @@ public:
 	//로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 	void loadingSound();
 
-	loadingScene() {}
-	~loadingScene() {}
+	loadingBlackScene() {}
+	~loadingBlackScene() {}
 };
 

@@ -143,9 +143,6 @@
     <ClInclude Include="iniTestScene.h">
       <Filter>MainGame\INI테스트</Filter>
     </ClInclude>
-    <ClInclude Include="loadingScene.h">
-      <Filter>MainGame\로딩화면</Filter>
-    </ClInclude>
     <ClInclude Include="loading.h">
       <Filter>GameFramework2D\로딩</Filter>
     </ClInclude>
@@ -166,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="camel.h">
       <Filter>MainGame\애니애니</Filter>
-    </ClInclude>
-    <ClInclude Include="effectTestScene.h">
-      <Filter>MainGame\이펙트임</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>GameFramework2D\이펙트</Filter>
@@ -193,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="playerManager.h">
       <Filter>MainGame\플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="loadingBlackScene.h">
+      <Filter>MainGame\로딩화면</Filter>
+    </ClInclude>
+    <ClInclude Include="loadingOpenScene.h">
+      <Filter>MainGame\로딩화면</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +250,6 @@
     <ClCompile Include="iniTestScene.cpp">
       <Filter>MainGame\INI테스트</Filter>
     </ClCompile>
-    <ClCompile Include="loadingScene.cpp">
-      <Filter>MainGame\로딩화면</Filter>
-    </ClCompile>
     <ClCompile Include="loading.cpp">
       <Filter>GameFramework2D\로딩</Filter>
     </ClCompile>
@@ -274,9 +271,6 @@
     <ClCompile Include="camel.cpp">
       <Filter>MainGame\애니애니</Filter>
     </ClCompile>
-    <ClCompile Include="effectTestScene.cpp">
-      <Filter>MainGame\이펙트임</Filter>
-    </ClCompile>
     <ClCompile Include="effect.cpp">
       <Filter>GameFramework2D\이펙트</Filter>
     </ClCompile>
@@ -297,6 +291,12 @@
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
       <Filter>MainGame\플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingBlackScene.cpp">
+      <Filter>MainGame\로딩화면</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingOpenScene.cpp">
+      <Filter>MainGame\로딩화면</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

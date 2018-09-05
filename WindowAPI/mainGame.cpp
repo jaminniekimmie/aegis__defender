@@ -16,15 +16,15 @@ HRESULT mainGame::init(void)
 	SCENEMANAGER->addScene("픽셀충돌", new pixelCollision);
 	SCENEMANAGER->addScene("테스트씬", new sceneTest);
 	SCENEMANAGER->addScene("ini", new iniTestScene);
-	SCENEMANAGER->addScene("로딩화면", new loadingScene);
+	SCENEMANAGER->addScene("흑로딩화면", new loadingBlackScene);
+	SCENEMANAGER->addScene("오픈로딩화면", new loadingOpenScene);
 	SCENEMANAGER->addScene("사운드", new soundTestScene);
 	SCENEMANAGER->addScene("애니메이션", new aniTestScene);
-	SCENEMANAGER->addScene("이펙트", new effectTestScene);
 	SCENEMANAGER->addScene("로테이트", new rotateTestScene);
 	SCENEMANAGER->addScene("맵툴", new buildAMapScene);
 
 	/*현재씬 설정*/
-	SCENEMANAGER->loadScene("로딩화면");
+	SCENEMANAGER->loadScene("오픈로딩화면");
 
 	return S_OK;
 }
@@ -49,7 +49,7 @@ void mainGame::update(void)
 	SOUNDMANAGER->update();
 
 	//이펙트매니져 업데이트
-	EFFECTMANAGER->update();
+	//EFFECTMANAGER->update();
 }
 
 //=============================================================
@@ -65,7 +65,7 @@ void mainGame::render(void)
 	SCENEMANAGER->render();
 
 	//이펙트매니져 렌더
-	EFFECTMANAGER->render();
+	//EFFECTMANAGER->render();
 
 	//타임매니져 렌더
 	TIMEMANAGER->render(getMemDC());

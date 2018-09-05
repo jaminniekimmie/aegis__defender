@@ -1,11 +1,13 @@
 #include "stdafx.h"
-#include "loadingScene.h"
+#include "loadingOpenScene.h"
 
-HRESULT loadingScene::init(void)
+HRESULT loadingOpenScene::init(void)
 {
 	//로딩클래스 초기화
 	_loading = new loading;
 	_loading->init();
+
+	_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/Aegis_WP1.bmp", WINSIZEX, WINSIZEY);
 
 	//이미지 및 사운드 로딩
 	this->loadingImage();
@@ -14,14 +16,14 @@ HRESULT loadingScene::init(void)
 	return S_OK;
 }
 
-void loadingScene::release(void)
+void loadingOpenScene::release(void)
 {
 	//로딩클래스 해제
 	_loading->release();
 	SAFE_DELETE(_loading);
 }
 
-void loadingScene::update(void)
+void loadingOpenScene::update(void)
 {
 	//로딩클래스 업데이트
 	_loading->update();
@@ -43,10 +45,12 @@ void loadingScene::update(void)
 	}
 }
 
-void loadingScene::render(void)
+void loadingOpenScene::render(void)
 {
 	//로딩클래스 렌더
 	_loading->render();
+
+	_background->render(getMemDC());
 
 	//if (_loading->getCurrentGauge() < _loading->getLoadItem().size())
 	//{
@@ -63,16 +67,16 @@ void loadingScene::render(void)
 	HFONT oldFont = (HFONT)SelectObject(getMemDC(), myFont);
 	SetTextColor(getMemDC(), RGB(255, 255, 255));
 	SetBkMode(getMemDC(), TRANSPARENT);
-	
+
 	sprintf_s(str, "LOADING %.f", per);
-	TextOut(getMemDC(), 903, 635, str, strlen(str));
-	
+	TextOut(getMemDC(), WINSIZEX / 2 - 195, WINSIZEY / 2 - 40, str, strlen(str));
+
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(myFont);
 }
 
 //로딩이미지 함수(이곳에 이미지를 전부 넣어라)
-void loadingScene::loadingImage()
+void loadingOpenScene::loadingImage()
 {
 	//_loading->loadImage();
 	//_loading->loadFrameImage();
@@ -144,13 +148,19 @@ void loadingScene::loadingImage()
 	_loading->loadFrameImage("Clu_lookup_shadow", "tex/characters/Clu_lookup_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
-	
+
 	_loading->loadFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_select", "tex/UI/button_select_01.bmp", 518, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_erase", "tex/UI/button_erase_01.bmp", 408, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow1", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_arrow2", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust3", "tex/fx/JumpDust_03.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_jumpDust", "tex/fx/JumpDust.bmp", 1080, 360, 9, 3, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_landDust", "tex/fx/Land_01.bmp", 928, 42, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_runDust", "tex/fx/RunDust.bmp", 216, 24, 6, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("cursorIcon_erase", "tex/icons/ATK_Hammer3_03_01.bmp", 108, 63, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("cursorIcon_idle", "tex/icons/ATK_Hammer2_12_02.bmp", 34, 34, true, RGB(255, 0, 255));
 	_loading->loadImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));
@@ -169,7 +179,7 @@ void loadingScene::loadingImage()
 	_loading->loadImage("object_grass2", "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass3", "tex/objects/Debris3_3.bmp", 114, 68, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass4", "tex/objects/Debris3_4.bmp", 100, 72, true, RGB(255, 0, 255));
-	_loading->loadImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255)); 
+	_loading->loadImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255));
 	_loading->loadImage("textBubble_desc_tile_tree", "tex/UI/description_trees_01.bmp", 802, 252, true, RGB(255, 0, 255));
 	_loading->loadImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
 
@@ -182,10 +192,12 @@ void loadingScene::loadingImage()
 		str = "tex/objects/Debris_Single6_" + to_string(i) + ".bmp";
 		_loading->loadImage("object_whitePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
 	}
+
+
 }
 
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)
-void loadingScene::loadingSound()
+void loadingOpenScene::loadingSound()
 {
 	_loading->loadSound("사운드1", "브금.mp3");
 	_loading->loadSound("사운드2", "브금1.mp3");

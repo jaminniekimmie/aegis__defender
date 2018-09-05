@@ -74,7 +74,7 @@ HRESULT player::init(void)
 	_angle = -PI_2;
 	_speed = 8.0f;
 
-	_isFall = _isJump = false;
+	_isFall = _isJump = _isBackstep = false;
 	_onLand = true;
 
 	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
@@ -112,7 +112,6 @@ void player::update(void)
 	//현재체력, 로켓의 위치만 세이브 로드 시켜라
 	*/
 
-	this->fromStateToIdle();
 	this->frameChangeLoop();
 }
 
@@ -123,10 +122,6 @@ void player::render(void)
 
 	//체력바 렌더
 	_hpBar->render();
-
-	char str[64];
-	sprintf(str, "%f", ANGLE);
-	TextOut(getMemDC(), 100, 100, str, strlen(str));
 }
 
 void player::hitDamage(float damage)
@@ -145,27 +140,12 @@ void player::frameChangeLoop()
 		if (_count % _animationSpeed == 0)
 		{
 			_index--;
-			if (_index <= 0)
+			if (_index < 0)
 			{
 				_index = _player_clu[_playerState].img->getMaxFrameX();
 			}
 			_player_clu[_playerState].img->setFrameX(_index);
 			_player_clu[_playerState].shadow->setFrameX(_index);
-		}
-		if (_onLand)
-		{
-			_playerState = IDLE;
-		}
-		else
-		{
-			if (_playerState == LAND)
-			{
-				if (_index <= 0)
-				{
-					_index = _player_clu[_playerState].img->getMaxFrameX();
-					_onLand = true;
-				}
-			}
 		}
 	}
 	else
@@ -173,7 +153,7 @@ void player::frameChangeLoop()
 		if (_count % _animationSpeed == 0)
 		{
 			_index++;
-			if (_index >= _player_clu[_playerState].img->getMaxFrameX())
+			if (_index > _player_clu[_playerState].img->getMaxFrameX())
 			{
 				_index = 0;
 			}
@@ -185,34 +165,4 @@ void player::frameChangeLoop()
 
 void player::frameChangeOnce()
 {
-}
-
-void player::fromStateToIdle()
-{
-	if (_onLand)
-	{
-		_playerState = IDLE;
-	}
-	else
-	{
-		if (_playerState == LAND)
-		{
-			if (_isLeft)
-			{
-				if (_index <= 0)
-				{
-					_index = _player_clu[_playerState].img->getMaxFrameX();
-					_onLand = true;
-				}
-			}
-			else
-			{
-				if (_index >= _player_clu[_playerState].img->getMaxFrameX())
-				{
-					_index = 0;
-					_onLand = true;
-				}
-			}
-		}
-	}
 }

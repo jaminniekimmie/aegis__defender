@@ -17,6 +17,7 @@ private:
 	RECT _rc;
 	tagImage _player_clu[24];
 	float _x, _y;
+	float _oldX, _oldY;
 	float _gravity;
 	float _speed;
 	float _angle;
@@ -26,6 +27,7 @@ private:
 	bool _isLeft;
 	bool _isJump;
 	bool _isFall;
+	bool _isBackstep;
 	bool _onLand;
 
 	progressBar* _hpBar;		//Ã¼·Â¹Ù
@@ -43,8 +45,13 @@ public:
 	PLAYERSTATE getState() { return _playerState; }
 	RECT getPlayerRc() { return _rc; }
 	DIRECTION getDirection() { return _direction; }
+	image* getPlayerImage(int playerState) { return _player_clu[playerState].img; }
+	int getAnimationSpeed() { return _animationSpeed; }
+	int getIndex() { return _index; }
 	float getX() { return _x; }
 	float getY() { return _y; }
+	float getOldX() { return _oldX; }
+	float getOldY() { return _oldY; }
 	float getGravity() { return _gravity; }
 	float getSpeed() { return _speed; }
 	float getAngle() { return _angle; }
@@ -52,12 +59,17 @@ public:
 	bool getIsJump() { return _isJump; }
 	bool getIsFall() { return _isFall; }
 	bool getOnLand() { return _onLand; }
+	bool getIsBackstep() { return _isBackstep; }
 
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
+	void setAnimationSpeed(int animationSpeed) { _animationSpeed = animationSpeed; }
+	void setIndex(int index) { _index = index; }
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }
+	void setOldX(float oldX) { _x = oldX; }
+	void setOldY(float oldY) { _y = oldY; }
 	void setGravity(float gravity) { _gravity = gravity; }
 	void setSpeed(float speed) { _speed = speed; }
 	void setAngle(float angle) { _angle = angle; }
@@ -65,10 +77,10 @@ public:
 	void setIsJump(bool isJump) { _isJump = isJump; }
 	void setIsFall(bool isFall) { _isFall = isFall; }
 	void setOnLand(bool onLand) { _onLand = onLand; }
+	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
 	
 	void frameChangeLoop();
 	void frameChangeOnce();
-	void fromStateToIdle();
 
 	player() {}
 	~player() {}
