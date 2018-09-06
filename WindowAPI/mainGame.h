@@ -10,6 +10,8 @@
 #include "aniTestScene.h"
 #include "rotateTestScene.h"
 #include "buildAMapScene.h"
+#include "stageOneScene.h"
+#include "stageTwoScene.h"
 
 class mainGame : public gameNode
 {

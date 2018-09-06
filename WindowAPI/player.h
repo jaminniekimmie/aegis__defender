@@ -14,7 +14,7 @@ private:
 	PLAYERSTATE _playerState;
 	DIRECTION _direction;
 	RECT _rc;
-	tagImage _player_clu[24];
+	tagImage _player_clu[MAXPLAYERSTATE];
 	float _x, _y;
 	float _oldX, _oldY;
 	float _gravity;

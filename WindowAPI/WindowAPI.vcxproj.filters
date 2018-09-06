@@ -75,11 +75,14 @@
     <Filter Include="MainGame\로테이트">
       <UniqueIdentifier>{78ec6bad-644d-4edb-a2bc-928cffc998ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\타일타일">
-      <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
+    <Filter Include="MainGame\디펜더스">
+      <UniqueIdentifier>{99ee87d5-f72d-4cd3-9717-27b286d7636b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\플레이어">
+    <Filter Include="MainGame\디펜더스\플레이어">
       <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\디펜더스\타일타일">
+      <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="util.h">
       <Filter>GameFramework2D\유틸</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>MainGame\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>GameFramework2D\총알</Filter>
@@ -174,25 +174,34 @@
       <Filter>MainGame\로테이트</Filter>
     </ClInclude>
     <ClInclude Include="tileNode.h">
-      <Filter>MainGame\타일타일</Filter>
+      <Filter>MainGame\디펜더스\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="tileMap.h">
-      <Filter>MainGame\타일타일</Filter>
+      <Filter>MainGame\디펜더스\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="cameraManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
     <ClInclude Include="buildAMapScene.h">
-      <Filter>MainGame\타일타일</Filter>
+      <Filter>MainGame\디펜더스\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="playerManager.h">
-      <Filter>MainGame\플레이어</Filter>
+      <Filter>MainGame\디펜더스\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="loadingBlackScene.h">
       <Filter>MainGame\로딩화면</Filter>
     </ClInclude>
     <ClInclude Include="loadingOpenScene.h">
       <Filter>MainGame\로딩화면</Filter>
+    </ClInclude>
+    <ClInclude Include="stageOneScene.h">
+      <Filter>MainGame\디펜더스</Filter>
+    </ClInclude>
+    <ClInclude Include="stageTwoScene.h">
+      <Filter>MainGame\디펜더스</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>MainGame\디펜더스\플레이어</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +228,6 @@
     </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>GameFramework2D\유틸</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>GameFramework2D\총알</Filter>
@@ -281,22 +287,31 @@
       <Filter>MainGame\로테이트</Filter>
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
-      <Filter>MainGame\타일타일</Filter>
+      <Filter>MainGame\디펜더스\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
     <ClCompile Include="buildAMapScene.cpp">
-      <Filter>MainGame\타일타일</Filter>
-    </ClCompile>
-    <ClCompile Include="playerManager.cpp">
-      <Filter>MainGame\플레이어</Filter>
+      <Filter>MainGame\디펜더스\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="loadingBlackScene.cpp">
       <Filter>MainGame\로딩화면</Filter>
     </ClCompile>
     <ClCompile Include="loadingOpenScene.cpp">
       <Filter>MainGame\로딩화면</Filter>
+    </ClCompile>
+    <ClCompile Include="stageOneScene.cpp">
+      <Filter>MainGame\디펜더스</Filter>
+    </ClCompile>
+    <ClCompile Include="stageTwoScene.cpp">
+      <Filter>MainGame\디펜더스</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>MainGame\디펜더스\플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="playerManager.cpp">
+      <Filter>MainGame\디펜더스\플레이어</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

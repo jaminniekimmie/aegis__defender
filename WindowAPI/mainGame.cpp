@@ -22,6 +22,8 @@ HRESULT mainGame::init(void)
 	SCENEMANAGER->addScene("애니메이션", new aniTestScene);
 	SCENEMANAGER->addScene("로테이트", new rotateTestScene);
 	SCENEMANAGER->addScene("맵툴", new buildAMapScene);
+	SCENEMANAGER->addScene("스테이지원", new stageOneScene);
+	SCENEMANAGER->addScene("스테이지투", new stageTwoScene);
 
 	/*현재씬 설정*/
 	SCENEMANAGER->loadScene("오픈로딩화면");

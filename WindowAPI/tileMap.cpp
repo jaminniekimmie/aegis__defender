@@ -193,7 +193,6 @@ void tileMap::update(void)
 		if (KEYMANAGER->isOnceKeyUp('X'))
 			_button[CTRL_LOAD].img->setFrameX(0);
 
-
 		if (KEYMANAGER->isOnceKeyDown('V'))
 		{
 			if (!_tileSelectPage)
@@ -212,6 +211,11 @@ void tileMap::update(void)
 					_ctrlSelect = _oldCtrl;
 				}
 			}
+		}
+
+		if (KEYMANAGER->isOnceKeyDown('Q'))
+		{
+			SCENEMANAGER->loadScene("Èæ·ÎµùÈ­¸é");
 		}
 
 		this->drawRcRange();

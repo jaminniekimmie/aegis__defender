@@ -52,7 +52,7 @@ public:
 	void render(void);
 
 	//이펙트 추가(이펙트키값, 이미지키값, 이펙트속도, 버퍼갯수)
-	void addEffect(string effectName, const char* imageName, float effectFPS, int buffer);
+	void addEffect(string effectName, const char* imageName, float effectFPS, int buffer, bool isFadeOut = false);
 	//이펙트 플레이
 	void play(string effectName, int x, int y);
 

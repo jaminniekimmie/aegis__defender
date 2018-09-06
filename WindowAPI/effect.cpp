@@ -48,11 +48,13 @@
 #include "stdafx.h"
 #include "effect.h"
 
-HRESULT effect::init(image * effectImg, float effectFPS)
+HRESULT effect::init(image * effectImg, float effectFPS, bool isFadeOut)
 {
 	//변수 초기화
 	_effectImg = effectImg;
 	_effectFPS = effectFPS;
+	_isFadeOut = isFadeOut;
+	_alpha = 255;
 	_isRunning = false;
 
 	//이펙트 애니메이션 생성 및 초기화
@@ -75,6 +77,8 @@ void effect::update(void)
 {
 	if (_isRunning)
 	{
+		//if (_isFadeOut)
+		//	_alpha -= 255 / (_effectImg->getMaxFrameX() + 1);
 		_effectAni->frameUpdate(_effectFPS);
 	}
 	//이펙트 애니메이션 종료가 되면 멈추기(_isRunning = false;)
@@ -85,7 +89,10 @@ void effect::render(void)
 {
 	if (_isRunning)
 	{
-		_effectImg->aniRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni);
+		if (_isFadeOut)
+			_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni, _alpha);
+		else
+			_effectImg->aniRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni);
 	}
 }
 

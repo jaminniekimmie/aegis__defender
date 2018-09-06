@@ -25,6 +25,8 @@ HRESULT player::init(void)
 	_player_clu[FAINT_IDLE].shadow = IMAGEMANAGER->findImage("Clu_faint_idle_shadow");
 	_player_clu[FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_fullCharge");
 	_player_clu[FULLCHARGE].shadow = IMAGEMANAGER->findImage("Clu_fullCharge_shadow");
+	_player_clu[FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_fullCharge_idle");
+	_player_clu[FULLCHARGE_IDLE].shadow = IMAGEMANAGER->findImage("Clu_fullCharge_idle_shadow");
 	_player_clu[HIT].img = IMAGEMANAGER->findImage("Clu_hit");
 	_player_clu[HIT].shadow = IMAGEMANAGER->findImage("Clu_hit_shadow");
 	_player_clu[IDLE].img = IMAGEMANAGER->findImage("Clu_idle");
@@ -43,6 +45,10 @@ HRESULT player::init(void)
 	_player_clu[JUMPFIREDIAGONAL_RISE].shadow = IMAGEMANAGER->findImage("Clu_jumpFireDiagonal_rise_shadow");
 	_player_clu[LAND].img = IMAGEMANAGER->findImage("Clu_land");
 	_player_clu[LAND].shadow = IMAGEMANAGER->findImage("Clu_land_shadow");
+	_player_clu[LAUGH].img = IMAGEMANAGER->findImage("Clu_laugh");
+	_player_clu[LAUGH].shadow = IMAGEMANAGER->findImage("Clu_laugh_shadow");
+	_player_clu[LAUGH_IDLE].img = IMAGEMANAGER->findImage("Clu_laugh_idle");
+	_player_clu[LAUGH_IDLE].shadow = IMAGEMANAGER->findImage("Clu_laugh_idle_shadow");
 	_player_clu[LEDGEGRAB].img = IMAGEMANAGER->findImage("Clu_ledgeGrab");
 	_player_clu[LEDGEGRAB].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_shadow");
 	_player_clu[LOOKUP].img = IMAGEMANAGER->findImage("Clu_lookup");

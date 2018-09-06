@@ -57,7 +57,7 @@ public:
 //=============================================================
 //	## missile ## (missile[0] -> 배열처럼 미리 장전해두고 총알발사)
 //=============================================================
-class missile : public gameNode
+class triBullet : public gameNode
 {
 private:
 	//총알 구조체를 담을 벡터, 반복자
@@ -65,22 +65,23 @@ private:
 	vector<tagBullet>::iterator _viBullet;
 
 private:
+	const char * _imageName;
 	float _range;			//총알 사거리
 	int _bulletMax;			//총알 최대갯수
 
 public:
-	HRESULT init(int bulletMax, float range);
+	HRESULT init(const char * imageName, int bulletMax, float range);
 	void release(void);
 	void update(void);
 	void render(void);
 
 	//총알발사
-	void fire(float x, float y);
+	void fire(float x, float y, float angle, float speed);
 	//총알무브
 	void move();
 
-	missile() {}
-	~missile() {}
+	triBullet() {}
+	~triBullet() {}
 };
 
 //=============================================================

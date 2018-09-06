@@ -87,12 +87,14 @@ void bullet::removeBullet(int index)
 //=============================================================
 //	## missile ## (missile[0] -> 배열처럼 미리 장전해두고 총알발사)
 //=============================================================
-HRESULT missile::init(int bulletMax, float range)
+HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 {
-	//사거리, 총알갯수 초기화
-	_range = range;
+	//총알 이미지 초기화
+	_imageName = imageName;
+	//총알갯수 및 사거리 초기화
 	_bulletMax = bulletMax;
-
+	_range = range;
+	
 	//총알의 갯수만큼 구조체를 초기화 한 후 벡터에 담기
 	for (int i = 0; i < bulletMax; i++)
 	{
@@ -101,11 +103,9 @@ HRESULT missile::init(int bulletMax, float range)
 		//제로메모리 또는 멤셋
 		//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
 		ZeroMemory(&bullet, sizeof(tagBullet));
-		bullet.bulletImage = new image;
-		bullet.bulletImage->init("missile.bmp", 25, 124, true, RGB(255, 0, 255));
-		bullet.speed = 5.0f;
+		bullet.bulletImage = IMAGEMANAGER->findImage(_imageName);
 		bullet.fire = false;
-
+	
 		//벡터에 담기
 		_vBullet.push_back(bullet);
 	}
@@ -113,21 +113,16 @@ HRESULT missile::init(int bulletMax, float range)
 	return S_OK;
 }
 
-void missile::release(void)
+void triBullet::release(void)
 {
-	for (int i = 0; i < _vBullet.size(); i++)
-	{
-		_vBullet[i].bulletImage->release();
-		SAFE_DELETE(_vBullet[i].bulletImage);
-	}
 }
 
-void missile::update(void)
+void triBullet::update(void)
 {
 	this->move();
 }
 
-void missile::render(void)
+void triBullet::render(void)
 {
 	/*
 	for (int i = 0; i < _vBullet.size(); i++)
@@ -141,11 +136,11 @@ void missile::render(void)
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
 		if (!_viBullet->fire) continue;
-		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left, _viBullet->rc.top);
+		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left - CAMERAMANAGER->getCamera().left, _viBullet->rc.top - CAMERAMANAGER->getCamera().top);
 	}
 }
 
-void missile::fire(float x, float y)
+void triBullet::fire(float x, float y, float angle, float speed)
 {
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
@@ -153,33 +148,39 @@ void missile::fire(float x, float y)
 		if (_viBullet->fire) continue;
 
 		_viBullet->fire = true;
+		_viBullet->speed = speed;
+		_viBullet->angle = angle;
+		_viBullet->count = 0;
 		_viBullet->x = _viBullet->fireX = x;
 		_viBullet->y = _viBullet->fireY = y;
 		_viBullet->rc = RectMakeCenter(_viBullet->x, _viBullet->y,
 			_viBullet->bulletImage->getWidth(),
 			_viBullet->bulletImage->getHeight());
-		break;
 	}
 }
 
-void missile::move()
+void triBullet::move()
 {
-	_viBullet = _vBullet.begin();
-	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
+	for (int i = 0; i < _vBullet.size(); ++i)
 	{
-		if (!_viBullet->fire) continue;
-
-		_viBullet->y -= _viBullet->speed;
-		_viBullet->rc = RectMakeCenter(_viBullet->x, _viBullet->y,
-			_viBullet->bulletImage->getWidth(),
-			_viBullet->bulletImage->getHeight());
+		if (!_vBullet[i].fire) continue;
+		_vBullet[i].count += (i + 1) * 2;
+		if (_vBullet[i].count > _vBullet.size() * 10)
+		{
+			_vBullet[i].x += cosf(_vBullet[i].angle) * _vBullet[i].speed;
+			_vBullet[i].y += -sinf(_vBullet[i].angle) * _vBullet[i].speed;
+		}
+		_vBullet[i].rc = RectMakeCenter(_vBullet[i].x, _vBullet[i].y,
+			_vBullet[i].bulletImage->getWidth(),
+			_vBullet[i].bulletImage->getHeight());
 
 		//총알이 사거리보다 커졌을때 
-		float distance = getDistance(_viBullet->fireX, _viBullet->fireY,
-			_viBullet->x, _viBullet->y);
+		float distance = getDistance(_vBullet[i].fireX, _vBullet[i].fireY,
+			_vBullet[i].x, _vBullet[i].y);
 		if (_range < distance)
 		{
-			_viBullet->fire = false;
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].fire = false;
 		}
 	}
 }

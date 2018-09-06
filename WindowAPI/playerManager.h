@@ -8,7 +8,9 @@ class playerManager : public gameNode
 private:
 	player * _player;
 	bullet * _bullet;
-	int _count;
+	triBullet * _triBullet;
+	int _idleCount;
+	bool _isStayKey_up;
 public:
 	HRESULT init(void);
 	void release(void);
@@ -17,9 +19,10 @@ public:
 
 	player * getPlayer() { return _player; }
 	
-	void playerRun();
+	void playerRun(bool isLeft);
 	void playerJumpFall();
 	void playerBackstep();
+	void playerFullCharge();
 	void collisionProcess();
 	void fromStateToIdle();
 	void bulletFire();
