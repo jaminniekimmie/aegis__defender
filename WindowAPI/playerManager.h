@@ -23,8 +23,10 @@ public:
 	void playerJumpFall();
 	void playerBackstep();
 	void playerFullCharge();
+	void playerLaugh();
 	void collisionProcess();
 	void fromStateToIdle();
+	void fromIdleToState();
 	void bulletFire();
 
 	playerManager() {}

@@ -42,14 +42,14 @@ void playerManager::update(void)
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		_isStayKey_up = true;
-		if (_player->getState() == IDLE)
+		if (_player->getOnLand())
 		{
 			_player->setState(LOOKUP);
 		}
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
-		if (_player->getState() == IDLE)
+		if (_player->getOnLand())
 		{
 			_player->setIsFaceDown(true);
 		}
@@ -66,7 +66,7 @@ void playerManager::update(void)
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
-		if (_player->getState() == IDLE || _player->getState() == FULLCHARGE_IDLE)
+		if (_player->getOnLand())
 		{
 			_player->setIsBackstep(true);
 		}
@@ -79,9 +79,14 @@ void playerManager::update(void)
 	{
 		this->bulletFire();
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT) || KEYMANAGER->isOnceKeyUp(VK_UP))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
 		_player->setState(IDLE);
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_UP))
+	{
+		_player->setState(IDLE);
+		_isStayKey_up = false;
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 	{
@@ -92,6 +97,7 @@ void playerManager::update(void)
 	this->playerJumpFall();
 	this->collisionProcess();
 	this->fromStateToIdle();
+	this->fromIdleToState();
 }
 
 void playerManager::render(void)
@@ -268,19 +274,63 @@ void playerManager::playerFullCharge()
 	}
 }
 
+void playerManager::playerLaugh()
+{
+	if (_player->getState() == IDLE)
+	{
+		if (_idleCount < 500)
+			_idleCount++;
+		else
+		{
+			_player->setState(LAUGH);
+
+			if (_player->getIsLeft())
+				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			else
+				_player->setIndex(0);
+
+			_idleCount = 0;
+		}
+	}
+	else if (_player->getState() == LAUGH)
+	{
+		if (_player->getIsLeft())
+		{
+			if (_player->getIndex() <= 0)
+				_player->setState(LAUGH_IDLE);
+		}
+		else
+		{
+			if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+				_player->setState(LAUGH_IDLE);
+		}
+	}
+	else if (_player->getState() == LAUGH_IDLE)
+	{
+		if (_idleCount < 300)
+			_idleCount++;
+		else
+		{
+			_player->setState(IDLE);
+			//_player->setState(THINK);
+			_idleCount = 0;
+		}
+	}
+}
+
 /*
-																																이응주
-																																2 = 0
-																																3 = 1
-																																4 = 4
-																																5 = 6
-																																6 = 2
-																																7 = 4
-																																8 = 0
-																																9 = 3
-																																10 = 5
-																																11 = 1
-																																12 = 3
+																								이응주
+																								2 = 0
+																								3 = 1
+																								4 = 4
+																								5 = 6
+																								6 = 2
+																								7 = 4
+																								8 = 0
+																								9 = 3
+																								10 = 5
+																								11 = 1
+																								12 = 3
 
 */
 
@@ -403,8 +453,24 @@ void playerManager::fromStateToIdle()
 
 	if (_player->getState() == AIM_IDLE || _player->getState() == FULLCHARGE_IDLE)
 	{
+		if (_idleCount < 100)
+			_idleCount++;
+		else
+		{
+			_player->setState(IDLE);
+			_idleCount = 0;
+		}
+	}
+
+	if (_player->getState() == LAUGH)
+	{
 
 	}
+}
+
+void playerManager::fromIdleToState()
+{
+	this->playerLaugh();
 }
 
 void playerManager::bulletFire()

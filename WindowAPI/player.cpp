@@ -74,7 +74,7 @@ HRESULT player::init(void)
 	_x = WINSIZEX / 2;
 	_y = TILESIZEY - WINSIZEY / 2;
 
-	_frameSpeed = 5;
+	_frameSpeed = 13;
 	_count = _index = 0;
 	_gravity = 0.0f;
 	_angle = -PI_2;
