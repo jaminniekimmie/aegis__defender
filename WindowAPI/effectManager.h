@@ -1,32 +1,3 @@
-//#pragma once
-//#include "singletonBase.h"
-////이펙트 클래스 전방선언(뻥남 방지용)
-//class effect;
-//
-//class effectManager : public singletonBase <effectManager>
-//{
-//	effect* _jumpDust;
-//	effect* _landDust;
-//	effect* _runDust;
-//
-//	bool _isJumpStart;
-//	bool _isLandStart;
-//	bool _isRunStart;
-//public:
-//	void jumpDust(float x, float y);
-//	void landDust(float x, float y);
-//	void runDust(float x, float y);
-//
-//	HRESULT init(void);
-//	void release(void);
-//	void update(void);
-//	void render();
-//
-//	effectManager() {}
-//	~effectManager() {}
-//};
-//
-
 #pragma once
 #include "singletonBase.h"
 //이펙트 클래스 전방선언(뻥남 방지용)
@@ -59,4 +30,34 @@ public:
 	effectManager() {}
 	~effectManager() {}
 };
+
+//#pragma once
+//#include "singletonBase.h"
+////이펙트 클래스 전방선언(뻥남 방지용)
+//class effect;
+//
+//class effectManager : public singletonBase <effectManager>
+//{
+//	effect* _jumpDust;
+//	effect* _landDust;
+//	effect* _runDust;
+//
+//	bool _isJumpStart;
+//	bool _isLandStart;
+//	bool _isRunStart;
+//public:
+//	void jumpDust(float x, float y);
+//	void landDust(float x, float y);
+//	void runDust(float x, float y);
+//
+//	HRESULT init(void);
+//	void release(void);
+//	void update(void);
+//	void render();
+//
+//	effectManager() {}
+//	~effectManager() {}
+//};
+//
+
 

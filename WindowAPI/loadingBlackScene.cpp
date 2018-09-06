@@ -72,7 +72,8 @@ void loadingBlackScene::render(void)
 void loadingBlackScene::loadingImage()
 {
 	_loading->loadFrameImage("Clu_aim_diagonal", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge", "tex/characters/Clu_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_idle", "tex/characters/Clu_aim_diagonal_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonalFire", "tex/characters/Clu_aim_diagonalFire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_fire", "tex/characters/Clu_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_idle", "tex/characters/Clu_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -100,7 +101,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_run", "tex/characters/Clu_run_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
 
 	_loading->loadFrameImage("Clu_aim_diagonal_shadow", "tex/characters/Clu_aim_diagonal_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_shadow", "tex/characters/Clu_aim_diagonal_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_shadow", "tex/characters/Clu_aim_diagonal_fullCharge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_idle_shadow", "tex/characters/Clu_aim_diagonal_fullCharge_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonalFire_shadow", "tex/characters/Clu_aim_diagonalFire_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_fire_shadow", "tex/characters/Clu_aim_fire_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_idle_shadow", "tex/characters/Clu_aim_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -126,7 +128,15 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_lookup_shadow", "tex/characters/Clu_lookup_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
-
+	
+	_loading->loadFrameImage("Clu_gun_aim_fire", "tex/weapons/Clu_gun_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_aim_idle", "tex/weapons/Clu_gun_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_charge", "tex/weapons/Clu_gun_charge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_fullCharge", "tex/weapons/Clu_gun_fullCharge_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_fullCharge_idle", "tex/weapons/Clu_gun_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust3", "tex/fx/JumpDust_03.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));

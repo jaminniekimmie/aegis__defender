@@ -7,6 +7,8 @@ HRESULT player::init(void)
 	_player_clu[AIM_DIAGONAL].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonal_shadow");
 	_player_clu[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge");
 	_player_clu[AIM_DIAGONAL_FULLCHARGE].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge_shadow");
+	_player_clu[AIM_DIAGONAL_FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge_idle");
+	_player_clu[AIM_DIAGONAL_FULLCHARGE_IDLE].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge_idle_shadow");
 	_player_clu[AIM_DIAGONALFIRE].img = IMAGEMANAGER->findImage("Clu_aim_diagonalFire");
 	_player_clu[AIM_DIAGONALFIRE].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonalFire_shadow");
 	_player_clu[AIM_FIRE].img = IMAGEMANAGER->findImage("Clu_aim_fire");
@@ -58,6 +60,15 @@ HRESULT player::init(void)
 	_player_clu[RUN].img = IMAGEMANAGER->findImage("Clu_run");
 	_player_clu[RUN].shadow = IMAGEMANAGER->findImage("Clu_run_shadow");
 
+	_gun_clu[AIM_FIRE].img = IMAGEMANAGER->findImage("Clu_gun_aim_fire");
+	_gun_clu[AIM_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_aim_idle");
+	_gun_clu[CHARGE].img = IMAGEMANAGER->findImage("Clu_gun_charge");
+	_gun_clu[FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_gun_fullCharge");
+	_gun_clu[FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_fullCharge_idle");
+	_gun_clu[JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_fall");
+	_gun_clu[JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_rise");
+
+
 	for (int i = 0; i < MAXPLAYERSTATE; i++)
 		_player_clu[i].alpha = 70;
 
@@ -74,13 +85,13 @@ HRESULT player::init(void)
 	_x = WINSIZEX / 2;
 	_y = TILESIZEY - WINSIZEY / 2;
 
-	_frameSpeed = 13;
+	_frameSpeed = 10;
 	_count = _index = 0;
 	_gravity = 0.0f;
 	_angle = -PI_2;
 	_speed = 8.0f;
 
-	_isFall = _isJump = _isBackstep = _isFaceDown = false;
+	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = false;
 	_onLand = true;
 
 	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
@@ -123,6 +134,9 @@ void player::update(void)
 
 void player::render(void)
 {
+	if (_isFired)
+		_gun_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+	
 	_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
 	_player_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 
@@ -138,8 +152,11 @@ void player::hitDamage(float damage)
 void player::frameChangeLoop()
 {
 	_count++;
+
 	_player_clu[_playerState].img->setFrameY(_isLeft);
 	_player_clu[_playerState].shadow->setFrameY(_isLeft);
+	if (_isFired)
+		_gun_clu[_playerState].img->setFrameY(_isLeft);
 
 	if (_isLeft)
 	{
@@ -152,6 +169,8 @@ void player::frameChangeLoop()
 			}
 			_player_clu[_playerState].img->setFrameX(_index);
 			_player_clu[_playerState].shadow->setFrameX(_index);
+			if (_isFired)
+				_gun_clu[_playerState].img->setFrameX(_index);
 		}
 	}
 	else
@@ -165,6 +184,8 @@ void player::frameChangeLoop()
 			}
 			_player_clu[_playerState].img->setFrameX(_index);
 			_player_clu[_playerState].shadow->setFrameX(_index);
+			if (_isFired)
+				_gun_clu[_playerState].img->setFrameX(_index);
 		}
 	}
 }

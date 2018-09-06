@@ -1,50 +1,3 @@
-//#include "stdafx.h"
-//#include "effect.h"
-//
-//HRESULT effect::init(string str, int frameSpeed)
-//{
-//	_image = IMAGEMANAGER->findImage(str);
-//	_x = 0.f;
-//	_y = 0.f;
-//	_index = 0;
-//	_count = 0;
-//	_frameSpeed = frameSpeed;
-//	_isLeft = false;
-//	_isFinish = false;
-//
-//	return S_OK;
-//}
-//
-//void effect::release(void)
-//{
-//}
-//
-//void effect::update(void)
-//{
-//	_count++;
-//	if (_count % _frameSpeed == 0)
-//	{
-//		_index++;
-//		if (_index == _image->getMaxFrameX())
-//		{
-//			_image->setFrameY(RND->getInt(_image->getMaxFrameY() + 1));
-//			_isFinish = true;
-//		}
-//		_image->setFrameX(_index);
-//	}
-//}
-//
-//void effect::render(void)
-//{
-//	_image->frameRender(getMemDC(), (int)_x - CAMERAMANAGER->getCamera().left, (int)_y - CAMERAMANAGER->getCamera().top);
-//	/*char str[64];
-//	sprintf(str, "%d", _image->getMaxFrameX());
-//	TextOut(getMemDC(), 700, 500, str, strlen(str));
-//
-//	sprintf(str, "%d", _index);
-//	TextOut(getMemDC(), 700, 550, str, strlen(str));*/
-//}
-
 #include "stdafx.h"
 #include "effect.h"
 
@@ -110,3 +63,50 @@ void effect::stopEffect()
 {
 	_isRunning = false;
 }
+
+//#include "stdafx.h"
+//#include "effect.h"
+//
+//HRESULT effect::init(string str, int frameSpeed)
+//{
+//	_image = IMAGEMANAGER->findImage(str);
+//	_x = 0.f;
+//	_y = 0.f;
+//	_index = 0;
+//	_count = 0;
+//	_frameSpeed = frameSpeed;
+//	_isLeft = false;
+//	_isFinish = false;
+//
+//	return S_OK;
+//}
+//
+//void effect::release(void)
+//{
+//}
+//
+//void effect::update(void)
+//{
+//	_count++;
+//	if (_count % _frameSpeed == 0)
+//	{
+//		_index++;
+//		if (_index == _image->getMaxFrameX())
+//		{
+//			_image->setFrameY(RND->getInt(_image->getMaxFrameY() + 1));
+//			_isFinish = true;
+//		}
+//		_image->setFrameX(_index);
+//	}
+//}
+//
+//void effect::render(void)
+//{
+//	_image->frameRender(getMemDC(), (int)_x - CAMERAMANAGER->getCamera().left, (int)_y - CAMERAMANAGER->getCamera().top);
+//	/*char str[64];
+//	sprintf(str, "%d", _image->getMaxFrameX());
+//	TextOut(getMemDC(), 700, 500, str, strlen(str));
+//
+//	sprintf(str, "%d", _index);
+//	TextOut(getMemDC(), 700, 550, str, strlen(str));*/
+//}

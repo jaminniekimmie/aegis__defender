@@ -15,6 +15,7 @@ private:
 	DIRECTION _direction;
 	RECT _rc;
 	tagImage _player_clu[MAXPLAYERSTATE];
+	tagImage _gun_clu[MAXPLAYERSTATE];
 	float _x, _y;
 	float _oldX, _oldY;
 	float _gravity;
@@ -29,6 +30,7 @@ private:
 	bool _isBackstep;
 	bool _isFaceDown;
 	bool _onLand;
+	bool _isFired;
 
 	progressBar* _hpBar;		//체력바
 	float _maxHp, _currentHp;	//최대체력, 현재체력
@@ -62,6 +64,7 @@ public:
 	bool getOnLand() { return _onLand; }
 	bool getIsBackstep() { return _isBackstep; }
 	bool getIsFaceDown() { return _isFaceDown; }
+	bool getIsFired() { return _isFired; }
 
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
@@ -82,6 +85,7 @@ public:
 	void setOnLand(bool onLand) { _onLand = onLand; }
 	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
 	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
+	void setIsFired(bool isFired) { _isFired = isFired; }
 	
 	void frameChangeLoop();
 	void frameChangeOnce();
