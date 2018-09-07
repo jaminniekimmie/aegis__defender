@@ -60,6 +60,10 @@ HRESULT player::init(void)
 	_player_clu[RUN].img = IMAGEMANAGER->findImage("Clu_run");
 	_player_clu[RUN].shadow = IMAGEMANAGER->findImage("Clu_run_shadow");
 
+	_gun_clu[AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal");
+	_gun_clu[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal_fullCharge");
+	_gun_clu[AIM_DIAGONAL_FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal_fullCharge_idle");
+	_gun_clu[AIM_DIAGONALFIRE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonalFire");
 	_gun_clu[AIM_FIRE].img = IMAGEMANAGER->findImage("Clu_gun_aim_fire");
 	_gun_clu[AIM_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_aim_idle");
 	_gun_clu[CHARGE].img = IMAGEMANAGER->findImage("Clu_gun_charge");
@@ -68,6 +72,14 @@ HRESULT player::init(void)
 	_gun_clu[JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_fall");
 	_gun_clu[JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_rise");
 
+	_player_weapon[0].img = IMAGEMANAGER->findImage("clu_gun");
+	_player_weapon[1].img = IMAGEMANAGER->findImage("clu_bow");
+
+	for (int i = 0; i < 2; i++)
+	{
+		_player_weapon[i].alpha = 0;
+		_player_weapon[i].isActive = false;
+	}
 
 	for (int i = 0; i < MAXPLAYERSTATE; i++)
 		_player_clu[i].alpha = 70;
@@ -86,12 +98,12 @@ HRESULT player::init(void)
 	_y = TILESIZEY - WINSIZEY / 2;
 
 	_frameSpeed = 10;
-	_count = _index = 0;
+	_count = _index = _weaponCount = 0;
 	_gravity = 0.0f;
 	_angle = -PI_2;
 	_speed = 8.0f;
 
-	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = false;
+	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = false;
 	_onLand = true;
 
 	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
@@ -130,18 +142,29 @@ void player::update(void)
 	*/
 
 	this->frameChangeLoop();
+	this->weaponSwitch(_weaponSwitch);
 }
 
 void player::render(void)
 {
+
+	this->frameChangeLoop();
 	if (_isFired)
 		_gun_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 	
 	_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
 	_player_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 
+	if (_player_weapon[_weaponSwitch].isActive)
+		_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - CAMERAMANAGER->getCamera().left, _y - 8 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
+
 	//Ã¼·Â¹Ù ·»´õ
 	_hpBar->render();
+
+	char str[64];
+	sprintf(str, "%d", _player_weapon[_weaponSwitch].alpha);
+	TextOut(getMemDC(), 100, 100, str, strlen(str));
+
 }
 
 void player::hitDamage(float damage)
@@ -162,34 +185,73 @@ void player::frameChangeLoop()
 	{
 		if (_count % _frameSpeed == 0)
 		{
-			_index--;
-			if (_index < 0)
-			{
-				_index = _player_clu[_playerState].img->getMaxFrameX();
-			}
 			_player_clu[_playerState].img->setFrameX(_index);
 			_player_clu[_playerState].shadow->setFrameX(_index);
 			if (_isFired)
 				_gun_clu[_playerState].img->setFrameX(_index);
+
+			_index--;
+			
+			if (_index < 0)
+			{
+				_index = _player_clu[_playerState].img->getMaxFrameX();
+			}
 		}
 	}
 	else
 	{
 		if (_count % _frameSpeed == 0)
 		{
+			_player_clu[_playerState].shadow->setFrameX(_index);
+			if (_isFired)
+				_gun_clu[_playerState].img->setFrameX(_index);
+			_player_clu[_playerState].img->setFrameX(_index);
+			
 			_index++;
+			
 			if (_index > _player_clu[_playerState].img->getMaxFrameX())
 			{
 				_index = 0;
 			}
-			_player_clu[_playerState].img->setFrameX(_index);
-			_player_clu[_playerState].shadow->setFrameX(_index);
-			if (_isFired)
-				_gun_clu[_playerState].img->setFrameX(_index);
 		}
 	}
 }
 
 void player::frameChangeOnce()
 {
+}
+
+void player::weaponSwitch(bool weaponSwitch)
+{
+	if (weaponSwitch)
+	{
+		if (_player_weapon[weaponSwitch].isActive)
+		{
+			if (_weaponCount < 50)
+			{
+				if (_player_weapon[weaponSwitch].alpha < 255)
+					_player_weapon[weaponSwitch].alpha += 15;
+				else
+					_weaponCount++;
+			}
+			else
+			{
+				if (_player_weapon[weaponSwitch].alpha > 0)
+					_player_weapon[weaponSwitch].alpha -= 15;
+				else
+					_player_weapon[weaponSwitch].isActive = false;
+			}
+			
+		}
+		else
+		{
+			_player_weapon[weaponSwitch].alpha = 0;
+			_weaponCount = 0;
+		}
+	}
+	else
+	{
+		_player_weapon[weaponSwitch].isActive = false;
+		_weaponCount = 0;
+	}
 }

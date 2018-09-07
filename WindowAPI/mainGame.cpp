@@ -52,6 +52,9 @@ void mainGame::update(void)
 
 	//이펙트매니져 업데이트
 	EFFECTMANAGER->update();
+
+	//카메라매니져 업데이트
+	CAMERAMANAGER->update();
 }
 
 //=============================================================

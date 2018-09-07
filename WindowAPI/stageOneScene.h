@@ -6,6 +6,7 @@ class stageOneScene : public gameNode
 {
 private:
 	playerManager* _playerManager;
+	RECT _rcCamera;
 public:
 	HRESULT init(void);
 	void release(void);

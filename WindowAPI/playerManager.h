@@ -10,6 +10,7 @@ private:
 	bullet * _bullet;
 	triBullet * _triBullet;
 	int _idleCount;
+	int _idleMax;
 	bool _isStayKey_up;
 public:
 	HRESULT init(void);

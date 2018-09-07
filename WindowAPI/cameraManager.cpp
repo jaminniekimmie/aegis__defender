@@ -13,11 +13,11 @@ void cameraManager::CameraShakeOngoing()
 {
 	if (_shakeStart)
 	{
-		_rcCamera = RectMake(_rcCamera.left + RND->getInt(50), _rcCamera.top + RND->getInt(50), WINSIZEX, WINSIZEY);
 		_shakeCount++;
+		_rcCamera = RectMake(_rcCamera.left + RND->getInt(10) - 10, _rcCamera.top + RND->getInt(10) - 10, WINSIZEX, WINSIZEY);
 	}
 
-	if (_shakeCount > 15)
+	if (_shakeCount > 5)
 	{
 		_shakeStart = false;
 		_shakeCount = 0;

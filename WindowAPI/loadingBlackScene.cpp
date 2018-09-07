@@ -129,6 +129,10 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
 	
+	_loading->loadFrameImage("Clu_gun_aim_diagonal", "tex/weapons/Clu_gun_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_aim_diagonal_fullCharge", "tex/weapons/Clu_gun_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_aim_diagonal_fullCharge_idle", "tex/weapons/Clu_gun_aim_diagonal_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_gun_aim_diagonalFire", "tex/weapons/Clu_gun_aim_diagonalFire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_aim_fire", "tex/weapons/Clu_gun_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_aim_idle", "tex/weapons/Clu_gun_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_charge", "tex/weapons/Clu_gun_charge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
@@ -165,7 +169,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_fullCharge_front", "tex/fx/Attack_FullCharge_Front.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_back", "tex/fx/Attack_FullCharge_Back.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("bullet_blue", "tex/weapons/Bullet1.bmp", 16, 16, true, RGB(255, 0, 255));
-	_loading->loadImage("clu_gun", "tex/weapons/ATK_Firearm1_01.bmp", 56, 28, true, RGB(255, 0, 255));
+	_loading->loadImage("clu_gun", "tex/weapons/clu_gun_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
+	_loading->loadImage("clu_bow", "tex/weapons/clu_bow_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
 }
 

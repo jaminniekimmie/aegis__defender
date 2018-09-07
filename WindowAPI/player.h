@@ -16,6 +16,7 @@ private:
 	RECT _rc;
 	tagImage _player_clu[MAXPLAYERSTATE];
 	tagImage _gun_clu[MAXPLAYERSTATE];
+	tagImage _player_weapon[2];
 	float _x, _y;
 	float _oldX, _oldY;
 	float _gravity;
@@ -24,6 +25,7 @@ private:
 	int _frameSpeed;
 	int _index;
 	int _count;
+	int _weaponCount;
 	bool _isLeft;
 	bool _isJump;
 	bool _isFall;
@@ -31,6 +33,7 @@ private:
 	bool _isFaceDown;
 	bool _onLand;
 	bool _isFired;
+	bool _weaponSwitch;
 
 	progressBar* _hpBar;		//체력바
 	float _maxHp, _currentHp;	//최대체력, 현재체력
@@ -48,6 +51,7 @@ public:
 	RECT getPlayerRc() { return _rc; }
 	DIRECTION getDirection() { return _direction; }
 	image* getPlayerImage(int playerState) { return _player_clu[playerState].img; }
+	BYTE getWeaponIsActive(bool weaponSwitch) { return _player_weapon[weaponSwitch].isActive; }
 	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
 	int getCount() { return _count; }
@@ -65,10 +69,12 @@ public:
 	bool getIsBackstep() { return _isBackstep; }
 	bool getIsFaceDown() { return _isFaceDown; }
 	bool getIsFired() { return _isFired; }
+	bool getWeaponSwitch() { return _weaponSwitch; }
 
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
+	void setWeaponIsActive(bool weaponSwitch, bool isActive) { _player_weapon[weaponSwitch].isActive = isActive; }
 	void setFrameSpeed(int animationSpeed) { _frameSpeed = animationSpeed; }
 	void setIndex(int index) { _index = index; }
 	void setCount(int count) { _count = count; }
@@ -86,9 +92,11 @@ public:
 	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
 	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
 	void setIsFired(bool isFired) { _isFired = isFired; }
-	
+	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }
+
 	void frameChangeLoop();
 	void frameChangeOnce();
+	void weaponSwitch(bool weaponSwitch);
 
 	player() {}
 	~player() {}
