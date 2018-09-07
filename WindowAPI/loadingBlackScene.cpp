@@ -172,6 +172,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("clu_gun", "tex/weapons/clu_gun_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("clu_bow", "tex/weapons/clu_bow_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
+	_loading->loadImage("dot_teal", "tex/fx/dot_teal_01.bmp", 2, 2);
+	_loading->loadImage("dot_white", "tex/fx/dot_white_01.bmp", 2, 2);
 }
 
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)

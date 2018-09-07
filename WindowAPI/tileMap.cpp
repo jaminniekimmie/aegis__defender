@@ -113,33 +113,6 @@ void tileMap::update(void)
 		if (!_tileSelectPage)
 		{
 			this->drawRcDrag();
-
-			for (int i = 0; i < TILEX * TILEY; i++)
-			{
-				if (PtInRect(&_tiles[i].rc, _globalPtMouse))
-				{
-					if (_tiles[i].rc.left <= _rcCamera.left && _tiles[i].rc.right > _rcCamera.left)
-					{
-						_rcCamera.left = _tiles[i].rc.left - TILESIZE / 2;
-						_rcCamera.right = _rcCamera.left + WINSIZEX;
-					}
-					else if (_tiles[i].rc.left < _rcCamera.right && _tiles[i].rc.right >= _rcCamera.right)
-					{
-						_rcCamera.right = _tiles[i].rc.right + TILESIZE / 2;
-						_rcCamera.left = _rcCamera.right - WINSIZEX;
-					}
-					if (_tiles[i].rc.top <= _rcCamera.top && _tiles[i].rc.bottom > _rcCamera.top)
-					{
-						_rcCamera.top = _tiles[i].rc.top - TILESIZE / 2;
-						_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-					}
-					else if (_tiles[i].rc.top < _rcCamera.bottom && _tiles[i].rc.bottom >= _rcCamera.bottom)
-					{
-						_rcCamera.bottom = _tiles[i].rc.bottom + TILESIZE / 2;
-						_rcCamera.top = _rcCamera.bottom - WINSIZEY;
-					}
-				}
-			}
 		}
 
 		this->setMap();
@@ -895,6 +868,30 @@ void tileMap::cameraAdjustment(void)
 	{
 		_rcCamera.top += 30;
 		_rcCamera.bottom += 30;
+	}
+
+	if (!_tileSelectPage)
+	{
+		if (_cursorIcon[1].rc.left <= _rcCamera.left)
+		{
+			_rcCamera.left = _cursorIcon[1].rc.left - TILESIZE / 2;
+			_rcCamera.right = _rcCamera.left + WINSIZEX;
+		}
+		else if (_cursorIcon[1].rc.right >= _rcCamera.right)
+		{
+			_rcCamera.right = _cursorIcon[1].rc.right + TILESIZE / 2;
+			_rcCamera.left = _rcCamera.right - WINSIZEX;
+		}
+		if (_cursorIcon[1].rc.top <= _rcCamera.top)
+		{
+			_rcCamera.top = _cursorIcon[1].rc.top - TILESIZE / 2;
+			_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+		}
+		else if (_cursorIcon[1].rc.bottom >= _rcCamera.bottom)
+		{
+			_rcCamera.bottom = _cursorIcon[1].rc.bottom + TILESIZE / 2;
+			_rcCamera.top = _rcCamera.bottom - WINSIZEY;
+		}
 	}
 
 	if (_rcCamera.left <= 0)

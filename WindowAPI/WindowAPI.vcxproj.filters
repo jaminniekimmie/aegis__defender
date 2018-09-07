@@ -24,9 +24,6 @@
     <Filter Include="GameFramework2D\이미지">
       <UniqueIdentifier>{1851a966-ba68-4f2f-8ebc-640729b7e225}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameFramework2D\총알">
-      <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\픽셀충돌">
       <UniqueIdentifier>{999592ea-c38c-4f45-866d-bd0d1565c6b5}</UniqueIdentifier>
     </Filter>
@@ -75,14 +72,17 @@
     <Filter Include="MainGame\로테이트">
       <UniqueIdentifier>{78ec6bad-644d-4edb-a2bc-928cffc998ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\디펜더스">
+    <Filter Include="MainGame\DEFENDERS">
       <UniqueIdentifier>{99ee87d5-f72d-4cd3-9717-27b286d7636b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\디펜더스\플레이어">
+    <Filter Include="MainGame\DEFENDERS\플레이어">
       <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\디펜더스\타일타일">
+    <Filter Include="MainGame\DEFENDERS\타일타일">
       <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\DEFENDERS\총알총알">
+      <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +117,7 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
-      <Filter>GameFramework2D\총알</Filter>
+      <Filter>MainGame\DEFENDERS\총알총알</Filter>
     </ClInclude>
     <ClInclude Include="pixelCollision.h">
       <Filter>MainGame\픽셀충돌</Filter>
@@ -174,19 +174,19 @@
       <Filter>MainGame\로테이트</Filter>
     </ClInclude>
     <ClInclude Include="tileNode.h">
-      <Filter>MainGame\디펜더스\타일타일</Filter>
+      <Filter>MainGame\DEFENDERS\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="tileMap.h">
-      <Filter>MainGame\디펜더스\타일타일</Filter>
+      <Filter>MainGame\DEFENDERS\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="cameraManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
     <ClInclude Include="buildAMapScene.h">
-      <Filter>MainGame\디펜더스\타일타일</Filter>
+      <Filter>MainGame\DEFENDERS\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="playerManager.h">
-      <Filter>MainGame\디펜더스\플레이어</Filter>
+      <Filter>MainGame\DEFENDERS\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="loadingBlackScene.h">
       <Filter>MainGame\로딩화면</Filter>
@@ -195,13 +195,13 @@
       <Filter>MainGame\로딩화면</Filter>
     </ClInclude>
     <ClInclude Include="stageOneScene.h">
-      <Filter>MainGame\디펜더스</Filter>
+      <Filter>MainGame\DEFENDERS</Filter>
     </ClInclude>
     <ClInclude Include="stageTwoScene.h">
-      <Filter>MainGame\디펜더스</Filter>
+      <Filter>MainGame\DEFENDERS</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>MainGame\디펜더스\플레이어</Filter>
+      <Filter>MainGame\DEFENDERS\플레이어</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +230,7 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
-      <Filter>GameFramework2D\총알</Filter>
+      <Filter>MainGame\DEFENDERS\총알총알</Filter>
     </ClCompile>
     <ClCompile Include="pixelCollision.cpp">
       <Filter>MainGame\픽셀충돌</Filter>
@@ -287,13 +287,13 @@
       <Filter>MainGame\로테이트</Filter>
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
-      <Filter>MainGame\디펜더스\타일타일</Filter>
+      <Filter>MainGame\DEFENDERS\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
     <ClCompile Include="buildAMapScene.cpp">
-      <Filter>MainGame\디펜더스\타일타일</Filter>
+      <Filter>MainGame\DEFENDERS\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="loadingBlackScene.cpp">
       <Filter>MainGame\로딩화면</Filter>
@@ -302,16 +302,16 @@
       <Filter>MainGame\로딩화면</Filter>
     </ClCompile>
     <ClCompile Include="stageOneScene.cpp">
-      <Filter>MainGame\디펜더스</Filter>
+      <Filter>MainGame\DEFENDERS</Filter>
     </ClCompile>
     <ClCompile Include="stageTwoScene.cpp">
-      <Filter>MainGame\디펜더스</Filter>
+      <Filter>MainGame\DEFENDERS</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>MainGame\디펜더스\플레이어</Filter>
+      <Filter>MainGame\DEFENDERS\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
-      <Filter>MainGame\디펜더스\플레이어</Filter>
+      <Filter>MainGame\DEFENDERS\플레이어</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

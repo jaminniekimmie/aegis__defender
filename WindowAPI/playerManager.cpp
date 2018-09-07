@@ -6,9 +6,9 @@ HRESULT playerManager::init(void)
 	_player = new player;
 	_player->init();
 	_bullet = new bullet;
-	_bullet->init("bullet_blue", 3, 250);
+	_bullet->init("bullet_blue", 3, 550);
 	_triBullet = new triBullet;
-	_triBullet->init("bullet_blue", 3, 250);
+	_triBullet->init("bullet_blue", 3, 550);
 	_idleCount = 0;
 	_idleMax = RND->getFromIntTo(100, 500);
 	_isStayKey_up = false;
@@ -31,15 +31,15 @@ void playerManager::update(void)
 	_bullet->update();
 	_triBullet->update();
 
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _player->getPlayerRc().left > 0)
+	if ((KEYMANAGER->isStayKeyDown(VK_LEFT) || KEYMANAGER->isStayKeyDown('A')) && _player->getPlayerRc().left > 0)
 	{
 		this->playerRun(LEFT);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _player->getPlayerRc().right < TILESIZEX)
+	if ((KEYMANAGER->isStayKeyDown(VK_RIGHT) || KEYMANAGER->isStayKeyDown('D')) && _player->getPlayerRc().right < TILESIZEX)
 	{
 		this->playerRun(RIGHT);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	if (KEYMANAGER->isStayKeyDown(VK_UP) || KEYMANAGER->isStayKeyDown('W'))
 	{
 		_isStayKey_up = true;
 
@@ -52,7 +52,7 @@ void playerManager::update(void)
 					_player->setState(LOOKUP);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN) || KEYMANAGER->isStayKeyDown('S'))
 	{
 		if (_player->getOnLand())
 		{
@@ -84,16 +84,17 @@ void playerManager::update(void)
 	{
 		this->bulletFire();
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT) ||
+		KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D'))
 	{
 		_player->setState(IDLE);
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_UP))
+	if (KEYMANAGER->isOnceKeyUp(VK_UP) || KEYMANAGER->isOnceKeyUp('W'))
 	{
 		_player->setState(IDLE);
 		_isStayKey_up = false;
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+	if (KEYMANAGER->isOnceKeyUp(VK_DOWN) || KEYMANAGER->isOnceKeyUp('S'))
 	{
 		_player->setIsFaceDown(false);
 	}
@@ -557,21 +558,25 @@ void playerManager::fromStateToIdle()
 		if (_player->getState() == IDLE)
 		{
 			_player->setState(LAND);
+
+			_player->setCount(0);
+
 			if (_player->getIsLeft())
 				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
 			else
 				_player->setIndex(0);
-			EFFECTMANAGER->play("landDust", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+
+			//EFFECTMANAGER->play("landDust", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
 		}
 		else if (_player->getState() == LAND)
 		{
 			if (_player->getIsLeft())
 			{
-				_player->setIndex(2);
+				_player->setIndex(1);
 			}
 			else
 			{
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX() - 2);
+				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX() - 1);
 			}
 		}
 	}
@@ -609,7 +614,7 @@ void playerManager::bulletFire()
 	float x, y, angle, speed, pos;
 	x = _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * 0.5f;
 	y = _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.5f + 7;
-	speed = 10.5f;
+	speed = 20.0f;
 	_player->setIsFired(true);
 
 	if (_isStayKey_up && _player->getState() != RUN)	//´ë°¢¼±
@@ -650,7 +655,7 @@ void playerManager::bulletFire()
 			if (!_player->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
 
-			pos = _player->getIsLeft() ? - 5 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 5;
+			pos = _player->getIsLeft() ? -5 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 5;
 			_bullet->fire(x, y, angle, speed);
 			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() + 8);
 		}
@@ -674,7 +679,7 @@ void playerManager::bulletFire()
 			if (!_player->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
 
-			pos = _player->getIsLeft() ? -28 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 28;
+			pos = _player->getIsLeft() ? -25 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 25;
 			_triBullet->fire(x, y, angle, speed);
 			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
 			CAMERAMANAGER->CameraShake();
@@ -693,9 +698,9 @@ void playerManager::bulletFire()
 			if (!_player->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
 
-			pos = _player->getIsLeft() ? -28 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 28;
+			pos = _player->getIsLeft() ? -25 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 25;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y + 2);
+			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
 		}
 	}
 }

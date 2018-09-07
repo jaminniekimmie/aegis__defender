@@ -25,6 +25,8 @@ private:
 	//총알 구조체를 담을 벡터, 반복자
 	vector<tagBullet> _vBullet;
 	vector<tagBullet>::iterator _viBullet;
+	vector<tagBullet> _vParticle;
+	vector<tagBullet>::iterator _viParticle;
 
 private:
 	const char* _imageName;		//총알 이미지 이름(키값)
@@ -49,6 +51,8 @@ public:
 	//총알벡터 가져오기
 	vector<tagBullet> getVBullet() { return _vBullet; }
 	vector<tagBullet>::iterator getViBullet() { return _viBullet; }
+	vector<tagBullet> getVParticle() { return _vParticle; }
+	vector<tagBullet>::iterator getViParticle() { return _viParticle; }
 
 	bullet() {}
 	~bullet() {}
@@ -63,6 +67,8 @@ private:
 	//총알 구조체를 담을 벡터, 반복자
 	vector<tagBullet> _vBullet;
 	vector<tagBullet>::iterator _viBullet;
+	vector<tagBullet> _vParticle;
+	vector<tagBullet>::iterator _viParticle;
 
 private:
 	const char * _imageName;

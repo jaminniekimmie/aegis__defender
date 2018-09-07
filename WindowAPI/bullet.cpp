@@ -25,6 +25,13 @@ void bullet::update(void)
 
 void bullet::render(void)
 {
+	_viParticle = _vParticle.begin();
+	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
+	{
+		if (!_viParticle->fire) continue;
+		_viParticle->bulletImage->render(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top);
+	}
+
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
@@ -50,10 +57,61 @@ void bullet::fire(float x, float y, float angle, float speed)
 
 	//벡터에 담기
 	_vBullet.push_back(bullet);
+	
+
+	int randNo = RND->getFromIntTo(10, 15);
+
+	for (int i = 0; i < randNo / 2; i++)
+	{
+		tagBullet particle;
+		ZeroMemory(&particle, sizeof(tagBullet));
+		particle.bulletImage = IMAGEMANAGER->findImage("dot_teal");
+		particle.speed = speed;
+		particle.angle = angle;
+		particle.x = particle.fireX = x;
+		particle.y = particle.fireY = y;
+		if (angle > PI_2)
+			particle.x = x - RND->getFloat(_range);
+		if (angle < PI_2)
+			particle.x = x + RND->getFloat(_range);
+		particle.y = y + RND->getFloat(10) - 5;
+		particle.fire = false;
+		particle.rc = RectMakeCenter(particle.x, particle.y,
+			particle.bulletImage->getWidth(),
+			particle.bulletImage->getHeight());
+
+		//벡터에 담기
+		_vParticle.push_back(particle);
+	}
+	
+	for (int i = 0; i < randNo; i++)
+	{
+		tagBullet particle;
+		ZeroMemory(&particle, sizeof(tagBullet));
+		particle.bulletImage = IMAGEMANAGER->findImage("dot_white");
+		particle.speed = speed;
+		particle.angle = angle;
+		particle.x = particle.fireX = x;
+		particle.y = particle.fireY = y;
+		if (angle > PI_2)
+			particle.x = x - RND->getFloat(_range);
+		if (angle < PI_2)
+			particle.x = x + RND->getFloat(_range);
+		particle.y = y + RND->getFloat(10) - 5;
+		particle.fire = false;
+		particle.rc = RectMakeCenter(particle.x, particle.y,
+			particle.bulletImage->getWidth(),
+			particle.bulletImage->getHeight());
+
+		//벡터에 담기
+		_vParticle.push_back(particle);
+	}
 }
 
 void bullet::move()
 {
+	RECT rcTemp;
+
 	_viBullet = _vBullet.begin();
 	for (; _viBullet != _vBullet.end();)
 	{
@@ -74,6 +132,32 @@ void bullet::move()
 		else
 		{
 			++_viBullet;
+		}
+	}
+
+	for (int i = 0; i < _vParticle.size(); i++)
+	{
+		if (_vParticle[i].fire)
+		{
+			_vParticle[i].count++;
+
+			if (_vParticle[i].count > 30)
+				_vParticle.erase(_vParticle.begin() + i);
+		}
+		else
+		{
+			_vParticle[i].x = _vParticle[i].fireX + cosf(_vParticle[i].angle) * RND->getFloat(_range) + RND->getFloat(10) - 5;
+			_vParticle[i].y = _vParticle[i].fireY - sinf(_vParticle[i].angle) * RND->getFloat(_range) + RND->getFloat(10) - 5;
+
+			_vParticle[i].rc = RectMakeCenter(_vParticle[i].x, _vParticle[i].y,
+				_vParticle[i].bulletImage->getWidth(),
+				_vParticle[i].bulletImage->getHeight());
+
+			for (int j = 0; j < _vBullet.size(); j++)
+			{
+				if (IntersectRect(&rcTemp, &_vParticle[i].rc, &_vBullet[j].rc))
+					_vParticle[i].fire = true;
+			}
 		}
 	}
 }
@@ -110,6 +194,36 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		_vBullet.push_back(bullet);
 	}
 
+	int randNo = RND->getFromIntTo(8, 15);
+
+	for (int i = 0; i < randNo; i++)
+	{
+		//총알 구조체 선언
+		tagBullet particle;
+		//제로메모리 또는 멤셋
+		//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
+		ZeroMemory(&particle, sizeof(tagBullet));
+		particle.bulletImage = IMAGEMANAGER->findImage("dot_teal");
+		particle.fire = false;
+
+		//벡터에 담기
+		_vParticle.push_back(particle);
+	}
+
+	for (int i = 0; i < randNo * _bulletMax; i++)
+	{
+		//총알 구조체 선언
+		tagBullet particle;
+		//제로메모리 또는 멤셋
+		//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
+		ZeroMemory(&particle, sizeof(tagBullet));
+		particle.bulletImage = IMAGEMANAGER->findImage("dot_white");
+		particle.fire = false;
+
+		//벡터에 담기
+		_vParticle.push_back(particle);
+	}
+
 	return S_OK;
 }
 
@@ -131,6 +245,13 @@ void triBullet::render(void)
 		_vBullet[i].bulletImage->render(getMemDC(), _vBullet[i].rc.left, _vBullet[i].rc.top);
 	}
 	*/
+
+	_viParticle = _vParticle.begin();
+	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
+	{
+		if (!_viParticle->fire) continue;
+		_viParticle->bulletImage->render(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top);
+	}
 
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
@@ -157,15 +278,38 @@ void triBullet::fire(float x, float y, float angle, float speed)
 			_viBullet->bulletImage->getWidth(),
 			_viBullet->bulletImage->getHeight());
 	}
+
+	_viParticle = _vParticle.begin();
+	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
+	{
+		//if (_viParticle->fire) continue;
+
+		_viParticle->speed = speed;
+		_viParticle->angle = angle;
+		_viParticle->count = 0;
+		_viParticle->x = _viParticle->fireX = x;
+		_viParticle->y = _viParticle->fireY = y;
+		if (angle > PI_2)
+			_viParticle->x = x - RND->getFloat(_range);
+		if (angle < PI_2)
+			_viParticle->x = x + RND->getFloat(_range);
+		_viParticle->y = y + RND->getFloat(10) - 5;
+		_viParticle->fire = false;
+		_viParticle->rc = RectMakeCenter(_viParticle->x, _viParticle->y,
+			_viParticle->bulletImage->getWidth(),
+			_viParticle->bulletImage->getHeight());
+	}
 }
 
 void triBullet::move()
 {
+	RECT rcTemp;
+
 	for (int i = 0; i < _vBullet.size(); ++i)
 	{
 		if (!_vBullet[i].fire) continue;
 		_vBullet[i].count += (i + 1) * 2;
-		if (_vBullet[i].count > _vBullet.size() * 10)
+		if (_vBullet[i].count >= _vBullet.size() * _vBullet.size() * 2)
 		{
 			_vBullet[i].x += cosf(_vBullet[i].angle) * _vBullet[i].speed;
 			_vBullet[i].y += -sinf(_vBullet[i].angle) * _vBullet[i].speed;
@@ -181,6 +325,32 @@ void triBullet::move()
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
 			_vBullet[i].fire = false;
+		}
+	}
+
+	for (int i = 0; i < _vParticle.size(); i++)
+	{
+		if (_vParticle[i].fire)
+		{
+			_vParticle[i].count++;
+
+			if (_vParticle[i].count > 30)
+				_vParticle[i].fire = false;
+		}
+		else
+		{
+			_vParticle[i].x = _vParticle[i].fireX + cosf(_vParticle[i].angle) * RND->getFloat(_range) + RND->getFloat(10) - 5;
+			_vParticle[i].y = _vParticle[i].fireY - sinf(_vParticle[i].angle) * RND->getFloat(_range) + RND->getFloat(10) - 5;
+
+			_vParticle[i].rc = RectMakeCenter(_vParticle[i].x, _vParticle[i].y,
+				_vParticle[i].bulletImage->getWidth(),
+				_vParticle[i].bulletImage->getHeight());
+
+			for (int j = 0; j < _vBullet.size(); j++)
+			{
+				if (IntersectRect(&rcTemp, &_vParticle[i].rc, &_vBullet[j].rc))
+					_vParticle[i].fire = true;
+			}
 		}
 	}
 }
