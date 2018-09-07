@@ -80,6 +80,7 @@ struct tagImage
 	image* img;
 	image* shadow;
 	BYTE alpha;
+	bool isActive;
 };
 
 //struct tagImage
