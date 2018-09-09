@@ -111,8 +111,6 @@ void loadingOpenScene::loadingImage()
 		str = "tex/objects/Debris_Single6_" + to_string(i) + ".bmp";
 		_loading->loadImage("object_whitePlant" + to_string(i), str.c_str(), 40, 60, true, RGB(255, 0, 255));
 	}
-
-
 }
 
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)

@@ -149,14 +149,18 @@ void player::render(void)
 {
 
 	this->frameChangeLoop();
-	if (_isFired)
-		_gun_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
-	
-	_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
-	_player_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 
-	if (_player_weapon[_weaponSwitch].isActive)
-		_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - CAMERAMANAGER->getCamera().left, _y - 8 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
+	if (CAMERAMANAGER->CameraIn(_rc))
+	{
+		if (_isFired)
+			_gun_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+
+		_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
+		_player_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+
+		if (_player_weapon[_weaponSwitch].isActive)
+			_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - CAMERAMANAGER->getCamera().left, _y - 8 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
+	}
 
 	//Ã¼·Â¹Ù ·»´õ
 	_hpBar->render();

@@ -19,6 +19,7 @@ public:
 	{
 		DWORD		resID;				//리소스 ID
 		HDC			hMemDC;				//메모리 DC
+		HDC			hPixelDC;			//픽셀 DC
 		HBITMAP		hBit;				//비트맵
 		HBITMAP		hOBit;				//올드비트맵
 		float		x;					//이미지 x좌표
@@ -137,6 +138,7 @@ public:
 //=============================================================
 	//DC 얻기
 	inline HDC getMemDC(void) { return _imageInfo->hMemDC; }
+	//inline HDC getPixelDC(void) { return _imageInfo->hPixelDC; }
 
 	//이미지 x좌표
 	inline float getX(void) { return _imageInfo->x; }

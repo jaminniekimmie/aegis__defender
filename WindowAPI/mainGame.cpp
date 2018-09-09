@@ -75,6 +75,8 @@ void mainGame::render(void)
 	//타임매니져 렌더
 	TIMEMANAGER->render(getMemDC());
 
+
+
 //=============================================================
 	//백버퍼의 내용을 HDC에 그린다 (이것도 렌더에 그냥 둘것!!)
 	this->getBackBuffer()->render(getHDC());

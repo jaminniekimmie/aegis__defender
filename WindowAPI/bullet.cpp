@@ -29,7 +29,7 @@ void bullet::render(void)
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
 		if (!_viParticle->fire) continue;
-		_viParticle->bulletImage->render(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top);
+		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
 
 	_viBullet = _vBullet.begin();
@@ -49,6 +49,7 @@ void bullet::fire(float x, float y, float angle, float speed)
 	bullet.bulletImage = IMAGEMANAGER->findImage(_imageName);
 	bullet.speed = speed;
 	bullet.angle = angle;
+	bullet.alpha = 255;
 	bullet.x = bullet.fireX = x;
 	bullet.y = bullet.fireY = y;
 	bullet.rc = RectMakeCenter(bullet.x, bullet.y,
@@ -68,6 +69,7 @@ void bullet::fire(float x, float y, float angle, float speed)
 		particle.bulletImage = IMAGEMANAGER->findImage("dot_teal");
 		particle.speed = speed;
 		particle.angle = angle;
+		particle.alpha = 255;
 		particle.x = particle.fireX = x;
 		particle.y = particle.fireY = y;
 		if (angle > PI_2)
@@ -91,6 +93,7 @@ void bullet::fire(float x, float y, float angle, float speed)
 		particle.bulletImage = IMAGEMANAGER->findImage("dot_white");
 		particle.speed = speed;
 		particle.angle = angle;
+		particle.alpha = 255;
 		particle.x = particle.fireX = x;
 		particle.y = particle.fireY = y;
 		if (angle > PI_2)
@@ -141,8 +144,13 @@ void bullet::move()
 		{
 			_vParticle[i].count++;
 
-			if (_vParticle[i].count > 30)
-				_vParticle.erase(_vParticle.begin() + i);
+			if (_vParticle[i].count > 20)
+			{
+				_vParticle[i].alpha -= 15;
+		
+				if (_vParticle[i].alpha <= 0)
+					_vParticle.erase(_vParticle.begin() + i);
+			}
 		}
 		else
 		{
@@ -204,6 +212,7 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
 		ZeroMemory(&particle, sizeof(tagBullet));
 		particle.bulletImage = IMAGEMANAGER->findImage("dot_teal");
+		particle.alpha = 255;
 		particle.fire = false;
 
 		//벡터에 담기
@@ -218,6 +227,7 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
 		ZeroMemory(&particle, sizeof(tagBullet));
 		particle.bulletImage = IMAGEMANAGER->findImage("dot_white");
+		particle.alpha = 255;
 		particle.fire = false;
 
 		//벡터에 담기
@@ -250,7 +260,7 @@ void triBullet::render(void)
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
 		if (!_viParticle->fire) continue;
-		_viParticle->bulletImage->render(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top);
+		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
 
 	_viBullet = _vBullet.begin();
@@ -271,6 +281,7 @@ void triBullet::fire(float x, float y, float angle, float speed)
 		_viBullet->fire = true;
 		_viBullet->speed = speed;
 		_viBullet->angle = angle;
+		_viBullet->alpha = 255;
 		_viBullet->count = 0;
 		_viBullet->x = _viBullet->fireX = x;
 		_viBullet->y = _viBullet->fireY = y;
@@ -286,6 +297,7 @@ void triBullet::fire(float x, float y, float angle, float speed)
 
 		_viParticle->speed = speed;
 		_viParticle->angle = angle;
+		_viParticle->alpha = 255;
 		_viParticle->count = 0;
 		_viParticle->x = _viParticle->fireX = x;
 		_viParticle->y = _viParticle->fireY = y;
@@ -334,8 +346,13 @@ void triBullet::move()
 		{
 			_vParticle[i].count++;
 
-			if (_vParticle[i].count > 30)
-				_vParticle[i].fire = false;
+			if (_vParticle[i].count > 20)
+			{
+				_vParticle[i].alpha -= 15;
+
+				if (_vParticle[i].alpha <= 0)
+					_vParticle[i].fire = false;
+			}
 		}
 		else
 		{

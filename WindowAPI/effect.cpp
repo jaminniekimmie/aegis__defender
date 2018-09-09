@@ -43,7 +43,8 @@ void effect::render(void)
 	if (_isRunning)
 	{
 		if (_isFadeOut)
-			_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni, _alpha);
+			_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 255);
+			//_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni, _alpha);
 		else
 			_effectImg->aniRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni);
 	}

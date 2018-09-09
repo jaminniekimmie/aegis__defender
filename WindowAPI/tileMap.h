@@ -38,6 +38,7 @@ private:
 	tagImage _object_bluePlant[9];
 	tagImage _object_mushrooms[9];
 	tagImage _object_whitePlant[9];
+	image* _pixelTiles;
 	float _sampleTileStartX, _sampleTileEndX;
 	bool _tileSelectPage;
 	bool _pageSwitch;
@@ -64,16 +65,22 @@ public:
 	//로드
 	void load(void);
 
+	void keyInput(void);
 	void tileSelectPageSetup(void);
+	void tileSelectPageRender(void);
 	void UIsetup(void);
 	void descBubble(RECT* rcBackdrop);
 	void drawRcRange(void);
 	void drawRcDrag(void);
+	void cursorActionRender(void);
 	void cameraAdjustment(void);
 
 	//지형, 오브젝트 셋터
 	TERRAIN terrainSelect(int frameX, int frameY);
 	OBJECT objectSelect(int frameX, int frameY);
+
+	tagTile getTiles(int tileNum) { return _tiles[tileNum]; }
+	image* getPixelTiles() { return _pixelTiles; }
 
 	tileMap() {}
 	~tileMap() {}

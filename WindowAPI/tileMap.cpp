@@ -10,7 +10,13 @@ HRESULT tileMap::init(void)
 		str = "tex/tiles/surfaceTile_93x2_" + to_string(i + 1) + ".bmp";
 		IMAGEMANAGER->addFrameImage("tile_map" + to_string(i + 1), str.c_str(), 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
 	}
-	IMAGEMANAGER->addFrameImage("tile_map", "tex/tiles/surfaceTile_76x3_01.bmp", 9120, 360, SAMPLETILEX, SAMPLETILEY);
+
+	IMAGEMANAGER->addFrameImage("pixel_map", "tex/tiles/pixelTile_93x2_01.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+
+	_pixelTiles = new image;
+	_pixelTiles->init(TILESIZEX, TILESIZEY);
+
+	//IMAGEMANAGER->addFrameImage("tile_map", "tex/tiles/surfaceTile_76x3_01.bmp", 9120, 360, SAMPLETILEX, SAMPLETILEY);
 
 	_resource_yellowMineral.img = IMAGEMANAGER->findImage("resource_yellowMineral");
 	_resource_blueFlowers.img = IMAGEMANAGER->findImage("resource_blueFlowers");
@@ -55,154 +61,37 @@ HRESULT tileMap::init(void)
 
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
 
-
 	return S_OK;
 }
 
 void tileMap::release(void)
 {
+	SAFE_DELETE(_pixelTiles);
 }
 
 void tileMap::update(void)
 {
-	this->tileSelectPageSetup();
-	this->UIsetup();
-
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
 	_cursorIcon[0].rc = RectMake(_ptMouse.x, _ptMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
 	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17, _ptMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
 
-	if (KEYMANAGER->isOnceKeyDown('C'))
-	{
-		_button[CTRL_TERRAINDRAW].img->setFrameX(1);
-		_pageSwitch = !_pageSwitch;
-		_delta = _saveDelta;
-		_count = 0;
-		if (!_pageSwitch)
-			_delta = 0;
-	}
-
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-		if (_ctrlSelect == CTRL_ERASER)
-			_cursorIcon[1].img->setFrameX(1);
-
-		if (_tileSelectPage)
-		{
-			_sampleTileType = _delta;
-
-			if (!_moveSampleTiles)
-			{
-				for (int i = 0; i < 2; i++)
-				{
-					if (PtInRect(&_arrowButton[i].rc, _ptMouse))
-					{
-						_moveSampleTiles = true;
-						_isLeft = i ? true : false;
-						_count = 0;
-					}
-				}
-			}
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-	{
-		if (_ctrlSelect == CTRL_ERASER)
-			_cursorIcon[1].img->setFrameX(1);
-
-		if (!_tileSelectPage)
-		{
-			this->drawRcDrag();
-		}
-
-		this->setMap();
-	}
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-	{
-		_dragStart = false;
-		if (_ctrlSelect == CTRL_ERASER)
-			_cursorIcon[1].img->setFrameX(0);
-	}
-
-	if (_tileSelectPage)
-	{
-		if (KEYMANAGER->isStayKeyDown('A'))
-		{
-			_moveSampleTiles = true;
-			_isLeft = false;
-			_count = 0;
-		}
-
-		if (KEYMANAGER->isStayKeyDown('D'))
-		{
-			_moveSampleTiles = true;
-			_isLeft = true;
-			_count = 0;
-		}
-	}
-	else
-	{
-		if (KEYMANAGER->isOnceKeyDown('Z'))
-		{
-			if (!_tileSelectPage)
-			{
-				_button[CTRL_SAVE].img->setFrameX(1);
-				_ctrlSelect = CTRL_SAVE;
-				this->save();
-			}
-		}
-		if (KEYMANAGER->isOnceKeyUp('Z'))
-			_button[CTRL_SAVE].img->setFrameX(0);
-
-		if (KEYMANAGER->isOnceKeyDown('X'))
-		{
-			if (!_tileSelectPage)
-			{
-				_button[CTRL_LOAD].img->setFrameX(1);
-				_ctrlSelect = CTRL_LOAD;
-				this->load();
-			}
-		}
-		if (KEYMANAGER->isOnceKeyUp('X'))
-			_button[CTRL_LOAD].img->setFrameX(0);
-
-		if (KEYMANAGER->isOnceKeyDown('V'))
-		{
-			if (!_tileSelectPage)
-			{
-				if (_ctrlSelect != CTRL_ERASER)
-				{
-					_button[CTRL_ERASER].img->setFrameX(1);
-					_delta = 0;
-					_oldCtrl = _ctrlSelect;
-					_ctrlSelect = CTRL_ERASER;
-				}
-				else
-				{
-					_delta = 0;
-					_button[CTRL_ERASER].img->setFrameX(0);
-					_ctrlSelect = _oldCtrl;
-				}
-			}
-		}
-
-		if (KEYMANAGER->isOnceKeyDown('Q'))
-		{
-			SCENEMANAGER->loadScene("흑로딩화면");
-		}
-
-		this->drawRcRange();
-	}
-
+	this->tileSelectPageSetup();
+	this->UIsetup();
+	this->keyInput();
 	this->cameraAdjustment();
 }
 
 void tileMap::render(void)
 {
+	PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
+
 	SelectObject(getMemDC(), GetStockObject(NULL_BRUSH));
 	SelectObject(getMemDC(), GetStockObject(DC_PEN));
 	SetDCPenColor(getMemDC(), RGB(20, 20, 20));
-
+	SelectObject(_pixelTiles->getMemDC(), GetStockObject(NULL_BRUSH));
+	SelectObject(_pixelTiles->getMemDC(), GetStockObject(DC_PEN));
+	SetDCPenColor(_pixelTiles->getMemDC(), RGB(20, 20, 20));
+/*
 	if (KEYMANAGER->isToggleKey('I'))
 	{
 		SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
@@ -210,124 +99,34 @@ void tileMap::render(void)
 		SelectObject(getMemDC(), GetStockObject(DC_PEN));
 		SetDCPenColor(getMemDC(), RGB(235, 235, 235));
 	}
-
+*/
 	//게임타일 렉트 렌더
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (CAMERAMANAGER->CameraIn(_tiles[i].rc))
 		{
-			Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
-				_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+			Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+			Rectangle(_pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
 
 			IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
 			if (_tiles[i].obj == OBJECT_NONE) continue;
 			IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);	
+			IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
 		}
 	}
 
-	if (!_tileSelectPage)
+	if (KEYMANAGER->isToggleKey('P'))
 	{
-		SelectObject(getMemDC(), GetStockObject(DC_PEN));
-		SetDCPenColor(getMemDC(), RGB(58, 213, 255));
-		RECT ptRect = RectMakeCenter((LONG)_ptMouse.x + CAMERAMANAGER->getCamera().left, (LONG)_ptMouse.y + CAMERAMANAGER->getCamera().top, TILESIZE * 2, TILESIZE * 2);
-		RECT rcTemp;
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (CAMERAMANAGER->CameraIn(_tiles[i].rc))
-			{
-				if (_dragStart)
-				{
-					if (_ctrlSelect == CTRL_ERASER)
-					{
-						SelectObject(getMemDC(), GetStockObject(DC_PEN));
-						SetDCPenColor(getMemDC(), RGB(255, 255, 255));
-					}
-					//Rectangle(getMemDC(), _rcDrag.left - CAMERAMANAGER->getCamera().left, _rcDrag.top - CAMERAMANAGER->getCamera().top, 
-					//	_rcDrag.right - CAMERAMANAGER->getCamera().left, _rcDrag.bottom - CAMERAMANAGER->getCamera().top);
-					if (IntersectRect(&rcTemp, &_rcDrag, &_tiles[i].rc))
-					{
-						Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
-							_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
-					}
-				}
-				else
-				{
-					if (IntersectRect(&rcTemp, &_rcRange, &_tiles[i].rc))
-					{
-						if (_ctrlSelect == CTRL_ERASER)
-						{
-							//SelectObject(getMemDC(), GetStockObject(DC_PEN));
-							SetDCPenColor(getMemDC(), RGB(255, 255, 255));
-						}
-						Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
-							_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
-					}
-				}
-				if (PtInRect(&_tiles[i].rc, _globalPtMouse))
-				{
-					if (_ctrlSelect == CTRL_ERASER)
-					{
-						//SelectObject(getMemDC(), GetStockObject(DC_PEN));
-						SetDCPenColor(getMemDC(), RGB(255, 255, 255));
-					}
-					Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
-						_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
-				}
-			
-				if (PtInRect(&_tiles[i].rc, _globalPtMouse) || IntersectRect(&rcTemp, &_rcRange, &_tiles[i].rc) || (_dragStart && IntersectRect(&rcTemp, &_rcDrag, &_tiles[i].rc)))
-				{
-					if (_ctrlSelect == CTRL_ERASER)
-						IMAGEMANAGER->alphaRender("white_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
-					else
-					{
-						IMAGEMANAGER->alphaRender("teal_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
-						IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_sampleTileType + 1), getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
-					}
-				}
-			}
-		}
+		_pixelTiles->alphaRender(getMemDC(), 0, 0, 100);
 	}
+
+	this->cursorActionRender();
 	
 	_buildAMapText.img->alphaRender(getMemDC(), _buildAMapText.rc.left, _buildAMapText.rc.top, _buildAMapText.alpha);
 
-	if (_tileSelectPage)	//타일 선택 페이지 렌더
-	{
-		SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
-		SetDCBrushColor(getMemDC(), RGB(0, 0, 0));
-		SelectObject(getMemDC(), GetStockObject(DC_PEN));
-		SetDCPenColor(getMemDC(), RGB(0, 0, 0));
-		Rectangle(getMemDC(), _rcLetterBox[0]);
-		Rectangle(getMemDC(), _rcLetterBox[1]);
-		_blackSolid.img->alphaRender(getMemDC(), _blackSolid.alpha);
-
-		for (int i = 0; i < SAMPLETILEX * SAMPLETILEY; i++)
-		{
-			if (_sampleTiles[i].rc.left < _sampleTileStartX || _sampleTiles[i].rc.right > _sampleTileEndX) continue;
-			IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_saveDelta + 1), getMemDC(), _sampleTiles[i].rc.left, _sampleTiles[i].rc.top, _sampleTiles[i].terrainFrameX, _sampleTiles[i].terrainFrameY, _sampleTiles[i].alpha);
-			_sampleTiles[i].backdrop->alphaFrameRender(getMemDC(), _sampleTiles[i].rc.left - 3, _sampleTiles[i].rc.top - 3, _sampleTiles[i].alpha);
-			if (KEYMANAGER->isToggleKey(VK_F2))
-			{
-				char str[128];
-				sprintf(str, "%d", i);
-				TextOut(getMemDC(), _sampleTiles[i].rc.left, _sampleTiles[i].rc.top, str, strlen(str));
-			}
-		}
-		
-		if (_terrain != TR_NONE)
-			_descBubble_terrain[_terrain].img->render(getMemDC(), _descBubble_terrain[_terrain].rc.left, _descBubble_terrain[_terrain].rc.top);
-		else if (_object != OBJECT_NONE)
-			_descBubble_object[_object].img->render(getMemDC(), _descBubble_object[_object].rc.left, _descBubble_object[_object].rc.top);
-		else
-			_textBubble_amber.img->alphaRender(getMemDC(), _textBubble_amber.rc.left, _textBubble_amber.rc.top, _textBubble_amber.alpha);
-
-		if (_sampleTiles[0].rc.left < _sampleTileStartX)
-			_arrowButton[0].img->alphaFrameRender(getMemDC(), _arrowButton[0].rc.left, _arrowButton[0].rc.top, _arrowButton[0].alpha);
-		if (_sampleTiles[SAMPLETILEX - 1].rc.right > _sampleTileEndX)
-			_arrowButton[1].img->alphaFrameRender(getMemDC(), _arrowButton[1].rc.left, _arrowButton[1].rc.top, _arrowButton[1].alpha);
-		
-		_characterMinor.img->alphaRender(getMemDC(), _characterMinor.rc.left, _characterMinor.rc.top, _characterMinor.alpha);
-	}
+	this->tileSelectPageRender();
 
 	//IMAGEMANAGER->render("temp", getMemDC(), 0, 0);
 
@@ -536,6 +335,131 @@ void tileMap::load(void)
 	CloseHandle(file);
 }
 
+void tileMap::keyInput(void)
+{
+	if (KEYMANAGER->isOnceKeyDown('C'))
+	{
+		_button[CTRL_TERRAINDRAW].img->setFrameX(1);
+		_pageSwitch = !_pageSwitch;
+		_delta = _saveDelta;
+		_count = 0;
+		if (!_pageSwitch)
+			_delta = 0;
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		if (_ctrlSelect == CTRL_ERASER)
+			_cursorIcon[1].img->setFrameX(1);
+
+		if (_tileSelectPage)
+		{
+			_sampleTileType = _delta;
+
+			if (!_moveSampleTiles)
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					if (PtInRect(&_arrowButton[i].rc, _ptMouse))
+					{
+						_moveSampleTiles = true;
+						_isLeft = i ? true : false;
+						_count = 0;
+					}
+				}
+			}
+		}
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+	{
+		if (_ctrlSelect == CTRL_ERASER)
+			_cursorIcon[1].img->setFrameX(1);
+
+		if (!_tileSelectPage)
+		{
+			this->drawRcDrag();
+		}
+
+		this->setMap();
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	{
+		_dragStart = false;
+		if (_ctrlSelect == CTRL_ERASER)
+			_cursorIcon[1].img->setFrameX(0);
+	}
+
+	if (_tileSelectPage)
+	{
+		if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			_moveSampleTiles = true;
+			_isLeft = false;
+			_count = 0;
+		}
+
+		if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			_moveSampleTiles = true;
+			_isLeft = true;
+			_count = 0;
+		}
+	}
+	else
+	{
+		if (KEYMANAGER->isOnceKeyDown('Z'))
+		{
+			if (!_tileSelectPage)
+			{
+				_button[CTRL_SAVE].img->setFrameX(1);
+				_ctrlSelect = CTRL_SAVE;
+				this->save();
+			}
+		}
+		if (KEYMANAGER->isOnceKeyUp('Z'))
+			_button[CTRL_SAVE].img->setFrameX(0);
+
+		if (KEYMANAGER->isOnceKeyDown('X'))
+		{
+			if (!_tileSelectPage)
+			{
+				_button[CTRL_LOAD].img->setFrameX(1);
+				_ctrlSelect = CTRL_LOAD;
+				this->load();
+			}
+		}
+		if (KEYMANAGER->isOnceKeyUp('X'))
+			_button[CTRL_LOAD].img->setFrameX(0);
+
+		if (KEYMANAGER->isOnceKeyDown('V'))
+		{
+			if (!_tileSelectPage)
+			{
+				if (_ctrlSelect != CTRL_ERASER)
+				{
+					_button[CTRL_ERASER].img->setFrameX(1);
+					_delta = 0;
+					_oldCtrl = _ctrlSelect;
+					_ctrlSelect = CTRL_ERASER;
+				}
+				else
+				{
+					_delta = 0;
+					_button[CTRL_ERASER].img->setFrameX(0);
+					_ctrlSelect = _oldCtrl;
+				}
+			}
+		}
+
+		if (KEYMANAGER->isOnceKeyDown('Q'))
+		{
+			SCENEMANAGER->loadScene("흑로딩화면");
+		}
+
+		this->drawRcRange();
+	}
+}
+
 void tileMap::tileSelectPageSetup(void)
 {
 	RECT _rcBackdrop[SAMPLETILEX * SAMPLETILEY];
@@ -672,6 +596,47 @@ void tileMap::tileSelectPageSetup(void)
 			//_delta = 0;
 			_button[CTRL_TERRAINDRAW].img->setFrameX(0);
 		}
+	}
+}
+
+void tileMap::tileSelectPageRender(void)
+{
+	if (_tileSelectPage)	//타일 선택 페이지 렌더
+	{
+		SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
+		SetDCBrushColor(getMemDC(), RGB(0, 0, 0));
+		SelectObject(getMemDC(), GetStockObject(DC_PEN));
+		SetDCPenColor(getMemDC(), RGB(0, 0, 0));
+		Rectangle(getMemDC(), _rcLetterBox[0]);
+		Rectangle(getMemDC(), _rcLetterBox[1]);
+		_blackSolid.img->alphaRender(getMemDC(), _blackSolid.alpha);
+
+		for (int i = 0; i < SAMPLETILEX * SAMPLETILEY; i++)
+		{
+			if (_sampleTiles[i].rc.left < _sampleTileStartX || _sampleTiles[i].rc.right > _sampleTileEndX) continue;
+			IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_saveDelta + 1), getMemDC(), _sampleTiles[i].rc.left, _sampleTiles[i].rc.top, _sampleTiles[i].terrainFrameX, _sampleTiles[i].terrainFrameY, _sampleTiles[i].alpha);
+			_sampleTiles[i].backdrop->alphaFrameRender(getMemDC(), _sampleTiles[i].rc.left - 3, _sampleTiles[i].rc.top - 3, _sampleTiles[i].alpha);
+			if (KEYMANAGER->isToggleKey(VK_F2))
+			{
+				char str[128];
+				sprintf(str, "%d", i);
+				TextOut(getMemDC(), _sampleTiles[i].rc.left, _sampleTiles[i].rc.top, str, strlen(str));
+			}
+		}
+
+		if (_terrain != TR_NONE)
+			_descBubble_terrain[_terrain].img->render(getMemDC(), _descBubble_terrain[_terrain].rc.left, _descBubble_terrain[_terrain].rc.top);
+		else if (_object != OBJECT_NONE)
+			_descBubble_object[_object].img->render(getMemDC(), _descBubble_object[_object].rc.left, _descBubble_object[_object].rc.top);
+		else
+			_textBubble_amber.img->alphaRender(getMemDC(), _textBubble_amber.rc.left, _textBubble_amber.rc.top, _textBubble_amber.alpha);
+
+		if (_sampleTiles[0].rc.left < _sampleTileStartX)
+			_arrowButton[0].img->alphaFrameRender(getMemDC(), _arrowButton[0].rc.left, _arrowButton[0].rc.top, _arrowButton[0].alpha);
+		if (_sampleTiles[SAMPLETILEX - 1].rc.right > _sampleTileEndX)
+			_arrowButton[1].img->alphaFrameRender(getMemDC(), _arrowButton[1].rc.left, _arrowButton[1].rc.top, _arrowButton[1].alpha);
+
+		_characterMinor.img->alphaRender(getMemDC(), _characterMinor.rc.left, _characterMinor.rc.top, _characterMinor.alpha);
 	}
 }
 
@@ -816,6 +781,72 @@ void tileMap::drawRcDrag(void)
 	else
 	{
 		_dragStart = false;
+	}
+}
+
+void tileMap::cursorActionRender(void)
+{
+	if (!_tileSelectPage)
+	{
+		SelectObject(getMemDC(), GetStockObject(DC_PEN));
+		SetDCPenColor(getMemDC(), RGB(58, 213, 255));
+		RECT ptRect = RectMakeCenter((LONG)_ptMouse.x + CAMERAMANAGER->getCamera().left, (LONG)_ptMouse.y + CAMERAMANAGER->getCamera().top, TILESIZE * 2, TILESIZE * 2);
+		RECT rcTemp;
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (CAMERAMANAGER->CameraIn(_tiles[i].rc))
+			{
+				if (_dragStart)
+				{
+					if (_ctrlSelect == CTRL_ERASER)
+					{
+						SelectObject(getMemDC(), GetStockObject(DC_PEN));
+						SetDCPenColor(getMemDC(), RGB(255, 255, 255));
+					}
+					//Rectangle(getMemDC(), _rcDrag.left - CAMERAMANAGER->getCamera().left, _rcDrag.top - CAMERAMANAGER->getCamera().top, 
+					//	_rcDrag.right - CAMERAMANAGER->getCamera().left, _rcDrag.bottom - CAMERAMANAGER->getCamera().top);
+					if (IntersectRect(&rcTemp, &_rcDrag, &_tiles[i].rc))
+					{
+						Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
+							_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+					}
+				}
+				else
+				{
+					if (IntersectRect(&rcTemp, &_rcRange, &_tiles[i].rc))
+					{
+						if (_ctrlSelect == CTRL_ERASER)
+						{
+							//SelectObject(getMemDC(), GetStockObject(DC_PEN));
+							SetDCPenColor(getMemDC(), RGB(255, 255, 255));
+						}
+						Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
+							_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+					}
+				}
+				if (PtInRect(&_tiles[i].rc, _globalPtMouse))
+				{
+					if (_ctrlSelect == CTRL_ERASER)
+					{
+						//SelectObject(getMemDC(), GetStockObject(DC_PEN));
+						SetDCPenColor(getMemDC(), RGB(255, 255, 255));
+					}
+					Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top,
+						_tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+				}
+
+				if (PtInRect(&_tiles[i].rc, _globalPtMouse) || IntersectRect(&rcTemp, &_rcRange, &_tiles[i].rc) || (_dragStart && IntersectRect(&rcTemp, &_rcDrag, &_tiles[i].rc)))
+				{
+					if (_ctrlSelect == CTRL_ERASER)
+						IMAGEMANAGER->alphaRender("white_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
+					else
+					{
+						IMAGEMANAGER->alphaRender("teal_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
+						IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_sampleTileType + 1), getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
+					}
+				}
+			}
+		}
 	}
 }
 
