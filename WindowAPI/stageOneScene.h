@@ -16,7 +16,8 @@ public:
 	void update(void);
 	void render(void);
 
-	void mapLoad(void);
+	void cameraAdjustment();
+	void mapLoad();
 
 	stageOneScene() {}
 	~stageOneScene() {}

@@ -78,7 +78,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_aim_fire", "tex/characters/Clu_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_idle", "tex/characters/Clu_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_backStep", "tex/characters/Clu_backStep_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_bored", "tex/characters/Clu_bored_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored", "tex/characters/Clu_bored_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored_idle", "tex/characters/Clu_bored_idle_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_charge", "tex/characters/Clu_charge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_faint", "tex/characters/Clu_faint_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_faint_idle", "tex/characters/Clu_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -99,6 +100,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_lookup", "tex/characters/Clu_lookup_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push", "tex/characters/Clu_push_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run", "tex/characters/Clu_run_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_think", "tex/characters/Clu_think_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_think_idle", "tex/characters/Clu_think_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 
 	_loading->loadFrameImage("Clu_aim_diagonal_shadow", "tex/characters/Clu_aim_diagonal_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_shadow", "tex/characters/Clu_aim_diagonal_fullCharge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
@@ -107,7 +110,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_aim_fire_shadow", "tex/characters/Clu_aim_fire_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_idle_shadow", "tex/characters/Clu_aim_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_backStep_shadow", "tex/characters/Clu_backStep_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_bored_shadow", "tex/characters/Clu_bored_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored_shadow", "tex/characters/Clu_bored_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bored_idle_shadow", "tex/characters/Clu_bored_idle_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_charge_shadow", "tex/characters/Clu_charge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_faint_shadow", "tex/characters/Clu_faint_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_faint_idle_shadow", "tex/characters/Clu_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -128,6 +132,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_lookup_shadow", "tex/characters/Clu_lookup_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_think_shadow", "tex/characters/Clu_think_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_think_idle_shadow", "tex/characters/Clu_think_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	
 	_loading->loadFrameImage("Clu_gun_aim_diagonal", "tex/weapons/Clu_gun_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_aim_diagonal_fullCharge", "tex/weapons/Clu_gun_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));

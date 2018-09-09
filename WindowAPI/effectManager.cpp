@@ -4,17 +4,17 @@
 
 HRESULT effectManager::init(void)
 {
-	this->addEffect("landDust", "fx_landDust", 0.3f, 5);
+	this->addEffect("landDust", "fx_landDust", 0.3f, 5, true);
 	this->addEffect("jumpDust1", "fx_jumpDust1", 0.3f, 5);
 	this->addEffect("jumpDust2", "fx_jumpDust2", 0.3f, 5);
 	this->addEffect("jumpDust3", "fx_jumpDust3", 0.3f, 5);
-	this->addEffect("runDust0", "fx_runDust_right", 0.3f, 5);
-	this->addEffect("runDust1", "fx_runDust_left", 0.3f, 5);
-	this->addEffect("run1", "fx_run1", 0.3f, 5);
-	this->addEffect("run2", "fx_run2", 0.3f, 5);
-	this->addEffect("run3", "fx_run3", 0.3f, 5);
-	this->addEffect("run4", "fx_run4", 0.3f, 5);
-	this->addEffect("run5", "fx_run5", 0.3f, 5);
+	this->addEffect("runDust0", "fx_runDust_right", 0.3f, 5, true);
+	this->addEffect("runDust1", "fx_runDust_left", 0.3f, 5, true);
+	this->addEffect("run1", "fx_run1", 0.3f, 5, true);
+	this->addEffect("run2", "fx_run2", 0.3f, 5, true);
+	this->addEffect("run3", "fx_run3", 0.3f, 5, true);
+	this->addEffect("run4", "fx_run4", 0.3f, 5, true);
+	this->addEffect("run5", "fx_run5", 0.3f, 5, true);
 	this->addEffect("bulletPuff1", "fx_bulletPuff1", 0.3f, 5);
 	this->addEffect("bulletPuff2", "fx_bulletPuff2", 0.3f, 5);
 	this->addEffect("bulletPuff3", "fx_bulletPuff3", 0.3f, 5);

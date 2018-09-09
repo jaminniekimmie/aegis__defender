@@ -18,8 +18,8 @@ HRESULT stageOneScene::init(void)
 	
 	//this->mapLoad();
 
-	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX() + _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameWidth() * 0.5,
-		_playerManager->getPlayer()->getY() + _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameHeight() * 0.5, WINSIZEX, WINSIZEY);
+	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getPlayerRc().left + (_playerManager->getPlayer()->getPlayerRc().right - _playerManager->getPlayer()->getPlayerRc().left) * 0.5,
+		_playerManager->getPlayer()->getPlayerRc().top, WINSIZEX, WINSIZEY);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
 
@@ -36,8 +36,7 @@ void stageOneScene::update(void)
 {
 	_playerManager->update();
 
-	//_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
-	CAMERAMANAGER->setCamera(_rcCamera);
+	this->cameraAdjustment();
 }
 
 void stageOneScene::render(void)
@@ -66,6 +65,36 @@ void stageOneScene::render(void)
 	_playerManager->render();
 
 	//IMAGEMANAGER->render("cursonIcon_idle", getMemDC(), _ptMouse.x, _ptMouse.y);
+}
+
+void stageOneScene::cameraAdjustment()
+{
+	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getPlayerRc().left + (_playerManager->getPlayer()->getPlayerRc().right - _playerManager->getPlayer()->getPlayerRc().left) * 0.5,
+		_playerManager->getPlayer()->getPlayerRc().top, WINSIZEX, WINSIZEY);
+
+	if (_rcCamera.left <= 0)
+	{
+		_rcCamera.left = 0;
+		_rcCamera.right = _rcCamera.left + WINSIZEX;
+	}
+	else if (_rcCamera.right >= TILESIZEX)
+	{
+		_rcCamera.left = TILESIZEX - WINSIZEX;
+		_rcCamera.right = _rcCamera.left + WINSIZEX;
+	}
+	if (_rcCamera.top <= 0)
+	{
+		_rcCamera.top = 0;
+		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+	}
+	else if (_rcCamera.bottom >= TILESIZEY)
+	{
+		_rcCamera.top = TILESIZEY - WINSIZEY;
+		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+	}
+
+	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
+	CAMERAMANAGER->setCamera(_rcCamera);
 }
 
 void stageOneScene::mapLoad(void)

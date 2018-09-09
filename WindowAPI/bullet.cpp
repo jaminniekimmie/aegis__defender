@@ -29,12 +29,14 @@ void bullet::render(void)
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
 		if (!_viParticle->fire) continue;
+		if (!CAMERAMANAGER->CameraIn(_viParticle->rc)) continue;
 		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
 
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
+		if (!CAMERAMANAGER->CameraIn(_viBullet->rc)) continue;
 		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left - CAMERAMANAGER->getCamera().left, _viBullet->rc.top - CAMERAMANAGER->getCamera().top);
 	}
 }
@@ -60,9 +62,9 @@ void bullet::fire(float x, float y, float angle, float speed)
 	_vBullet.push_back(bullet);
 	
 
-	int randNo = RND->getFromIntTo(10, 15);
+	int randNo = RND->getFromIntTo(8, 15);
 
-	for (int i = 0; i < randNo / 2; i++)
+	for (int i = 0; i < randNo / 3; i++)
 	{
 		tagBullet particle;
 		ZeroMemory(&particle, sizeof(tagBullet));
@@ -72,11 +74,6 @@ void bullet::fire(float x, float y, float angle, float speed)
 		particle.alpha = 255;
 		particle.x = particle.fireX = x;
 		particle.y = particle.fireY = y;
-		if (angle > PI_2)
-			particle.x = x - RND->getFloat(_range);
-		if (angle < PI_2)
-			particle.x = x + RND->getFloat(_range);
-		particle.y = y + RND->getFloat(10) - 5;
 		particle.fire = false;
 		particle.rc = RectMakeCenter(particle.x, particle.y,
 			particle.bulletImage->getWidth(),
@@ -96,11 +93,6 @@ void bullet::fire(float x, float y, float angle, float speed)
 		particle.alpha = 255;
 		particle.x = particle.fireX = x;
 		particle.y = particle.fireY = y;
-		if (angle > PI_2)
-			particle.x = x - RND->getFloat(_range);
-		if (angle < PI_2)
-			particle.x = x + RND->getFloat(_range);
-		particle.y = y + RND->getFloat(10) - 5;
 		particle.fire = false;
 		particle.rc = RectMakeCenter(particle.x, particle.y,
 			particle.bulletImage->getWidth(),
@@ -202,7 +194,7 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		_vBullet.push_back(bullet);
 	}
 
-	int randNo = RND->getFromIntTo(8, 15);
+	int randNo = RND->getFromIntTo(10, 20);
 
 	for (int i = 0; i < randNo; i++)
 	{
@@ -260,6 +252,7 @@ void triBullet::render(void)
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
 		if (!_viParticle->fire) continue;
+		if (!CAMERAMANAGER->CameraIn(_viParticle->rc)) continue;
 		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
 
@@ -267,6 +260,7 @@ void triBullet::render(void)
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
 		if (!_viBullet->fire) continue;
+		if (!CAMERAMANAGER->CameraIn(_viBullet->rc)) continue;
 		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left - CAMERAMANAGER->getCamera().left, _viBullet->rc.top - CAMERAMANAGER->getCamera().top);
 	}
 }
@@ -301,11 +295,6 @@ void triBullet::fire(float x, float y, float angle, float speed)
 		_viParticle->count = 0;
 		_viParticle->x = _viParticle->fireX = x;
 		_viParticle->y = _viParticle->fireY = y;
-		if (angle > PI_2)
-			_viParticle->x = x - RND->getFloat(_range);
-		if (angle < PI_2)
-			_viParticle->x = x + RND->getFloat(_range);
-		_viParticle->y = y + RND->getFloat(10) - 5;
 		_viParticle->fire = false;
 		_viParticle->rc = RectMakeCenter(_viParticle->x, _viParticle->y,
 			_viParticle->bulletImage->getWidth(),

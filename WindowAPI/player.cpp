@@ -19,6 +19,8 @@ HRESULT player::init(void)
 	_player_clu[BACKSTEP].shadow = IMAGEMANAGER->findImage("Clu_backStep_shadow");
 	_player_clu[BORED].img = IMAGEMANAGER->findImage("Clu_bored");
 	_player_clu[BORED].shadow = IMAGEMANAGER->findImage("Clu_bored_shadow");
+	_player_clu[BORED_IDLE].img = IMAGEMANAGER->findImage("Clu_bored_idle");
+	_player_clu[BORED_IDLE].shadow = IMAGEMANAGER->findImage("Clu_bored_idle_shadow");
 	_player_clu[CHARGE].img = IMAGEMANAGER->findImage("Clu_charge");
 	_player_clu[CHARGE].shadow = IMAGEMANAGER->findImage("Clu_charge_shadow");
 	_player_clu[FAINT].img = IMAGEMANAGER->findImage("Clu_faint");
@@ -59,6 +61,10 @@ HRESULT player::init(void)
 	_player_clu[PUSH].shadow = IMAGEMANAGER->findImage("Clu_push_shadow");
 	_player_clu[RUN].img = IMAGEMANAGER->findImage("Clu_run");
 	_player_clu[RUN].shadow = IMAGEMANAGER->findImage("Clu_run_shadow");
+	_player_clu[THINK].img = IMAGEMANAGER->findImage("Clu_think");
+	_player_clu[THINK].shadow = IMAGEMANAGER->findImage("Clu_think_shadow");
+	_player_clu[THINK_IDLE].img = IMAGEMANAGER->findImage("Clu_think_idle");
+	_player_clu[THINK_IDLE].shadow = IMAGEMANAGER->findImage("Clu_think_idle_shadow");
 
 	_gun_clu[AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal");
 	_gun_clu[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal_fullCharge");
@@ -95,7 +101,7 @@ HRESULT player::init(void)
 	_isLeft = RIGHT;
 
 	_x = WINSIZEX / 2;
-	_y = TILESIZEY - WINSIZEY / 2;
+	_y = TILESIZEY - WINSIZEY;
 
 	_frameSpeed = 10;
 	_count = _index = _weaponCount = 0;
@@ -120,7 +126,7 @@ void player::release(void)
 
 void player::update(void)
 {
-	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
+	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y + _player_clu[_playerState].img->getFrameHeight() / 3, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3 * 2);
 
 	//체력 저장
 	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
@@ -160,6 +166,11 @@ void player::render(void)
 
 		if (_player_weapon[_weaponSwitch].isActive)
 			_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - CAMERAMANAGER->getCamera().left, _y - 8 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
+	}
+
+	if (KEYMANAGER->isToggleKey('R'))
+	{
+		Rectangle(getMemDC(), _rc.left - CAMERAMANAGER->getCamera().left, _rc.top - CAMERAMANAGER->getCamera().top, _rc.right - CAMERAMANAGER->getCamera().left, _rc.bottom - CAMERAMANAGER->getCamera().top);
 	}
 
 	//체력바 렌더

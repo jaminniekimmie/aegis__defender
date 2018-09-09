@@ -30,8 +30,9 @@ void effect::update(void)
 {
 	if (_isRunning)
 	{
-		//if (_isFadeOut)
-		//	_alpha -= 255 / (_effectImg->getMaxFrameX() + 1);
+		if (_isFadeOut)
+			_alpha -= 5;
+			//_alpha -= 255 / (_effectImg->getMaxFrameX() + 1);
 		_effectAni->frameUpdate(_effectFPS);
 	}
 	//이펙트 애니메이션 종료가 되면 멈추기(_isRunning = false;)
@@ -43,8 +44,7 @@ void effect::render(void)
 	if (_isRunning)
 	{
 		if (_isFadeOut)
-			_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 255);
-			//_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni, _alpha);
+			_effectImg->aniAlphaRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni, _alpha);
 		else
 			_effectImg->aniRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _effectAni);
 	}
@@ -57,6 +57,7 @@ void effect::startEffect(int x, int y)
 	_y = y - (_effectAni->getFrameHeight() / 2);
 
 	_isRunning = true;
+	_alpha = 255;
 	_effectAni->start();
 }
 
