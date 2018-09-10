@@ -112,7 +112,7 @@ HRESULT player::init(void)
 	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = false;
 	_onLand = true;
 
-	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3);
+	_rc = RectMakeCenter(_x, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight());
 
 	return S_OK;
 }
@@ -126,26 +126,20 @@ void player::release(void)
 
 void player::update(void)
 {
-	_rc = RectMake(_x + _player_clu[_playerState].img->getFrameWidth() / 3, _y + _player_clu[_playerState].img->getFrameHeight() / 3, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight() / 3 * 2);
+	_rc = RectMakeCenter(_x, _y, _player_clu[_playerState].img->getFrameWidth() / 3, _player_clu[_playerState].img->getFrameHeight());
 
-	//체력 저장
-	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	//{
-	//	SAVEDATA->setHp(_currentHp);
-	//}
-	////체력 로드
-	//if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
-	//{
-	//	_currentHp = SAVEDATA->getHp();
-	//}
-
-	/*
-	HANDLE file;
-	file = CreateFile()
-	ReadFile()
-	WriteFile()
-	//현재체력, 로켓의 위치만 세이브 로드 시켜라
-	*/
+	if (_playerState != AIM_FIRE && 
+		_playerState != AIM_IDLE && 
+		_playerState != CHARGE && 
+		_playerState != FULLCHARGE && 
+		_playerState != FULLCHARGE_IDLE && 
+		_playerState != JUMPFIRE_FALL && 
+		_playerState != JUMPFIRE_RISE &&
+		_playerState != AIM_DIAGONAL &&
+		_playerState != AIM_DIAGONAL_FULLCHARGE &&
+		_playerState != AIM_DIAGONAL_FULLCHARGE_IDLE &&
+		_playerState != AIM_DIAGONALFIRE)
+		_isFired = false;
 
 	this->frameChangeLoop();
 	this->weaponSwitch(_weaponSwitch);
@@ -159,13 +153,13 @@ void player::render(void)
 	if (CAMERAMANAGER->CameraIn(_rc))
 	{
 		if (_isFired)
-			_gun_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+			_gun_clu[_playerState].img->frameRender(getMemDC(), _x - _player_clu[_playerState].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player_clu[_playerState].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top);
 
-		_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
-		_player_clu[_playerState].img->frameRender(getMemDC(), _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+		_player_clu[_playerState].shadow->alphaFrameRender(getMemDC(), _x - _player_clu[_playerState].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player_clu[_playerState].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player_clu[_playerState].alpha);
+		_player_clu[_playerState].img->frameRender(getMemDC(), _x - _player_clu[_playerState].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player_clu[_playerState].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top);
 
 		if (_player_weapon[_weaponSwitch].isActive)
-			_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - CAMERAMANAGER->getCamera().left, _y - 8 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
+			_player_weapon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - _player_clu[_playerState].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - 8 - _player_clu[_playerState].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player_weapon[_weaponSwitch].alpha);
 	}
 
 	if (KEYMANAGER->isToggleKey('R'))
@@ -179,7 +173,6 @@ void player::render(void)
 	char str[64];
 	sprintf(str, "%d", _player_weapon[_weaponSwitch].alpha);
 	TextOut(getMemDC(), 100, 100, str, strlen(str));
-
 }
 
 void player::hitDamage(float damage)

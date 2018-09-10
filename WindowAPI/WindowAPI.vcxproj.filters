@@ -203,6 +203,9 @@
     <ClInclude Include="player.h">
       <Filter>MainGame\DEFENDERS\플레이어</Filter>
     </ClInclude>
+    <ClInclude Include="collisionManager.h">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -312,6 +315,9 @@
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
       <Filter>MainGame\DEFENDERS\플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionManager.cpp">
+      <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

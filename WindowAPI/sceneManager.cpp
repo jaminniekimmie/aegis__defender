@@ -15,7 +15,8 @@ void sceneManager::release(void)
 	{
 		if (iter->second != NULL)
 		{
-			if (iter->second == _currentScene) iter->second->release();
+			if (iter->second == _currentScene)
+				iter->second->release();
 			SAFE_DELETE(iter->second);
 			iter = _mSceneList.erase(iter);
 		}

@@ -27,30 +27,20 @@ void playerManager::release(void)
 
 void playerManager::update(void)
 {
-	_player->update();
 	_bullet->update();
 	_triBullet->update();
 
 	this->keyInput();
 	this->playerBackstep();
 	this->playerJumpFall();
-	this->playerFaceDown();
+
+	_player->update();
+	
 	this->collisionProcess();
+	this->playerFaceDown();
 	this->fromStateToIdle();
 	this->fromIdleToState();
 
-	if (_player->getState() != AIM_FIRE && 
-		_player->getState() != AIM_IDLE && 
-		_player->getState() != CHARGE && 
-		_player->getState() != FULLCHARGE && 
-		_player->getState() != FULLCHARGE_IDLE && 
-		_player->getState() != JUMPFIRE_FALL && 
-		_player->getState() != JUMPFIRE_RISE &&
-		_player->getState() != AIM_DIAGONAL &&
-		_player->getState() != AIM_DIAGONAL_FULLCHARGE &&
-		_player->getState() != AIM_DIAGONAL_FULLCHARGE_IDLE &&
-		_player->getState() != AIM_DIAGONALFIRE)
-		_player->setIsFired(false);
 }
 
 void playerManager::render(void)
@@ -59,24 +49,21 @@ void playerManager::render(void)
 	_triBullet->render();
 	_player->render();
 	char str[64];
-	sprintf(str, "%d", _player->getIsLeft());
+	sprintf(str, "%d", _player->getCount() % (_player->getFrameSpeed() * 2));
 	TextOut(getMemDC(), 150, 100, str, strlen(str));
 }
 
 void playerManager::keyInput()
 {
-	if ((KEYMANAGER->isStayKeyDown(VK_LEFT) || 
-		KEYMANAGER->isStayKeyDown('A')))// && _player->getPlayerRc().left > 0)
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))// || KEYMANAGER->isStayKeyDown('A'))
 	{
 		this->playerRun(LEFT);
 	}
-	if ((KEYMANAGER->isStayKeyDown(VK_RIGHT) || 
-		KEYMANAGER->isStayKeyDown('D')))// && _player->getPlayerRc().right < TILESIZEX)
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))// || KEYMANAGER->isStayKeyDown('D'))
 	{
 		this->playerRun(RIGHT);
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP) 
-		|| KEYMANAGER->isStayKeyDown('W'))
+	if (KEYMANAGER->isStayKeyDown(VK_UP))// || KEYMANAGER->isStayKeyDown('W'))
 	{
 		_isStayKey_up = true;
 
@@ -89,13 +76,12 @@ void playerManager::keyInput()
 					_player->setState(LOOKUP);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) || 
-		KEYMANAGER->isStayKeyDown('S'))
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))// || KEYMANAGER->isStayKeyDown('S'))
 	{
 		if (_player->getOnLand())
 		{
 			if (!_player->getIsFaceDown())
-				EFFECTMANAGER->play("landDust", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("landDust", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 			_player->setIsFaceDown(true);
 		}
 	}
@@ -105,8 +91,7 @@ void playerManager::keyInput()
 		if (!_player->getIsJump() && _player->getOnLand())
 		{
 			_player->setIsJump(true);
-			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() / 2);
-			//EFFECTMANAGER->jumpDust(_player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() / 2);
+			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _player->getX(), _player->getY());
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
@@ -125,26 +110,20 @@ void playerManager::keyInput()
 	{
 		this->bulletFire();
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || 
-		KEYMANAGER->isOnceKeyUp(VK_RIGHT) ||
-		KEYMANAGER->isOnceKeyUp('A') || 
-		KEYMANAGER->isOnceKeyUp('D'))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT)) // || KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D'))
 	{
 		_player->setState(IDLE);
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_UP) || 
-		KEYMANAGER->isOnceKeyUp('W'))
+	if (KEYMANAGER->isOnceKeyUp(VK_UP)) // || KEYMANAGER->isOnceKeyUp('W'))
 	{
 		_player->setState(IDLE);
 		_isStayKey_up = false;
 	}
-	if (KEYMANAGER->isOnceKeyUp(VK_DOWN) || 
-		KEYMANAGER->isOnceKeyUp('S'))
+	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))// || KEYMANAGER->isOnceKeyUp('S'))
 	{
 		_player->setIsFaceDown(false);
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_TAB) || 
-		KEYMANAGER->isOnceKeyDown(VK_SHIFT))
+	if (KEYMANAGER->isOnceKeyDown(VK_TAB) || KEYMANAGER->isOnceKeyDown(VK_SHIFT))
 	{
 		_player->setWeaponSwitch(!_player->getWeaponSwitch());
 		_player->setWeaponIsActive(_player->getWeaponSwitch(), true);
@@ -153,7 +132,7 @@ void playerManager::keyInput()
 
 void playerManager::playerRun(bool isLeft)
 {
-	float pos = _player->getIsLeft() ? 0.8 : 0.2;
+	float pos = _player->getIsLeft() ? 0.3 : - 0.3;
 	bool oldIsLeft = _player->getIsLeft();
 	_player->setState(RUN);
 	_player->setIsLeft(isLeft);
@@ -162,10 +141,11 @@ void playerManager::playerRun(bool isLeft)
 	if (_player->getOnLand())
 	{
 		if (oldIsLeft != _player->getIsLeft())
-			EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * 0.5, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-		if (_player->getCount() % (_player->getFrameSpeed() * 2) == 0)
+			EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+
+		if (_player->getCount() % (_player->getFrameSpeed() * 2) == 3)
 		{
-			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 		}
 	}
 }
@@ -196,6 +176,30 @@ void playerManager::playerJumpFall()
 	}
 
 	_player->setY(_player->getY() - sinf(_player->getAngle()) * _player->getSpeed() + _player->getGravity());
+}
+
+void playerManager::collisionProcess()
+{
+	float x = _player->getX();
+	float y = _player->getY();
+
+	if (COLLISIONMANAGER->pixelCollision(_player->getPlayerRc(), x, y, _player->getSpeed(), _player->getGravity(), BOTTOM))
+	{
+		_player->setSpeed(0.0f);
+		_player->setGravity(0.0f);
+		_player->setAngle(-PI_2);
+		_player->setY(y);
+		if (_player->getIsJump())
+		{
+			EFFECTMANAGER->play("landDust", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+		}
+		_player->setIsJump(false);
+		_player->setOnLand(true);
+	}
+	//else
+	//{
+	//	_player->setState(JUMP_FALL);
+	//}
 }
 
 void playerManager::playerFaceDown()
@@ -273,10 +277,13 @@ void playerManager::playerFaceDown()
 void playerManager::playerBackstep()
 {
 	float speed = 18.0f;
-	float pos = _player->getIsLeft() ? 0.2 : 0.8;
+	float pos = _player->getIsLeft() ? - 0.2 :  0.2;
+
 
 	if (_player->getIsBackstep())
 	{
+		_player->setIsFired(true);
+
 		if (_player->getState() != BACKSTEP)
 		{
 			if (_player->getIsLeft())
@@ -293,7 +300,7 @@ void playerManager::playerBackstep()
 	
 			if (_player->getCount() % (_player->getFrameSpeed() / 3) == 0)
 			{
-				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 			}
 
 			if (_player->getIsLeft())
@@ -303,8 +310,8 @@ void playerManager::playerBackstep()
 					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
 					_player->setState(FULLCHARGE_IDLE);
 					_player->setIsBackstep(false);
-					EFFECTMANAGER->play("fullCharge_back", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-					EFFECTMANAGER->play("fullCharge_front", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+					EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 				}
 			}
 			else
@@ -314,8 +321,8 @@ void playerManager::playerBackstep()
 					_player->setIndex(0);
 					_player->setState(FULLCHARGE_IDLE);
 					_player->setIsBackstep(false);
-					EFFECTMANAGER->play("fullCharge_back", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-					EFFECTMANAGER->play("fullCharge_front", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+					EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 				}
 			}
 		}
@@ -341,8 +348,8 @@ void playerManager::playerFullCharge()
 					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
 				else
 					_player->setIndex(0);
-				EFFECTMANAGER->play("fullCharge_back", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-				EFFECTMANAGER->play("fullCharge_front", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 			}
 		}
 		else if (_player->getState() == AIM_DIAGONAL_FULLCHARGE);
@@ -391,8 +398,8 @@ void playerManager::playerFullCharge()
 						_idleCount = 0;
 						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
 						_player->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-						EFFECTMANAGER->play("fullCharge_front", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+						EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 					}
 				}
 			}
@@ -407,8 +414,8 @@ void playerManager::playerFullCharge()
 						_idleCount = 0;
 						_player->setIndex(0);
 						_player->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-						EFFECTMANAGER->play("fullCharge_front", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+						EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 					}
 				}
 			}
@@ -469,10 +476,13 @@ void playerManager::playerLaugh()
 			_idleCount++;
 		else
 		{
-			int randNo = RND->getInt(MAXPLAYERSTATE - 1);
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
 
 			if (randNo == IDLE)
+			{
 				_player->setState(IDLE);
+				_idleCount = 0;
+			}
 			else if (randNo == THINK)
 				_player->setState(THINK);
 			else if (randNo == BORED)
@@ -513,11 +523,14 @@ void playerManager::playerThink()
 			_idleCount++;
 		else
 		{
-			int randNo = RND->getInt(MAXPLAYERSTATE - 1);
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
 
 			if (randNo == IDLE)
+			{
 				_player->setState(IDLE);
-			else if (randNo == THINK)
+				_idleCount = 0;
+			}
+			else if (randNo == LAUGH)
 				_player->setState(LAUGH);
 			else if (randNo == BORED)
 				_player->setState(BORED);
@@ -557,10 +570,13 @@ void playerManager::playerBored()
 			_idleCount++;
 		else
 		{
-			int randNo = RND->getInt(MAXPLAYERSTATE - 1);
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
 
 			if (randNo == IDLE)
+			{
 				_player->setState(IDLE);
+				_idleCount = 0;
+			}
 			else if (randNo == LAUGH)
 				_player->setState(LAUGH);
 			else if (randNo == THINK)
@@ -585,22 +601,6 @@ void playerManager::playerBored()
 
 */
 
-void playerManager::collisionProcess()
-{
-	if (_player->getY() >= TILESIZEY - WINSIZEY)
-	{
-		_player->setSpeed(0.0f);
-		_player->setGravity(0.0f);
-		_player->setAngle(-PI_2);
-		_player->setY(TILESIZEY - WINSIZEY);
-		if (_player->getIsJump())
-		{
-			EFFECTMANAGER->play("landDust", _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() / 2, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
-		}
-		_player->setIsJump(false);
-		_player->setOnLand(true);
-	}
-}
 
 void playerManager::fromStateToIdle()
 {
@@ -735,7 +735,7 @@ void playerManager::fromIdleToState()
 			_idleCount++;
 		else
 		{
-			randNo = RND->getInt(MAXPLAYERSTATE - 1);
+			randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
 
 			if (randNo == LAUGH)
 				_player->setState(LAUGH);
@@ -756,15 +756,16 @@ void playerManager::fromIdleToState()
 void playerManager::bulletFire()
 {
 	float x, y, angle, speed, pos;
-	x = _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * 0.5f;
-	y = _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.5f + 7;
+	x = _player->getX();
+	y = _player->getY() + 7;
 	speed = 20.0f;
+
 	_player->setIsFired(true);
 
 	if (_isStayKey_up && _player->getState() != RUN)	//대각선
 	{
 		angle = _player->getIsLeft() ? PI_4 * 3 : PI_4;
-		pos = _player->getIsLeft() ? 0.7f : 0.3f;
+		pos = _player->getIsLeft() ? 0.3f : - 0.3f;
 
 		if (_player->getState() == AIM_DIAGONAL_FULLCHARGE || _player->getState() == AIM_DIAGONAL_FULLCHARGE_IDLE)
 		{
@@ -778,11 +779,11 @@ void playerManager::bulletFire()
 				_player->setIndex(0);
 
 			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? -5 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 5;
+			pos = _player->getIsLeft() ? - 40 : 40;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() + 8);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() + 7);
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_player->getState() != AIM_DIAGONALFIRE)
@@ -797,17 +798,17 @@ void playerManager::bulletFire()
 				_player->setIndex(0);
 
 			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? -5 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 5;
+			pos = _player->getIsLeft() ? - 40 : 40;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() + 8);
+			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() - 50);
 		}
 	}
 	else	//노대각선
 	{
 		angle = _player->getIsLeft() * PI;
-		pos = _player->getIsLeft() ? 0.7f : 0.3f;
+		pos = _player->getIsLeft() ? 0.3f : - 0.3f;
 
 		if (_player->getState() == FULLCHARGE || _player->getState() == FULLCHARGE_IDLE)
 		{
@@ -821,9 +822,9 @@ void playerManager::bulletFire()
 				_player->setIndex(0);
 			
 			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? -25 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 25;
+			pos = _player->getIsLeft() ? - 40 : 40;
 			_triBullet->fire(x, y, angle, speed);
 			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
 			CAMERAMANAGER->CameraShake();
@@ -840,9 +841,9 @@ void playerManager::bulletFire()
 				
 
 			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.85);
+				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? -25 : _player->getPlayerImage(_player->getState())->getFrameWidth() + 25;
+			pos = _player->getIsLeft() ? - 40 : 40;
 			_bullet->fire(x, y, angle, speed);
 			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
 		}

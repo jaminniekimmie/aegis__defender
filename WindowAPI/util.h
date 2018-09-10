@@ -27,7 +27,7 @@ enum PLAYERSTATE
 
 enum DIRECTION
 {
-	RIGHT, LEFT
+	RIGHT, LEFT, TOP, BOTTOM
 };
 
 namespace MY_UTIL //이름은 너희맘대로 변경해도 된다

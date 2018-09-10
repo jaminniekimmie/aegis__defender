@@ -8,18 +8,16 @@ HRESULT stageOneScene::init(void)
 
 	EFFECTMANAGER->init();
 
-	for (int i = 0; i < TILEY; i++)
-	{
-		for (int j = 0; j < TILEX; j++)
-		{
-			_mapTiles[i * TILEX + j].rc = RectMake(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
-		}
-	}
-	
-	//this->mapLoad();
+	_pixelTiles = new image;
+	_pixelTiles->init(TILESIZEX, TILESIZEY);
 
-	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getPlayerRc().left + (_playerManager->getPlayer()->getPlayerRc().right - _playerManager->getPlayer()->getPlayerRc().left) * 0.5,
-		_playerManager->getPlayer()->getPlayerRc().top, WINSIZEX, WINSIZEY);
+	this->mapLoad();
+
+	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(),	_playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	
+	_camDebug = false;
+
+	COLLISIONMANAGER->setPixelMap(_pixelTiles);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
 
@@ -30,6 +28,8 @@ void stageOneScene::release(void)
 {
 	_playerManager->release();
 	SAFE_DELETE(_playerManager);
+	_pixelTiles->release();
+	SAFE_DELETE(_pixelTiles);
 }
 
 void stageOneScene::update(void)
@@ -41,26 +41,26 @@ void stageOneScene::update(void)
 
 void stageOneScene::render(void)
 {
-	//PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
+	PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 
-	////게임타일 렉트 렌더
-	//for (int i = 0; i < TILEX * TILEY; i++)
-	//{
-	//	//if (CAMERAMANAGER->CameraIn(_mapTiles[i].rc))
-	//	{
-	//		IMAGEMANAGER->frameRender(_mapTiles[i].tileLabel, getMemDC(), _mapTiles[i].rc.left - CAMERAMANAGER->getCamera().left, _mapTiles//[i].rc.top - CAMERAMANAGER->getCamera().top, _mapTiles[i].terrainFrameX, _mapTiles[i].terrainFrameY);
-	//		//IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _mapTiles[i].rc.left - CAMERAMANAGER->getCamera().left, /_mapTiles/[i].rc.top - CAMERAMANAGER->getCamera().top, _mapTiles[i].terrainFrameX, _mapTiles[i].terrainFrameY);
-	//
-	//		if (_mapTiles[i].obj == OBJECT_NONE) continue;
-	//		IMAGEMANAGER->frameRender(_mapTiles[i].tileLabel, getMemDC(), _mapTiles[i].rc.left - CAMERAMANAGER->getCamera().left, _mapTiles//[i].rc.top - CAMERAMANAGER->getCamera().top, _mapTiles[i].objFrameX, _mapTiles[i].objFrameY);
-	//		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _mapTiles[i].rc.left - CAMERAMANAGER->getCamera().left, _mapTiles//[i].rc.top - CAMERAMANAGER->getCamera().top, _mapTiles[i].objFrameX, _mapTiles[i].objFrameY);
-	//	}
-	//}
-	//
-	//if (KEYMANAGER->isToggleKey('P'))
-	//{
-	//	_pixelTiles->alphaRender(getMemDC(), 0, 0, 100);
-	//}
+	//게임타일 렉트 렌더
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (!CAMERAMANAGER->CameraIn(_tiles[i].rc)) continue;
+		
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+	
+		if (_tiles[i].obj == OBJECT_NONE) continue;
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		//IMAGEMANAGER->frameRender(_tiles[0].tileLabel, getMemDC(), 100, 100, _tiles[0].objFrameX, _tiles[0].objFrameY);
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		
+	}
+	if (KEYMANAGER->isToggleKey('P'))
+	{
+		_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
+	}
 
 	_playerManager->render();
 
@@ -69,8 +69,36 @@ void stageOneScene::render(void)
 
 void stageOneScene::cameraAdjustment()
 {
-	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getPlayerRc().left + (_playerManager->getPlayer()->getPlayerRc().right - _playerManager->getPlayer()->getPlayerRc().left) * 0.5,
-		_playerManager->getPlayer()->getPlayerRc().top, WINSIZEX, WINSIZEY);
+	if (KEYMANAGER->isOnceKeyDown('C'))
+		_camDebug = !_camDebug;
+
+	if (_camDebug)
+	{
+		if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			_rcCamera.left -= 30;
+			_rcCamera.right -= 30;
+		}
+
+		if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			_rcCamera.left += 30;
+			_rcCamera.right += 30;
+		}
+		if (KEYMANAGER->isStayKeyDown('W'))
+		{
+			_rcCamera.top -= 30;
+			_rcCamera.bottom -= 30;
+		}
+		if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			_rcCamera.top += 30;
+			_rcCamera.bottom += 30;
+		}
+	}
+	else
+		_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+
 
 	if (_rcCamera.left <= 0)
 	{
@@ -104,7 +132,8 @@ void stageOneScene::mapLoad(void)
 
 	file = CreateFile("save.map", GENERIC_READ, 0, NULL, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
-	ReadFile(file, _mapTiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
+	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
+
 
 	CloseHandle(file);
 }

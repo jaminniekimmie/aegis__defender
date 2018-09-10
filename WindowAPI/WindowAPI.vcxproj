@@ -152,6 +152,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camel.h" />
     <ClInclude Include="cameraManager.h" />
+    <ClInclude Include="collisionManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camel.cpp" />
     <ClCompile Include="cameraManager.cpp" />
+    <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="gameNode.cpp" />

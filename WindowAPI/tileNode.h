@@ -45,7 +45,8 @@ struct tagTile
 	RECT rc;
 	BYTE alpha;
 
-	string tileLabel;
+	//string tileLabel;
+	char tileLabel[256];
 	image* img;
 	int terrainFrameX;
 	int terrainFrameY;

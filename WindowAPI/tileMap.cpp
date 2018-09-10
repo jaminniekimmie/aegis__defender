@@ -48,9 +48,9 @@ HRESULT tileMap::init(void)
 
 	ShowCursor(false);
 	_cursorIcon[0].img = IMAGEMANAGER->findImage("cursorIcon_idle");
-	_cursorIcon[0].rc = RectMake(_ptMouse.x, _ptMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
+	_cursorIcon[0].rc = RectMake(_ptMouse.x - CAMERAMANAGER->getCamera().left, _ptMouse.y - CAMERAMANAGER->getCamera().top, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
 	_cursorIcon[1].img = IMAGEMANAGER->findImage("cursorIcon_erase");
-	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17, _ptMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
+	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17 - CAMERAMANAGER->getCamera().left, _ptMouse.y - 10 - CAMERAMANAGER->getCamera().top, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
 	_cursorIcon[1].img->setFrameX(0);
 	
 	_sampleTileType = 0;
@@ -72,8 +72,8 @@ void tileMap::release(void)
 void tileMap::update(void)
 {
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
-	_cursorIcon[0].rc = RectMake(_ptMouse.x, _ptMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
-	_cursorIcon[1].rc = RectMake(_ptMouse.x - 17, _ptMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
+	_cursorIcon[0].rc = RectMake(_globalPtMouse.x, _globalPtMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
+	_cursorIcon[1].rc = RectMake(_globalPtMouse.x - 17, _globalPtMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
 
 	this->tileSelectPageSetup();
 	this->UIsetup();
@@ -91,38 +91,29 @@ void tileMap::render(void)
 	SelectObject(_pixelTiles->getMemDC(), GetStockObject(NULL_BRUSH));
 	SelectObject(_pixelTiles->getMemDC(), GetStockObject(DC_PEN));
 	SetDCPenColor(_pixelTiles->getMemDC(), RGB(20, 20, 20));
-/*
-	if (KEYMANAGER->isToggleKey('I'))
-	{
-		SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
-		SetDCBrushColor(getMemDC(), RGB(255, 255, 255));
-		SelectObject(getMemDC(), GetStockObject(DC_PEN));
-		SetDCPenColor(getMemDC(), RGB(235, 235, 235));
-	}
-*/
+
 	//게임타일 렉트 렌더
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (CAMERAMANAGER->CameraIn(_tiles[i].rc))
-		{
-			Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
-			Rectangle(_pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+		if (!CAMERAMANAGER->CameraIn(_tiles[i].rc)) continue;
 
-			IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-			IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+		Rectangle(getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+		Rectangle(_pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].rc.right - CAMERAMANAGER->getCamera().left, _tiles[i].rc.bottom - CAMERAMANAGER->getCamera().top);
 
-			if (_tiles[i].obj == OBJECT_NONE) continue;
-			IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);	
-			IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
-		}
-	}
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
-	if (KEYMANAGER->isToggleKey('P'))
-	{
-		_pixelTiles->alphaRender(getMemDC(), 0, 0, 100);
+		if (_tiles[i].obj == OBJECT_NONE) continue;
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);	
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
 	}
 
 	this->cursorActionRender();
+
+	if (KEYMANAGER->isToggleKey('P'))
+	{
+		_pixelTiles->render(getMemDC());
+	}
 	
 	_buildAMapText.img->alphaRender(getMemDC(), _buildAMapText.rc.left, _buildAMapText.rc.top, _buildAMapText.alpha);
 
@@ -137,13 +128,9 @@ void tileMap::render(void)
 	IMAGEMANAGER->alphaRender("button_tile", getMemDC(), 1128, _button[CTRL_ERASER].rc.top, _button[CTRL_ERASER].alpha);
 
 	if (_ctrlSelect == CTRL_ERASER)
-		_cursorIcon[1].img->frameRender(getMemDC(), _cursorIcon[1].rc.left, _cursorIcon[1].rc.top);
+		_cursorIcon[1].img->frameRender(getMemDC(), _cursorIcon[1].rc.left - CAMERAMANAGER->getCamera().left, _cursorIcon[1].rc.top - CAMERAMANAGER->getCamera().top);
 	else
-		_cursorIcon[0].img->render(getMemDC(), _cursorIcon[0].rc.left, _cursorIcon[0].rc.top);
-
-	char str[128];
-	sprintf(str, "%d", _ctrlSelect);
-	TextOut(getMemDC(), 100, 100, str, strlen(str));
+		_cursorIcon[0].img->render(getMemDC(), _cursorIcon[0].rc.left - CAMERAMANAGER->getCamera().left, _cursorIcon[0].rc.top - CAMERAMANAGER->getCamera().top);
 }
 
 void tileMap::maptoolSetup(void)
@@ -289,7 +276,7 @@ void tileMap::setMap(void)
 					_tiles[i].terrainFrameX = _currentTile.x;
 					_tiles[i].terrainFrameY = _currentTile.y;
 					_tiles[i].terrain = terrainSelect(_currentTile.x, _currentTile.y);
-					_tiles[i].tileLabel = "tile_map" + to_string(_sampleTileType + 1);
+					strcpy_s(_tiles[i].tileLabel, ("tile_map" + to_string(_sampleTileType + 1)).c_str());
 				}
 				//현재버튼이 오브젝트냐?
 				if (_ctrlSelect == CTRL_OBJDRAW)
@@ -297,7 +284,7 @@ void tileMap::setMap(void)
 					_tiles[i].objFrameX = _currentTile.x;
 					_tiles[i].objFrameY = _currentTile.y;
 					_tiles[i].obj = objectSelect(_currentTile.x, _currentTile.y);
-					_tiles[i].tileLabel = "tile_map" + to_string(_sampleTileType + 1);
+					strcpy_s(_tiles[i].tileLabel, ("tile_map" + to_string(_sampleTileType + 1)).c_str());
 				}
 				//현재버튼이 지우개냐?
 				if (_ctrlSelect == CTRL_ERASER)
@@ -378,6 +365,27 @@ void tileMap::keyInput(void)
 		if (!_tileSelectPage)
 		{
 			this->drawRcDrag();
+
+			if (_cursorIcon[1].rc.left <= _rcCamera.left + TILESIZE)
+			{
+				_rcCamera.left = _cursorIcon[1].rc.left - TILESIZE;
+				_rcCamera.right = _rcCamera.left + WINSIZEX;
+			}
+			else if (_cursorIcon[1].rc.right >= _rcCamera.right - TILESIZE)
+			{
+				_rcCamera.right = _cursorIcon[1].rc.right + TILESIZE;
+				_rcCamera.left = _rcCamera.right - WINSIZEX;
+			}
+			if (_cursorIcon[1].rc.top <= _rcCamera.top + TILESIZE)
+			{
+				_rcCamera.top = _cursorIcon[1].rc.top - TILESIZE;
+				_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+			}
+			else if (_cursorIcon[1].rc.bottom >= _rcCamera.bottom - TILESIZE)
+			{
+				_rcCamera.bottom = _cursorIcon[1].rc.bottom + TILESIZE;
+				_rcCamera.top = _rcCamera.bottom - WINSIZEY;
+			}
 		}
 
 		this->setMap();
@@ -843,6 +851,7 @@ void tileMap::cursorActionRender(void)
 					{
 						IMAGEMANAGER->alphaRender("teal_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
 						IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_sampleTileType + 1), getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
+						IMAGEMANAGER->alphaFrameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
 					}
 				}
 			}
@@ -852,33 +861,6 @@ void tileMap::cursorActionRender(void)
 
 void tileMap::cameraAdjustment(void)
 {
-	/*for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (PtInRect(&_tiles[i].rc, _globalPtMouse))
-		{
-			if (_tiles[i].rc.left <= _rcCamera.left && _tiles[i].rc.right > _rcCamera.left)
-			{
-				_rcCamera.left = _tiles[i].rc.left - TILESIZE / 2;
-				_rcCamera.right = _rcCamera.left + WINSIZEX;
-			}
-			else if (_tiles[i].rc.left < _rcCamera.right && _tiles[i].rc.right >= _rcCamera.right)
-			{
-				_rcCamera.right = _tiles[i].rc.right + TILESIZE / 2;
-				_rcCamera.left = _rcCamera.right - WINSIZEX;
-			}
-			if (_tiles[i].rc.top <= _rcCamera.top && _tiles[i].rc.bottom > _rcCamera.top)
-			{
-				_rcCamera.top = _tiles[i].rc.top - TILESIZE / 2;
-				_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-			}
-			else if (_tiles[i].rc.top < _rcCamera.bottom && _tiles[i].rc.bottom >= _rcCamera.bottom)
-			{
-				_rcCamera.bottom = _tiles[i].rc.bottom + TILESIZE / 2;
-				_rcCamera.top = _rcCamera.bottom - WINSIZEY;
-			}
-		}
-	}*/
-
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
 		_rcCamera.left -= 30;
@@ -899,30 +881,6 @@ void tileMap::cameraAdjustment(void)
 	{
 		_rcCamera.top += 30;
 		_rcCamera.bottom += 30;
-	}
-
-	if (!_tileSelectPage)
-	{
-		if (_cursorIcon[1].rc.left <= _rcCamera.left)
-		{
-			_rcCamera.left = _cursorIcon[1].rc.left - TILESIZE / 2;
-			_rcCamera.right = _rcCamera.left + WINSIZEX;
-		}
-		else if (_cursorIcon[1].rc.right >= _rcCamera.right)
-		{
-			_rcCamera.right = _cursorIcon[1].rc.right + TILESIZE / 2;
-			_rcCamera.left = _rcCamera.right - WINSIZEX;
-		}
-		if (_cursorIcon[1].rc.top <= _rcCamera.top)
-		{
-			_rcCamera.top = _cursorIcon[1].rc.top - TILESIZE / 2;
-			_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-		}
-		else if (_cursorIcon[1].rc.bottom >= _rcCamera.bottom)
-		{
-			_rcCamera.bottom = _cursorIcon[1].rc.bottom + TILESIZE / 2;
-			_rcCamera.top = _rcCamera.bottom - WINSIZEY;
-		}
 	}
 
 	if (_rcCamera.left <= 0)

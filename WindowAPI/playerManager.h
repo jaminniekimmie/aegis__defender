@@ -23,13 +23,13 @@ public:
 	void keyInput();
 	void playerRun(bool isLeft);
 	void playerJumpFall();
+	void collisionProcess();
 	void playerFaceDown();
 	void playerBackstep();
 	void playerFullCharge();
 	void playerLaugh();
 	void playerThink();
 	void playerBored();
-	void collisionProcess();
 	void fromStateToIdle();
 	void fromIdleToState();
 	void bulletFire();

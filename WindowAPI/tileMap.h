@@ -54,7 +54,7 @@ public:
 	HRESULT init(void);
 	void release(void);
 	void update(void);
-	void render(void);
+	void render();
 
 	//맵툴세팅
 	void maptoolSetup(void); //초기화에 넣어두면 된다
@@ -81,6 +81,7 @@ public:
 
 	tagTile getTiles(int tileNum) { return _tiles[tileNum]; }
 	image* getPixelTiles() { return _pixelTiles; }
+
 
 	tileMap() {}
 	~tileMap() {}

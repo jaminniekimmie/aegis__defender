@@ -28,6 +28,7 @@ HRESULT gameNode::init(bool managerInit)
 		SOUNDMANAGER->init();				//사운드매니져 초기화
 		//EFFECTMANAGER->init();				//이펙트매니져 초기화
 		CAMERAMANAGER->init();				//카메라매니져 초기화
+		COLLISIONMANAGER->init();			//컬리젼매니져 초기화
 	}
 
 	return S_OK;
@@ -73,6 +74,9 @@ void gameNode::release(void)
 		//카메라매니져 싱글톤 해제
 		CAMERAMANAGER->release();
 		CAMERAMANAGER->releaseSingleton();
+		//컬리젼매니져 싱글톤 해제
+		COLLISIONMANAGER->release();
+		COLLISIONMANAGER->releaseSingleton();
 	}
 
 	//DC 해제
