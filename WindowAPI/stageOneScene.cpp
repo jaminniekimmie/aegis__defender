@@ -6,20 +6,20 @@ HRESULT stageOneScene::init(void)
 	_playerManager = new playerManager;
 	_playerManager->init();
 
-	EFFECTMANAGER->init();
-
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
-
-	this->mapLoad();
-
-	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(),	_playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
-	
 	_camDebug = false;
-
-	COLLISIONMANAGER->setPixelMap(_pixelTiles);
+	
+	if (_playerManager->getPlayerCharacter() == CLU)
+		_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	else if (_playerManager->getPlayerCharacter() == BART)
+		_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
+	COLLISIONMANAGER->setPixelMap(_pixelTiles);
+	EFFECTMANAGER->init();
+	
+	this->mapLoad();
 
 	return S_OK;
 }
@@ -35,6 +35,10 @@ void stageOneScene::release(void)
 void stageOneScene::update(void)
 {
 	_playerManager->update();
+
+	//temporary
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+		SCENEMANAGER->loadScene("¸ÊÅø");
 
 	this->cameraAdjustment();
 }
@@ -97,8 +101,17 @@ void stageOneScene::cameraAdjustment()
 		}
 	}
 	else
-		_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage(_playerManager->getPlayer()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	{
+		if (_playerManager->getPlayerCharacter() == CLU)
+			_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+		else if (_playerManager->getPlayerCharacter() == BART)
+			_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	}
 
+	if (KEYMANAGER->isOnceKeyDown('I') || KEYMANAGER->isOnceKeyDown('O'))
+	{
+		this->playerSwitch();
+	}
 
 	if (_rcCamera.left <= 0)
 	{
@@ -123,6 +136,10 @@ void stageOneScene::cameraAdjustment()
 
 	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
 	CAMERAMANAGER->setCamera(_rcCamera);
+}
+
+void stageOneScene::playerSwitch()
+{
 }
 
 void stageOneScene::mapLoad(void)

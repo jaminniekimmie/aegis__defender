@@ -48,6 +48,8 @@ public:
 	void fire(float x, float y, float angle, float speed);
 	//ÃÑ¾Ë¹«ºê
 	void move();
+	
+	void collision();
 
 	//ÃÑ¾Ë»èÁ¦
 	void removeBullet(int index);
@@ -95,6 +97,8 @@ public:
 	void fire(float x, float y, float angle, float speed);
 	//ÃÑ¾Ë¹«ºê
 	void move();
+
+	void collision();
 
 	triBullet() {}
 	~triBullet() {}

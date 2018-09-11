@@ -6,17 +6,16 @@
 //#include "enemyManager.h"
 //적매니져 상호참조하기 위해 클래스 전방선언
 
-#define ANGLE getAngle()
-
 class player : public gameNode
 {
 private:
+	PLAYERCHARACTER _playerCharacter;
 	PLAYERSTATE _playerState;
 	DIRECTION _direction;
 	RECT _rc;
-	tagImage _player_clu[MAXPLAYERSTATE];
-	tagImage _gun_clu[MAXPLAYERSTATE];
-	tagImage _player_weapon[2];
+	tagImage _player[MAXPLAYERSTATE];
+	tagImage _weapon[MAXPLAYERSTATE];
+	tagImage _weaponIcon[2];
 	float _x, _y;
 	float _oldX, _oldY;
 	float _gravity;
@@ -30,6 +29,7 @@ private:
 	bool _isJump;
 	bool _isFall;
 	bool _isBackstep;
+	bool _isJumpDown;
 	bool _isFaceDown;
 	bool _onLand;
 	bool _isFired;
@@ -39,7 +39,7 @@ private:
 	float _maxHp, _currentHp;	//최대체력, 현재체력
 
 public:
-	HRESULT init(void);
+	HRESULT init(PLAYERCHARACTER playerCharacter);
 	void release(void);
 	void update(void);
 	void render(void);
@@ -50,8 +50,8 @@ public:
 	PLAYERSTATE getState() { return _playerState; }
 	RECT getPlayerRc() { return _rc; }
 	DIRECTION getDirection() { return _direction; }
-	image* getPlayerImage(int playerState) { return _player_clu[playerState].img; }
-	BYTE getWeaponIsActive(bool weaponSwitch) { return _player_weapon[weaponSwitch].isActive; }
+	image* getPlayerImage(PLAYERSTATE playerState) { return _player[playerState].img; }
+	BYTE getWeaponIsActive(bool weaponSwitch) { return _weaponIcon[weaponSwitch].isActive; }
 	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
 	int getCount() { return _count; }
@@ -67,6 +67,7 @@ public:
 	bool getIsFall() { return _isFall; }
 	bool getOnLand() { return _onLand; }
 	bool getIsBackstep() { return _isBackstep; }
+	bool getIsJumpDown() { return _isJumpDown; }
 	bool getIsFaceDown() { return _isFaceDown; }
 	bool getIsFired() { return _isFired; }
 	bool getWeaponSwitch() { return _weaponSwitch; }
@@ -74,7 +75,7 @@ public:
 	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
 	void setPlayerRc(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
-	void setWeaponIsActive(bool weaponSwitch, bool isActive) { _player_weapon[weaponSwitch].isActive = isActive; }
+	void setWeaponIsActive(bool weaponSwitch, bool isActive) { _weaponIcon[weaponSwitch].isActive = isActive; }
 	void setFrameSpeed(int animationSpeed) { _frameSpeed = animationSpeed; }
 	void setIndex(int index) { _index = index; }
 	void setCount(int count) { _count = count; }
@@ -90,6 +91,7 @@ public:
 	void setIsFall(bool isFall) { _isFall = isFall; }
 	void setOnLand(bool onLand) { _onLand = onLand; }
 	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
+	void setIsJumpDown(bool isJumpDown) { _isJumpDown = isJumpDown; }
 	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
 	void setIsFired(bool isFired) { _isFired = isFired; }
 	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }

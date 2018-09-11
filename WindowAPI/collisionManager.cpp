@@ -15,15 +15,15 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			int g = GetGValue(color);
 			int b = GetBValue(color);
 
-			if ((r == 244 && g == 180 && b == 23))
+			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i + 1;
+				x = i + 5 + (rc.right - rc.left) / 2;
 			
 				return TRUE;
 			}
 		}
 		break;
-	case TOP: //top
+	case TOP:
 		for (int i = rc.top + _speed; i >= rc.top; i--)
 		{
 			COLORREF color = GetPixel(_pixelTiles->getMemDC(), x, i);
@@ -31,7 +31,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			int g = GetGValue(color);
 			int b = GetBValue(color);
 
-			if ((r == 244 && g == 180 && b == 23))
+			if (r == 244 && g == 180 && b == 23)
 			{
 		//		y = i + 1;
 
@@ -39,7 +39,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			}
 		}
 		break;
-	case RIGHT: //right
+	case RIGHT:
 		for (int i = rc.right - _speed; i <= rc.right; i++)
 		{
 			COLORREF color = GetPixel(_pixelTiles->getMemDC(), i, y);
@@ -47,15 +47,15 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			int g = GetGValue(color);
 			int b = GetBValue(color);
 
-			if ((r == 244 && g == 180 && b == 23))
+			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i - 1 - (rc.right - rc.left) / 2;
+				x = i - 5 - (rc.right - rc.left) / 2;
 
 				return TRUE;
 			}
 		}
 		break;
-	case BOTTOM: //bottom
+	case BOTTOM:
 		for (int i = rc.bottom - (_speed + _gravity); i <= rc.bottom; i++)
 		{
 			COLORREF color = GetPixel(_pixelTiles->getMemDC(), x, i);

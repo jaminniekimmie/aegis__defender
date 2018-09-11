@@ -861,26 +861,29 @@ void tileMap::cursorActionRender(void)
 
 void tileMap::cameraAdjustment(void)
 {
-	if (KEYMANAGER->isStayKeyDown('A'))
+	if (!_tileSelectPage)
 	{
-		_rcCamera.left -= 30;
-		_rcCamera.right -= 30;
-	}
+		if (KEYMANAGER->isStayKeyDown('A'))
+		{
+			_rcCamera.left -= 30;
+			_rcCamera.right -= 30;
+		}
 
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		_rcCamera.left += 30;
-		_rcCamera.right += 30;
-	}
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		_rcCamera.top -= 30;
-		_rcCamera.bottom -= 30;
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		_rcCamera.top += 30;
-		_rcCamera.bottom += 30;
+		if (KEYMANAGER->isStayKeyDown('D'))
+		{
+			_rcCamera.left += 30;
+			_rcCamera.right += 30;
+		}
+		if (KEYMANAGER->isStayKeyDown('W'))
+		{
+			_rcCamera.top -= 30;
+			_rcCamera.bottom -= 30;
+		}
+		if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			_rcCamera.top += 30;
+			_rcCamera.bottom += 30;
+		}
 	}
 
 	if (_rcCamera.left <= 0)

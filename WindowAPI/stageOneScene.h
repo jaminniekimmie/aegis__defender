@@ -18,6 +18,7 @@ public:
 	void render(void);
 
 	void cameraAdjustment();
+	void playerSwitch();
 	void mapLoad();
 
 	stageOneScene() {}

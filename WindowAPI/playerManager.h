@@ -6,32 +6,40 @@
 class playerManager : public gameNode
 {
 private:
-	player * _player;
+	PLAYERCHARACTER _playerCharacter;
+	player * _clu;
+	player * _bart;
 	bullet * _bullet;
 	triBullet * _triBullet;
 	int _idleCount;
 	int _idleMax;
 	bool _isStayKey_up;
+	bool _isStayKey_down;
 public:
 	HRESULT init(void);
 	void release(void);
 	void update(void);
 	void render(void);
 
-	player * getPlayer() { return _player; }
+	player * getClu() { return _clu; }
+	player * getBart() { return _bart; }
+	PLAYERCHARACTER getPlayerCharacter() { return _playerCharacter; }
 	
 	void keyInput();
 	void playerRun(bool isLeft);
+	void playerJumpRise();
 	void playerJumpFall();
 	void collisionProcess();
+	void playerLand();
 	void playerFaceDown();
 	void playerBackstep();
 	void playerFullCharge();
+	void fromStateToIdle();
+	void fromIdleToState();
 	void playerLaugh();
 	void playerThink();
 	void playerBored();
-	void fromStateToIdle();
-	void fromIdleToState();
+	void playerUpset();
 	void bulletFire();
 
 	playerManager() {}

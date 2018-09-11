@@ -21,6 +21,7 @@ void bullet::release(void)
 void bullet::update(void)
 {
 	this->move();
+	this->collision();
 }
 
 void bullet::render(void)
@@ -198,7 +199,8 @@ void bullet::move()
 		//총알이 사거리보다 커졌을때
 		float distance = getDistance(_viMagazine->fireX, _viMagazine->fireY,
 			_viMagazine->x, _viMagazine->y);
-		if (_range < distance)
+
+		if (_range < distance || _viMagazine->speed <= 1.0f)
 		{
 			_viMagazine->alpha -= 15;
 
@@ -208,6 +210,37 @@ void bullet::move()
 		else
 		{
 			++_viMagazine;
+		}
+	}
+}
+
+void bullet::collision()
+{
+	for (int i = 0; i < _vMagazine.size(); i++)
+	{
+		float x = _vMagazine[i].x;
+		float y = _vMagazine[i].y;
+
+		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, BOTTOM))
+		{
+			_vMagazine[i].gravity = 0.0f;
+			_vMagazine[i].speed *= 0.8;
+		}
+		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, TOP))
+		{
+			_vMagazine[i].angle = PI_2 - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
+		}
+
+		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, LEFT))
+		{
+			_vMagazine[i].angle = PI - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
+		}
+		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, RIGHT))
+		{
+			_vMagazine[i].angle = PI - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
 		}
 	}
 }
@@ -278,15 +311,18 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		_vParticle.push_back(particle);
 	}
 
+	for (int i = 0; i < _bulletMax; i++)
+	{
 
-	tagBullet magazine;
-	ZeroMemory(&magazine, sizeof(tagBullet));
-	magazine.bulletImage = IMAGEMANAGER->findImage("magazine");
-	magazine.alpha = 255;
-	magazine.fire = false;
+		tagBullet magazine;
+		ZeroMemory(&magazine, sizeof(tagBullet));
+		magazine.bulletImage = IMAGEMANAGER->findImage("magazine");
+		magazine.alpha = 255;
+		magazine.fire = false;
 
-	//벡터에 담기
-	_vMagazine.push_back(magazine);
+		//벡터에 담기
+		_vMagazine.push_back(magazine);
+	}
 
 	return S_OK;
 }
@@ -298,6 +334,7 @@ void triBullet::release(void)
 void triBullet::update(void)
 {
 	this->move();
+	this->collision();
 }
 
 void triBullet::render(void)
@@ -451,12 +488,27 @@ void triBullet::move()
 		//총알이 사거리보다 커졌을때 
 		float distance = getDistance(_vMagazine[i].fireX, _vMagazine[i].fireY,
 			_vMagazine[i].x, _vMagazine[i].y);
-		if (_range < distance)
+		if (_range < distance || _vMagazine[i].speed <= 1)
 		{
 			_vMagazine[i].alpha -= 15;
 	
 			if (_vMagazine[i].alpha <= 0)
 				_vMagazine[i].fire = false;
+		}
+	}
+}
+
+void triBullet::collision()
+{
+	for (int i = 0; i < _vMagazine.size(); i++)
+	{
+		float x = _vMagazine[i].x;
+		float y = _vMagazine[i].y;
+
+		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, BOTTOM))
+		{
+			_vMagazine[i].gravity = 0.0f;
+			_vMagazine[i].speed *= 0.8;
 		}
 	}
 }

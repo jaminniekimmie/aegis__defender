@@ -3,22 +3,33 @@
 
 HRESULT playerManager::init(void)
 {
-	_player = new player;
-	_player->init();
+	_playerCharacter = CLU;
+
+	_clu = new player;
+	_clu->init(_playerCharacter);
+
+	//_bart = new player;
+	//_bart->init(_playerCharacter);
+	
 	_bullet = new bullet;
 	_bullet->init("bullet_blue", 3, 500);
+	
 	_triBullet = new triBullet;
 	_triBullet->init("bullet_blue", 3, 500);
+	
 	_idleCount = 0;
 	_idleMax = RND->getFromIntTo(100, 500);
-	_isStayKey_up = false;
+	_isStayKey_up = _isStayKey_down = false;
+	
 	return S_OK;
 }
 
 void playerManager::release(void)
 {
-	_player->release();
-	SAFE_DELETE(_player);
+	_clu->release();
+	SAFE_DELETE(_clu);
+	//_bart->release();
+	//SAFE_DELETE(_bart);
 	_bullet->release();
 	SAFE_DELETE(_bullet);
 	_triBullet->release();
@@ -34,22 +45,23 @@ void playerManager::update(void)
 	this->playerBackstep();
 	this->playerJumpFall();
 
-	_player->update();
+	_clu->update();
+	//_bart->update();
 	
 	this->collisionProcess();
 	this->playerFaceDown();
 	this->fromStateToIdle();
 	this->fromIdleToState();
-
 }
 
 void playerManager::render(void)
 {
 	_bullet->render();
 	_triBullet->render();
-	_player->render();
+	//_bart->render();
+	_clu->render();
 	char str[64];
-	sprintf(str, "%d", _player->getCount() % (_player->getFrameSpeed() * 2));
+	sprintf(str, "%d", _clu->getCount() % (_clu->getFrameSpeed() * 2));
 	TextOut(getMemDC(), 150, 100, str, strlen(str));
 }
 
@@ -67,39 +79,37 @@ void playerManager::keyInput()
 	{
 		_isStayKey_up = true;
 
-		if (_player->getOnLand())
+		if (_clu->getOnLand())
 		{
-			if (_player->getState() == AIM_IDLE)
-				_player->setState(AIM_DIAGONAL);
-			else if (_player->getState() != RUN && _player->getState() != AIM_DIAGONALFIRE && _player->getState() != AIM_DIAGONAL)
-				if (!_player->getIsFired())
-					_player->setState(LOOKUP);
+			if (_clu->getState() == AIM_IDLE)
+				_clu->setState(AIM_DIAGONAL);
+			else if (_clu->getState() != RUN && _clu->getState() != AIM_DIAGONALFIRE && _clu->getState() != AIM_DIAGONAL)
+				if (!_clu->getIsFired())
+					_clu->setState(LOOKUP);
 		}
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))// || KEYMANAGER->isStayKeyDown('S'))
 	{
-		if (_player->getOnLand())
+		_isStayKey_down = true;
+
+		if (_clu->getOnLand())
 		{
-			if (!_player->getIsFaceDown())
-				EFFECTMANAGER->play("landDust", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-			_player->setIsFaceDown(true);
+			if (!_clu->getIsFaceDown())
+				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+			_clu->setIsFaceDown(true);
 		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		if (!_player->getIsJump() && _player->getOnLand())
-		{
-			_player->setIsJump(true);
-			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _player->getX(), _player->getY());
-		}
+		this->playerJumpRise();
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
-		if (_player->getOnLand())
+		if (_clu->getOnLand())
 		{
-			_player->setIsBackstep(true);
-			_player->setCount(0);
+			_clu->setIsBackstep(true);
+			_clu->setCount(0);
 		}
 	}
 	if (KEYMANAGER->isStayKeyDown('J'))
@@ -112,161 +122,246 @@ void playerManager::keyInput()
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT)) // || KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D'))
 	{
-		_player->setState(IDLE);
+		_clu->setState(IDLE);
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_UP)) // || KEYMANAGER->isOnceKeyUp('W'))
 	{
-		_player->setState(IDLE);
+		_clu->setState(IDLE);
 		_isStayKey_up = false;
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))// || KEYMANAGER->isOnceKeyUp('S'))
 	{
-		_player->setIsFaceDown(false);
+		_isStayKey_down = false;
+		_clu->setIsFaceDown(false);
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_TAB) || KEYMANAGER->isOnceKeyDown(VK_SHIFT))
 	{
-		_player->setWeaponSwitch(!_player->getWeaponSwitch());
-		_player->setWeaponIsActive(_player->getWeaponSwitch(), true);
+		_clu->setWeaponSwitch(!_clu->getWeaponSwitch());
+		_clu->setWeaponIsActive(_clu->getWeaponSwitch(), true);
 	}
 }
 
 void playerManager::playerRun(bool isLeft)
 {
-	float pos = _player->getIsLeft() ? 0.3 : - 0.3;
-	bool oldIsLeft = _player->getIsLeft();
-	_player->setState(RUN);
-	_player->setIsLeft(isLeft);
-	_player->setAngle(_player->getIsLeft() * PI);
-	_player->setX(_player->getX() + cosf(_player->getAngle()) * 5.0f);
-	if (_player->getOnLand())
-	{
-		if (oldIsLeft != _player->getIsLeft())
-			EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+	float pos = _clu->getIsLeft() ? 0.3 : - 0.3;
+	float angle = _clu->getIsLeft() * PI;
+	bool oldIsLeft = _clu->getIsLeft();
 
-		if (_player->getCount() % (_player->getFrameSpeed() * 2) == 3)
+	_clu->setIsLeft(isLeft);
+	_clu->setX(_clu->getX() + cosf(angle) * 5.0f);
+	
+	if (_clu->getOnLand())
+	{
+		if (_clu->getState() != PUSH)
+			_clu->setState(RUN);
+
+		if (oldIsLeft != _clu->getIsLeft())
 		{
-			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			_clu->setState(RUN);
+			EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+		}
+
+		if (_clu->getCount() % (_clu->getFrameSpeed() * 2) == 3 && _clu->getState() == RUN)
+		{
+			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+		}
+	}
+}
+
+void playerManager::playerJumpRise()
+{
+	if (!_clu->getIsJump() && _clu->getOnLand())
+	{
+		if (_clu->getIsFaceDown())
+		{ 
+			_clu->setOnLand(false);
+			_clu->setY(_clu->getY() + (_clu->getPlayerRc().bottom - _clu->getPlayerRc().top) / 5);
+		}
+		else
+		{
+			_clu->setIsJump(true);
+			_clu->setOnLand(false);
+			_clu->setSpeed(15.0f);
+			_clu->setAngle(PI_2);
+			_clu->setGravity(0);
+
+			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _clu->getX(), _clu->getY());
 		}
 	}
 }
 
 void playerManager::playerJumpFall()
 {
-	_player->setGravity(_player->getGravity() + 0.85f);
+	_clu->setGravity(_clu->getGravity() + 0.85f);
 
-	if (_player->getIsJump())
+	if (_clu->getGravity() > 0.85f * 2)
+		_clu->setOnLand(false);
+
+	if (!_clu->getOnLand())
 	{
-		_player->setOnLand(false);
-		_player->setSpeed(15.0f);
-		_player->setAngle(PI_2);
-		if (-sinf(_player->getAngle()) * _player->getSpeed() + _player->getGravity() <= 0)
+		if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() <= 0)
 		{
-			if (_player->getIsFired())
-				_player->setState(JUMPFIRE_RISE);
+			if (_clu->getIsFired())
+				_clu->setState(JUMPFIRE_RISE);
 			else
-				_player->setState(JUMP_RISE);
+				_clu->setState(JUMP_RISE);
 		}
 		else
 		{
-			if (_player->getIsFired())
-				_player->setState(JUMPFIRE_FALL);
+			if (_clu->getIsFired())
+				_clu->setState(JUMPFIRE_FALL);
 			else
-				_player->setState(JUMP_FALL);
+				_clu->setState(JUMP_FALL);
 		}
 	}
-
-	_player->setY(_player->getY() - sinf(_player->getAngle()) * _player->getSpeed() + _player->getGravity());
+	
+	_clu->setY(_clu->getY() - sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity());
 }
 
 void playerManager::collisionProcess()
 {
-	float x = _player->getX();
-	float y = _player->getY();
+	float x = _clu->getX();
+	float y = _clu->getY();
 
-	if (COLLISIONMANAGER->pixelCollision(_player->getPlayerRc(), x, y, _player->getSpeed(), _player->getGravity(), BOTTOM))
+	if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM))
 	{
-		_player->setSpeed(0.0f);
-		_player->setGravity(0.0f);
-		_player->setAngle(-PI_2);
-		_player->setY(y);
-		if (_player->getIsJump())
+		if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() >= 0)
 		{
-			EFFECTMANAGER->play("landDust", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			_clu->setSpeed(0.0f);
+			_clu->setGravity(0.0f);
+			_clu->setAngle(-PI_2);
+			_clu->setY(y);
+			_clu->setIsJump(false);
+			if (!_clu->getOnLand())
+				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+			_clu->setOnLand(true);
 		}
-		_player->setIsJump(false);
-		_player->setOnLand(true);
 	}
-	//else
-	//{
-	//	_player->setState(JUMP_FALL);
-	//}
+	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))
+	{
+	}
+
+	if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT))
+	{
+		_clu->setX(x);
+		_clu->setState(PUSH);
+	}
+	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
+	{
+		_clu->setX(x);
+		_clu->setState(PUSH);
+	}
+}
+
+void playerManager::playerLand()
+{
+	if (_clu->getState() == JUMP_FALL || _clu->getState() == JUMPFIRE_FALL)
+	{
+		if (_clu->getIsFired())
+			_clu->setState(FULLCHARGE);
+		else
+			_clu->setState(LAND);
+		if (_clu->getIsLeft())
+			_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+		else
+			_clu->setIndex(0);
+	}
+	else if (_clu->getState() == LAND || _clu->getState() == FULLCHARGE)
+	{
+		if (_clu->getIsLeft())
+		{
+			if (_clu->getIndex() <= 0)
+			{
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+				_clu->setCount(0);
+
+				if (_clu->getIsFired())
+					_clu->setState(AIM_IDLE);
+				else
+					_clu->setState(IDLE);
+			}
+		}
+		else
+		{
+			if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+			{
+				_clu->setIndex(0);
+				_clu->setCount(0);
+
+				if (_clu->getIsFired())
+					_clu->setState(AIM_IDLE);
+				else
+					_clu->setState(IDLE);
+			}
+		}
+	}
 }
 
 void playerManager::playerFaceDown()
 {
-	RECT rc = _player->getPlayerRc();
+	RECT rc = _clu->getPlayerRc();
 
-	if (_player->getOnLand())
+	if (_clu->getOnLand())
 	{
-		if (_player->getIsFaceDown())
+		if (_clu->getIsFaceDown())
 		{
-			if (_player->getState() != LAND)
+			if (_clu->getState() != LAND)
 			{
-				_player->setState(LAND);
+				_clu->setState(LAND);
 
-				_player->setCount(0);
+				_clu->setCount(0);
 
-				if (_player->getIsLeft())
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+				if (_clu->getIsLeft())
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 				else
-					_player->setIndex(0);
+					_clu->setIndex(0);
 			}
-			else if (_player->getState() == LAND)
+			else if (_clu->getState() == LAND)
 			{
-				if (rc.top < _player->getPlayerRc().bottom)// -_player->getPlayerImage(_player->getState())->getFrameHeight() / 3)
+				if (rc.top < _clu->getPlayerRc().bottom)// -_player->getPlayerImage(_player->getState())->getFrameHeight() / 3)
 				{
 					rc.top++;
-					_player->setPlayerRc(rc);
+					_clu->setPlayerRc(rc);
 				}
 
-				if (_player->getIsLeft())
+				if (_clu->getIsLeft())
 				{
-					_player->setIndex(1);
+					_clu->setIndex(1);
 				}
 				else
 				{
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX() - 1);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX() - 1);
 				}
 			}
 		}
 		else
 		{
-			if (_player->getState() == LAND)
+			if (_clu->getState() == LAND)
 			{
-				if (rc.top > _player->getPlayerRc().bottom - _player->getPlayerImage(_player->getState())->getFrameHeight() / 3 * 2)
+				if (rc.top > _clu->getPlayerRc().bottom - _clu->getPlayerImage(_clu->getState())->getFrameHeight() / 3 * 2)
 				{
 					rc.top--;
-					_player->setPlayerRc(rc);
+					_clu->setPlayerRc(rc);
 				}
 
-				if (_player->getIsLeft())
+				if (_clu->getIsLeft())
 				{
-					if (_player->getIndex() <= 0)
+					if (_clu->getIndex() <= 0)
 					{
-						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-						_player->setState(IDLE);
-						rc.top = _player->getPlayerRc().bottom - _player->getPlayerImage(_player->getState())->getFrameHeight() / 3 * 2;
-						_player->setPlayerRc(rc);
+						_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+						_clu->setState(IDLE);
+						rc.top = _clu->getPlayerRc().bottom - _clu->getPlayerImage(_clu->getState())->getFrameHeight() / 3 * 2;
+						_clu->setPlayerRc(rc);
 					}
 				}
 				else
 				{
-					if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+					if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 					{
-						_player->setIndex(0);
-						_player->setState(IDLE);
-						rc.top = _player->getPlayerRc().bottom - _player->getPlayerImage(_player->getState())->getFrameHeight() / 3 * 2;
-						_player->setPlayerRc(rc);
+						_clu->setIndex(0);
+						_clu->setState(IDLE);
+						rc.top = _clu->getPlayerRc().bottom - _clu->getPlayerImage(_clu->getState())->getFrameHeight() / 3 * 2;
+						_clu->setPlayerRc(rc);
 					}
 				}
 			}
@@ -277,52 +372,52 @@ void playerManager::playerFaceDown()
 void playerManager::playerBackstep()
 {
 	float speed = 18.0f;
-	float pos = _player->getIsLeft() ? - 0.2 :  0.2;
+	float pos = _clu->getIsLeft() ? - 0.2 :  0.2;
 
 
-	if (_player->getIsBackstep())
+	if (_clu->getIsBackstep())
 	{
-		_player->setIsFired(true);
+		_clu->setIsFired(true);
 
-		if (_player->getState() != BACKSTEP)
+		if (_clu->getState() != BACKSTEP)
 		{
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 
-			_player->setState(BACKSTEP);
+			_clu->setState(BACKSTEP);
 		}
-		else if (_player->getState() == BACKSTEP)
+		else if (_clu->getState() == BACKSTEP)
 		{
-			_player->setAngle(!_player->getIsLeft() * PI);
-			_player->setX(_player->getX() + cosf(_player->getAngle()) * speed);
+			_clu->setAngle(!_clu->getIsLeft() * PI);
+			_clu->setX(_clu->getX() + cosf(_clu->getAngle()) * speed);
 	
-			if (_player->getCount() % (_player->getFrameSpeed() / 3) == 0)
+			if (_clu->getCount() % (_clu->getFrameSpeed() / 3) == 0)
 			{
-				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 			}
 
-			if (_player->getIsLeft())
+			if (_clu->getIsLeft())
 			{
-				if (_player->getIndex() <= 0)
+				if (_clu->getIndex() <= 0)
 				{
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-					_player->setState(FULLCHARGE_IDLE);
-					_player->setIsBackstep(false);
-					EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-					EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+					_clu->setState(FULLCHARGE_IDLE);
+					_clu->setIsBackstep(false);
+					EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 				}
 			}
 			else
 			{
-				if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 				{
-					_player->setIndex(0);
-					_player->setState(FULLCHARGE_IDLE);
-					_player->setIsBackstep(false);
-					EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-					EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+					_clu->setIndex(0);
+					_clu->setState(FULLCHARGE_IDLE);
+					_clu->setIsBackstep(false);
+					EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 				}
 			}
 		}
@@ -333,254 +428,117 @@ void playerManager::playerFullCharge()
 {
 	if (_isStayKey_up)
 	{
-		_player->setIsFired(true);
+		_clu->setIsFired(true);
 
-		if (_player->getState() == LOOKUP || _player->getState() == AIM_DIAGONAL)
+		if (_clu->getState() == LOOKUP || _clu->getState() == AIM_DIAGONAL)
 		{
 			if (_idleCount < 40)
 				_idleCount++;
 			else
 			{
 				_idleCount = 0;
-				_player->setState(AIM_DIAGONAL_FULLCHARGE);
+				_clu->setState(AIM_DIAGONAL_FULLCHARGE);
 
-				if (_player->getIsLeft())
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+				if (_clu->getIsLeft())
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 				else
-					_player->setIndex(0);
-				EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-				EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+					_clu->setIndex(0);
+				EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 			}
 		}
-		else if (_player->getState() == AIM_DIAGONAL_FULLCHARGE);
+		else if (_clu->getState() == AIM_DIAGONAL_FULLCHARGE);
 		{
-			if (_player->getIsLeft())
+			if (_clu->getIsLeft())
 			{
-				if (_player->getIndex() <= 0)
+				if (_clu->getIndex() <= 0)
 				{
-					_player->setState(AIM_DIAGONAL_FULLCHARGE_IDLE);
-					_player->setCount(0);
+					_clu->setState(AIM_DIAGONAL_FULLCHARGE_IDLE);
+					_idleCount = 0;
+					_clu->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 				{
-					_player->setState(AIM_DIAGONAL_FULLCHARGE_IDLE);
-					_player->setCount(0);
+					_clu->setState(AIM_DIAGONAL_FULLCHARGE_IDLE);
+					_idleCount = 0;
+					_clu->setCount(0);
 				}
 			}
 		}
 	}
 	else
 	{
-		if (_player->getState() == IDLE || _player->getState() == AIM_IDLE)
+		if (_clu->getState() == IDLE || _clu->getState() == AIM_IDLE)
 		{
-			_player->setState(CHARGE);
+			_clu->setState(CHARGE);
 
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 		}
-		else if (_player->getState() == CHARGE)
+		else if (_clu->getState() == CHARGE)
 		{
 			_idleCount++;
 
-			if (_player->getIsLeft())
+			if (_clu->getIsLeft())
 			{
 				if (_idleCount < 40)
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 				else
 				{
-					if (_player->getIndex() <= 0)
+					if (_clu->getIndex() <= 0)
 					{
 						_idleCount = 0;
-						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-						_player->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-						EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+						_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+						_clu->setState(FULLCHARGE);
+						EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 					}
 				}
 			}
 			else
 			{
 				if (_idleCount < 40)
-					_player->setIndex(0);
+					_clu->setIndex(0);
 				else
 				{
-					if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+					if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 					{
 						_idleCount = 0;
-						_player->setIndex(0);
-						_player->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
-						EFFECTMANAGER->play("fullCharge_front", _player->getX(), _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+						_clu->setIndex(0);
+						_clu->setState(FULLCHARGE);
+						EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 					}
 				}
 			}
 		}
-		else if (_player->getState() == FULLCHARGE)
+		else if (_clu->getState() == FULLCHARGE)
 		{
-			if (_player->getIsLeft())
+			if (_clu->getIsLeft())
 			{
-				if (_player->getIndex() <= 0)
+				if (_clu->getIndex() <= 0)
 				{
-					_player->setState(FULLCHARGE_IDLE);
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-					_player->setCount(0);
+					_clu->setState(FULLCHARGE_IDLE);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+					_idleCount = 0;
+					_clu->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 				{
-					_player->setState(FULLCHARGE_IDLE);
-					_player->setIndex(0);
-					_player->setCount(0);
+					_clu->setState(FULLCHARGE_IDLE);
+					_clu->setIndex(0);
+					_idleCount = 0;
+					_clu->setCount(0);
 				}
 			}
-		}
-	}
-}
-
-void playerManager::playerLaugh()
-{
-	if (_player->getState() == LAUGH)
-	{
-		_idleCount = 0;
-		_idleMax = RND->getFromIntTo(100, 500);
-
-		if (_player->getIsLeft())
-		{
-			if (_player->getIndex() <= 0)
-			{
-				_player->setState(LAUGH_IDLE);
-				_player->setCount(0);
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-			}
-		}
-		else
-		{
-			if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
-			{
-				_player->setState(LAUGH_IDLE);
-				_player->setCount(0);
-				_player->setIndex(0);
-			}
-		}
-	}
-	else if (_player->getState() == LAUGH_IDLE)
-	{
-		if (_idleCount < _idleMax)
-			_idleCount++;
-		else
-		{
-			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
-
-			if (randNo == IDLE)
-			{
-				_player->setState(IDLE);
-				_idleCount = 0;
-			}
-			else if (randNo == THINK)
-				_player->setState(THINK);
-			else if (randNo == BORED)
-				_player->setState(BORED);
-		}
-	}
-}
-
-void playerManager::playerThink()
-{
-	if (_player->getState() == THINK)
-	{
-		_idleCount = 0;
-		_idleMax = RND->getFromIntTo(100, 500);
-
-		if (_player->getIsLeft())
-		{
-			if (_player->getIndex() <= 0)
-			{
-				_player->setState(THINK_IDLE);
-				_player->setCount(0);
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-			}
-		}
-		else
-		{
-			if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
-			{
-				_player->setState(THINK_IDLE);
-				_player->setCount(0);
-				_player->setIndex(0);
-			}
-		}
-	}
-	else if (_player->getState() == THINK_IDLE)
-	{
-		if (_idleCount < _idleMax)
-			_idleCount++;
-		else
-		{
-			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
-
-			if (randNo == IDLE)
-			{
-				_player->setState(IDLE);
-				_idleCount = 0;
-			}
-			else if (randNo == LAUGH)
-				_player->setState(LAUGH);
-			else if (randNo == BORED)
-				_player->setState(BORED);
-		}
-	}
-}
-
-void playerManager::playerBored()
-{
-	if (_player->getState() == BORED)
-	{
-		_idleCount = 0;
-		_idleMax = RND->getFromIntTo(100, 500);
-
-		if (_player->getIsLeft())
-		{
-			if (_player->getIndex() <= 0)
-			{
-				_player->setState(BORED_IDLE);
-				_player->setCount(0);
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-			}
-		}
-		else
-		{
-			if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
-			{
-				_player->setState(BORED_IDLE);
-				_player->setCount(0);
-				_player->setIndex(0);
-			}
-		}
-	}
-	else if (_player->getState() == BORED_IDLE)
-	{
-		if (_idleCount < _idleMax)
-			_idleCount++;
-		else
-		{
-			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
-
-			if (randNo == IDLE)
-			{
-				_player->setState(IDLE);
-				_idleCount = 0;
-			}
-			else if (randNo == LAUGH)
-				_player->setState(LAUGH);
-			else if (randNo == THINK)
-				_player->setState(THINK);
 		}
 	}
 }
@@ -601,123 +559,84 @@ void playerManager::playerBored()
 
 */
 
-
 void playerManager::fromStateToIdle()
 {
-	if (_player->getOnLand())
+	if (_clu->getOnLand())
 	{
 		if (_isStayKey_up)
 		{
-			if (_player->getState() == AIM_DIAGONALFIRE)
+			if (_clu->getState() == AIM_DIAGONALFIRE)
 			{
-				if (_player->getIsLeft())
+				if (_clu->getIsLeft())
 				{
-					if (_player->getIndex() <= 0)
+					if (_clu->getIndex() <= 0)
 					{
-						_player->setState(AIM_DIAGONAL);
-						_player->setCount(0);
-						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+						_clu->setState(AIM_DIAGONAL);
+						_clu->setCount(0);
+						_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 					}
 				}
 				else
 				{
-					if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+					if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 					{
-						_player->setState(AIM_DIAGONAL);
-						_player->setCount(0);
-						_player->setIndex(0);
+						_clu->setState(AIM_DIAGONAL);
+						_clu->setCount(0);
+						_clu->setIndex(0);
 					}
 				}
 			}
-			else if (_player->getState() == AIM_DIAGONAL || _player->getState() == AIM_DIAGONAL_FULLCHARGE_IDLE)
+			else if (_clu->getState() == AIM_DIAGONAL || _clu->getState() == AIM_DIAGONAL_FULLCHARGE_IDLE)
 			{
 				if (_idleCount < 200)
 					_idleCount++;
 				else
 				{
-					_player->setState(IDLE);
-					_player->setCount(0);
-					_player->setIsFired(false);
+					_clu->setState(IDLE);
+					_clu->setCount(0);
+					_clu->setIsFired(false);
 					_idleCount = 0;
 				}
 			}
 		}
 		else
 		{
-			if (_player->getState() == JUMP_FALL || _player->getState() == JUMPFIRE_FALL)
-			{
-				if (_player->getIsFired())
-					_player->setState(FULLCHARGE);
-				else
-					_player->setState(LAND);
-				if (_player->getIsLeft())
-					_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-				else
-					_player->setIndex(0);
-			}
-			else if (_player->getState() == LAND || _player->getState() == FULLCHARGE)
-			{
-				if (_player->getIsLeft())
-				{
-					if (_player->getIndex() <= 0)
-					{
-						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
-						_player->setCount(0);
+			this->playerLand();
 
-						if (_player->getIsFired())
-							_player->setState(AIM_IDLE);
-						else
-							_player->setState(IDLE);
-					}
-				}
-				else
-				{
-					if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
-					{
-						_player->setIndex(0);
-						_player->setCount(0);
-
-						if (_player->getIsFired())
-							_player->setState(AIM_IDLE);
-						else
-							_player->setState(IDLE);
-					}
-				}
-			}
-			else if (_player->getState() == AIM_FIRE)
+			if (_clu->getState() == AIM_FIRE)
 			{
-				if (_player->getIsLeft())
+				if (_clu->getIsLeft())
 				{
-					if (_player->getIndex() <= 0)
+					if (_clu->getIndex() <= 0)
 					{
-						_player->setState(AIM_IDLE);
-						_player->setCount(0);
-						_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+						_clu->setState(AIM_IDLE);
+						_clu->setCount(0);
+						_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 					}
 				}
 				else
 				{
-					if (_player->getIndex() >= _player->getPlayerImage(_player->getState())->getMaxFrameX())
+					if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
 					{
-						_player->setState(AIM_IDLE);
-						_player->setCount(0);
-						_player->setIndex(0);
+						_clu->setState(AIM_IDLE);
+						_clu->setCount(0);
+						_clu->setIndex(0);
 					}
 				}
 			}
-			else if (_player->getState() == AIM_IDLE || _player->getState() == FULLCHARGE_IDLE)
+			else if (_clu->getState() == AIM_IDLE || _clu->getState() == FULLCHARGE_IDLE)
 			{
 				if (_idleCount < 200)
 					_idleCount++;
 				else
 				{
-					_player->setState(IDLE);
-					_player->setCount(0);
-					_player->setIsFired(false);
+					_clu->setState(IDLE);
+					_clu->setCount(0);
+					_clu->setIsFired(false);
 					_idleCount = 0;
 				}
 			}
-			else if (_player->getState() == LAUGH)
+			else if (_clu->getState() == LAUGH)
 			{
 
 			}
@@ -729,7 +648,7 @@ void playerManager::fromIdleToState()
 {
 	int randNo;
 
-	if (_player->getState() == IDLE)
+	if (_clu->getState() == IDLE)
 	{
 		if (_idleCount < _idleMax)
 			_idleCount++;
@@ -738,11 +657,13 @@ void playerManager::fromIdleToState()
 			randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
 
 			if (randNo == LAUGH)
-				_player->setState(LAUGH);
+				_clu->setState(LAUGH);
 			else if (randNo == THINK)
-				_player->setState(THINK);
+				_clu->setState(THINK);
 			else if (randNo == BORED)
-				_player->setState(BORED);
+				_clu->setState(BORED);
+			else if (randNo == UPSET)
+				_clu->setState(UPSET);
 		}
 	}
 	else
@@ -750,102 +671,278 @@ void playerManager::fromIdleToState()
 		this->playerLaugh();
 		this->playerThink();
 		this->playerBored();
+		this->playerUpset();
+	}
+}
+
+void playerManager::playerLaugh()
+{
+	if (_clu->getState() == LAUGH)
+	{
+		_idleCount = 0;
+		_idleMax = RND->getFromIntTo(100, 500);
+
+		if (_clu->getIsLeft())
+		{
+			if (_clu->getIndex() <= 0)
+			{
+				_clu->setState(LAUGH_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+			}
+		}
+		else
+		{
+			if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+			{
+				_clu->setState(LAUGH_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(0);
+			}
+		}
+	}
+	else if (_clu->getState() == LAUGH_IDLE)
+	{
+		if (_idleCount < _idleMax)
+			_idleCount++;
+		else
+		{
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
+
+			if (randNo == IDLE)
+			{
+				_clu->setState(IDLE);
+				_idleCount = 0;
+			}
+			else if (randNo == THINK)
+				_clu->setState(THINK);
+			else if (randNo == BORED)
+				_clu->setState(BORED);
+			else if (randNo == UPSET)
+				_clu->setState(UPSET);
+		}
+	}
+}
+
+void playerManager::playerThink()
+{
+	if (_clu->getState() == THINK)
+	{
+		_idleCount = 0;
+		_idleMax = RND->getFromIntTo(100, 500);
+
+		if (_clu->getIsLeft())
+		{
+			if (_clu->getIndex() <= 0)
+			{
+				_clu->setState(THINK_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+			}
+		}
+		else
+		{
+			if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+			{
+				_clu->setState(THINK_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(0);
+			}
+		}
+	}
+	else if (_clu->getState() == THINK_IDLE)
+	{
+		if (_idleCount < _idleMax)
+			_idleCount++;
+		else
+		{
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
+
+			if (randNo == IDLE)
+			{
+				_clu->setState(IDLE);
+				_idleCount = 0;
+			}
+			else if (randNo == LAUGH)
+				_clu->setState(LAUGH);
+			else if (randNo == BORED)
+				_clu->setState(BORED);
+			else if (randNo == UPSET)
+				_clu->setState(UPSET);
+		}
+	}
+}
+
+void playerManager::playerBored()
+{
+	if (_clu->getState() == BORED)
+	{
+		_idleCount = 0;
+		_idleMax = RND->getFromIntTo(100, 500);
+
+		if (_clu->getIsLeft())
+		{
+			if (_clu->getIndex() <= 0)
+			{
+				_clu->setState(BORED_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+			}
+		}
+		else
+		{
+			if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+			{
+				_clu->setState(BORED_IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(0);
+			}
+		}
+	}
+	else if (_clu->getState() == BORED_IDLE)
+	{
+		if (_idleCount < _idleMax)
+			_idleCount++;
+		else
+		{
+			int randNo = RND->getFromIntTo(0, MAXPLAYERSTATE - 1);
+
+			if (randNo == IDLE)
+			{
+				_clu->setState(IDLE);
+				_idleCount = 0;
+			}
+			else if (randNo == LAUGH)
+				_clu->setState(LAUGH);
+			else if (randNo == THINK)
+				_clu->setState(THINK);
+			else if (randNo == UPSET)
+				_clu->setState(UPSET);
+		}
+	}
+}
+
+void playerManager::playerUpset()
+{
+	if (_clu->getState() == UPSET)
+	{
+		_idleCount = 0;
+		_idleMax = RND->getFromIntTo(100, 500);
+
+		if (_clu->getIsLeft())
+		{
+			if (_clu->getIndex() <= 0)
+			{
+				_clu->setState(IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+			}
+		}
+		else
+		{
+			if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+			{
+				_clu->setState(IDLE);
+				_clu->setCount(0);
+				_clu->setIndex(0);
+			}
+		}
 	}
 }
 
 void playerManager::bulletFire()
 {
 	float x, y, angle, speed, pos;
-	x = _player->getX();
-	y = _player->getY() + 7;
+	x = _clu->getX();
+	y = _clu->getY() + 7;
 	speed = 20.0f;
 
-	_player->setIsFired(true);
+	_clu->setIsFired(true);
 
-	if (_isStayKey_up && _player->getState() != RUN)	//대각선
+	if (_isStayKey_up && _clu->getState() != RUN)	//대각선
 	{
-		angle = _player->getIsLeft() ? PI_4 * 3 : PI_4;
-		pos = _player->getIsLeft() ? 0.3f : - 0.3f;
+		angle = _clu->getIsLeft() ? PI_4 * 3 : PI_4;
+		pos = _clu->getIsLeft() ? 0.3f : - 0.3f;
 
-		if (_player->getState() == AIM_DIAGONAL_FULLCHARGE || _player->getState() == AIM_DIAGONAL_FULLCHARGE_IDLE)
+		if (_clu->getState() == AIM_DIAGONAL_FULLCHARGE || _clu->getState() == AIM_DIAGONAL_FULLCHARGE_IDLE)
 		{
-			_player->setState(AIM_DIAGONALFIRE);
+			_clu->setState(AIM_DIAGONALFIRE);
 		
-			_player->setCount(0);
+			_clu->setCount(0);
 
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 
-			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			if (!_clu->getIsJump())
+				EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? - 40 : 40;
+			pos = _clu->getIsLeft() ? - 0.7 : 0.7;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() + 7);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_clu->getIsLeft() + 2), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + 7);
 			CAMERAMANAGER->CameraShake();
 		}
-		else if (_player->getState() != AIM_DIAGONALFIRE)
+		else if (_clu->getState() != AIM_DIAGONALFIRE)
 		{
-			_player->setState(AIM_DIAGONALFIRE);
+			_clu->setState(AIM_DIAGONALFIRE);
 
-			_player->setCount(0);
+			_clu->setCount(0);
 
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 
-			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			if (!_clu->getIsJump())
+				EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? - 40 : 40;
+			pos = _clu->getIsLeft() ? - 0.7f : 0.7;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft() + 2), _player->getX() + pos, _player->getY() - 50);
+			EFFECTMANAGER->play("bulletFire" + to_string(_clu->getIsLeft() + 2), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() - 50);
 		}
 	}
 	else	//노대각선
 	{
-		angle = _player->getIsLeft() * PI;
-		pos = _player->getIsLeft() ? 0.3f : - 0.3f;
+		angle = _clu->getIsLeft() * PI;
+		pos = _clu->getIsLeft() ? 0.3f : - 0.3f;
 
-		if (_player->getState() == FULLCHARGE || _player->getState() == FULLCHARGE_IDLE)
+		if (_clu->getState() == FULLCHARGE || _clu->getState() == FULLCHARGE_IDLE)
 		{
-			_player->setState(AIM_FIRE);
+			_clu->setState(AIM_FIRE);
 
-			_player->setCount(0);
+			_clu->setCount(0);
 
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 			
-			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			if (!_clu->getIsJump())
+				EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? - 40 : 40;
+			pos = _clu->getIsLeft() ? - 0.7f : 0.7f;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, y);
 			CAMERAMANAGER->CameraShake();
 		}
-		else if (_player->getState() != AIM_FIRE)
+		else if (_clu->getState() != AIM_FIRE)
 		{
-			_player->setState(AIM_FIRE);
-			_player->setCount(0);
+			_clu->setState(AIM_FIRE);
+			_clu->setCount(0);
 			
-			if (_player->getIsLeft())
-				_player->setIndex(_player->getPlayerImage(_player->getState())->getMaxFrameX());
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 			else
-				_player->setIndex(0);
+				_clu->setIndex(0);
 				
 
-			if (!_player->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player->getIsLeft()), _player->getX() + _player->getPlayerImage(_player->getState())->getFrameWidth() * pos, _player->getY() + _player->getPlayerImage(_player->getState())->getFrameHeight() * 0.35);
+			if (!_clu->getIsJump())
+				EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 
-			pos = _player->getIsLeft() ? - 40 : 40;
+			pos = _clu->getIsLeft() ? - 0.7f : 0.7f;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player->getIsLeft()), _player->getX() + pos, y);
+			EFFECTMANAGER->play("bulletFire" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, y);
 		}
 	}
 }
