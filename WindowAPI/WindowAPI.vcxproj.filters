@@ -24,26 +24,14 @@
     <Filter Include="GameFramework2D\이미지">
       <UniqueIdentifier>{1851a966-ba68-4f2f-8ebc-640729b7e225}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\픽셀충돌">
-      <UniqueIdentifier>{999592ea-c38c-4f45-866d-bd0d1565c6b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameFramework2D\체력바">
-      <UniqueIdentifier>{12820852-848e-426e-b34d-d60a72e5a7af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\싱글톤데이터">
       <UniqueIdentifier>{0907fac4-7887-455d-8abc-2590cc570031}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameFramework2D\TXT데이터">
       <UniqueIdentifier>{c7b77e10-66df-4946-85ec-070152a53f5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\씬테스트">
-      <UniqueIdentifier>{45c4f48f-923d-4d05-a5a7-e33419d32657}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\INI데이터">
       <UniqueIdentifier>{b269c6d2-905b-4bff-b4a2-7b39f1eb1954}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\INI테스트">
-      <UniqueIdentifier>{7935044c-51b7-4b0c-9dd7-5a90f9b4bf88}</UniqueIdentifier>
     </Filter>
     <Filter Include="WinMain">
       <UniqueIdentifier>{4a79707c-1728-49f2-ba7d-dc17dad14387}</UniqueIdentifier>
@@ -54,23 +42,11 @@
     <Filter Include="GameFramework2D\로딩">
       <UniqueIdentifier>{fb808856-b378-426f-9374-63caea3bdcda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\애니애니">
-      <UniqueIdentifier>{7e50b688-be0e-4b49-bb49-fe389b57d428}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\소리재생">
-      <UniqueIdentifier>{ec0359dd-5aee-47a7-adc7-c12395fd20f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\애니메이션">
       <UniqueIdentifier>{41fc2961-d655-4f1e-a9b7-4a4926ad3980}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\이펙트임">
-      <UniqueIdentifier>{7157ade0-aa15-4a12-9b9b-d55cf26ae6cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\이펙트">
       <UniqueIdentifier>{71c9ef92-de11-4d77-a74a-2817260b208f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\로테이트">
-      <UniqueIdentifier>{78ec6bad-644d-4edb-a2bc-928cffc998ef}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\DEFENDERS">
       <UniqueIdentifier>{99ee87d5-f72d-4cd3-9717-27b286d7636b}</UniqueIdentifier>
@@ -83,6 +59,15 @@
     </Filter>
     <Filter Include="MainGame\DEFENDERS\총알총알">
       <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework2D\체력바">
+      <UniqueIdentifier>{b358e3ed-52f5-41a7-99ee-951152f45767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\DEFENDERS\몬스터">
+      <UniqueIdentifier>{2e509d87-0de0-4022-943b-8d1be1d39adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework2D\유틸\아이콘">
+      <UniqueIdentifier>{4e466b79-b5e4-4f48-bc42-280721baa84d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,12 +104,6 @@
     <ClInclude Include="bullet.h">
       <Filter>MainGame\DEFENDERS\총알총알</Filter>
     </ClInclude>
-    <ClInclude Include="pixelCollision.h">
-      <Filter>MainGame\픽셀충돌</Filter>
-    </ClInclude>
-    <ClInclude Include="progressBar.h">
-      <Filter>GameFramework2D\체력바</Filter>
-    </ClInclude>
     <ClInclude Include="saveData.h">
       <Filter>GameFramework2D\싱글톤데이터</Filter>
     </ClInclude>
@@ -134,14 +113,8 @@
     <ClInclude Include="sceneManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
-    <ClInclude Include="sceneTest.h">
-      <Filter>MainGame\씬테스트</Filter>
-    </ClInclude>
     <ClInclude Include="iniData.h">
       <Filter>GameFramework2D\INI데이터</Filter>
-    </ClInclude>
-    <ClInclude Include="iniTestScene.h">
-      <Filter>MainGame\INI테스트</Filter>
     </ClInclude>
     <ClInclude Include="loading.h">
       <Filter>GameFramework2D\로딩</Filter>
@@ -152,26 +125,14 @@
     <ClInclude Include="soundManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
-    <ClInclude Include="soundTestScene.h">
-      <Filter>MainGame\소리재생</Filter>
-    </ClInclude>
-    <ClInclude Include="aniTestScene.h">
-      <Filter>MainGame\애니애니</Filter>
-    </ClInclude>
     <ClInclude Include="animation.h">
       <Filter>GameFramework2D\애니메이션</Filter>
-    </ClInclude>
-    <ClInclude Include="camel.h">
-      <Filter>MainGame\애니애니</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>GameFramework2D\이펙트</Filter>
     </ClInclude>
     <ClInclude Include="effectManager.h">
       <Filter>GameFramework2D\매니져</Filter>
-    </ClInclude>
-    <ClInclude Include="rotateTestScene.h">
-      <Filter>MainGame\로테이트</Filter>
     </ClInclude>
     <ClInclude Include="tileNode.h">
       <Filter>MainGame\DEFENDERS\타일타일</Filter>
@@ -206,6 +167,18 @@
     <ClInclude Include="collisionManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>GameFramework2D\체력바</Filter>
+    </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="monsterManager.h">
+      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>GameFramework2D\유틸\아이콘</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -235,12 +208,6 @@
     <ClCompile Include="bullet.cpp">
       <Filter>MainGame\DEFENDERS\총알총알</Filter>
     </ClCompile>
-    <ClCompile Include="pixelCollision.cpp">
-      <Filter>MainGame\픽셀충돌</Filter>
-    </ClCompile>
-    <ClCompile Include="progressBar.cpp">
-      <Filter>GameFramework2D\체력바</Filter>
-    </ClCompile>
     <ClCompile Include="saveData.cpp">
       <Filter>GameFramework2D\싱글톤데이터</Filter>
     </ClCompile>
@@ -250,14 +217,8 @@
     <ClCompile Include="sceneManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
-    <ClCompile Include="sceneTest.cpp">
-      <Filter>MainGame\씬테스트</Filter>
-    </ClCompile>
     <ClCompile Include="iniData.cpp">
       <Filter>GameFramework2D\INI데이터</Filter>
-    </ClCompile>
-    <ClCompile Include="iniTestScene.cpp">
-      <Filter>MainGame\INI테스트</Filter>
     </ClCompile>
     <ClCompile Include="loading.cpp">
       <Filter>GameFramework2D\로딩</Filter>
@@ -268,26 +229,14 @@
     <ClCompile Include="soundManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
-    <ClCompile Include="soundTestScene.cpp">
-      <Filter>MainGame\소리재생</Filter>
-    </ClCompile>
-    <ClCompile Include="aniTestScene.cpp">
-      <Filter>MainGame\애니애니</Filter>
-    </ClCompile>
     <ClCompile Include="animation.cpp">
       <Filter>GameFramework2D\애니메이션</Filter>
-    </ClCompile>
-    <ClCompile Include="camel.cpp">
-      <Filter>MainGame\애니애니</Filter>
     </ClCompile>
     <ClCompile Include="effect.cpp">
       <Filter>GameFramework2D\이펙트</Filter>
     </ClCompile>
     <ClCompile Include="effectManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
-    </ClCompile>
-    <ClCompile Include="rotateTestScene.cpp">
-      <Filter>MainGame\로테이트</Filter>
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
       <Filter>MainGame\DEFENDERS\타일타일</Filter>
@@ -319,5 +268,27 @@
     <ClCompile Include="collisionManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>GameFramework2D\체력바</Filter>
+    </ClCompile>
+    <ClCompile Include="monster.cpp">
+      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="monsterManager.cpp">
+      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon2.ico">
+      <Filter>GameFramework2D\유틸\아이콘</Filter>
+    </Image>
+    <Image Include="aegis_icon.ico">
+      <Filter>GameFramework2D\유틸\아이콘</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WindowAPI.rc">
+      <Filter>GameFramework2D\유틸\아이콘</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

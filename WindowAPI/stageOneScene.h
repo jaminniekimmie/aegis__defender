@@ -10,7 +10,10 @@ private:
 	tagTile _tiles[TILEX * TILEY];
 	image * _pixelTiles;
 	RECT _rcCamera;
+	BYTE _alpha;
 	bool _camDebug;
+	bool _sceneSwitch;
+
 public:
 	HRESULT init(void);
 	void release(void);

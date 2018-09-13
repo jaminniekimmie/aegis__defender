@@ -13,14 +13,8 @@ HRESULT mainGame::init(void)
 	//그리고 각각의 씬들이 메인게임 역할을 하면 된다
 
 	/*씬추가*/
-	SCENEMANAGER->addScene("픽셀충돌", new pixelCollision);
-	SCENEMANAGER->addScene("테스트씬", new sceneTest);
-	SCENEMANAGER->addScene("ini", new iniTestScene);
 	SCENEMANAGER->addScene("흑로딩화면", new loadingBlackScene);
 	SCENEMANAGER->addScene("오픈로딩화면", new loadingOpenScene);
-	SCENEMANAGER->addScene("사운드", new soundTestScene);
-	SCENEMANAGER->addScene("애니메이션", new aniTestScene);
-	SCENEMANAGER->addScene("로테이트", new rotateTestScene);
 	SCENEMANAGER->addScene("맵툴", new buildAMapScene);
 	SCENEMANAGER->addScene("스테이지원", new stageOneScene);
 	SCENEMANAGER->addScene("스테이지투", new stageTwoScene);

@@ -148,9 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
-    <ClInclude Include="aniTestScene.h" />
     <ClInclude Include="bullet.h" />
-    <ClInclude Include="camel.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
@@ -160,24 +158,22 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="iniData.h" />
-    <ClInclude Include="iniTestScene.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="loading.h" />
     <ClInclude Include="loadingBlackScene.h" />
     <ClInclude Include="loadingOpenScene.h" />
     <ClInclude Include="mainGame.h" />
-    <ClInclude Include="pixelCollision.h" />
+    <ClInclude Include="monster.h" />
+    <ClInclude Include="monsterManager.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
-    <ClInclude Include="rotateTestScene.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="saveData.h" />
     <ClInclude Include="sceneManager.h" />
-    <ClInclude Include="sceneTest.h" />
     <ClInclude Include="singletonBase.h" />
     <ClInclude Include="soundManager.h" />
-    <ClInclude Include="soundTestScene.h" />
     <ClInclude Include="stageOneScene.h" />
     <ClInclude Include="stageTwoScene.h" />
     <ClInclude Include="stdafx.h" />
@@ -190,9 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
-    <ClCompile Include="aniTestScene.cpp" />
     <ClCompile Include="bullet.cpp" />
-    <ClCompile Include="camel.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -201,22 +195,19 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="iniData.cpp" />
-    <ClCompile Include="iniTestScene.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loading.cpp" />
     <ClCompile Include="loadingBlackScene.cpp" />
     <ClCompile Include="loadingOpenScene.cpp" />
     <ClCompile Include="mainGame.cpp" />
-    <ClCompile Include="pixelCollision.cpp" />
+    <ClCompile Include="monster.cpp" />
+    <ClCompile Include="monsterManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="progressBar.cpp" />
-    <ClCompile Include="rotateTestScene.cpp" />
     <ClCompile Include="saveData.cpp" />
     <ClCompile Include="sceneManager.cpp" />
-    <ClCompile Include="sceneTest.cpp" />
     <ClCompile Include="soundManager.cpp" />
-    <ClCompile Include="soundTestScene.cpp" />
     <ClCompile Include="stageOneScene.cpp" />
     <ClCompile Include="stageTwoScene.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -231,6 +222,13 @@
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="winMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WindowAPI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="aegis_icon.ico" />
+    <Image Include="icon2.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

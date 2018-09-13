@@ -13,6 +13,7 @@ private:
 	PLAYERSTATE _playerState;
 	DIRECTION _direction;
 	RECT _rc;
+	RECT _rcLedge[2];
 	tagImage _player[MAXPLAYERSTATE];
 	tagImage _weapon[MAXPLAYERSTATE];
 	tagImage _weaponIcon[2];
@@ -32,6 +33,7 @@ private:
 	bool _isJumpDown;
 	bool _isFaceDown;
 	bool _onLand;
+	bool _isLedgeGrab;
 	bool _isFired;
 	bool _weaponSwitch;
 
@@ -49,6 +51,7 @@ public:
 
 	PLAYERSTATE getState() { return _playerState; }
 	RECT getPlayerRc() { return _rc; }
+	RECT getLedgeRc(int num) { return _rcLedge[num]; }
 	DIRECTION getDirection() { return _direction; }
 	image* getPlayerImage(PLAYERSTATE playerState) { return _player[playerState].img; }
 	BYTE getWeaponIsActive(bool weaponSwitch) { return _weaponIcon[weaponSwitch].isActive; }
@@ -69,6 +72,7 @@ public:
 	bool getIsBackstep() { return _isBackstep; }
 	bool getIsJumpDown() { return _isJumpDown; }
 	bool getIsFaceDown() { return _isFaceDown; }
+	bool getIsLedgeGrab() { return _isLedgeGrab; }
 	bool getIsFired() { return _isFired; }
 	bool getWeaponSwitch() { return _weaponSwitch; }
 
@@ -93,6 +97,7 @@ public:
 	void setIsBackstep(bool isBackstep) { _isBackstep = isBackstep; }
 	void setIsJumpDown(bool isJumpDown) { _isJumpDown = isJumpDown; }
 	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
+	void setIsLedgeGrab(bool isLedgeGrab) { _isLedgeGrab = isLedgeGrab; }
 	void setIsFired(bool isFired) { _isFired = isFired; }
 	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }
 

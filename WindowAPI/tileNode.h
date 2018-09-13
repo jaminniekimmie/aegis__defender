@@ -75,6 +75,7 @@ struct tagCurrentTile
 	int x, y;
 };
 
+
 struct tagImage
 {
 	RECT rc;
@@ -83,6 +84,7 @@ struct tagImage
 	BYTE alpha;
 	bool isActive;
 };
+
 
 //struct tagImage
 //{

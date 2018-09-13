@@ -7,11 +7,12 @@ HRESULT loadingOpenScene::init(void)
 	_loading = new loading;
 	_loading->init();
 
-	_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/Aegis_WP1.bmp", WINSIZEX, WINSIZEY);
-
 	//이미지 및 사운드 로딩
 	this->loadingImage();
 	this->loadingSound();
+	_background = IMAGEMANAGER->addImage("bgLoadingScene", "tex/background/Aegis_WP1.bmp", WINSIZEX, WINSIZEY);
+	_alpha = 0;
+
 
 	return S_OK;
 }
@@ -30,9 +31,10 @@ void loadingOpenScene::update(void)
 
 	//로딩완료후 씬변경
 	if (_loading->loadingDone())
-	{
+		_alpha += 5;
+	
+	if (_alpha >= 255)
 		SCENEMANAGER->loadScene("맵툴");
-	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -66,6 +68,10 @@ void loadingOpenScene::render(void)
 
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(myFont);
+	
+	if (_loading->loadingDone())
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
+
 }
 
 //로딩이미지 함수(이곳에 이미지를 전부 넣어라)

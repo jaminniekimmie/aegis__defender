@@ -8,6 +8,7 @@ HRESULT loadingBlackScene::init(void)
 	_loading->init();
 
 	_background = IMAGEMANAGER->findImage("solid_black");
+	_alpha = 0;
 
 	//이미지 및 사운드 로딩
 	this->loadingImage();
@@ -31,8 +32,12 @@ void loadingBlackScene::update(void)
 	//로딩완료후 씬변경
 	if (_loading->loadingDone())
 	{
-		SCENEMANAGER->loadScene("스테이지원");
+		_alpha += 5;
+		this->loadingEffect();
 	}
+
+	if (_alpha >= 255)
+		SCENEMANAGER->loadScene("스테이지원");
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -66,6 +71,9 @@ void loadingBlackScene::render(void)
 	
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(myFont);
+
+	if (_loading->loadingDone())
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
 }
 
 //로딩이미지 함수(이곳에 이미지를 전부 넣어라)
@@ -96,7 +104,9 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_land", "tex/characters/Clu_land_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_laugh", "tex/characters/Clu_laugh_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_laugh_idle", "tex/characters/Clu_laugh_idle_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_ledgeGrab", "tex/characters/Clu_ledgeGrab_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab", "tex/characters/Clu_ledgeGrab_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_idle", "tex/characters/Clu_ledgeGrab_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_rise", "tex/characters/Clu_ledgeGrab_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_lookup", "tex/characters/Clu_lookup_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push", "tex/characters/Clu_push_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run", "tex/characters/Clu_run_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
@@ -129,7 +139,9 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_land_shadow", "tex/characters/Clu_land_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_laugh_shadow", "tex/characters/Clu_laugh_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_laugh_idle_shadow", "tex/characters/Clu_laugh_idle_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_ledgeGrab_shadow", "tex/characters/Clu_ledgeGrab_shadow_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_shadow", "tex/characters/Clu_ledgeGrab_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_idle_shadow", "tex/characters/Clu_ledgeGrab_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_ledgeGrab_rise_shadow", "tex/characters/Clu_ledgeGrab_rise_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_lookup_shadow", "tex/characters/Clu_lookup_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_push_shadow", "tex/characters/Clu_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_run_shadow", "tex/characters/Clu_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
@@ -148,6 +160,16 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_fullCharge_idle", "tex/weapons/Clu_gun_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("Cricket_fly", "tex/characters/Cricket_fly_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_fly_shadow", "tex/characters/Cricket_fly_shadow_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_walk", "tex/characters/Cricket_walk_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_walk_shadow", "tex/characters/Cricket_walk_shadow_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("RolyPoly_Large_walk", "tex/characters/RolyPoly_Large_walk_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_Large_walk_shadow", "tex/characters/RolyPoly_Large_walk_shadow_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_White_walk", "tex/characters/RolyPoly_White_walk_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_White_walk_shadow", "tex/characters/RolyPoly_White_walk_shadow_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
 	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
@@ -187,4 +209,34 @@ void loadingBlackScene::loadingImage()
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 void loadingBlackScene::loadingSound()
 {
+}
+
+void loadingBlackScene::loadingEffect()
+{
+	EFFECTMANAGER->addEffect("landDust", "fx_landDust", 0.4f, 5);
+	EFFECTMANAGER->addEffect("jumpDust1", "fx_jumpDust1", 0.4f, 5);
+	EFFECTMANAGER->addEffect("jumpDust2", "fx_jumpDust2", 0.4f, 5);
+	EFFECTMANAGER->addEffect("jumpDust3", "fx_jumpDust3", 0.4f, 5);
+	EFFECTMANAGER->addEffect("runDust0", "fx_runDust_right", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("runDust1", "fx_runDust_left", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run1", "fx_run1", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run2", "fx_run2", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run3", "fx_run3", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run4", "fx_run4", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run5", "fx_run5", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("bulletPuff1", "fx_bulletPuff1", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletPuff2", "fx_bulletPuff2", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletPuff3", "fx_bulletPuff3", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletPuff4", "fx_bulletPuff4", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletPuff5", "fx_bulletPuff5", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletFire0", "fx_bulletFire_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletFire1", "fx_bulletFire_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletFire2", "fx_bulletFire_diagonal_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("bulletFire3", "fx_bulletFire_diagonal_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triBulletFire0", "fx_triBulletFire_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triBulletFire1", "fx_triBulletFire_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triBulletFire2", "fx_triBulletFire_diagonal_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triBulletFire3", "fx_triBulletFire_diagonal_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("fullCharge_back", "fx_fullCharge_back", 0.4f, 5);
+	EFFECTMANAGER->addEffect("fullCharge_front", "fx_fullCharge_front", 0.4f, 5);
 }

@@ -50,6 +50,7 @@ void playerManager::update(void)
 	
 	this->collisionProcess();
 	this->playerFaceDown();
+	this->playerLedgeGrab();
 	this->fromStateToIdle();
 	this->fromIdleToState();
 }
@@ -102,6 +103,7 @@ void playerManager::keyInput()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
+		_clu->setIsLedgeGrab(false);
 		this->playerJumpRise();
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
@@ -158,7 +160,7 @@ void playerManager::playerRun(bool isLeft)
 		if (oldIsLeft != _clu->getIsLeft())
 		{
 			_clu->setState(RUN);
-			EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+			EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 		}
 
 		if (_clu->getCount() % (_clu->getFrameSpeed() * 2) == 3 && _clu->getState() == RUN)
@@ -192,7 +194,8 @@ void playerManager::playerJumpRise()
 
 void playerManager::playerJumpFall()
 {
-	_clu->setGravity(_clu->getGravity() + 0.85f);
+	if (!_clu->getIsLedgeGrab())
+		_clu->setGravity(_clu->getGravity() + 0.85f);
 
 	if (_clu->getGravity() > 0.85f * 2)
 		_clu->setOnLand(false);
@@ -237,20 +240,71 @@ void playerManager::collisionProcess()
 			_clu->setOnLand(true);
 		}
 	}
-	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))
+	else
 	{
+		//if (COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(0), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == ORANGE || 
+		//	COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(1), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == ORANGE)
+		//{
+		//	if (!_clu->getOnLand())
+		//	{
+		//		_clu->setSpeed(0.0f);
+		//		_clu->setGravity(0.0f);
+		//		_clu->setAngle(-PI_2);
+		//		_clu->setOnLand(false);
+		//		_clu->setIsJump(false);
+		//		_clu->setIsLedgeGrab(true);
+		//		_clu->setState(LEDGEGRAB);
+		//	}
+		//}
+
+		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))
+		{
+		}
 	}
 
-	if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT))
+
+	if (_clu->getOnLand())
 	{
-		_clu->setX(x);
-		_clu->setState(PUSH);
+		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
+		{
+			_clu->setX(x);
+			_clu->setState(PUSH);
+		}
 	}
-	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
+	else
 	{
-		_clu->setX(x);
-		_clu->setState(PUSH);
+		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) == ORANGE ||
+			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT) == ORANGE)
+		{
+			if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() >= 0)
+			{
+				_clu->setSpeed(0.0f);
+				_clu->setGravity(0.0f);
+				_clu->setAngle(-PI_2);
+				_clu->setX(x);
+				_clu->setOnLand(false);
+				_clu->setIsJump(false);
+				_clu->setIsLedgeGrab(true);
+				_clu->setState(LEDGEGRAB);
+			}
+		}
+		//if (COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(0), x, y, _clu->getSpeed() / 2, _clu->getGravity(), BOTTOM) == ORANGE ||
+		//	COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(1), x, y, _clu->getSpeed() / 2, _clu->getGravity(), BOTTOM) == ORANGE)
+		//{
+		//	//if (!_clu->getOnLand())
+		//	{
+		//		_clu->setSpeed(0.0f);
+		//		_clu->setGravity(0.0f);
+		//		_clu->setAngle(-PI_2);
+		//		_clu->setOnLand(false);
+		//		_clu->setIsJump(false);
+		//		_clu->setIsLedgeGrab(true);
+		//		//_clu->setState(LEDGEGRAB);
+		//	}
+		//}
 	}
+
 }
 
 void playerManager::playerLand()
@@ -536,6 +590,88 @@ void playerManager::playerFullCharge()
 					_clu->setState(FULLCHARGE_IDLE);
 					_clu->setIndex(0);
 					_idleCount = 0;
+					_clu->setCount(0);
+				}
+			}
+		}
+	}
+}
+
+void playerManager::playerLedgeGrab()
+{
+	if (_clu->getIsLedgeGrab())
+	{
+		if (_clu->getState() == JUMP_FALL)
+		{
+			_clu->setState(LEDGEGRAB);
+			_clu->setCount(0);
+			if (_clu->getIsLeft())
+				_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+			else
+				_clu->setIndex(0);
+		}
+		else if (_clu->getState() == LEDGEGRAB)
+		{
+			if (_clu->getIsLeft())
+			{
+				if (_clu->getIndex() <= 0)
+				{
+					_clu->setState(LEDGEGRAB_IDLE);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+					_clu->setCount(0);
+				}
+			}
+			else
+			{
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+				{
+					_clu->setState(LEDGEGRAB_IDLE);
+					_clu->setIndex(0);
+					_clu->setCount(0);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (_clu->getState() == LEDGEGRAB_IDLE)
+		{
+			if (_clu->getIsLeft())
+			{
+				if (_clu->getIndex() <= 0)
+				{
+					_clu->setState(LEDGEGRAB_RISE);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+					_clu->setCount(0);
+				}
+			}
+			else
+			{
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+				{
+					_clu->setState(LEDGEGRAB_RISE);
+					_clu->setIndex(0);
+					_clu->setCount(0);
+				}
+			}
+		}
+		else if (_clu->getState() == LEDGEGRAB_RISE)
+		{
+			if (_clu->getIsLeft())
+			{
+				if (_clu->getIndex() <= 0)
+				{
+					_clu->setState(IDLE);
+					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
+					_clu->setCount(0);
+				}
+			}
+			else
+			{
+				if (_clu->getIndex() >= _clu->getPlayerImage(_clu->getState())->getMaxFrameX())
+				{
+					_clu->setState(IDLE);
+					_clu->setIndex(0);
 					_clu->setCount(0);
 				}
 			}
@@ -880,7 +1016,7 @@ void playerManager::bulletFire()
 
 			pos = _clu->getIsLeft() ? - 0.7 : 0.7;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_clu->getIsLeft() + 2), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + 7);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_clu->getIsLeft() + 2), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() - 70);
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_clu->getState() != AIM_DIAGONALFIRE)

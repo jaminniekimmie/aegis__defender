@@ -7,6 +7,7 @@ class loadingBlackScene : public gameNode
 private:
 	loading * _loading;
 	image* _background;
+	BYTE _alpha;
 
 public:
 	HRESULT init(void);
@@ -18,6 +19,7 @@ public:
 	void loadingImage();
 	//로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 	void loadingSound();
+	void loadingEffect();
 
 	loadingBlackScene() {}
 	~loadingBlackScene() {}

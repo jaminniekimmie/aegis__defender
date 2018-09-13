@@ -61,6 +61,10 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 		_player[LAUGH_IDLE].shadow = IMAGEMANAGER->findImage("Clu_laugh_idle_shadow");
 		_player[LEDGEGRAB].img = IMAGEMANAGER->findImage("Clu_ledgeGrab");
 		_player[LEDGEGRAB].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_shadow");
+		_player[LEDGEGRAB_IDLE].img = IMAGEMANAGER->findImage("Clu_ledgeGrab_idle");
+		_player[LEDGEGRAB_IDLE].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_idle_shadow");
+		_player[LEDGEGRAB_RISE].img = IMAGEMANAGER->findImage("Clu_ledgeGrab_rise");
+		_player[LEDGEGRAB_RISE].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_rise_shadow");
 		_player[LOOKUP].img = IMAGEMANAGER->findImage("Clu_lookup");
 		_player[LOOKUP].shadow = IMAGEMANAGER->findImage("Clu_lookup_shadow");
 		_player[PUSH].img = IMAGEMANAGER->findImage("Clu_push");
@@ -124,10 +128,12 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 	_angle = -PI_2;
 	_speed = 8.0f;
 
-	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = false;
+	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = _isLedgeGrab = false;
 	_onLand = true;
 
 	_rc = RectMakeCenter(_x, _y, _player[_playerState].img->getFrameWidth() / 3, _player[_playerState].img->getFrameHeight());
+	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_playerState].img->getFrameHeight() / 4, 10, 10);
+	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_playerState].img->getFrameHeight() / 4, 10, 10);
 
 	return S_OK;
 }
@@ -142,6 +148,8 @@ void player::release(void)
 void player::update(void)
 {
 	_rc = RectMakeCenter(_x, _y, _player[_playerState].img->getFrameWidth() / 3, _player[_playerState].img->getFrameHeight());
+	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
+	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
 
 	if (_playerState != AIM_FIRE && 
 		_playerState != AIM_IDLE && 
@@ -162,7 +170,6 @@ void player::update(void)
 
 void player::render(void)
 {
-
 	this->frameChangeLoop();
 
 	if (CAMERAMANAGER->CameraIn(_rc))
@@ -180,6 +187,8 @@ void player::render(void)
 	if (KEYMANAGER->isToggleKey('R'))
 	{
 		Rectangle(getMemDC(), _rc.left - CAMERAMANAGER->getCamera().left, _rc.top - CAMERAMANAGER->getCamera().top, _rc.right - CAMERAMANAGER->getCamera().left, _rc.bottom - CAMERAMANAGER->getCamera().top);
+		//Rectangle(getMemDC(), _rcLedge[0].left - CAMERAMANAGER->getCamera().left, _rcLedge[0].top - CAMERAMANAGER->getCamera().top, _rcLedge[0].right - CAMERAMANAGER->getCamera().left, _rcLedge[0].bottom - CAMERAMANAGER->getCamera().top);
+		//Rectangle(getMemDC(), _rcLedge[1].left - CAMERAMANAGER->getCamera().left, _rcLedge[1].top - CAMERAMANAGER->getCamera().top, _rcLedge[1].right - CAMERAMANAGER->getCamera().left, _rcLedge[1].bottom - CAMERAMANAGER->getCamera().top);
 	}
 
 	//Ã¼·Â¹Ù ·»´õ
@@ -204,7 +213,7 @@ void player::frameChangeLoop()
 	if (_isFired)
 		_weapon[_playerState].img->setFrameY(_isLeft);
 
-	if (_isLeft)
+	if (_isLeft) // 1
 	{
 		if (_count % _frameSpeed == 0)
 		{

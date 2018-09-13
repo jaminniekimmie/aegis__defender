@@ -4,33 +4,6 @@
 
 HRESULT effectManager::init(void)
 {
-	this->addEffect("landDust", "fx_landDust", 0.3f, 5, true);
-	this->addEffect("jumpDust1", "fx_jumpDust1", 0.3f, 5);
-	this->addEffect("jumpDust2", "fx_jumpDust2", 0.3f, 5);
-	this->addEffect("jumpDust3", "fx_jumpDust3", 0.3f, 5);
-	this->addEffect("runDust0", "fx_runDust_right", 0.3f, 5, true);
-	this->addEffect("runDust1", "fx_runDust_left", 0.3f, 5, true);
-	this->addEffect("run1", "fx_run1", 0.3f, 5, true);
-	this->addEffect("run2", "fx_run2", 0.3f, 5, true);
-	this->addEffect("run3", "fx_run3", 0.3f, 5, true);
-	this->addEffect("run4", "fx_run4", 0.3f, 5, true);
-	this->addEffect("run5", "fx_run5", 0.3f, 5, true);
-	this->addEffect("bulletPuff1", "fx_bulletPuff1", 0.3f, 5);
-	this->addEffect("bulletPuff2", "fx_bulletPuff2", 0.3f, 5);
-	this->addEffect("bulletPuff3", "fx_bulletPuff3", 0.3f, 5);
-	this->addEffect("bulletPuff4", "fx_bulletPuff4", 0.3f, 5);
-	this->addEffect("bulletPuff5", "fx_bulletPuff5", 0.3f, 5);
-	this->addEffect("bulletFire0", "fx_bulletFire_right", 0.3f, 5);
-	this->addEffect("bulletFire1", "fx_bulletFire_left", 0.3f, 5);
-	this->addEffect("bulletFire2", "fx_bulletFire_diagonal_right", 0.3f, 5);
-	this->addEffect("bulletFire3", "fx_bulletFire_diagonal_left", 0.3f, 5);
-	this->addEffect("triBulletFire0", "fx_triBulletFire_right", 0.3f, 5);
-	this->addEffect("triBulletFire1", "fx_triBulletFire_left", 0.3f, 5);
-	this->addEffect("triBulletFire2", "fx_triBulletFire_diagonal_right", 0.3f, 5);
-	this->addEffect("triBulletFire3", "fx_triBulletFire_diagonal_left", 0.3f, 5);
-	this->addEffect("fullCharge_back", "fx_fullCharge_back", 0.3f, 5);
-	this->addEffect("fullCharge_front", "fx_fullCharge_front", 0.3f, 5);
-
 	return S_OK;
 }
 

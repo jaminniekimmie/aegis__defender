@@ -34,6 +34,7 @@ public:
 	void playerFaceDown();
 	void playerBackstep();
 	void playerFullCharge();
+	void playerLedgeGrab();
 	void fromStateToIdle();
 	void fromIdleToState();
 	void playerLaugh();

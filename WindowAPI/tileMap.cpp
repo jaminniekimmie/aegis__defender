@@ -56,10 +56,12 @@ HRESULT tileMap::init(void)
 	_sampleTileType = 0;
 	_count = 0;
 	_saveDelta = 0;
+	_alpha = 255;
 
-	_dragStart = false;
+	_dragStart = _sceneSwitch = false;
 
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
+
 
 	return S_OK;
 }
@@ -74,11 +76,25 @@ void tileMap::update(void)
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
 	_cursorIcon[0].rc = RectMake(_globalPtMouse.x, _globalPtMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
 	_cursorIcon[1].rc = RectMake(_globalPtMouse.x - 17, _globalPtMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
+	RECT winRc = RectMake(0, 0, WINSIZEX, WINSIZEY);
+	ClipCursor(&winRc);
 
 	this->tileSelectPageSetup();
 	this->UIsetup();
 	this->keyInput();
 	this->cameraAdjustment();
+
+	if (!_sceneSwitch)
+	{
+		if (_alpha > 0)
+			_alpha -= 5;
+	}
+	else
+	{
+		_alpha += 5;
+		if (_alpha >= 255)
+			SCENEMANAGER->loadScene("Èæ·ÎµùÈ­¸é");
+	}
 }
 
 void tileMap::render(void)
@@ -131,6 +147,9 @@ void tileMap::render(void)
 		_cursorIcon[1].img->frameRender(getMemDC(), _cursorIcon[1].rc.left - CAMERAMANAGER->getCamera().left, _cursorIcon[1].rc.top - CAMERAMANAGER->getCamera().top);
 	else
 		_cursorIcon[0].img->render(getMemDC(), _cursorIcon[0].rc.left - CAMERAMANAGER->getCamera().left, _cursorIcon[0].rc.top - CAMERAMANAGER->getCamera().top);
+
+	if (_alpha > 0)
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
 }
 
 void tileMap::maptoolSetup(void)
@@ -461,7 +480,7 @@ void tileMap::keyInput(void)
 
 		if (KEYMANAGER->isOnceKeyDown('Q'))
 		{
-			SCENEMANAGER->loadScene("Èæ·ÎµùÈ­¸é");
+			_sceneSwitch = true;
 		}
 
 		this->drawRcRange();

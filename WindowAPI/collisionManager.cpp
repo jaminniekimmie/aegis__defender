@@ -19,7 +19,14 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			{
 				x = i + 5 + (rc.right - rc.left) / 2;
 			
-				return TRUE;
+				return YELLOW;
+			}
+
+			if (r == 177 && g == 78 && b == 0)
+			{
+				x = i + 5 + (rc.right - rc.left) / 2;
+
+				return ORANGE;
 			}
 		}
 		break;
@@ -35,7 +42,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			{
 		//		y = i + 1;
 
-				return TRUE;
+				return YELLOW;
 			}
 		}
 		break;
@@ -51,7 +58,14 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			{
 				x = i - 5 - (rc.right - rc.left) / 2;
 
-				return TRUE;
+				return YELLOW;
+			}
+
+			if (r == 177 && g == 78 && b == 0)
+			{
+				x = i - 5 - (rc.right - rc.left) / 2;
+
+				return ORANGE;
 			}
 		}
 		break;
@@ -67,7 +81,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			{
 				y = i - 1 - (rc.bottom - rc.top) * 0.5;
 
-				return TRUE;
+				return YELLOW;
 			}
 		}
 		break;

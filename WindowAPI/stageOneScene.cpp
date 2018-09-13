@@ -8,7 +8,8 @@ HRESULT stageOneScene::init(void)
 
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
-	_camDebug = false;
+	_camDebug = _sceneSwitch = false;
+	_alpha = 255;
 	
 	if (_playerManager->getPlayerCharacter() == CLU)
 		_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
@@ -17,6 +18,7 @@ HRESULT stageOneScene::init(void)
 
 	CAMERAMANAGER->setCamera(_rcCamera);
 	COLLISIONMANAGER->setPixelMap(_pixelTiles);
+	MONSTERMANAGER->init(1);
 	EFFECTMANAGER->init();
 	
 	this->mapLoad();
@@ -35,12 +37,25 @@ void stageOneScene::release(void)
 void stageOneScene::update(void)
 {
 	_playerManager->update();
+	MONSTERMANAGER->update();
 
 	//temporary
 	if (KEYMANAGER->isOnceKeyDown('Q'))
-		SCENEMANAGER->loadScene("¸ÊÅø");
+		_sceneSwitch = true;
 
 	this->cameraAdjustment();
+	
+	if (!_sceneSwitch)
+	{
+		if (_alpha > 0)
+			_alpha -= 5;
+	}
+	else
+	{
+		_alpha += 5;
+		if (_alpha >= 255)
+			SCENEMANAGER->loadScene("¸ÊÅø");
+	}
 }
 
 void stageOneScene::render(void)
@@ -66,9 +81,11 @@ void stageOneScene::render(void)
 		_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
 	}
 
+	MONSTERMANAGER->render(getMemDC());
 	_playerManager->render();
-
-	//IMAGEMANAGER->render("cursonIcon_idle", getMemDC(), _ptMouse.x, _ptMouse.y);
+	
+	if (_alpha > 0)
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
 }
 
 void stageOneScene::cameraAdjustment()

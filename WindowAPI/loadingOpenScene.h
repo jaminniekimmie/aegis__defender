@@ -7,6 +7,7 @@ class loadingOpenScene : public gameNode
 private:
 	loading * _loading;
 	image * _background;
+	BYTE _alpha;
 
 public:
 	HRESULT init(void);

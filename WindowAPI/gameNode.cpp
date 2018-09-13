@@ -26,7 +26,7 @@ HRESULT gameNode::init(bool managerInit)
 		INIDATA->init();					//INI데이터 초기화
 		TIMEMANAGER->init();				//타임매니져 초기화
 		SOUNDMANAGER->init();				//사운드매니져 초기화
-		//EFFECTMANAGER->init();				//이펙트매니져 초기화
+		EFFECTMANAGER->init();				//이펙트매니져 초기화
 		CAMERAMANAGER->init();				//카메라매니져 초기화
 		COLLISIONMANAGER->init();			//컬리젼매니져 초기화
 	}
@@ -77,6 +77,9 @@ void gameNode::release(void)
 		//컬리젼매니져 싱글톤 해제
 		COLLISIONMANAGER->release();
 		COLLISIONMANAGER->releaseSingleton();
+		//몬스터매니져 싱글톤 해제
+		MONSTERMANAGER->release();
+		MONSTERMANAGER->releaseSingleton();
 	}
 
 	//DC 해제

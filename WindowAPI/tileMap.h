@@ -22,6 +22,7 @@ private:
 	LONG _dragStartX, _dragStartY;
 	LONG _rangeEnd;
 	POINT _globalPtMouse;
+	BYTE _alpha;
 	tagImage _arrowButton[2];
 	tagImage _characterMinor;
 	tagImage _blackSolid;
@@ -46,6 +47,7 @@ private:
 	bool _moveSampleTiles;
 	bool _isLeft;
 	bool _descOn;
+	bool _sceneSwitch;
 	int _sampleTileType;
 	int _count;
 	int _saveDelta;

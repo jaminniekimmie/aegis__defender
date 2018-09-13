@@ -31,8 +31,10 @@ void effect::update(void)
 	if (_isRunning)
 	{
 		if (_isFadeOut)
+		{
 			_alpha -= 5;
-			//_alpha -= 255 / (_effectImg->getMaxFrameX() + 1);
+			_y--;
+		}
 		_effectAni->frameUpdate(_effectFPS);
 	}
 	//이펙트 애니메이션 종료가 되면 멈추기(_isRunning = false;)
