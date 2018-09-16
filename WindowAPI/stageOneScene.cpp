@@ -8,6 +8,10 @@ HRESULT stageOneScene::init(void)
 
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
+
+	_playerManager->getClu()->setX(WINSIZEX / 2);
+	_playerManager->getClu()->setY(TILESIZEY - WINSIZEY);
+
 	_camDebug = _sceneSwitch = false;
 	_alpha = 255;
 	
@@ -20,6 +24,8 @@ HRESULT stageOneScene::init(void)
 	COLLISIONMANAGER->setPixelMap(_pixelTiles);
 	MONSTERMANAGER->init(1);
 	EFFECTMANAGER->init();
+
+	MONSTERMANAGER->setPlayerManager(_playerManager);
 	
 	this->mapLoad();
 

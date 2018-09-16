@@ -15,15 +15,25 @@ void monster::update()
 		break;
 	}
 
+	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight());
+
+	_gravity += 0.55f;
+	_y += _gravity;
+
+	this->collisionProcess();
 	this->frameChange();
 }
 
 void monster::render(HDC hdc)
 {
-	if (CAMERAMANAGER->CameraIn(_image[_state].rc))
+	//if (CAMERAMANAGER->CameraIn(_image[_state].rc))
 	{
-		_image[_state].shadow->alphaFrameRender(hdc, _x - _image[_state].shadow->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, 80);
-		_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top);
+		_image[_state].shadow->alphaFrameRender(hdc, _x - _image[_state].shadow->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, 80);
+		_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
+	}
+	if (KEYMANAGER->isToggleKey('T'))
+	{
+		Rectangle(hdc, _image[_state].rc.left - CAMERAMANAGER->getCamera().left, _image[_state].rc.top - CAMERAMANAGER->getCamera().top, _image[_state].rc.right - CAMERAMANAGER->getCamera().left, _image[_state].rc.bottom - CAMERAMANAGER->getCamera().top);
 	}
 }
 
@@ -34,9 +44,9 @@ void monster::frameChange()
 	_image[_state].shadow->setFrameY(_isLeft);
 	if (_isLeft)
 	{
-		_index--;
 		if (_count % _frameSpeed == 0)
 		{
+			_index--;
 			if (_index < 0)
 				_index = _image[_state].img->getMaxFrameX();
 
@@ -46,9 +56,9 @@ void monster::frameChange()
 	}
 	else
 	{
-		_index++;
 		if (_count % _frameSpeed == 0)
 		{
+			_index++;
 			if (_index > _image[_state].img->getMaxFrameX())
 				_index = 0;
 
@@ -58,16 +68,35 @@ void monster::frameChange()
 	}
 }
 
+void monster::collisionProcess()
+{
+	if (COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, BOTTOM))
+	{
+		_gravity = 0.0f;
+	}
+}
+
 void cricket::init()
 {
 	_image[WALK].img = IMAGEMANAGER->findImage("Cricket_walk");
 	_image[WALK].shadow = IMAGEMANAGER->findImage("Cricket_walk_shadow");
 	_image[FLY].img = IMAGEMANAGER->findImage("Cricket_fly");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("Cricket_fly_shadow");
+	_speed = 3.0f;
+	_angle = -PI_2;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_frameSpeed = 10;
+	_isAlive = true;
+	_isLeft = false;
+	_state = WALK;
 }
 
 void cricket::walk()
 {
+	float angle = 0;
+	float speed = 5.0f;
+	_x += cosf(angle) * speed;
 }
 
 void cricket::fly()
@@ -80,6 +109,7 @@ void rolyPoly_large::init()
 	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
 	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_Large_walk");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
+	_state = WALK;
 }
 
 void rolyPoly_large::walk()
@@ -96,6 +126,7 @@ void rolyPoly_white::init()
 	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
 	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_White_walk");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
+	_state = WALK;
 }
 
 void rolyPoly_white::walk()

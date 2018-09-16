@@ -106,12 +106,13 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 
 	for (int i = 0; i < MAXPLAYERSTATE; i++)
 	{
-		_player[i].alpha = 70;
+		_player[i].alpha = 80;
 	}
 	
 	//체력바 클래스 생성후 초기화
 	_hpBar = new progressBar;
 	_hpBar->init("progressBarFront", "progressBarBack", _x, _y - 20, 50, 10);
+
 	//피통 초기화
 	_maxHp = 100;
 	_currentHp = 100;

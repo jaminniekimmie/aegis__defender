@@ -69,7 +69,8 @@ void mainGame::render(void)
 	//타임매니져 렌더
 	TIMEMANAGER->render(getMemDC());
 
-
+	string test = to_string(_ptMouse.x) + "," + to_string(_ptMouse.y);
+	OutputDebugString((test + "\n").c_str());
 
 //=============================================================
 	//백버퍼의 내용을 HDC에 그린다 (이것도 렌더에 그냥 둘것!!)

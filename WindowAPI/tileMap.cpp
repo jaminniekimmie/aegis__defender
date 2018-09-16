@@ -76,8 +76,9 @@ void tileMap::update(void)
 	_globalPtMouse = { _ptMouse.x + CAMERAMANAGER->getCamera().left, _ptMouse.y + CAMERAMANAGER->getCamera().top };
 	_cursorIcon[0].rc = RectMake(_globalPtMouse.x, _globalPtMouse.y, _cursorIcon[0].img->getWidth(), _cursorIcon[0].img->getHeight());
 	_cursorIcon[1].rc = RectMake(_globalPtMouse.x - 17, _globalPtMouse.y - 10, _cursorIcon[1].img->getFrameWidth(), _cursorIcon[1].img->getFrameHeight());
-	RECT winRc = RectMake(0, 0, WINSIZEX, WINSIZEY);
-	ClipCursor(&winRc);
+	
+	//RECT winRc = RectMake(0, 0, WINSIZEX, WINSIZEY);
+	//ClipCursor(&winRc);
 
 	this->tileSelectPageSetup();
 	this->UIsetup();

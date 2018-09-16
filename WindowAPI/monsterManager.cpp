@@ -17,7 +17,7 @@ HRESULT monsterManager::init(int scene)
 	{
 		MONSTERTYPE type;
 
-		_cricketPos[0].x = 2873, _cricketPos[0].y = 1220;
+		_cricketPos[0].x = WINSIZEX / 2, _cricketPos[0].y = TILESIZEY - WINSIZEY;
 		for (int i = 0; i < 14; i++)
 		{
 			type = CRICKET;
@@ -42,8 +42,6 @@ HRESULT monsterManager::init(int scene)
 		_isGameClear = false;
 	}
 
-
-
 	//스테이지에 오브젝트 몇개인지 찾아서 포문돌리자
 	//오브젝트 수만큼 좌표 배열에 넣어두고 밑에 포문 돌려야함
 
@@ -60,13 +58,29 @@ void monsterManager::release()
 
 void monsterManager::update()
 {
+
+	for (int i = 0; i < _vMonster.size(); i++)
+	{
+	//	if ((180 / 3.14f * getAngle(_vMonster[i]->getX(), _vMonster[i]->getY(), _playerManager->getClu()->getX(), _playerManager->getClu()-/>getY/())) >= 91.f && (180 / 3.14f * getAngle(_vMonster[i]->getX(), _vMonster[i]->getY(), _playerManager->getClu()->getX(), /_playerManager-/>getClu()->getY()) <= 270.f))
+	//	{
+	//		_vMonster[i]->setIsLeft(true);
+	//	}
+	//	else
+	//	{
+	//		_vMonster[i]->setIsLeft(false);
+	//	}
+	//
+		_vMonster[i]->update();
+	}
 }
 
 void monsterManager::render(HDC hdc)
 {
-	//오브젝트 벡터 돌리면서 활성화된 오브젝트들만 그려주면 된다.
-	//getMemDC() 를 못쓰니까 hdc 쓰면 된다.
-
+	for (int i = 0; i < _vMonster.size(); i++)
+	{
+		if (_vMonster[i]->getState() == DEAD) continue;
+		_vMonster[i]->render(hdc);
+	}
 }
 void monsterManager::collisionProcess()
 {

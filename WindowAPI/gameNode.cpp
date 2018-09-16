@@ -78,7 +78,7 @@ void gameNode::release(void)
 		COLLISIONMANAGER->release();
 		COLLISIONMANAGER->releaseSingleton();
 		//몬스터매니져 싱글톤 해제
-		MONSTERMANAGER->release();
+		//MONSTERMANAGER->release();
 		MONSTERMANAGER->releaseSingleton();
 	}
 

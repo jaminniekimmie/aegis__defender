@@ -18,6 +18,7 @@ protected:
 	bool _isLeft;
 	int _count, _index;
 	int _frameSpeed;
+	int _attackCount;
 
 public:
 	float getX() { return _x; }
@@ -30,13 +31,12 @@ public:
 	float getSpeed() { return _speed; }
 	float getAngle() { return _angle; }
 	bool getIsAlive() { return _isAlive; }
+	bool getIsLeft() { return _isLeft; }
+	int getAttackCount() { return _attackCount; }
 	MONSTERSTATE getState() { return _state; }
 	MONSTERTYPE getType() { return _type; }
 	image* getImage(MONSTERSTATE state) { return _image[state].img; }
-	RECT getRect()
-	{
-		RectMakeCenter(_x, _y, _image[_state].img->getWidth(), _image[_state].img->getHeight());
-	}
+	RECT getRect(MONSTERSTATE state) { return _image[state].rc; }
 
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }
@@ -49,10 +49,13 @@ public:
 	void setGravity(float gravity) { _gravity = gravity; }
 	void setIndex(int index) { _index = index; }
 	void setIsAlive(bool isAlive) { _isAlive = isAlive; }
+	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
+	void setAttackCount(int attackCount) { _attackCount = attackCount; }
 	void setState(MONSTERSTATE state) { _state = state; }
 	void setType(MONSTERTYPE type) { _type = type; }
 
 	void frameChange();
+	void collisionProcess();
 
 	virtual void init() = 0;
 	virtual void update();

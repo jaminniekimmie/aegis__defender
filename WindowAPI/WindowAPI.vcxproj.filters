@@ -48,26 +48,23 @@
     <Filter Include="GameFramework2D\이펙트">
       <UniqueIdentifier>{71c9ef92-de11-4d77-a74a-2817260b208f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\DEFENDERS">
-      <UniqueIdentifier>{99ee87d5-f72d-4cd3-9717-27b286d7636b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\DEFENDERS\플레이어">
-      <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\DEFENDERS\타일타일">
-      <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\DEFENDERS\총알총알">
-      <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\체력바">
       <UniqueIdentifier>{b358e3ed-52f5-41a7-99ee-951152f45767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\DEFENDERS\몬스터">
-      <UniqueIdentifier>{2e509d87-0de0-4022-943b-8d1be1d39adf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameFramework2D\유틸\아이콘">
       <UniqueIdentifier>{4e466b79-b5e4-4f48-bc42-280721baa84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\몬스터">
+      <UniqueIdentifier>{2e509d87-0de0-4022-943b-8d1be1d39adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\총알총알">
+      <UniqueIdentifier>{b9eb04df-28c2-4810-892e-c2bfca8911fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\타일타일">
+      <UniqueIdentifier>{f34fa699-ab0b-4fad-9413-5dada275ef80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\플레이어">
+      <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +99,7 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
-      <Filter>MainGame\DEFENDERS\총알총알</Filter>
+      <Filter>MainGame\총알총알</Filter>
     </ClInclude>
     <ClInclude Include="saveData.h">
       <Filter>GameFramework2D\싱글톤데이터</Filter>
@@ -135,19 +132,19 @@
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
     <ClInclude Include="tileNode.h">
-      <Filter>MainGame\DEFENDERS\타일타일</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="tileMap.h">
-      <Filter>MainGame\DEFENDERS\타일타일</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="cameraManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
     <ClInclude Include="buildAMapScene.h">
-      <Filter>MainGame\DEFENDERS\타일타일</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClInclude>
     <ClInclude Include="playerManager.h">
-      <Filter>MainGame\DEFENDERS\플레이어</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="loadingBlackScene.h">
       <Filter>MainGame\로딩화면</Filter>
@@ -155,14 +152,8 @@
     <ClInclude Include="loadingOpenScene.h">
       <Filter>MainGame\로딩화면</Filter>
     </ClInclude>
-    <ClInclude Include="stageOneScene.h">
-      <Filter>MainGame\DEFENDERS</Filter>
-    </ClInclude>
-    <ClInclude Include="stageTwoScene.h">
-      <Filter>MainGame\DEFENDERS</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>MainGame\DEFENDERS\플레이어</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClInclude>
     <ClInclude Include="collisionManager.h">
       <Filter>GameFramework2D\매니져</Filter>
@@ -171,13 +162,19 @@
       <Filter>GameFramework2D\체력바</Filter>
     </ClInclude>
     <ClInclude Include="monster.h">
-      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+      <Filter>MainGame\몬스터</Filter>
     </ClInclude>
     <ClInclude Include="monsterManager.h">
-      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+      <Filter>MainGame\몬스터</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>GameFramework2D\유틸\아이콘</Filter>
+    </ClInclude>
+    <ClInclude Include="stageOneScene.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="stageTwoScene.h">
+      <Filter>MainGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,7 +203,7 @@
       <Filter>GameFramework2D\유틸</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
-      <Filter>MainGame\DEFENDERS\총알총알</Filter>
+      <Filter>MainGame\총알총알</Filter>
     </ClCompile>
     <ClCompile Include="saveData.cpp">
       <Filter>GameFramework2D\싱글톤데이터</Filter>
@@ -239,13 +236,13 @@
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
     <ClCompile Include="tileMap.cpp">
-      <Filter>MainGame\DEFENDERS\타일타일</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
     <ClCompile Include="buildAMapScene.cpp">
-      <Filter>MainGame\DEFENDERS\타일타일</Filter>
+      <Filter>MainGame\타일타일</Filter>
     </ClCompile>
     <ClCompile Include="loadingBlackScene.cpp">
       <Filter>MainGame\로딩화면</Filter>
@@ -253,17 +250,11 @@
     <ClCompile Include="loadingOpenScene.cpp">
       <Filter>MainGame\로딩화면</Filter>
     </ClCompile>
-    <ClCompile Include="stageOneScene.cpp">
-      <Filter>MainGame\DEFENDERS</Filter>
-    </ClCompile>
-    <ClCompile Include="stageTwoScene.cpp">
-      <Filter>MainGame\DEFENDERS</Filter>
-    </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>MainGame\DEFENDERS\플레이어</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
-      <Filter>MainGame\DEFENDERS\플레이어</Filter>
+      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="collisionManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
@@ -272,10 +263,16 @@
       <Filter>GameFramework2D\체력바</Filter>
     </ClCompile>
     <ClCompile Include="monster.cpp">
-      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+      <Filter>MainGame\몬스터</Filter>
     </ClCompile>
     <ClCompile Include="monsterManager.cpp">
-      <Filter>MainGame\DEFENDERS\몬스터</Filter>
+      <Filter>MainGame\몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="stageOneScene.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="stageTwoScene.cpp">
+      <Filter>MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

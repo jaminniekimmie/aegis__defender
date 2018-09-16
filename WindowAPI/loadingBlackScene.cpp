@@ -161,15 +161,15 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
 
-	_loading->loadFrameImage("Cricket_fly", "tex/characters/Cricket_fly_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_fly_shadow", "tex/characters/Cricket_fly_shadow_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_walk", "tex/characters/Cricket_walk_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_walk_shadow", "tex/characters/Cricket_walk_shadow_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_fly", "tex/monsters/Cricket_fly_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_fly_shadow", "tex/monsters/Cricket_fly_shadow_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_walk", "tex/monsters/Cricket_walk_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Cricket_walk_shadow", "tex/monsters/Cricket_walk_shadow_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
 
-	_loading->loadFrameImage("RolyPoly_Large_walk", "tex/characters/RolyPoly_Large_walk_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_Large_walk_shadow", "tex/characters/RolyPoly_Large_walk_shadow_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_White_walk", "tex/characters/RolyPoly_White_walk_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_White_walk_shadow", "tex/characters/RolyPoly_White_walk_shadow_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_Large_walk", "tex/monsters/RolyPoly_Large_walk_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_Large_walk_shadow", "tex/monsters/RolyPoly_Large_walk_shadow_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_White_walk", "tex/monsters/RolyPoly_White_walk_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("RolyPoly_White_walk_shadow", "tex/monsters/RolyPoly_White_walk_shadow_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
 	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
