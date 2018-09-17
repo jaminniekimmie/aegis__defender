@@ -128,6 +128,7 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 	_gravity = 0.0f;
 	_angle = -PI_2;
 	_speed = 8.0f;
+	_speedBoost = 0.0f;
 
 	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = _isLedgeGrab = false;
 	_onLand = true;

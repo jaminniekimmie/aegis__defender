@@ -18,7 +18,7 @@ HRESULT monsterManager::init(int scene)
 		MONSTERTYPE type;
 
 		_cricketPos[0].x = WINSIZEX / 2, _cricketPos[0].y = TILESIZEY - WINSIZEY;
-		for (int i = 0; i < 14; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			type = CRICKET;
 
@@ -28,16 +28,27 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 
-		//_rolyPolyLargePos[0].x = 2873, _rolyPolyLargePos[0].y = 1220;
-		//for (int i = 0; i < 14; i++)
-		//{
-		//	type = ROLYPOLY_LARGE;
-		//
-		//	monster* monster = _factory->createMonster(type);
-		//	monster->setPosition(_rolyPolyLargePos[i].x, _rolyPolyLargePos[i].y);
-		//
-		//	_vMonster.push_back(monster);
-		//}
+		_rolyPolyLargePos[0].x = WINSIZEX / 2, _rolyPolyLargePos[0].y = TILESIZEY - WINSIZEY;
+		for (int i = 0; i < 1; i++)
+		{
+			type = ROLYPOLY_LARGE;
+		
+			monster* monster = _factory->createMonster(type);
+			monster->setPosition(_rolyPolyLargePos[i].x, _rolyPolyLargePos[i].y);
+		
+			_vMonster.push_back(monster);
+		}
+
+		_rolyPolyWhitePos[0].x = WINSIZEX / 2, _rolyPolyWhitePos[0].y = TILESIZEY - WINSIZEY;
+		for (int i = 0; i < 1; i++)
+		{
+			type = ROLYPOLY_WHITE;
+
+			monster* monster = _factory->createMonster(type);
+			monster->setPosition(_rolyPolyWhitePos[i].x, _rolyPolyWhitePos[i].y);
+
+			_vMonster.push_back(monster);
+		}
 
 		_isGameClear = false;
 	}

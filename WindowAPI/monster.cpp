@@ -26,7 +26,7 @@ void monster::update()
 
 void monster::render(HDC hdc)
 {
-	//if (CAMERAMANAGER->CameraIn(_image[_state].rc))
+	if (CAMERAMANAGER->CameraIn(_image[_state].rc))
 	{
 		_image[_state].shadow->alphaFrameRender(hdc, _x - _image[_state].shadow->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, 80);
 		_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
@@ -70,9 +70,14 @@ void monster::frameChange()
 
 void monster::collisionProcess()
 {
-	if (COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, BOTTOM))
+	if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM))
 	{
 		_gravity = 0.0f;
+	}
+	if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, LEFT) ||
+		COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, LEFT))
+	{
+		_isLeft = !_isLeft;
 	}
 }
 
@@ -83,7 +88,7 @@ void cricket::init()
 	_image[FLY].img = IMAGEMANAGER->findImage("Cricket_fly");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("Cricket_fly_shadow");
 	_speed = 3.0f;
-	_angle = -PI_2;
+	_angle = 0.0f;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
 	_frameSpeed = 10;
@@ -93,10 +98,9 @@ void cricket::init()
 }
 
 void cricket::walk()
-{
-	float angle = 0;
-	float speed = 5.0f;
-	_x += cosf(angle) * speed;
+{	
+	_angle = _isLeft * PI;
+	_x += cosf(_angle) * _speed;
 }
 
 void cricket::fly()
@@ -109,11 +113,20 @@ void rolyPoly_large::init()
 	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
 	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_Large_walk");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
+	_speed = 3.0f;
+	_angle = PI;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_frameSpeed = 10;
+	_isAlive = true;
+	_isLeft = true;
 	_state = WALK;
 }
 
 void rolyPoly_large::walk()
 {
+	_angle = _isLeft * PI;
+	_x += cosf(_angle) * _speed;
 }
 
 void rolyPoly_large::fly()
@@ -126,11 +139,20 @@ void rolyPoly_white::init()
 	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
 	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_White_walk");
 	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
+	_speed = 3.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_frameSpeed = 10;
+	_isAlive = true;
+	_isLeft = true;
 	_state = WALK;
 }
 
 void rolyPoly_white::walk()
 {
+	_angle = _isLeft * PI;
+	_x += cosf(_angle) * _speed;
 }
 
 void rolyPoly_white::fly()

@@ -106,6 +106,11 @@ void playerManager::keyInput()
 		_clu->setIsLedgeGrab(false);
 		this->playerJumpRise();
 	}
+	if (KEYMANAGER->isStayKeyDown(VK_SPACE))
+	{
+		_clu->setIsLedgeGrab(false);
+		this->playerJumpRise();
+	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
 		if (_clu->getOnLand())
@@ -184,6 +189,7 @@ void playerManager::playerJumpRise()
 			_clu->setIsJump(true);
 			_clu->setOnLand(false);
 			_clu->setSpeed(15.0f);
+			_clu->setSpeedBoost(_clu->getSpeedBoost() + 0.2f);
 			_clu->setAngle(PI_2);
 			_clu->setGravity(0);
 
@@ -218,7 +224,7 @@ void playerManager::playerJumpFall()
 		}
 	}
 	
-	_clu->setY(_clu->getY() - sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity());
+	_clu->setY(_clu->getY() - sinf(_clu->getAngle()) * (_clu->getSpeed() + _clu->getSpeedBoost()) + _clu->getGravity());
 }
 
 void playerManager::collisionProcess()
