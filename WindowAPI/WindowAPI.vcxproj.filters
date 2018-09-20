@@ -191,6 +191,9 @@
     <ClInclude Include="foregroundElements.h">
       <Filter>MainGame\배경화면</Filter>
     </ClInclude>
+    <ClInclude Include="actor.h">
+      <Filter>MainGame\플레이어</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -297,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="foregroundElements.cpp">
       <Filter>MainGame\배경화면</Filter>
+    </ClCompile>
+    <ClCompile Include="actor.cpp">
+      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

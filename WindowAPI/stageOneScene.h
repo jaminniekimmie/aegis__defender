@@ -10,6 +10,7 @@ class stageOneScene : public gameNode
 private:
 	playerManager* _playerManager;
 	tagTile _tiles[TILEX * TILEY];
+	tagImage _chip_green[7];
 	image * _pixelTiles;
 	image * _pixelMap;
 	RECT _rcCamera;

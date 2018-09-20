@@ -20,12 +20,26 @@ HRESULT stageOneScene::init(void)
 	else if (_playerManager->getPlayerCharacter() == BART)
 		_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 
+	for (int i = 0; i < 7; i++)
+	{
+		_chip_green[i].img = IMAGEMANAGER->findImage("collectibleChip_green");
+		_chip_green[i].isActive = true;
+	}
+
+	_chip_green[0].rc = RectMake(1478, 920, _chip_green[0].img->getWidth(), _chip_green[0].img->getHeight());
+	_chip_green[1].rc = RectMake(2043, 1104, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+	_chip_green[2].rc = RectMake(2043, _chip_green[1].rc.bottom + 2, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+	_chip_green[3].rc = RectMake(2043, _chip_green[2].rc.bottom + 2, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+	_chip_green[4].rc = RectMake(3427, 370, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+	_chip_green[5].rc = RectMake(3427, _chip_green[4].rc.bottom + _chip_green[4].img->getHeight() + 4, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+	_chip_green[6].rc = RectMake(3895, 610, _chip_green[1].img->getWidth(), _chip_green[1].img->getHeight());
+
 	CAMERAMANAGER->setCamera(_rcCamera);
 	CAMERAMANAGER->setRange(7409, 1760);
 	COLLISIONMANAGER->setPixelMap(_pixelMap);
-	//MONSTERMANAGER->init(1);
+	MONSTERMANAGER->init(1);
 
-	//MONSTERMANAGER->setPlayerManager(_playerManager);
+	MONSTERMANAGER->setPlayerManager(_playerManager);
 	
 	cloud* _cloud;
 	for (int i = 0; i < 50; ++i)
@@ -74,7 +88,7 @@ void stageOneScene::release(void)
 void stageOneScene::update(void)
 {
 	_playerManager->update();
-	//MONSTERMANAGER->update();
+	MONSTERMANAGER->update();
 
 	//temporary
 	if (KEYMANAGER->isOnceKeyDown('Q'))
@@ -92,6 +106,14 @@ void stageOneScene::update(void)
 		_alpha += 5;
 		if (_alpha >= 255)
 			SCENEMANAGER->loadScene("¸ÊÅø");
+	}
+	RECT rcTemp;
+	for (int i = 0; i < 7; i++)
+	{
+		if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_chip_green[i].rc))
+		{
+			_chip_green[i].isActive = false;
+		}
 	}
 }
 
@@ -118,20 +140,26 @@ void stageOneScene::render(void)
 	//	_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
 	//}
 
-	IMAGEMANAGER->render("stage1_temp", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 
 	RENDERMANAGER->backgroundRender(getMemDC());
 
 	IMAGEMANAGER->render("stage1_topology", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-
+	for (int i = 0; i < 7; i++)
+	{
+		if (!_chip_green[i].isActive) continue;
+		_chip_green[i].img->render(getMemDC(), _chip_green[i].rc.left - CAMERAMANAGER->getCamera().left, _chip_green[i].rc.top - CAMERAMANAGER->getCamera().top);
+	}
 	if (KEYMANAGER->isToggleKey('P'))
 		_pixelMap->render(getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 
 	MONSTERMANAGER->render(getMemDC());
 	_playerManager->render();
 	
-	RENDERMANAGER->foregroundRender(getMemDC());
+	//RENDERMANAGER->foregroundRender(getMemDC());
+
+	//IMAGEMANAGER->render("stage1_temp", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+	IMAGEMANAGER->render("GUI_temp", getMemDC());
 
 	if (_alpha > 0)
 		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);

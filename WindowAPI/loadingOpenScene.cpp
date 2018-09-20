@@ -91,14 +91,15 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("character_minor", "tex/characters/character_minor_01.bmp", 443, 605, true, RGB(255, 0, 255));
 	_loading->loadImage("text_buildAMap", "tex/UI/text_build_a_map_01.bmp", 514, 92, true, RGB(255, 0, 255));
+	_loading->loadImage("solid_red", "tex/background/redSolid_01.bmp", WINSIZEX, WINSIZEY);
 	_loading->loadImage("solid_black", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
 	_loading->loadImage("textBubble_amber", "tex/characters/amber_text_bubble_01.bmp", 680, 289, true, RGB(255, 0, 255));
 	_loading->loadImage("temp", "tex/UI/build_a_map_page_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	_loading->loadImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
 	_loading->loadImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
-	_loading->loadImage("resource_yellowMineral", "tex/objects/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
-	_loading->loadImage("resource_blueFlowers", "tex/objects/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
-	_loading->loadImage("resource_redFlower", "tex/objects/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_blueFlowers", "tex/resource/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass0", "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass1", "tex/objects/Debris3_1.bmp", 114, 74, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass2", "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
@@ -107,6 +108,13 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255));
 	_loading->loadImage("textBubble_desc_tile_tree", "tex/UI/description_trees_01.bmp", 802, 252, true, RGB(255, 0, 255));
 	_loading->loadImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
+
+	//GUI
+	_loading->loadImage("GUI_temp", "tex/UI/GUI_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	_loading->loadImage("collectibleChip_green", "tex/resource/Collectible_Chip1.bmp", 40, 36, true, RGB(255, 0, 255));
+	_loading->loadImage("collectibleChip_blue", "tex/resource/Collectible_Chip2.bmp", 40, 36, true, RGB(255, 0, 255));
+	_loading->loadImage("collectibleChip_purple", "tex/resource/Collectible_Chip3.bmp", 40, 36, true, RGB(255, 0, 255));
+	_loading->loadImage("collectibleChip_white", "tex/resource/Collectible_Chip4.bmp", 40, 36, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < 9; i++)
 	{

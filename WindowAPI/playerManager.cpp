@@ -236,7 +236,7 @@ void playerManager::collisionProcess()
 			_clu->setOnLand(true);
 		}
 	}
-	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP) == RED)
+	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))// == RED)
 	{
 		_clu->setY(y);
 	}

@@ -16,6 +16,8 @@ class monsterManager : public singletonBase<monsterManager>
 	monsterFactory* _factory;
 	playerManager* _playerManager;
 	fPos _sandwormPos[4];
+	fPos _spiderBabyPos[5];
+	fPos _firedrinkerFlyPos[3];
 	bool _isGameClear;
 	bool _isDead;
 public:

@@ -162,6 +162,11 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
 
 	_loading->loadFrameImage("Sandworm_walk", "tex/monsters/Sandworm_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Sandworm_walk_shadow", "tex/monsters/Sandworm_shadow_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("SpiderBaby_walk", "tex/monsters/Spider_Baby_walk_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("SpiderBaby_walk_shadow", "tex/monsters/Spider_Baby_walk_shadow_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("firedrinkerFly_fly", "tex/monsters/FiredrinkerFly_fly_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("firedrinkerFly_fly_shadow", "tex/monsters/FiredrinkerFly_fly_shadow_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
 	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));

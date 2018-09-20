@@ -14,6 +14,7 @@ protected:
 	float _speed;
 	float _angle;
 	float _gravity;
+	float _range;
 	bool _isAlive;
 	bool _isLeft;
 	int _count, _index;
@@ -60,14 +61,46 @@ public:
 	virtual void init() = 0;
 	virtual void update();
 	virtual void render(HDC hdc);
-	virtual void walk() = 0;
+	virtual void idle() = 0;
+	virtual void move() = 0;
 };
 
 class sandworm : public monster
 {
 private:
 	void init();
-	void walk();
+	void idle();
+	void move();
+
+public:
+};
+
+class spiderBaby : public monster
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class firedrinkerFly : public monster
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class eagle : public monster
+{
+private:
+	void init();
+	void idle();
+	void move();
 
 public:
 };
