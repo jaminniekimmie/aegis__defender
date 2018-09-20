@@ -61,9 +61,6 @@ void playerManager::render(void)
 	_triBullet->render();
 	//_bart->render();
 	_clu->render();
-	char str[64];
-	sprintf(str, "%d", _clu->getCount() % (_clu->getFrameSpeed() * 2));
-	TextOut(getMemDC(), 150, 100, str, strlen(str));
 }
 
 void playerManager::keyInput()
@@ -99,12 +96,6 @@ void playerManager::keyInput()
 				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 			_clu->setIsFaceDown(true);
 		}
-	}
-
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		_clu->setIsLedgeGrab(false);
-		this->playerJumpRise();
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_SPACE))
 	{
@@ -189,7 +180,6 @@ void playerManager::playerJumpRise()
 			_clu->setIsJump(true);
 			_clu->setOnLand(false);
 			_clu->setSpeed(15.0f);
-			_clu->setSpeedBoost(_clu->getSpeedBoost() + 0.2f);
 			_clu->setAngle(PI_2);
 			_clu->setGravity(0);
 
@@ -197,7 +187,7 @@ void playerManager::playerJumpRise()
 		}
 	}
 }
-
+//역시 이미지는 사람들이 다 속는다 열심히 하는줄 안다~~
 void playerManager::playerJumpFall()
 {
 	if (!_clu->getIsLedgeGrab())
@@ -224,7 +214,7 @@ void playerManager::playerJumpFall()
 		}
 	}
 	
-	_clu->setY(_clu->getY() - sinf(_clu->getAngle()) * (_clu->getSpeed() + _clu->getSpeedBoost()) + _clu->getGravity());
+	_clu->setY(_clu->getY() - sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity());
 }
 
 void playerManager::collisionProcess()
@@ -246,55 +236,58 @@ void playerManager::collisionProcess()
 			_clu->setOnLand(true);
 		}
 	}
-	else
+	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP) == RED)
 	{
-		//if (COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(0), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == ORANGE || 
-		//	COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(1), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == ORANGE)
+		_clu->setY(y);
+	}
+
+	if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == BLUE)
+	{
+		if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() >= 0)
+		{
+			_clu->setSpeed(0.0f);
+			_clu->setGravity(0.0f);
+			_clu->setAngle(-PI_2);
+			_clu->setY(y);
+			_clu->setIsJump(false);
+			if (!_clu->getOnLand())
+				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+			_clu->setOnLand(true);
+		}
+	}
+
+
+	//if (_clu->getOnLand())
+	{
+		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
+		{
+			_clu->setX(x);
+			if (!_clu->getIsJump())
+				_clu->setState(PUSH);
+		}
+	}
+
+	//여기서 채팅 마아아아아악 치면 시영이가 피식하고 무한반복
+	//후우.........
+
+	//else
+	{
+		//if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) == ORANGE ||
+		//	COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT) == ORANGE)
 		//{
-		//	if (!_clu->getOnLand())
+		//	if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() >= 0)
 		//	{
 		//		_clu->setSpeed(0.0f);
 		//		_clu->setGravity(0.0f);
 		//		_clu->setAngle(-PI_2);
+		//		_clu->setX(x);
 		//		_clu->setOnLand(false);
 		//		_clu->setIsJump(false);
 		//		_clu->setIsLedgeGrab(true);
 		//		_clu->setState(LEDGEGRAB);
 		//	}
 		//}
-
-		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))
-		{
-		}
-	}
-
-
-	if (_clu->getOnLand())
-	{
-		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) ||
-			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
-		{
-			_clu->setX(x);
-			_clu->setState(PUSH);
-		}
-	}
-	else
-	{
-		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) == ORANGE ||
-			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT) == ORANGE)
-		{
-			if (-sinf(_clu->getAngle()) * _clu->getSpeed() + _clu->getGravity() >= 0)
-			{
-				_clu->setSpeed(0.0f);
-				_clu->setGravity(0.0f);
-				_clu->setAngle(-PI_2);
-				_clu->setX(x);
-				_clu->setOnLand(false);
-				_clu->setIsJump(false);
-				_clu->setIsLedgeGrab(true);
-				_clu->setState(LEDGEGRAB);
-			}
-		}
 		//if (COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(0), x, y, _clu->getSpeed() / 2, _clu->getGravity(), BOTTOM) == ORANGE ||
 		//	COLLISIONMANAGER->pixelCollision(_clu->getLedgeRc(1), x, y, _clu->getSpeed() / 2, _clu->getGravity(), BOTTOM) == ORANGE)
 		//{

@@ -161,15 +161,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
 
-	_loading->loadFrameImage("Cricket_fly", "tex/monsters/Cricket_fly_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_fly_shadow", "tex/monsters/Cricket_fly_shadow_01.bmp", 80 * 4, 160, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_walk", "tex/monsters/Cricket_walk_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Cricket_walk_shadow", "tex/monsters/Cricket_walk_shadow_01.bmp", 80 * 11, 160, 11, 2, true, RGB(255, 0, 255));
-
-	_loading->loadFrameImage("RolyPoly_Large_walk", "tex/monsters/RolyPoly_Large_walk_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_Large_walk_shadow", "tex/monsters/RolyPoly_Large_walk_shadow_01.bmp", 480, 132, 5, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_White_walk", "tex/monsters/RolyPoly_White_walk_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("RolyPoly_White_walk_shadow", "tex/monsters/RolyPoly_White_walk_shadow_01.bmp", 982, 132, 12, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Sandworm_walk", "tex/monsters/Sandworm_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
 	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
@@ -204,6 +196,31 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
 	_loading->loadImage("dot_teal", "tex/fx/dot_teal_01.bmp", 2, 2);
 	_loading->loadImage("dot_white", "tex/fx/dot_white_01.bmp", 2, 2);
+	//11시간 잤죠 ?/
+	_loading->loadImage("sculpture_back_01", "tex/objects/sculpture_back_01.bmp", 520, 384, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_back_02", "tex/objects/sculpture_back_02.bmp", 238, 224, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_back_03", "tex/objects/sculpture_back_03.bmp", 176, 306, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_back_04", "tex/objects/sculpture_back_04.bmp", 176, 324, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_back_05", "tex/objects/sculpture_back_05.bmp", 170, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_back_06", "tex/objects/sculpture_back_06.bmp", 352, 266, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_01", "tex/objects/sculpture_front_01.bmp", 176, 306, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_02", "tex/objects/sculpture_front_02.bmp", 108, 210, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_03", "tex/objects/sculpture_front_03.bmp", 170, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_04", "tex/objects/sculpture_front_04.bmp", 352, 266, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_05", "tex/objects/sculpture_front_05.bmp", 176, 324, true, RGB(255, 0, 255));
+	_loading->loadImage("stage1_topology", "tex/map/map_topology_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
+	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
+	_loading->loadImage("stage1_temp", "tex/map/map_temp_01.bmp", 7409, 1760);
+
+	_loading->loadImage("Cloud1", "tex/map/Cloud1.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud2", "tex/map/Cloud2.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud3", "tex/map/Cloud3.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud4", "tex/map/Cloud4.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud5", "tex/map/Cloud5.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud6", "tex/map/Cloud6.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud7", "tex/map/Cloud7.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud8", "tex/map/Cloud8.bmp", 240, 240, true, RGB(255, 0, 255));
+	_loading->loadImage("Cloud9", "tex/map/Cloud9.bmp", 240, 240, true, RGB(255, 0, 255));
 }
 
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)

@@ -66,6 +66,12 @@
     <Filter Include="MainGame\플레이어">
       <UniqueIdentifier>{8dedb022-032e-4e6d-955f-9603c8277adf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\스테이지">
+      <UniqueIdentifier>{df7aa5ef-19ce-4eb3-82b5-42733908d21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\배경화면">
+      <UniqueIdentifier>{f0d41c6c-2d6e-4829-8b0d-e16bcc0d3878}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h">
@@ -171,10 +177,19 @@
       <Filter>GameFramework2D\유틸\아이콘</Filter>
     </ClInclude>
     <ClInclude Include="stageOneScene.h">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\스테이지</Filter>
     </ClInclude>
     <ClInclude Include="stageTwoScene.h">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\스테이지</Filter>
+    </ClInclude>
+    <ClInclude Include="backgroundElements.h">
+      <Filter>MainGame\배경화면</Filter>
+    </ClInclude>
+    <ClInclude Include="renderManager.h">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
+    <ClInclude Include="foregroundElements.h">
+      <Filter>MainGame\배경화면</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,10 +284,19 @@
       <Filter>MainGame\몬스터</Filter>
     </ClCompile>
     <ClCompile Include="stageOneScene.cpp">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\스테이지</Filter>
     </ClCompile>
     <ClCompile Include="stageTwoScene.cpp">
-      <Filter>MainGame</Filter>
+      <Filter>MainGame\스테이지</Filter>
+    </ClCompile>
+    <ClCompile Include="backgroundElements.cpp">
+      <Filter>MainGame\배경화면</Filter>
+    </ClCompile>
+    <ClCompile Include="renderManager.cpp">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClCompile>
+    <ClCompile Include="foregroundElements.cpp">
+      <Filter>MainGame\배경화면</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,9 +8,6 @@ void monster::update()
 	case WALK:
 		walk();
 		break;
-	case FLY:
-		fly();
-		break;
 	case DEAD:
 		break;
 	}
@@ -81,12 +78,10 @@ void monster::collisionProcess()
 	}
 }
 
-void cricket::init()
+void sandworm::init()
 {
-	_image[WALK].img = IMAGEMANAGER->findImage("Cricket_walk");
-	_image[WALK].shadow = IMAGEMANAGER->findImage("Cricket_walk_shadow");
-	_image[FLY].img = IMAGEMANAGER->findImage("Cricket_fly");
-	_image[FLY].shadow = IMAGEMANAGER->findImage("Cricket_fly_shadow");
+	_image[WALK].img = IMAGEMANAGER->findImage("Sandworm");
+	_image[WALK].shadow = IMAGEMANAGER->findImage("Sandworm");
 	_speed = 3.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -97,66 +92,10 @@ void cricket::init()
 	_state = WALK;
 }
 
-void cricket::walk()
-{	
-	_angle = _isLeft * PI;
-	_x += cosf(_angle) * _speed;
-}
-
-void cricket::fly()
-{
-}
-
-void rolyPoly_large::init()
-{
-	_image[WALK].img = IMAGEMANAGER->findImage("RolyPoly_Large_walk");
-	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
-	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_Large_walk");
-	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_Large_walk_shadow");
-	_speed = 3.0f;
-	_angle = PI;
-	_gravity = 0.0f;
-	_count = 0, _index = 0;
-	_frameSpeed = 10;
-	_isAlive = true;
-	_isLeft = true;
-	_state = WALK;
-}
-
-void rolyPoly_large::walk()
+void sandworm::walk()
 {
 	_angle = _isLeft * PI;
 	_x += cosf(_angle) * _speed;
-}
-
-void rolyPoly_large::fly()
-{
-}
-
-void rolyPoly_white::init()
-{
-	_image[WALK].img = IMAGEMANAGER->findImage("RolyPoly_White_walk");
-	_image[WALK].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
-	_image[FLY].img = IMAGEMANAGER->findImage("RolyPoly_White_walk");
-	_image[FLY].shadow = IMAGEMANAGER->findImage("RolyPoly_White_walk_shadow");
-	_speed = 3.0f;
-	_angle = 0.0f;
-	_gravity = 0.0f;
-	_count = 0, _index = 0;
-	_frameSpeed = 10;
-	_isAlive = true;
-	_isLeft = true;
-	_state = WALK;
-}
-
-void rolyPoly_white::walk()
-{
-	_angle = _isLeft * PI;
-	_x += cosf(_angle) * _speed;
-}
-
-void rolyPoly_white::fly()
-{
 }
 
 monster * monsterFactory::createMonster(MONSTERTYPE type)
@@ -164,14 +103,8 @@ monster * monsterFactory::createMonster(MONSTERTYPE type)
 	monster* _monster;
 	switch (type)
 	{
-	case CRICKET:
-		_monster = new cricket;
-		break;
-	case ROLYPOLY_LARGE:
-		_monster = new rolyPoly_large;
-		break;
-	case ROLYPOLY_WHITE:
-		_monster = new rolyPoly_white;
+	case SANDWORM:
+		_monster = new sandworm;
 		break;
 	default:
 		//´©±¸³Ä ³Í??

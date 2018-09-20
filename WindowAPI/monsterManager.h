@@ -15,9 +15,7 @@ class monsterManager : public singletonBase<monsterManager>
 	vector<monster*> _vMonster;
 	monsterFactory* _factory;
 	playerManager* _playerManager;
-	fPos _cricketPos[2];
-	fPos _rolyPolyLargePos[1];
-	fPos _rolyPolyWhitePos[3];
+	fPos _sandwormPos[4];
 	bool _isGameClear;
 	bool _isDead;
 public:

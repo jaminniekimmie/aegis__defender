@@ -29,6 +29,7 @@ HRESULT gameNode::init(bool managerInit)
 		EFFECTMANAGER->init();				//이펙트매니져 초기화
 		CAMERAMANAGER->init();				//카메라매니져 초기화
 		COLLISIONMANAGER->init();			//컬리젼매니져 초기화
+		RENDERMANAGER->init();				//렌더매니져 초기화
 	}
 
 	return S_OK;
@@ -80,6 +81,9 @@ void gameNode::release(void)
 		//몬스터매니져 싱글톤 해제
 		//MONSTERMANAGER->release();
 		MONSTERMANAGER->releaseSingleton();
+		//렌더매니져 싱글톤 해제
+		MONSTERMANAGER->release();
+		RENDERMANAGER->releaseSingleton();
 	}
 
 	//DC 해제

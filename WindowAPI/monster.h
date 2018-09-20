@@ -61,35 +61,13 @@ public:
 	virtual void update();
 	virtual void render(HDC hdc);
 	virtual void walk() = 0;
-	virtual void fly() = 0;
 };
 
-class cricket : public monster
+class sandworm : public monster
 {
 private:
 	void init();
 	void walk();
-	void fly();
-
-public:
-};
-
-class rolyPoly_large : public monster
-{
-private:
-	void init();
-	void walk();
-	void fly();
-
-public:
-};
-
-class rolyPoly_white : public monster
-{
-private:
-	void init();
-	void walk();
-	void fly();
 
 public:
 };

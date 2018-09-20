@@ -17,35 +17,13 @@ HRESULT monsterManager::init(int scene)
 	{
 		MONSTERTYPE type;
 
-		_cricketPos[0].x = WINSIZEX / 2, _cricketPos[0].y = TILESIZEY - WINSIZEY;
+		_sandwormPos[0].x = WINSIZEX / 2, _sandwormPos[0].y = TILESIZEY - WINSIZEY;
 		for (int i = 0; i < 1; i++)
 		{
-			type = CRICKET;
+			type = SANDWORM;
 
 			monster* monster = _factory->createMonster(type);
-			monster->setPosition(_cricketPos[i].x, _cricketPos[i].y);
-
-			_vMonster.push_back(monster);
-		}
-
-		_rolyPolyLargePos[0].x = WINSIZEX / 2, _rolyPolyLargePos[0].y = TILESIZEY - WINSIZEY;
-		for (int i = 0; i < 1; i++)
-		{
-			type = ROLYPOLY_LARGE;
-		
-			monster* monster = _factory->createMonster(type);
-			monster->setPosition(_rolyPolyLargePos[i].x, _rolyPolyLargePos[i].y);
-		
-			_vMonster.push_back(monster);
-		}
-
-		_rolyPolyWhitePos[0].x = WINSIZEX / 2, _rolyPolyWhitePos[0].y = TILESIZEY - WINSIZEY;
-		for (int i = 0; i < 1; i++)
-		{
-			type = ROLYPOLY_WHITE;
-
-			monster* monster = _factory->createMonster(type);
-			monster->setPosition(_rolyPolyWhitePos[i].x, _rolyPolyWhitePos[i].y);
+			monster->setPosition(_sandwormPos[i].x, _sandwormPos[i].y);
 
 			_vMonster.push_back(monster);
 		}
@@ -95,4 +73,5 @@ void monsterManager::render(HDC hdc)
 }
 void monsterManager::collisionProcess()
 {
+
 }

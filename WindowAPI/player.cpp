@@ -127,8 +127,7 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 	_count = _index = _weaponCount = 0;
 	_gravity = 0.0f;
 	_angle = -PI_2;
-	_speed = 8.0f;
-	_speedBoost = 0.0f;
+	_speed = 15.0f;
 
 	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = _isLedgeGrab = false;
 	_onLand = true;
@@ -153,12 +152,18 @@ void player::update(void)
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
 
-	if (_playerState != AIM_FIRE && 
-		_playerState != AIM_IDLE && 
-		_playerState != CHARGE && 
-		_playerState != FULLCHARGE && 
-		_playerState != FULLCHARGE_IDLE && 
-		_playerState != JUMPFIRE_FALL && 
+	this->frameChangeLoop();
+	this->weaponSwitch(_weaponSwitch);
+}
+
+void player::render(void)
+{
+	if (_playerState != AIM_FIRE &&
+		_playerState != AIM_IDLE &&
+		_playerState != CHARGE &&
+		_playerState != FULLCHARGE &&
+		_playerState != FULLCHARGE_IDLE &&
+		_playerState != JUMPFIRE_FALL &&
 		_playerState != JUMPFIRE_RISE &&
 		_playerState != AIM_DIAGONAL &&
 		_playerState != AIM_DIAGONAL_FULLCHARGE &&
@@ -166,12 +171,6 @@ void player::update(void)
 		_playerState != AIM_DIAGONALFIRE)
 		_isFired = false;
 
-	this->frameChangeLoop();
-	this->weaponSwitch(_weaponSwitch);
-}
-
-void player::render(void)
-{
 	this->frameChangeLoop();
 
 	if (CAMERAMANAGER->CameraIn(_rc))

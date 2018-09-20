@@ -2,6 +2,8 @@
 #include "gameNode.h"
 #include "tileNode.h"
 #include "playerManager.h"
+#include "backgroundElements.h"
+#include "foregroundElements.h"
 
 class stageOneScene : public gameNode
 {
@@ -9,6 +11,7 @@ private:
 	playerManager* _playerManager;
 	tagTile _tiles[TILEX * TILEY];
 	image * _pixelTiles;
+	image * _pixelMap;
 	RECT _rcCamera;
 	BYTE _alpha;
 	bool _camDebug;

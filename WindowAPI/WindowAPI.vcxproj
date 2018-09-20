@@ -148,12 +148,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
+    <ClInclude Include="backgroundElements.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="foregroundElements.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
@@ -169,6 +171,7 @@
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
+    <ClInclude Include="renderManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="saveData.h" />
     <ClInclude Include="sceneManager.h" />
@@ -186,11 +189,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="backgroundElements.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="foregroundElements.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
@@ -205,6 +210,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="renderManager.cpp" />
     <ClCompile Include="saveData.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="soundManager.cpp" />
