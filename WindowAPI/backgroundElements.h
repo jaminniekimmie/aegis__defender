@@ -23,6 +23,7 @@ public:
 	void setSpeed(float speed) { _speed = speed; }
 
 	image* getImage() { return _img; }
+	RECT getRect() { return RectMake(_x, _y, _img->getWidth(), _img->getWidth()); }
 	float getX() { return _x; }
 	float getY() { return _y; }
 	float getZ() { return _z; }

@@ -72,6 +72,9 @@
     <Filter Include="MainGame\배경화면">
       <UniqueIdentifier>{f0d41c6c-2d6e-4829-8b0d-e16bcc0d3878}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\오브젝트">
+      <UniqueIdentifier>{f855a7a0-961c-4543-8157-0786773bb1f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h">
@@ -170,9 +173,6 @@
     <ClInclude Include="monster.h">
       <Filter>MainGame\몬스터</Filter>
     </ClInclude>
-    <ClInclude Include="monsterManager.h">
-      <Filter>MainGame\몬스터</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>GameFramework2D\유틸\아이콘</Filter>
     </ClInclude>
@@ -193,6 +193,15 @@
     </ClInclude>
     <ClInclude Include="actor.h">
       <Filter>MainGame\플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="monsterManager.h">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
+    <ClInclude Include="objectManager.h">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
+    <ClInclude Include="objects.h">
+      <Filter>MainGame\오브젝트</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,9 +292,6 @@
     <ClCompile Include="monster.cpp">
       <Filter>MainGame\몬스터</Filter>
     </ClCompile>
-    <ClCompile Include="monsterManager.cpp">
-      <Filter>MainGame\몬스터</Filter>
-    </ClCompile>
     <ClCompile Include="stageOneScene.cpp">
       <Filter>MainGame\스테이지</Filter>
     </ClCompile>
@@ -303,6 +309,15 @@
     </ClCompile>
     <ClCompile Include="actor.cpp">
       <Filter>MainGame\플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="monsterManager.cpp">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClCompile>
+    <ClCompile Include="objectManager.cpp">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClCompile>
+    <ClCompile Include="objects.cpp">
+      <Filter>MainGame\오브젝트</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@ void monster::update()
 	{
 	case MONSTER_IDLE:
 		idle();
+		break;
 	case MONSTER_MOVE:
 		move();
 		break;

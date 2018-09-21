@@ -100,6 +100,13 @@ public:
 
 	void collision();
 
+	vector<tagBullet> getVBullet() { return _vBullet; }
+	vector<tagBullet>::iterator getViBullet() { return _viBullet; }
+	vector<tagBullet> getVParticle() { return _vParticle; }
+	vector<tagBullet>::iterator getViParticle() { return _viParticle; }
+	vector<tagBullet> getVMagazine() { return _vMagazine; }
+	vector<tagBullet>::iterator getViMagazine() { return _viMagazine; }
+
 	triBullet() {}
 	~triBullet() {}
 };

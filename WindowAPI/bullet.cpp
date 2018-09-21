@@ -111,7 +111,6 @@ void bullet::fire(float x, float y, float angle, float speed)
 		_vParticle.push_back(particle);
 	}
 
-
 	tagBullet magazine;
 	ZeroMemory(&magazine, sizeof(tagBullet));
 	magazine.bulletImage = IMAGEMANAGER->findImage("magazine");

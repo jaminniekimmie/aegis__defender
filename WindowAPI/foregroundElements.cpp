@@ -27,6 +27,6 @@ void sculptures_front::update()
 
 void sculptures_front::changeImage()
 {
-	int c = RND->getInt(4);
+	int c = RND->getFromIntTo(0, 4);
 	_img = IMAGEMANAGER->findImage("sculpture_front_0" + to_string(c + 1));
 }

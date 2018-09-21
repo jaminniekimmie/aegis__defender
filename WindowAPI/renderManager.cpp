@@ -19,7 +19,6 @@ void renderManager::render(HDC hdc)
 void renderManager::backgroundRender(HDC hdc)
 {
 	multimap<float, backgroundElements*>::iterator iter;
-	RECT rc;
 	float centerX = CAMERAMANAGER->getCamera().left + WINSIZEX / 2, centerY = CAMERAMANAGER->getCamera().top + WINSIZEY / 2;
 	float x, y, z;
 	float width, height;
@@ -35,9 +34,8 @@ void renderManager::backgroundRender(HDC hdc)
 			x = WINSIZEX / 2 + (iter->second->getX() - centerX) / (5 - z);
 			y = WINSIZEY / 2 + (iter->second->getY() - centerY) / (5 - z);
 
-			rc = RectMake(x, y, width, height);
-
-			//if (CAMERAMANAGER->CameraIn(rc))
+			if (CAMERAMANAGER->getCamera().left <= x + iter->second->getImage()->getWidth() && CAMERAMANAGER->getCamera().right >= x &&
+				CAMERAMANAGER->getCamera().top <= y + iter->second->getImage()->getHeight() && CAMERAMANAGER->getCamera().bottom >= y)
 			{
 				iter->second->render(x, y);
 			}
@@ -48,7 +46,6 @@ void renderManager::backgroundRender(HDC hdc)
 void renderManager::foregroundRender(HDC hdc)
 {
 	multimap<float, backgroundElements*>::iterator iter;
-	RECT rc;
 	float centerX = CAMERAMANAGER->getCamera().left + WINSIZEX / 2, centerY = CAMERAMANAGER->getCamera().top + WINSIZEY / 2;
 	float x, y, z;
 	float width, height;
@@ -64,9 +61,8 @@ void renderManager::foregroundRender(HDC hdc)
 			x = WINSIZEX / 2 + (iter->second->getX() - centerX) * (5 - z);
 			y = WINSIZEY / 2 + (iter->second->getY() - centerY) * (5 - z);
 
-			rc = RectMake(x, y, width, height);
-
-			if (CAMERAMANAGER->CameraIn(rc))
+			if (CAMERAMANAGER->getCamera().left <= x && CAMERAMANAGER->getCamera().right >= x &&
+				CAMERAMANAGER->getCamera().top <= y && CAMERAMANAGER->getCamera().bottom >= y)
 			{
 				iter->second->render(x, y);
 			}

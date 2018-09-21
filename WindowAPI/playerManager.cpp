@@ -1081,3 +1081,7 @@ void playerManager::bulletFire()
 		}
 	}
 }
+
+void playerManager::objectCollision()
+{
+}

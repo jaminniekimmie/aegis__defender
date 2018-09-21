@@ -168,6 +168,8 @@
     <ClInclude Include="mainGame.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="monsterManager.h" />
+    <ClInclude Include="objectManager.h" />
+    <ClInclude Include="objects.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="progressBar.h" />
@@ -209,6 +211,8 @@
     <ClCompile Include="mainGame.cpp" />
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="monsterManager.cpp" />
+    <ClCompile Include="objectManager.cpp" />
+    <ClCompile Include="objects.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="progressBar.cpp" />

@@ -24,7 +24,9 @@ public:
 	player * getClu() { return _clu; }
 	player * getBart() { return _bart; }
 	PLAYERCHARACTER getPlayerCharacter() { return _playerCharacter; }
-	
+	bullet * getBullet() { return _bullet; }
+	triBullet * getTriBullet() { return _triBullet; }
+
 	void keyInput();
 	void playerRun(bool isLeft);
 	void playerJumpRise();
@@ -42,6 +44,7 @@ public:
 	void playerBored();
 	void playerUpset();
 	void bulletFire();
+	void objectCollision();
 
 	playerManager() {}
 	~playerManager() {}

@@ -8,7 +8,7 @@ void backgroundElements::render(int x, int y)
 
 HRESULT cloud::init()
 {
-	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth() * 0.33);
 	_y = RND->getInt(CAMERAMANAGER->getMaxHeight() * 1.5);
 	_z = RND->getInt(4) + 1;
 	_speed = 0.2f;
@@ -34,7 +34,7 @@ void cloud::update()
 
 void cloud::changeImage()
 {
-	int c = RND->getInt(8);
+	int c = RND->getFromIntTo(0, 8);
 	_img = IMAGEMANAGER->findImage("Cloud" + to_string(c + 1));
 }
 
@@ -59,6 +59,6 @@ void sculptures_back::update()
 
 void sculptures_back::changeImage()
 {
-	int c = RND->getInt(5);
+	int c = RND->getFromIntTo(0, 5);
 	_img = IMAGEMANAGER->findImage("sculpture_back_0" + to_string(c + 1));
 }

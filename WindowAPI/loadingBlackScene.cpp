@@ -185,6 +185,11 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_bulletPuff3", "tex/fx/bulletPuff3.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bulletPuff4", "tex/fx/bulletPuff4.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bulletPuff5", "tex/fx/bulletPuff5.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_ellipsePuff1", "tex/fx/ellipsePuff1.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_ellipsePuff2", "tex/fx/ellipsePuff2.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_ellipsePuff3", "tex/fx/ellipsePuff3.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_ellipsePuff4", "tex/fx/ellipsePuff4.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_ellipsePuff5", "tex/fx/ellipsePuff5.bmp", 640, 80, 8, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bulletFire_left", "tex/fx/projectileFire_left.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bulletFire_right", "tex/fx/projectileFire_right.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bulletFire_diagonal_left", "tex/fx/projectileFire_diagonal_left.bmp", 240, 59, 4, 1, true, RGB(255, 0, 255));
@@ -251,6 +256,11 @@ void loadingBlackScene::loadingEffect()
 	EFFECTMANAGER->addEffect("bulletPuff3", "fx_bulletPuff3", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff4", "fx_bulletPuff4", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff5", "fx_bulletPuff5", 0.4f, 5);
+	EFFECTMANAGER->addEffect("ellipsePuff1", "fx_ellipsePuff1", 0.4f, 5);
+	EFFECTMANAGER->addEffect("ellipsePuff2", "fx_ellipsePuff2", 0.4f, 5);
+	EFFECTMANAGER->addEffect("ellipsePuff3", "fx_ellipsePuff3", 0.4f, 5);
+	EFFECTMANAGER->addEffect("ellipsePuff4", "fx_ellipsePuff4", 0.4f, 5);
+	EFFECTMANAGER->addEffect("ellipsePuff5", "fx_ellipsePuff5", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletFire0", "fx_bulletFire_right", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletFire1", "fx_bulletFire_left", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletFire2", "fx_bulletFire_diagonal_right", 0.4f, 5);

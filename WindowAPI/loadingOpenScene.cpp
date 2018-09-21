@@ -97,9 +97,6 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("temp", "tex/UI/build_a_map_page_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	_loading->loadImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
 	_loading->loadImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
-	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
-	_loading->loadImage("resource_blueFlowers", "tex/resource/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
-	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass0", "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass1", "tex/objects/Debris3_1.bmp", 114, 74, true, RGB(255, 0, 255));
 	_loading->loadImage("object_grass2", "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
@@ -115,6 +112,11 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("collectibleChip_blue", "tex/resource/Collectible_Chip2.bmp", 40, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("collectibleChip_purple", "tex/resource/Collectible_Chip3.bmp", 40, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("collectibleChip_white", "tex/resource/Collectible_Chip4.bmp", 40, 36, true, RGB(255, 0, 255));
+	_loading->loadImage("heart_red", "tex/resource/Heart_red_01.bmp", 18, 16, true, RGB(255, 0, 255));
+	_loading->loadImage("heart_yellow", "tex/resource/Heart_yellow_01.bmp", 18, 16, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_blueFlowers", "tex/resource/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < 9; i++)
 	{
