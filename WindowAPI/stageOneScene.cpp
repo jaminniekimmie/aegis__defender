@@ -13,7 +13,7 @@ HRESULT stageOneScene::init(void)
 	_pixelMap->init("tex/map/map_pixel_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
 
 	_playerManager->getClu()->setX(755);
-	_playerManager->getClu()->setY(1320);
+	_playerManager->getClu()->setY(1300);
 
 	if (_playerManager->getPlayerCharacter() == CLU)
 		_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
@@ -24,8 +24,9 @@ HRESULT stageOneScene::init(void)
 	CAMERAMANAGER->setRange(7409, 1760);
 	COLLISIONMANAGER->setPixelMap(_pixelMap);
 	MONSTERMANAGER->init(1);
-
 	MONSTERMANAGER->setPlayerManager(_playerManager);
+	OBJECTMANAGER->init(1);
+	OBJECTMANAGER->setPlayerManager(_playerManager);
 	
 	cloud* _cloud;
 	for (int i = 0; i < 40; ++i)
@@ -56,6 +57,8 @@ HRESULT stageOneScene::init(void)
 	_camDebug = _sceneSwitch = false;
 	_alpha = 255;
 
+	ShowCursor(true);
+
 	return S_OK;
 }
 
@@ -75,6 +78,7 @@ void stageOneScene::update(void)
 {
 	_playerManager->update();
 	MONSTERMANAGER->update();
+	OBJECTMANAGER->update();
 
 	//temporary
 	if (KEYMANAGER->isOnceKeyDown('Q'))
@@ -129,6 +133,7 @@ void stageOneScene::render(void)
 
 	MONSTERMANAGER->render(getMemDC());
 	_playerManager->render();
+	OBJECTMANAGER->render(getMemDC());
 	
 	//RENDERMANAGER->foregroundRender(getMemDC());
 

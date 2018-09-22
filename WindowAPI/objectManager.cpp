@@ -25,7 +25,6 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_chipGreenPos[i].x, _chipGreenPos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
@@ -45,7 +44,6 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_chipBluePos[i].x, _chipBluePos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
@@ -58,13 +56,12 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_chipPurplePos[i].x, _chipPurplePos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
 
 		//HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, DOOR_DNA
-		_heartYellowPos[0].x = 3710, _heartYellowPos[0].y = 1030;
+		_heartYellowPos[0].x = 3712, _heartYellowPos[0].y = 1035;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -72,7 +69,6 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_heartYellowPos[i].x, _heartYellowPos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
@@ -91,20 +87,19 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_bloomFlowerPos[i].x, _bloomFlowerPos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
 
-		_mineralPos[0].x = 6277, _mineralPos[0].y = 574;
+		_mineralPos[0].x = 6235, _mineralPos[0].y = 560;
+		_mineralPos[1].x = 6277, _mineralPos[1].y = 574;
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			type = MINERAL;
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_mineralPos[i].x, _mineralPos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
@@ -117,7 +112,6 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_blueFlowerPos[i].x, _blueFlowerPos[i].y);
-			object->init();
 
 			_vObject.push_back(object);
 		}
@@ -143,31 +137,34 @@ void objectManager::update()
 		
 		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= HEART_YELLOW)
 		{
-			if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vObject[i]->getRect(_vObject[i]->getState())))
+			if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vObject[i]->getRect()))
 			{
 				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
 				_vObject[i]->setState(OBJECT_INACTIVE);
+				break;
 			}
 		}
 		else if (BLOOMFLOWER <= _vObject[i]->getType() && _vObject[i]->getType() <= BLUEFLOWER)
 		{
-			for (int j = 0; j < _playerManager->getBullet()->getVBullet().size; j++)
+			for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
 			{
-				if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[i]->getRect(_vObject[i]->getState())))
+				if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[i]->getRect()))
 				{
 					EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
 					_playerManager->getBullet()->getVBullet().erase(_playerManager->getBullet()->getVBullet().begin() + j);
+					break;
 				}
 			}
 
-			for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size; j++)
+			for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
 			{
 				if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
 
-				if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[i]->getRect(_vObject[i]->getState())))
+				if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[i]->getRect()))
 				{
 					EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
 					_playerManager->getTriBullet()->getVBullet()[j].fire = false;
+					break;
 				}
 			}
 		}

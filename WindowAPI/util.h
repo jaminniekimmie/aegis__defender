@@ -43,7 +43,7 @@ enum MONSTERSTATE
 
 enum OBJECTTYPE
 {
-	CHIP_GREEN, CHIP_BLUE, CHIP_PURPLE, CHIP_WHITE, HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, DOOR_DNA
+	CHIP_GREEN, CHIP_BLUE, CHIP_PURPLE, CHIP_WHITE, HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, DOOR_DNA, DOOR_ELEVATOR, SWITCH_HOR, SWITCH_VERT
 };
 
 enum OBJECTSTATE
@@ -64,5 +64,11 @@ namespace MY_UTIL //이름은 너희맘대로 변경해도 된다
 	float getAngle(float startX, float startY, float endX, float endY);
 	//씬의 제목보여주기
 	void showTitle(HDC hdc, const char* title, int x = 0, int y = 70, COLORREF color = RGB(255, 255, 0));
+};
+
+struct fPos
+{
+	float x;
+	float y;
 };
 

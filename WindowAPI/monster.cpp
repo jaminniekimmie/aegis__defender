@@ -17,7 +17,7 @@ void monster::update()
 
 	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight());
 
-	this->collisionProcess();
+	//this->directionProcess();
 	this->frameChange();
 }
 
@@ -65,7 +65,7 @@ void monster::frameChange()
 	}
 }
 
-void monster::collisionProcess()
+void monster::directionProcess()
 {
 	if (getDistance(_oldX, _oldY, _x, _y) > _range)
 	{
@@ -75,47 +75,55 @@ void monster::collisionProcess()
 
 void sandworm::init()
 {
+	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("Sandworm_walk");
+	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("Sandworm_walk");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
-	_speed = 8.0f;
+	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
-	_range = 500;
 	_oldX = _x;
 	_oldY = _y;
 	_frameSpeed = 5;
 	_isAlive = true;
-	_isLeft = false;
-	_state = MONSTER_MOVE;
+	_isLeft = RND->getFromIntTo(0, 1);
+	_state = MONSTER_IDLE;
 }
 
 void sandworm::idle()
 {
-	_state = MONSTER_MOVE;
+	_angle = _isLeft * PI;
+	_x += cosf(_angle) * _speed;
+	
+	if (getDistance(_oldX, _oldY, _x, _y) > _range)
+	{
+		_isLeft = !_isLeft;
+	}
 }
 
 void sandworm::move()
 {
-	_angle = _isLeft * PI;
-	_x += cosf(_angle) * _speed;
 }
 
 void spiderBaby::init()
 {
+	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("SpiderBaby_walk");
+	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("SpiderBaby_walk");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
-	_speed = 3.0f;
+	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
-	_range = 200;
+	_hpCount = 3;
+	_range = 150;
 	_oldX = _x;
 	_oldY = _y;
 	_frameSpeed = 10;
 	_isAlive = true;
-	_isLeft = false;
-	_state = MONSTER_MOVE;
+	_isLeft = RND->getFromIntTo(0, 1);
+	_state = MONSTER_IDLE;
 }
 
 void spiderBaby::idle()
@@ -127,23 +135,31 @@ void spiderBaby::move()
 {
 	_angle = _isLeft * PI;
 	_x += cosf(_angle) * _speed;
+
+	if (getDistance(_oldX, _oldY, _x, _y) > _range)
+	{
+		_isLeft = !_isLeft;
+	}
 }
 
 void firedrinkerFly::init()
 {
+	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("firedrinkerFly_fly");
+	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("firedrinkerFly_fly_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("firedrinkerFly_fly");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("firedrinkerFly_fly_shadow");
-	_speed = 3.0f;
+	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
+	_hpCount = 3;
 	_range = 200;
 	_oldX = _x;
 	_oldY = _y;
 	_frameSpeed = 10;
 	_isAlive = true;
-	_isLeft = false;
-	_state = MONSTER_MOVE;
+	_isLeft = RND->getFromIntTo(0, 1);
+	_state = MONSTER_IDLE;
 }
 
 void firedrinkerFly::idle()
@@ -153,6 +169,13 @@ void firedrinkerFly::idle()
 
 void firedrinkerFly::move()
 {
+	_angle = _isLeft * PI;
+	_x += cosf(_angle) * _speed;
+
+	if (getDistance(_oldX, _oldY, _x, _y) > _range)
+	{
+		_isLeft = !_isLeft;
+	}
 }
 
 void eagle::init()

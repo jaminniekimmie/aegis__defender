@@ -4,20 +4,17 @@
 
 class playerManager;
 
-struct fPos
-{
-	float x;
-	float y;
-};
-
 class monsterManager : public singletonBase<monsterManager>
 {
 	vector<monster*> _vMonster;
 	monsterFactory* _factory;
 	playerManager* _playerManager;
 	fPos _sandwormPos[4];
-	fPos _spiderBabyPos[5];
+	fPos _spiderBabyPos[7];
 	fPos _firedrinkerFlyPos[3];
+	float _sandwormRange[4];
+	float _spiderBabyRange[7];
+	float _firedrinkerFlyRange[3];
 	bool _isGameClear;
 	bool _isDead;
 public:

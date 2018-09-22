@@ -146,7 +146,7 @@ void playerManager::playerRun(bool isLeft)
 	bool oldIsLeft = _clu->getIsLeft();
 
 	_clu->setIsLeft(isLeft);
-	_clu->setX(_clu->getX() + cosf(angle) * 5.0f);
+	_clu->setX(_clu->getX() + cosf(angle) * 7.0f);
 	
 	if (_clu->getOnLand())
 	{

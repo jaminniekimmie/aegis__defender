@@ -34,8 +34,7 @@ void renderManager::backgroundRender(HDC hdc)
 			x = WINSIZEX / 2 + (iter->second->getX() - centerX) / (5 - z);
 			y = WINSIZEY / 2 + (iter->second->getY() - centerY) / (5 - z);
 
-			if (CAMERAMANAGER->getCamera().left <= x + iter->second->getImage()->getWidth() && CAMERAMANAGER->getCamera().right >= x &&
-				CAMERAMANAGER->getCamera().top <= y + iter->second->getImage()->getHeight() && CAMERAMANAGER->getCamera().bottom >= y)
+			if (CAMERAMANAGER->CameraIn(iter->second->getRect()))
 			{
 				iter->second->render(x, y);
 			}
@@ -61,8 +60,7 @@ void renderManager::foregroundRender(HDC hdc)
 			x = WINSIZEX / 2 + (iter->second->getX() - centerX) * (5 - z);
 			y = WINSIZEY / 2 + (iter->second->getY() - centerY) * (5 - z);
 
-			if (CAMERAMANAGER->getCamera().left <= x && CAMERAMANAGER->getCamera().right >= x &&
-				CAMERAMANAGER->getCamera().top <= y && CAMERAMANAGER->getCamera().bottom >= y)
+			if (CAMERAMANAGER->CameraIn(iter->second->getRect()))
 			{
 				iter->second->render(x, y);
 			}

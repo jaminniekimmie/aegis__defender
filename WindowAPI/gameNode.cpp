@@ -79,11 +79,14 @@ void gameNode::release(void)
 		COLLISIONMANAGER->release();
 		COLLISIONMANAGER->releaseSingleton();
 		//몬스터매니져 싱글톤 해제
-		//MONSTERMANAGER->release();
+		MONSTERMANAGER->release();
 		MONSTERMANAGER->releaseSingleton();
 		//렌더매니져 싱글톤 해제
-		MONSTERMANAGER->release();
+		RENDERMANAGER->release();
 		RENDERMANAGER->releaseSingleton();
+		//오브젝트매니져 싱글톤 해제
+		OBJECTMANAGER->release();
+		OBJECTMANAGER->releaseSingleton();
 	}
 
 	//DC 해제

@@ -37,7 +37,7 @@ public:
 	OBJECTSTATE getState() { return _state; }
 	OBJECTTYPE getType() { return _type; }
 	image* getImage(OBJECTSTATE state) { return _image[state].img; }
-	RECT getRect(OBJECTSTATE state) { return _image[state].rc; }
+	RECT getRect() { return _image[_state].rc; }
 
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }

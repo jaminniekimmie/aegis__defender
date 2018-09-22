@@ -4,11 +4,6 @@
 
 class playerManager;
 
-struct fPos
-{
-	float x;
-	float y;
-};
 class objectManager : public singletonBase<objectManager>
 {
 	vector<objects*> _vObject;
@@ -19,7 +14,7 @@ class objectManager : public singletonBase<objectManager>
 	fPos _chipPurplePos[1];
 	fPos _heartYellowPos[1];
 	fPos _bloomFlowerPos[7];
-	fPos _mineralPos[1];
+	fPos _mineralPos[2];
 	fPos _blueFlowerPos[1];
 	int _bloomFlowerCount[7];
 	int _mineralCount[1];
