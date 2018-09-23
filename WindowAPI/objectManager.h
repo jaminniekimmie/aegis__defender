@@ -16,6 +16,14 @@ class objectManager : public singletonBase<objectManager>
 	fPos _bloomFlowerPos[7];
 	fPos _mineralPos[2];
 	fPos _blueFlowerPos[1];
+	fPos _spawnerPos[2];
+	fPos _doorDNAyellowLeftPos[1];
+	fPos _doorDNAyellowRightPos[1];
+	fPos _doorDNAblueLeftPos[1];
+	fPos _doorDNAblueRightPos[1];
+	fPos _doorElevatorPos[1];
+	fPos _bushSpikesPos[1];
+	fPos _ventPos[14];
 	int _bloomFlowerCount[7];
 	int _mineralCount[1];
 	int _blueFlowerCount[1];

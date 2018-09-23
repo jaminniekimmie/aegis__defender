@@ -15,18 +15,30 @@ void objects::update()
 		break;
 	}
 
-	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getWidth(), _image[_state].img->getHeight());
+	if (_isFrameImg)
+		_image[_state].rc = RectMake(_x, _y, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight());
+	else
+		_image[_state].rc = RectMake(_x, _y, _image[_state].img->getWidth(), _image[_state].img->getHeight());
 
 	this->collisionProcess();
-	//this->frameChange();
+	this->frameChange();
 }
 
 void objects::render(HDC hdc)
 {
-	if (CAMERAMANAGER->CameraIn(_image[_state].rc))
+	if (CAMERAMANAGER->CameraIn(_image[_state].rc) && _isActive)
 	{
-		_image[_state].shadow->alphaRender(hdc, _x - _image[_state].shadow->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top, 80);
-		_image[_state].img->render(hdc, _x - _image[_state].img->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
+		if (_isFrameImg)
+		{
+			_image[_state].shadow->alphaFrameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
+			_image[_state].img->frameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+
+		}
+		else
+		{
+			_image[_state].shadow->alphaRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
+			_image[_state].img->render(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+		}
 	}
 	if (KEYMANAGER->isToggleKey('Y'))
 	{
@@ -36,31 +48,34 @@ void objects::render(HDC hdc)
 
 void objects::frameChange()
 {
-	_count++;
-	_image[_state].img->setFrameY(_isLeft);
-	_image[_state].shadow->setFrameY(_isLeft);
-	if (_isLeft)
+	if (_isFrameImg && _state == OBJECT_MOVE)
 	{
-		if (_count % _frameSpeed == 0)
+		_count++;
+		_image[_state].img->setFrameY(_isLeft);
+		_image[_state].shadow->setFrameY(_isLeft);
+		if (_isLeft)
 		{
-			_index--;
-			if (_index < 0)
-				_index = _image[_state].img->getMaxFrameX();
+			if (_count % _frameSpeed == 0)
+			{
+				_index--;
+				if (_index < 0)
+					_index = _image[_state].img->getMaxFrameX();
 
-			_image[_state].img->setFrameX(_index);
-			_image[_state].shadow->setFrameX(_index);
+				_image[_state].img->setFrameX(_index);
+				_image[_state].shadow->setFrameX(_index);
+			}
 		}
-	}
-	else
-	{
-		if (_count % _frameSpeed == 0)
+		else
 		{
-			_index++;
-			if (_index > _image[_state].img->getMaxFrameX())
-				_index = 0;
+			if (_count % _frameSpeed == 0)
+			{
+				_index++;
+				if (_index > _image[_state].img->getMaxFrameX())
+					_index = 0;
 
-			_image[_state].img->setFrameX(_index);
-			_image[_state].shadow->setFrameX(_index);
+				_image[_state].img->setFrameX(_index);
+				_image[_state].shadow->setFrameX(_index);
+			}
 		}
 	}
 }
@@ -83,6 +98,7 @@ void chip_green::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -108,6 +124,7 @@ void chip_blue::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -133,6 +150,7 @@ void chip_purple::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -158,6 +176,7 @@ void chip_white::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -183,6 +202,7 @@ void heart_red::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -208,6 +228,7 @@ void heart_yellow::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -230,9 +251,11 @@ void bloomFlower::init()
 	_range = 0;
 	_oldX = _x;
 	_oldY = _y;
+	_attackCount = 3;
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -247,7 +270,7 @@ void bloomFlower::move()
 void mineral::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
-	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -255,9 +278,11 @@ void mineral::init()
 	_range = 0;
 	_oldX = _x;
 	_oldY = _y;
+	_attackCount = 3;
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -272,7 +297,7 @@ void mineral::move()
 void blueFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
-	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -280,9 +305,11 @@ void blueFlower::init()
 	_range = 0;
 	_oldX = _x;
 	_oldY = _y;
+	_attackCount = 3;
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -294,16 +321,247 @@ void blueFlower::move()
 {
 }
 
-void door_DNA::init()
+void spawner::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("spawner");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("spawner");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+}
+
+void spawner::idle()
 {
 }
 
-void door_DNA::idle()
+void spawner::move()
 {
 }
 
-void door_DNA::move()
+void door_DNA_yellow_left::init()
 {
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_yellow_left");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_DNA_yellow_left");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+}
+
+void door_DNA_yellow_left::idle()
+{
+}
+
+void door_DNA_yellow_left::move()
+{
+}
+
+void door_DNA_yellow_right::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_yellow_right");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_DNA_yellow_right");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+}
+
+void door_DNA_yellow_right::idle()
+{
+}
+
+void door_DNA_yellow_right::move()
+{
+}
+
+void door_DNA_blue_left::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_blue_left");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_DNA_blue_left");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+}
+
+void door_DNA_blue_left::idle()
+{
+}
+
+void door_DNA_blue_left::move()
+{
+}
+
+void door_DNA_blue_right::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_blue_right");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_DNA_blue_right");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+}
+
+void door_DNA_blue_right::idle()
+{
+}
+
+void door_DNA_blue_right::move()
+{
+}
+
+void door_elevator::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_elevator");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_elevator");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = true;
+	_state = OBJECT_IDLE;
+}
+
+void door_elevator::idle()
+{
+	_index = 0;
+	_image[_state].img->setFrameX(_index);
+}
+
+void door_elevator::move()
+{
+	if (_index >= _image[_state].img->getMaxFrameX())
+		_index = _image[_state].img->getMaxFrameX();
+}
+
+void bush_spikes::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("bush_spikes_upsideDown");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("bush_spikes_upsideDown");
+	_speed = 8.0f;
+	_angle = 0.0f;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 0;
+	_oldX = _x;
+	_oldY = _y;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = true;
+	_state = OBJECT_IDLE;
+}
+
+void bush_spikes::idle()
+{
+}
+
+void bush_spikes::move()
+{
+}
+
+void vent::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("vent");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("vent");
+	_speed = 3.0f;
+	_angle = PI_2;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 100;
+	_oldX = _x;
+	_oldY = _y;
+	_attackCount = 0;
+	_isActive = false;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = false;
+	_state = OBJECT_IDLE;
+
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			tagElement element;
+			element.elementImg = IMAGEMANAGER->findImage("fx_smoke" + to_string(j + 1));
+			element.x = element.fireX = _x;
+			element.y = element.fireY = _y;
+
+			_vElement.push_back(element);
+		}
+	}
+}
+
+void vent::idle()
+{
+	if (_attackCount < 200)
+		_attackCount++;
+	else
+		_state = OBJECT_MOVE;
+}
+
+void vent::move()
+{
+	for (int i = 0; i < _vElement.size(); i++)
+	{
+		_vElement[i].x += cosf(_angle + RND->getFloat(5)) * _speed;
+		_vElement[i].y += -sinf(_angle) * _speed;
+
+		if (getDistance(_vElement[i].fireX, _vElement[i].fireY, _vElement[i].x, _vElement[i].y) > _range)
+		{
+			_vElement[i].x = _vElement[i].fireX;
+			_vElement[i].y = _vElement[i].fireY;
+			_state = OBJECT_IDLE;
+			_attackCount = 0;
+		}
+	}
 }
 
 objects * objectFactory::createObject(OBJECTTYPE type)
@@ -338,8 +596,29 @@ objects * objectFactory::createObject(OBJECTTYPE type)
 	case BLUEFLOWER:
 		_object = new blueFlower;
 		break;
-	case DOOR_DNA:
-		_object = new door_DNA;
+	case SPAWNER:
+		_object = new spawner;
+		break;
+	case DOOR_DNA_YELLOW_LEFT:
+		_object = new door_DNA_yellow_left;
+		break;
+	case DOOR_DNA_YELLOW_RIGHT:
+		_object = new door_DNA_yellow_right;
+		break;
+	case DOOR_DNA_BLUE_LEFT:
+		_object = new door_DNA_blue_left;
+		break;
+	case DOOR_DNA_BLUE_RIGHT:
+		_object = new door_DNA_blue_right;
+		break;
+	case DOOR_ELEVATOR:
+		_object = new door_elevator;
+		break;
+	case BUSH_SPIKES:
+		_object = new bush_spikes;
+		break;
+	case VENT:
+		_object = new vent;
 		break;
 	default:
 		//´©±¸³Ä ³Í??

@@ -147,7 +147,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="actor.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="backgroundElements.h" />
     <ClInclude Include="bullet.h" />
@@ -191,7 +190,6 @@
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="actor.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="backgroundElements.cpp" />
     <ClCompile Include="bullet.cpp" />

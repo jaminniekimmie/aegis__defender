@@ -201,6 +201,11 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_fullCharge_front", "tex/fx/Attack_FullCharge_Front.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_back", "tex/fx/Attack_FullCharge_Back.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bloodBlob", "tex/fx/Blood_Blob_01.bmp", 324, 66, 6, 1, true, RGB(255, 0, 255));
+	_loading->loadImage("fx_smoke1", "tex/fx/Smoke_01.bmp", 59, 55, true, RGB(255, 0, 255));
+	_loading->loadImage("fx_smoke2", "tex/fx/Smoke_02.bmp", 59, 55, true, RGB(255, 0, 255));
+	_loading->loadImage("fx_smoke3", "tex/fx/Smoke_03.bmp", 59, 55, true, RGB(255, 0, 255));
+	_loading->loadImage("fx_smoke4", "tex/fx/Smoke_04.bmp", 59, 55, true, RGB(255, 0, 255));
+	_loading->loadImage("fx_smoke5", "tex/fx/Smoke_05.bmp", 59, 55, true, RGB(255, 0, 255));
 
 	_loading->loadImage("bullet_blue", "tex/weapons/Bullet1.bmp", 16, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("Clu_gun", "tex/weapons/clu_gun_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
@@ -208,6 +213,15 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
 	_loading->loadImage("dot_teal", "tex/fx/dot_teal_01.bmp", 2, 2);
 	_loading->loadImage("dot_white", "tex/fx/dot_white_01.bmp", 2, 2);
+
+	_loading->loadImage("spawner", "tex/objects/spawner_01.bmp", 136, 174, true, RGB(255, 0, 255));
+	_loading->loadImage("door_DNA_blue_left", "tex/objects/door_DNA_blue_left_01.bmp", 162, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("door_DNA_blue_right", "tex/objects/door_DNA_blue_right_01.bmp", 162, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("door_DNA_yellow_left", "tex/objects/door_DNA_yellow_left_01.bmp", 162, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("door_DNA_yellow_right", "tex/objects/door_DNA_yellow_right_01.bmp", 162, 228, true, RGB(255, 0, 255));
+	_loading->loadImage("bush_spikes_upsideDown", "tex/objects/bush_spikes_upsideDown_01.bmp", 232, 92, true, RGB(255, 0, 255));
+	_loading->loadImage("vent", "tex/objects/vent_01.bmp", 160, 80, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("door_elevator", "tex/objects/door_elevator_01.bmp", 4752, 80, 9, 1, true, RGB(255, 0, 255));
 	//11½Ã°£ ÀäÁÒ ?/
 	_loading->loadImage("sculpture_back_01", "tex/objects/sculpture_back_01.bmp", 520, 384, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_back_02", "tex/objects/sculpture_back_02.bmp", 238, 224, true, RGB(255, 0, 255));
@@ -219,7 +233,9 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("sculpture_front_02", "tex/objects/sculpture_front_02.bmp", 108, 210, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_front_03", "tex/objects/sculpture_front_03.bmp", 170, 228, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_front_04", "tex/objects/sculpture_front_04.bmp", 352, 266, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_05", "tex/objects/sculpture_front_05.bmp", 176, 324, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_05", "tex/objects/sculpture_front_05.bmp", 178, 126, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_06", "tex/objects/sculpture_front_06.bmp", 190, 384, true, RGB(255, 0, 255));
+	_loading->loadImage("sculpture_front_07", "tex/objects/sculpture_front_07.bmp", 176, 324, true, RGB(255, 0, 255));
 	_loading->loadImage("stage1_topology", "tex/map/map_topology_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
 	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
 	_loading->loadImage("stage1_temp", "tex/map/map_temp_01.bmp", 7409, 1760);

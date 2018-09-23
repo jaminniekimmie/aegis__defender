@@ -19,6 +19,7 @@ void renderManager::render(HDC hdc)
 void renderManager::backgroundRender(HDC hdc)
 {
 	multimap<float, backgroundElements*>::iterator iter;
+	RECT rcTemp;
 	float centerX = CAMERAMANAGER->getCamera().left + WINSIZEX / 2, centerY = CAMERAMANAGER->getCamera().top + WINSIZEY / 2;
 	float x, y, z;
 	float width, height;
@@ -31,10 +32,10 @@ void renderManager::backgroundRender(HDC hdc)
 			height = iter->second->getImage()->getHeight();
 			z = iter->second->getZ();
 
-			x = WINSIZEX / 2 + (iter->second->getX() - centerX) / (5 - z);
-			y = WINSIZEY / 2 + (iter->second->getY() - centerY) / (5 - z);
+			x = WINSIZEX / 2 + (iter->second->getX() - centerX) / (10 - z);
+			y = WINSIZEY / 2 + (iter->second->getY() - centerY) / (10 - z);
 
-			if (CAMERAMANAGER->CameraIn(iter->second->getRect()))
+			if (IntersectRect(&rcTemp, &RectMake(0, 0, WINSIZEX, WINSIZEY), &RectMake(x, y, width, height)))
 			{
 				iter->second->render(x, y);
 			}
@@ -44,13 +45,14 @@ void renderManager::backgroundRender(HDC hdc)
 
 void renderManager::foregroundRender(HDC hdc)
 {
-	multimap<float, backgroundElements*>::iterator iter;
+	multimap<float, foregroundElements*>::iterator iter;
+	RECT rcTemp;
 	float centerX = CAMERAMANAGER->getCamera().left + WINSIZEX / 2, centerY = CAMERAMANAGER->getCamera().top + WINSIZEY / 2;
 	float x, y, z;
 	float width, height;
-	if (!backgroundList.empty())
+	if (!foregroundList.empty())
 	{
-		for (iter = backgroundList.begin(); iter != backgroundList.end(); ++iter)
+		for (iter = foregroundList.begin(); iter != foregroundList.end(); ++iter)
 		{
 			iter->second->update();
 			width = iter->second->getImage()->getWidth();
@@ -60,7 +62,7 @@ void renderManager::foregroundRender(HDC hdc)
 			x = WINSIZEX / 2 + (iter->second->getX() - centerX) * (5 - z);
 			y = WINSIZEY / 2 + (iter->second->getY() - centerY) * (5 - z);
 
-			if (CAMERAMANAGER->CameraIn(iter->second->getRect()))
+			if (IntersectRect(&rcTemp, &RectMake(0, 0, WINSIZEX, WINSIZEY), &RectMake(x, y, width, height)))
 			{
 				iter->second->render(x, y);
 			}

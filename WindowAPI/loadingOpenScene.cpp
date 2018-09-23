@@ -115,7 +115,9 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("heart_red", "tex/resource/Heart_red_01.bmp", 18, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("heart_yellow", "tex/resource/Heart_yellow_01.bmp", 18, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_yellowMineral_shadow", "tex/resource/Resource_Multi1_shadow.bmp", 78, 88, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_blueFlowers", "tex/resource/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_blueFlowers_shadow", "tex/resource/Resource_Multi4_shadow.bmp", 80, 82, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < 9; i++)

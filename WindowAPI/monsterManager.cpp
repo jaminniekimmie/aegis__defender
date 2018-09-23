@@ -77,9 +77,9 @@ void monsterManager::update()
 	RECT rcTemp;
 	for (int i = 0; i < _vMonster.size(); i++)
 	{
-		if (getDistance(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
+		/*if (getDistance(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
 		{
-			if (getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < -PI_4 * 3)
+			if (getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < PI_4 * 5)
 			{
 				_vMonster[i]->setIsLeft(true);
 			}
@@ -88,7 +88,7 @@ void monsterManager::update()
 				_vMonster[i]->setIsLeft(false);
 			}
 		}
-	
+	*/
 		if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vMonster[i]->getRect()))
 		{
 

@@ -43,7 +43,7 @@ enum MONSTERSTATE
 
 enum OBJECTTYPE
 {
-	CHIP_GREEN, CHIP_BLUE, CHIP_PURPLE, CHIP_WHITE, HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, DOOR_DNA, DOOR_ELEVATOR, SWITCH_HOR, SWITCH_VERT
+	CHIP_GREEN, CHIP_BLUE, CHIP_PURPLE, CHIP_WHITE, HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, SPAWNER, DOOR_DNA_YELLOW_LEFT, DOOR_DNA_YELLOW_RIGHT, DOOR_DNA_BLUE_LEFT, DOOR_DNA_BLUE_RIGHT, DOOR_ELEVATOR, SWITCH_HOR, SWITCH_VERT, BUSH_SPIKES, VENT
 };
 
 enum OBJECTSTATE
@@ -72,3 +72,20 @@ struct fPos
 	float y;
 };
 
+struct tagElement
+{
+	image* elementImg;
+	RECT rc;
+	float x, y;
+	float fireX, fireY;
+	float speed;
+	float angle;
+	float gravity;
+	float radius;
+	bool fire;
+	bool isActive;
+	bool isFrameImg;
+	int alpha;
+	int count;
+	int index;
+};

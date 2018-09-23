@@ -31,11 +31,11 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			int g = GetGValue(color);
 			int b = GetBValue(color);
 
-			if (r == 234 && g == 64 && b == 81)
+			if (r == 244 && g == 180 && b == 23)
 			{
 				y = i + 1 + (rc.bottom - rc.top) * 0.5f;
 
-				return RED;
+				return YELLOW;
 			}
 		}
 		break;

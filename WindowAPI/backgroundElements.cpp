@@ -8,10 +8,10 @@ void backgroundElements::render(int x, int y)
 
 HRESULT cloud::init()
 {
-	_x = RND->getInt(CAMERAMANAGER->getMaxWidth() * 0.33);
-	_y = RND->getInt(CAMERAMANAGER->getMaxHeight() * 1.5);
-	_z = RND->getInt(4) + 1;
-	_speed = 0.2f;
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth() * 2) - CAMERAMANAGER->getMaxWidth();
+	_y = RND->getInt(CAMERAMANAGER->getMaxHeight()) - CAMERAMANAGER->getMaxHeight();
+	_z = RND->getFromIntTo(0, 10) + 0;
+	_speed = 0.5f;
 
 	this->changeImage();
 
@@ -43,8 +43,8 @@ HRESULT sculptures_back::init()
 	this->changeImage();
 
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
-	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight();
-	_z = RND->getInt(4) + 1;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 2;
+	_z = RND->getInt(10) + 0;
 
 	return S_OK;
 }

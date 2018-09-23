@@ -152,6 +152,19 @@ void player::update(void)
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_playerState].img->getFrameHeight() / 4 , 10, 10);
 
+	if (_playerState != AIM_FIRE &&
+		_playerState != AIM_IDLE &&
+		_playerState != CHARGE &&
+		_playerState != FULLCHARGE &&
+		_playerState != FULLCHARGE_IDLE &&
+		_playerState != JUMPFIRE_FALL &&
+		_playerState != JUMPFIRE_RISE &&
+		_playerState != AIM_DIAGONAL &&
+		_playerState != AIM_DIAGONAL_FULLCHARGE &&
+		_playerState != AIM_DIAGONAL_FULLCHARGE_IDLE &&
+		_playerState != AIM_DIAGONALFIRE)
+		_isFired = false;
+
 	this->frameChangeLoop();
 	this->weaponSwitch(_weaponSwitch);
 }

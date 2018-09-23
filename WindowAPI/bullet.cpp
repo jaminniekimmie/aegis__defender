@@ -145,7 +145,7 @@ void bullet::move()
 			_viBullet->x, _viBullet->y);
 		if (_range < distance)
 		{
-			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viBullet->rc.left, _viBullet->rc.top);
+			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viBullet->rc.left, _viBullet->rc.top);
 			_viBullet = _vBullet.erase(_viBullet);
 		}
 		else
@@ -240,6 +240,21 @@ void bullet::collision()
 		{
 			_vMagazine[i].angle = PI - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+		}
+	}
+
+	for (int i = 0; i < _vBullet.size(); i++)
+	{
+		float x = _vBullet[i].x;
+		float y = _vBullet[i].y;
+
+		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet.erase(_vBullet.begin() + i);
 		}
 	}
 }
@@ -437,7 +452,7 @@ void triBullet::move()
 			_vBullet[i].x, _vBullet[i].y);
 		if (_range < distance)
 		{
-			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
 			_vBullet[i].fire = false;
 		}
 	}
@@ -509,101 +524,36 @@ void triBullet::collision()
 			_vMagazine[i].gravity = 0.0f;
 			_vMagazine[i].speed *= 0.8;
 		}
+		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, TOP))
+		{
+			_vMagazine[i].angle = PI_2 - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
+		}
+
+		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, LEFT))
+		{
+			_vMagazine[i].angle = PI - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
+		}
+		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, RIGHT))
+		{
+			_vMagazine[i].angle = PI - _vMagazine[i].angle;
+			_vMagazine[i].speed *= 0.8;
+		}
 	}
-}
 
-//=============================================================
-//	## missileM1 ## (폭탄처럼 한발씩 발사하면서 생성하고 자동삭제)
-//=============================================================
-HRESULT missileM1::init(int bulletMax, float range)
-{
-	//총알갯수, 사거리 초기화
-	_bulletMax = bulletMax;
-	_range = range;
-
-	return S_OK;
-}
-
-void missileM1::release(void)
-{
-}
-
-void missileM1::update(void)
-{
-	move();
-}
-
-void missileM1::render(void)
-{
-	_viBullet = _vBullet.begin();
-	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
+	for (int i = 0; i < _vBullet.size(); i++)
 	{
-		_viBullet->bulletImage->frameRender(getMemDC(), _viBullet->rc.left, _viBullet->rc.top);
-	
-		_viBullet->count++;
-		if (_viBullet->count % 3 == 0)
+		float x = _vBullet[i].x;
+		float y = _vBullet[i].y;
+
+		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT))
 		{
-			_viBullet->bulletImage->setFrameX(_viBullet->bulletImage->getFrameX() + 1);
-			if (_viBullet->bulletImage->getFrameX() >= _viBullet->bulletImage->getMaxFrameX())
-			{
-				_viBullet->bulletImage->setFrameX(0);
-			}
-			_viBullet->count = 0;
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].fire = false;
 		}
 	}
 }
-
-void missileM1::fire(float x, float y)
-{
-	//총알 벡터에 담는것을 제한하자
-	if (_bulletMax < _vBullet.size() + 1) return;
-
-	tagBullet bullet;
-	ZeroMemory(&bullet, sizeof(tagBullet));
-	bullet.bulletImage = new image;
-	bullet.bulletImage->init("missile.bmp", 416, 64, 13, 1);
-	bullet.speed = 5.0f;
-	bullet.x = bullet.fireX = x;
-	bullet.y = bullet.fireY = y;
-	bullet.rc = RectMakeCenter(bullet.x, bullet.y,
-		bullet.bulletImage->getFrameWidth(),
-		bullet.bulletImage->getFrameHeight());
-
-	//벡터에 담기
-	_vBullet.push_back(bullet);
-}
-
-void missileM1::move()
-{
-	_viBullet = _vBullet.begin();
-	for (; _viBullet != _vBullet.end();)
-	{
-		_viBullet->y -= _viBullet->speed;
-		_viBullet->rc = RectMakeCenter(_viBullet->x, _viBullet->y,
-			_viBullet->bulletImage->getFrameWidth(),
-			_viBullet->bulletImage->getFrameHeight());
-
-		//총알이 사거리보다 커졌을때
-		float distance = getDistance(_viBullet->fireX, _viBullet->fireY,
-			_viBullet->x, _viBullet->y);
-		if (_range < distance)
-		{
-			_viBullet->bulletImage->release();
-			SAFE_DELETE(_viBullet->bulletImage);
-			_viBullet = _vBullet.erase(_viBullet);
-		}
-		else
-		{
-			++_viBullet;
-		}
-	}
-}
-
-void missileM1::removeMissileM1(int index)
-{
-	_vBullet[index].bulletImage->release();
-	SAFE_DELETE(_vBullet[index].bulletImage);
-	_vBullet.erase(_vBullet.begin() + index);
-}
-
-

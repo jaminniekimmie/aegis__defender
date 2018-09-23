@@ -60,8 +60,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		//HEART_RED, HEART_YELLOW, BLOOMFLOWER, MINERAL, BLUEFLOWER, DOOR_DNA
-		_heartYellowPos[0].x = 3712, _heartYellowPos[0].y = 1035;
+		_heartYellowPos[0].x = 3702, _heartYellowPos[0].y = 1024;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -73,13 +72,13 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_bloomFlowerPos[0].x = 4385, _bloomFlowerPos[0].y = 1300;
-		_bloomFlowerPos[1].x = 4530, _bloomFlowerPos[1].y = 1300;
-		_bloomFlowerPos[2].x = 4880, _bloomFlowerPos[2].y = 1300;
-		_bloomFlowerPos[3].x = 4980, _bloomFlowerPos[3].y = 1300;
-		_bloomFlowerPos[4].x = 5350, _bloomFlowerPos[4].y = 820;
-		_bloomFlowerPos[5].x = 5690, _bloomFlowerPos[5].y = 245;
-		_bloomFlowerPos[6].x = 6160, _bloomFlowerPos[6].y = 595;
+		_bloomFlowerPos[0].x = 4385, _bloomFlowerPos[0].y = 1245;
+		_bloomFlowerPos[1].x = 4530, _bloomFlowerPos[1].y = 1245;
+		_bloomFlowerPos[2].x = 4880, _bloomFlowerPos[2].y = 1245;
+		_bloomFlowerPos[3].x = 4980, _bloomFlowerPos[3].y = 1245;
+		_bloomFlowerPos[4].x = 5325, _bloomFlowerPos[4].y = 765;
+		_bloomFlowerPos[5].x = 5664, _bloomFlowerPos[5].y = 205;
+		_bloomFlowerPos[6].x = 6134, _bloomFlowerPos[6].y = 540;
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -91,8 +90,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_mineralPos[0].x = 6235, _mineralPos[0].y = 560;
-		_mineralPos[1].x = 6277, _mineralPos[1].y = 574;
+		_mineralPos[0].x = 5197, _mineralPos[0].y = 521;
+		_mineralPos[1].x = 6240, _mineralPos[1].y = 518;
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -104,7 +103,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_blueFlowerPos[0].x = 6419, _blueFlowerPos[0].y = 195;
+		_blueFlowerPos[0].x = 6380, _blueFlowerPos[0].y = 155;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -112,6 +111,104 @@ HRESULT objectManager::init(int num)
 
 			objects* object = _factory->createObject(type);
 			object->setPosition(_blueFlowerPos[i].x, _blueFlowerPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		 _doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_DNA_YELLOW_LEFT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorDNAyellowLeftPos[i].x, _doorDNAyellowLeftPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_doorDNAyellowRightPos[0].x = 5476, _doorDNAyellowRightPos[0].y = 63;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_DNA_YELLOW_RIGHT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorDNAyellowRightPos[i].x, _doorDNAyellowRightPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_doorDNAblueLeftPos[0].x = 5760, _doorDNAblueLeftPos[0].y = 429;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_DNA_BLUE_LEFT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorDNAblueLeftPos[i].x, _doorDNAblueLeftPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_doorDNAblueRightPos[0].x = 5397, _doorDNAblueRightPos[0].y = 665;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_DNA_BLUE_RIGHT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorDNAblueRightPos[i].x, _doorDNAblueRightPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_spawnerPos[0].x = 4167, _spawnerPos[0].y = 331;
+		_spawnerPos[1].x = 5012, _spawnerPos[1].y = 331;
+
+		for (int i = 0; i < 2; i++)
+		{
+			type = SPAWNER;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_spawnerPos[i].x, _spawnerPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_doorElevatorPos[0].x = 4505, _doorElevatorPos[0].y = 1093;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_ELEVATOR;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorElevatorPos[i].x, _doorElevatorPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_bushSpikesPos[0].x = 3630, _bushSpikesPos[0].y = 454;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = BUSH_SPIKES;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_bushSpikesPos[i].x, _bushSpikesPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
+		_ventPos[0].x = 1245, _ventPos[0].y = 1422;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = VENT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_ventPos[i].x, _ventPos[i].y);
+			object->init();
 
 			_vObject.push_back(object);
 		}

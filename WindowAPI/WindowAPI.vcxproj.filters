@@ -191,9 +191,6 @@
     <ClInclude Include="foregroundElements.h">
       <Filter>MainGame\배경화면</Filter>
     </ClInclude>
-    <ClInclude Include="actor.h">
-      <Filter>MainGame\플레이어</Filter>
-    </ClInclude>
     <ClInclude Include="monsterManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
@@ -306,9 +303,6 @@
     </ClCompile>
     <ClCompile Include="foregroundElements.cpp">
       <Filter>MainGame\배경화면</Filter>
-    </ClCompile>
-    <ClCompile Include="actor.cpp">
-      <Filter>MainGame\플레이어</Filter>
     </ClCompile>
     <ClCompile Include="monsterManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>

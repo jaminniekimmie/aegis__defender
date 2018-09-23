@@ -1032,7 +1032,7 @@ void playerManager::bulletFire()
 			if (!_clu->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_clu->getIsLeft()), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 
-			pos = _clu->getIsLeft() ? - 0.7f : 0.7;
+			pos = _clu->getIsLeft() ? - 0.5f : 0.5f;
 			_bullet->fire(x, y, angle, speed);
 			EFFECTMANAGER->play("bulletFire" + to_string(_clu->getIsLeft() + 2), _clu->getX() + _clu->getPlayerImage(_clu->getState())->getFrameWidth() * pos, _clu->getY() - 50);
 		}

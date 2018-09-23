@@ -8,6 +8,7 @@ protected:
 	OBJECTSTATE _state;
 	RECT _rc;
 	tagImage _image[MAXMONSTERSTATE];
+	vector<tagElement> _vElement;
 	float _x, _y;
 	float _destX, _destY;
 	float _oldX, _oldY;
@@ -17,6 +18,7 @@ protected:
 	float _range;
 	bool _isActive;
 	bool _isLeft;
+	bool _isFrameImg;
 	int _count, _index;
 	int _frameSpeed;
 	int _attackCount;
@@ -37,6 +39,7 @@ public:
 	OBJECTSTATE getState() { return _state; }
 	OBJECTTYPE getType() { return _type; }
 	image* getImage(OBJECTSTATE state) { return _image[state].img; }
+	vector<tagElement> getVElement() { return _vElement; }
 	RECT getRect() { return _image[_state].rc; }
 
 	void setX(float x) { _x = x; }
@@ -155,7 +158,77 @@ private:
 public:
 };
 
-class door_DNA : public objects
+class spawner : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class door_DNA_yellow_left : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class door_DNA_yellow_right : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class door_DNA_blue_left : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class door_DNA_blue_right : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class door_elevator : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class bush_spikes : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class vent : public objects
 {
 private:
 	void init();

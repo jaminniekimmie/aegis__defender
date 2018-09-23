@@ -135,7 +135,7 @@ void stageOneScene::render(void)
 	_playerManager->render();
 	OBJECTMANAGER->render(getMemDC());
 	
-	//RENDERMANAGER->foregroundRender(getMemDC());
+	RENDERMANAGER->foregroundRender(getMemDC());
 
 	//IMAGEMANAGER->render("stage1_temp", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 	IMAGEMANAGER->render("GUI_temp", getMemDC());
@@ -175,10 +175,17 @@ void stageOneScene::cameraAdjustment()
 	}
 	else
 	{
-		if (_playerManager->getPlayerCharacter() == CLU)
-			_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
-		else if (_playerManager->getPlayerCharacter() == BART)
-			_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+		if (_playerManager->getClu()->getState() == LAND)
+		{
+			_rcCamera.top++;
+		}
+		else
+		{
+			if (_playerManager->getPlayerCharacter() == CLU)
+				_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+			else if (_playerManager->getPlayerCharacter() == BART)
+				_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown('I') || KEYMANAGER->isOnceKeyDown('O'))
