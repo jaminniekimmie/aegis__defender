@@ -17,6 +17,8 @@ HRESULT stageOneScene::init(void)
 
 	_playerManager->getClu()->setX(755);
 	_playerManager->getClu()->setY(1300);
+	_playerManager->getBart()->setX(755);
+	_playerManager->getBart()->setY(1300);
 
 	if (_playerManager->getPlayerCharacter() == CLU)
 		_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
@@ -61,6 +63,8 @@ HRESULT stageOneScene::init(void)
 	_alpha = 255;
 
 	ShowCursor(true);
+
+	SOUNDMANAGER->play("BGM_nereisdesert");
 
 	return S_OK;
 }

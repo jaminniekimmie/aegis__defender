@@ -6,10 +6,10 @@ HRESULT playerManager::init(void)
 	_playerCharacter = CLU;
 
 	_clu = new player;
-	_clu->init(_playerCharacter);
+	_clu->init(CLU);
 
-	//_bart = new player;
-	//_bart->init(_playerCharacter);
+	_bart = new player;
+	_bart->init(BART);
 	
 	_bullet = new bullet;
 	_bullet->init("bullet_blue", 3, 500);
@@ -20,6 +20,9 @@ HRESULT playerManager::init(void)
 	_idleCount = 0;
 	_idleMax = RND->getFromIntTo(100, 500);
 	_isStayKey_up = _isStayKey_down = false;
+
+	//if (_playerCharacter)
+	//	_clu->getPlayerImage(_clu->getState()).alpha = ;
 	
 	return S_OK;
 }
@@ -28,8 +31,8 @@ void playerManager::release(void)
 {
 	_clu->release();
 	SAFE_DELETE(_clu);
-	//_bart->release();
-	//SAFE_DELETE(_bart);
+	_bart->release();
+	SAFE_DELETE(_bart);
 	_bullet->release();
 	SAFE_DELETE(_bullet);
 	_triBullet->release();
@@ -46,7 +49,7 @@ void playerManager::update(void)
 	this->playerJumpFall();
 
 	_clu->update();
-	//_bart->update();
+	_bart->update();
 	
 	this->collisionProcess();
 	this->playerFaceDown();
@@ -59,7 +62,7 @@ void playerManager::render(void)
 {
 	_bullet->render();
 	_triBullet->render();
-	//_bart->render();
+	_bart->render();
 	_clu->render();
 }
 
@@ -182,7 +185,8 @@ void playerManager::playerJumpRise()
 			_clu->setSpeed(15.0f);
 			_clu->setAngle(PI_2);
 			_clu->setGravity(0);
-
+			
+			SOUNDMANAGER->play("Clu_jump");
 			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _clu->getX(), _clu->getY());
 		}
 	}
@@ -232,7 +236,10 @@ void playerManager::collisionProcess()
 			_clu->setY(y);
 			_clu->setIsJump(false);
 			if (!_clu->getOnLand())
+			{
 				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
+				SOUNDMANAGER->play("Clu_land" + to_string(RND->getFromIntTo(1, 3)));
+			}
 			_clu->setOnLand(true);
 		}
 	}
@@ -430,7 +437,6 @@ void playerManager::playerBackstep()
 
 	if (_clu->getIsBackstep())
 	{
-		_clu->setIsFired(true);
 
 		if (_clu->getState() != BACKSTEP)
 		{
@@ -440,6 +446,8 @@ void playerManager::playerBackstep()
 				_clu->setIndex(0);
 
 			_clu->setState(BACKSTEP);
+
+			SOUNDMANAGER->play("Clu_dashback");
 		}
 		else if (_clu->getState() == BACKSTEP)
 		{
@@ -458,6 +466,7 @@ void playerManager::playerBackstep()
 					_clu->setIndex(_clu->getPlayerImage(_clu->getState())->getMaxFrameX());
 					_clu->setState(FULLCHARGE_IDLE);
 					_clu->setIsBackstep(false);
+					_clu->setIsFired(true);
 					EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 					EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 				}
@@ -469,6 +478,7 @@ void playerManager::playerBackstep()
 					_clu->setIndex(0);
 					_clu->setState(FULLCHARGE_IDLE);
 					_clu->setIsBackstep(false);
+					_clu->setIsFired(true);
 					EFFECTMANAGER->play("fullCharge_back", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 					EFFECTMANAGER->play("fullCharge_front", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 				}
@@ -993,7 +1003,7 @@ void playerManager::bulletFire()
 	speed = 20.0f;
 
 	_clu->setIsFired(true);
-
+	SOUNDMANAGER->play("Wep_Clu_rifle" + to_string(RND->getFromIntTo(1, 4)));
 	if (_isStayKey_up && _clu->getState() != RUN)	//´ë°¢¼±
 	{
 		angle = _clu->getIsLeft() ? PI_4 * 3 : PI_4;

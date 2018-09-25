@@ -7,9 +7,7 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 
 	if (_playerCharacter == CLU)
 	{
-		string str = "Clu";
-	
-		_player[AIM_DIAGONAL].img = IMAGEMANAGER->findImage(str + "_aim_diagonal");
+		_player[AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Clu_aim_diagonal");
 		_player[AIM_DIAGONAL].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonal_shadow");
 		_player[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge");
 		_player[AIM_DIAGONAL_FULLCHARGE].shadow = IMAGEMANAGER->findImage("Clu_aim_diagonal_fullCharge_shadow");
@@ -95,7 +93,91 @@ HRESULT player::init(PLAYERCHARACTER playerCharacter)
 	}
 	else if (_playerCharacter == BART)
 	{
+		_player[AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Bart_hammer_idleDiagonal");
+		_player[AIM_DIAGONAL].shadow = IMAGEMANAGER->findImage("Bart_hammer_idleDiagonal_shadow");
+		_player[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Bart_fullCharge");
+		_player[AIM_DIAGONAL_FULLCHARGE].shadow = IMAGEMANAGER->findImage("Bart_fullCharge_shadow");
+		_player[AIM_DIAGONAL_FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Bart_fullCharge_idle");
+		_player[AIM_DIAGONAL_FULLCHARGE_IDLE].shadow = IMAGEMANAGER->findImage("Bart_fullCharge_idle_shadow");
+		_player[AIM_DIAGONALFIRE].img = IMAGEMANAGER->findImage("Bart_hammer_diagonal");
+		_player[AIM_DIAGONALFIRE].shadow = IMAGEMANAGER->findImage("Bart_hammer_diagonal_shadow");
+		_player[AIM_FIRE].img = IMAGEMANAGER->findImage("Bart_hammer");
+		_player[AIM_FIRE].shadow = IMAGEMANAGER->findImage("Bart_hammer_shadow");
+		_player[AIM_IDLE].img = IMAGEMANAGER->findImage("Bart_hammer_idle");
+		_player[AIM_IDLE].shadow = IMAGEMANAGER->findImage("Bart_hammer_idle_shadow");
+		_player[BACKSTEP].img = IMAGEMANAGER->findImage("Bart_block");
+		_player[BACKSTEP].shadow = IMAGEMANAGER->findImage("Bart_block_shadow");
+		_player[BORED].img = IMAGEMANAGER->findImage("Bart_bored");
+		_player[BORED].shadow = IMAGEMANAGER->findImage("Bart_bored_shadow");
+		_player[BORED_IDLE].img = IMAGEMANAGER->findImage("Bart_bored_idle");
+		_player[BORED_IDLE].shadow = IMAGEMANAGER->findImage("Bart_bored_idle_shadow");
+		_player[CHARGE].img = IMAGEMANAGER->findImage("Bart_charge");
+		_player[CHARGE].shadow = IMAGEMANAGER->findImage("Bart_charge_shadow");
+		_player[FAINT].img = IMAGEMANAGER->findImage("Bart_faint");
+		_player[FAINT].shadow = IMAGEMANAGER->findImage("Bart_faint_shadow");
+		_player[FAINT_IDLE].img = IMAGEMANAGER->findImage("Bart_faint_idle");
+		_player[FAINT_IDLE].shadow = IMAGEMANAGER->findImage("Bart_faint_idle_shadow");
+		_player[FULLCHARGE].img = IMAGEMANAGER->findImage("Bart_fullCharge");
+		_player[FULLCHARGE].shadow = IMAGEMANAGER->findImage("Bart_fullCharge_shadow");
+		_player[FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Bart_fullCharge_idle");
+		_player[FULLCHARGE_IDLE].shadow = IMAGEMANAGER->findImage("Bart_fullCharge_idle_shadow");
+		_player[HIT].img = IMAGEMANAGER->findImage("Bart_hit");
+		_player[HIT].shadow = IMAGEMANAGER->findImage("Bart_hit_shadow");
+		_player[IDLE].img = IMAGEMANAGER->findImage("Bart_idle");
+		_player[IDLE].shadow = IMAGEMANAGER->findImage("Bart_idle_shadow");
+		_player[JUMP_FALL].img = IMAGEMANAGER->findImage("Bart_jump_fall");
+		_player[JUMP_FALL].shadow = IMAGEMANAGER->findImage("Bart_jump_fall_shadow");
+		_player[JUMP_RISE].img = IMAGEMANAGER->findImage("Bart_jump_rise");
+		_player[JUMP_RISE].shadow = IMAGEMANAGER->findImage("Bart_jump_rise_shadow");
+		_player[JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Bart_jump_hammer_fall");
+		_player[JUMPFIRE_FALL].shadow = IMAGEMANAGER->findImage("Bart_jump_hammer_fall_shadow");
+		//_player[JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Bart_hammerJump");
+		//_player[JUMPFIRE_RISE].shadow = IMAGEMANAGER->findImage("Bart_hammerJump_shadow");
+		_player[JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Bart_jump_hammer_rise");
+		_player[JUMPFIRE_RISE].shadow = IMAGEMANAGER->findImage("Bart_jump_hammer_rise_shadow");
+		_player[JUMPFIREDIAGONAL_FALL].img = IMAGEMANAGER->findImage("Clu_jumpFireDiagonal_fall");
+		_player[JUMPFIREDIAGONAL_FALL].shadow = IMAGEMANAGER->findImage("Clu_jumpFireDiagonal_fall_shadow");
+		_player[JUMPFIREDIAGONAL_RISE].img = IMAGEMANAGER->findImage("Clu_jumpFireDiagonal_rise");
+		_player[JUMPFIREDIAGONAL_RISE].shadow = IMAGEMANAGER->findImage("Clu_jumpFireDiagonal_rise_shadow");
+		_player[LAND].img = IMAGEMANAGER->findImage("Bart_land");
+		_player[LAND].shadow = IMAGEMANAGER->findImage("Bart_land_shadow");
+		_player[LAUGH].img = IMAGEMANAGER->findImage("Bart_laugh");
+		_player[LAUGH].shadow = IMAGEMANAGER->findImage("Bart_laugh_shadow");
+		_player[LAUGH_IDLE].img = IMAGEMANAGER->findImage("Bart_laugh_idle");
+		_player[LAUGH_IDLE].shadow = IMAGEMANAGER->findImage("Bart_laugh_idle_shadow");
+		_player[LEDGEGRAB].img = IMAGEMANAGER->findImage("Clu_ledgeGrab");
+		_player[LEDGEGRAB].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_shadow");
+		_player[LEDGEGRAB_IDLE].img = IMAGEMANAGER->findImage("Clu_ledgeGrab_idle");
+		_player[LEDGEGRAB_IDLE].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_idle_shadow");
+		_player[LEDGEGRAB_RISE].img = IMAGEMANAGER->findImage("Clu_ledgeGrab_rise");
+		_player[LEDGEGRAB_RISE].shadow = IMAGEMANAGER->findImage("Clu_ledgeGrab_rise_shadow");
+		_player[LOOKUP].img = IMAGEMANAGER->findImage("Bart_lookup");
+		_player[LOOKUP].shadow = IMAGEMANAGER->findImage("Bart_lookup_shadow");
+		_player[PUSH].img = IMAGEMANAGER->findImage("Bart_push");
+		_player[PUSH].shadow = IMAGEMANAGER->findImage("Bart_push_shadow");
+		_player[RUN].img = IMAGEMANAGER->findImage("Bart_run");
+		_player[RUN].shadow = IMAGEMANAGER->findImage("Bart_run_shadow");
+		_player[THINK].img = IMAGEMANAGER->findImage("Bart_think");
+		_player[THINK].shadow = IMAGEMANAGER->findImage("Bart_think_shadow");
+		_player[THINK_IDLE].img = IMAGEMANAGER->findImage("Bart_think_idle");
+		_player[THINK_IDLE].shadow = IMAGEMANAGER->findImage("Bart_think_idle_shadow");
+		_player[UPSET].img = IMAGEMANAGER->findImage("Bart_upset");
+		_player[UPSET].shadow = IMAGEMANAGER->findImage("Bart_upset_shadow");
 
+		_weapon[AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal");
+		_weapon[AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal_fullCharge");
+		_weapon[AIM_DIAGONAL_FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonal_fullCharge_idle");
+		_weapon[AIM_DIAGONALFIRE].img = IMAGEMANAGER->findImage("Clu_gun_aim_diagonalFire");
+		_weapon[AIM_FIRE].img = IMAGEMANAGER->findImage("Clu_gun_aim_fire");
+		_weapon[AIM_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_aim_idle");
+		_weapon[CHARGE].img = IMAGEMANAGER->findImage("Clu_gun_charge");
+		_weapon[FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_gun_fullCharge");
+		_weapon[FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_gun_fullCharge_idle");
+		_weapon[JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_fall");
+		_weapon[JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_rise");
+
+		_weaponIcon[0].img = IMAGEMANAGER->findImage("Clu_gun");
+		_weaponIcon[1].img = IMAGEMANAGER->findImage("Clu_bow");
 	}
 
 	for (int i = 0; i < 2; i++)

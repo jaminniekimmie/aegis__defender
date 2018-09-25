@@ -72,7 +72,7 @@ void GUI::render(void)
 	sprintf_s(str, "%d/3", _mineralCount);
 	TextOut(getMemDC(), 1195, 118, str, strlen(str));
 	SetTextColor(getMemDC(), RGB(255, 255, 255));
-	TextOut(getMemDC(), 1195, 111, str, strlen(str));
+	TextOut(getMemDC(), 1195, 116, str, strlen(str));
 
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(myFont);

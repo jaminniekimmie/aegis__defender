@@ -79,6 +79,7 @@ void loadingBlackScene::render(void)
 //로딩이미지 함수(이곳에 이미지를 전부 넣어라)
 void loadingBlackScene::loadingImage()
 {
+	//CLU
 	_loading->loadFrameImage("Clu_aim_diagonal", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge", "tex/characters/Clu_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge_idle", "tex/characters/Clu_aim_diagonal_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -93,7 +94,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_faint_idle", "tex/characters/Clu_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_fullCharge", "tex/characters/Clu_fullCharge_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_fullCharge_idle", "tex/characters/Clu_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_hit", "tex/characters/Clu_hit_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_hit", "tex/characters/Clu_hit_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_idle", "tex/characters/Clu_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_jump_fall", "tex/characters/Clu_jump_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_jump_rise", "tex/characters/Clu_jump_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -128,7 +129,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_faint_idle_shadow", "tex/characters/Clu_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_fullCharge_shadow", "tex/characters/Clu_fullCharge_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_fullCharge_idle_shadow", "tex/characters/Clu_fullCharge_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Clu_hit_shadow", "tex/characters/Clu_hit_shadow_01.bmp", 16 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_hit_shadow", "tex/characters/Clu_hit_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_idle_shadow", "tex/characters/Clu_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_jump_fall_shadow", "tex/characters/Clu_jump_fall_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_jump_rise_shadow", "tex/characters/Clu_jump_rise_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -160,7 +161,67 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_fullCharge_idle", "tex/weapons/Clu_gun_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	
+	//BART
+	_loading->loadFrameImage("Bart_block", "tex/characters/Bart_block_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored", "tex/characters/Bart_bored_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored_idle", "tex/characters/Bart_bored_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_charge", "tex/characters/Bart_charge_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_faint", "tex/characters/Bart_faint_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_faint_idle", "tex/characters/Bart_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_fullCharge", "tex/characters/Bart_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_fullCharge_idle", "tex/characters/Bart_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer", "tex/characters/Bart_hammer_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_diagonal", "tex/characters/Bart_hammer_diagonal_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_idle", "tex/characters/Bart_hammer_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_idleDiagonal", "tex/characters/Bart_hammer_idleDiagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammerJump", "tex/characters/Bart_hammerJump_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hit", "tex/characters/Bart_hit_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_idle", "tex/characters/Bart_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_fall", "tex/characters/Bart_jump_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_hammer_fall", "tex/characters/Bart_jump_hammer_fall_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_hammer_rise", "tex/characters/Bart_jump_hammer_rise_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_rise", "tex/characters/Bart_jump_rise_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_land", "tex/characters/Bart_land_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_laugh", "tex/characters/Bart_laugh_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_laugh_idle", "tex/characters/Bart_laugh_idle_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_lookup", "tex/characters/Bart_lookup_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_push", "tex/characters/Bart_push_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_run", "tex/characters/Bart_run_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_think", "tex/characters/Bart_think_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_think_idle", "tex/characters/Bart_think_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_upset", "tex/characters/Bart_upset_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
 
+	_loading->loadFrameImage("Bart_block_shadow", "tex/characters/Bart_block_shadow_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored_shadow", "tex/characters/Bart_bored_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored_idle_shadow", "tex/characters/Bart_bored_idle_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_charge_shadow", "tex/characters/Bart_charge_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_faint_shadow", "tex/characters/Bart_faint_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_faint_idle_shadow", "tex/characters/Bart_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_fullCharge_shadow", "tex/characters/Bart_fullCharge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_fullCharge_idle_shadow", "tex/characters/Bart_fullCharge_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_shadow", "tex/characters/Bart_hammer_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_diagonal_shadow", "tex/characters/Bart_hammer_diagonal_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_idle_shadow", "tex/characters/Bart_hammer_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_idleDiagonal_shadow", "tex/characters/Bart_hammer_idleDiagonal_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammerJump_shadow", "tex/characters/Bart_hammerJump_shadow_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hit_shadow", "tex/characters/Bart_hit_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_idle_shadow", "tex/characters/Bart_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_fall_shadow", "tex/characters/Bart_jump_fall_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_hammer_fall_shadow", "tex/characters/Bart_jump_hammer_fall_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_hammer_rise_shadow", "tex/characters/Bart_jump_hammer_rise_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_jump_rise_shadow", "tex/characters/Bart_jump_rise_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_land_shadow", "tex/characters/Bart_land_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_laugh_shadow", "tex/characters/Bart_laugh_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_laugh_idle_shadow", "tex/characters/Bart_laugh_idle_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_lookup_shadow", "tex/characters/Bart_lookup_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_push_shadow", "tex/characters/Bart_push_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_run_shadow", "tex/characters/Bart_run_shadow_01.bmp", 116 * 8, 232, 8, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_think_shadow", "tex/characters/Bart_think_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_think_idle_shadow", "tex/characters/Bart_think_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_upset_shadow", "tex/characters/Bart_upset_shadow_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
+
+	//MONSTERS
 	_loading->loadFrameImage("Sandworm_walk", "tex/monsters/Sandworm_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Sandworm_walk_shadow", "tex/monsters/Sandworm_shadow_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("SpiderBaby_walk", "tex/monsters/Spider_Baby_walk_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
@@ -254,6 +315,27 @@ void loadingBlackScene::loadingImage()
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 void loadingBlackScene::loadingSound()
 {
+	_loading->loadSound("BGM_nereisdesert", "audio/mus_nereisdesert.wav", true, true);
+	_loading->loadSound("Clu_dashback", "audio/char_clu_dashback.wav");
+	_loading->loadSound("Clu_jump", "audio/char_clu_jump.wav");
+	_loading->loadSound("Clu_land1", "audio/char_clu_land_01.wav");
+	_loading->loadSound("Clu_land2", "audio/char_clu_land_02.wav");
+	_loading->loadSound("Clu_land3", "audio/char_clu_land_03.wav");
+	_loading->loadSound("UI_collect_bloomflower", "audio/ui_gen_collect_bloomflower.wav");
+	_loading->loadSound("UI_collect_common", "audio/ui_gen_collect_common.wav");
+	_loading->loadSound("UI_menu_close", "audio/ui_menu_close.wav");
+	_loading->loadSound("UI_menu_open", "audio/ui_menu_open.wav");
+	_loading->loadSound("UI_pause", "audio/ui_pause.wav");
+	_loading->loadSound("Wep_Clu_bow_fire1", "audio/wep_clu_bow_fire_01.wav");
+	_loading->loadSound("Wep_Clu_bow_fire2", "audio/wep_clu_bow_fire_02.wav");
+	_loading->loadSound("Wep_Clu_bow_fire3", "audio/wep_clu_bow_fire_03.wav");
+	_loading->loadSound("Wep_Clu_bow_fire4", "audio/wep_clu_bow_fire_04.wav");
+	_loading->loadSound("Wep_Clu_rifle1", "audio/wep_clu_rifle_01.wav");
+	_loading->loadSound("Wep_Clu_rifle2", "audio/wep_clu_rifle_02.wav");
+	_loading->loadSound("Wep_Clu_rifle3", "audio/wep_clu_rifle_03.wav");
+	_loading->loadSound("Wep_Clu_rifle4", "audio/wep_clu_rifle_04.wav");
+	_loading->loadSound("Wep_Clu_rifle_rof1", "audio/wep_clu_rifle_rof_02.wav");
+	_loading->loadSound("Wep_Clu_rifle_rof2", "audio/wep_clu_rifle_rof_03.wav");
 }
 
 void loadingBlackScene::loadingEffect()
