@@ -108,6 +108,14 @@ void loadingOpenScene::loadingImage()
 
 	//GUI
 	_loading->loadImage("GUI_temp", "tex/UI/GUI_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_red", "tex/UI/heart_red_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_red_shadow", "tex/UI/heart_red_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_yellow", "tex/UI/heart_yellow_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_yellow_shadow", "tex/UI/heart_yellow_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_blueFlower", "tex/UI/blueFlower_UI_01.bmp", 54, 48, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_mineral", "tex/UI/mineral_UI_01.bmp", 54, 51, true, RGB(255, 0, 255));
+
+	//items
 	_loading->loadImage("collectibleChip_green", "tex/resource/Collectible_Chip1.bmp", 40, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("collectibleChip_blue", "tex/resource/Collectible_Chip2.bmp", 40, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("collectibleChip_purple", "tex/resource/Collectible_Chip3.bmp", 40, 36, true, RGB(255, 0, 255));

@@ -75,6 +75,9 @@
     <Filter Include="MainGame\오브젝트">
       <UniqueIdentifier>{f855a7a0-961c-4543-8157-0786773bb1f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GUI">
+      <UniqueIdentifier>{9c996bff-acea-4c01-9f1b-6bd12f02b603}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h">
@@ -200,6 +203,12 @@
     <ClInclude Include="objects.h">
       <Filter>MainGame\오브젝트</Filter>
     </ClInclude>
+    <ClInclude Include="frameManager.h">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>MainGame\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -312,6 +321,12 @@
     </ClCompile>
     <ClCompile Include="objects.cpp">
       <Filter>MainGame\오브젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="frameManager.cpp">
+      <Filter>GameFramework2D\매니져</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>MainGame\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

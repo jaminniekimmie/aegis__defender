@@ -18,11 +18,12 @@ void monster::update()
 	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight());
 
 	this->directionProcess();
-	this->frameChange();
+	//this->frameChange();
 }
 
 void monster::render(HDC hdc)
 {
+	this->frameChange();
 	if (CAMERAMANAGER->CameraIn(_image[_state].rc))
 	{
 		_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
@@ -87,7 +88,7 @@ void sandworm::init()
 	_oldY = _y;
 	_frameSpeed = 5;
 	_isAlive = true;
-	_isLeft = RND->getInt(1);
+	_isLeft = RND->getFromIntTo(0, 1);
 	_state = MONSTER_IDLE;
 }
 
@@ -117,7 +118,7 @@ void spiderBaby::init()
 	_oldY = _y;
 	_frameSpeed = 10;
 	_isAlive = true;
-	_isLeft = RND->getInt(1);
+	_isLeft = RND->getFromIntTo(0, 1);
 	_state = MONSTER_IDLE;
 }
 
@@ -148,7 +149,7 @@ void firedrinkerFly::init()
 	_oldY = _y;
 	_frameSpeed = 10;
 	_isAlive = true;
-	_isLeft = RND->getInt(1);
+	_isLeft = RND->getFromIntTo(0, 1);
 	_state = MONSTER_IDLE;
 }
 

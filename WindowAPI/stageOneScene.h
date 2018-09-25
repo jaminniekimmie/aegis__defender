@@ -4,11 +4,13 @@
 #include "playerManager.h"
 #include "backgroundElements.h"
 #include "foregroundElements.h"
+#include "GUI.h"
 
 class stageOneScene : public gameNode
 {
 private:
 	playerManager* _playerManager;
+	GUI* _GUI;
 	tagTile _tiles[TILEX * TILEY];
 	image * _pixelTiles;
 	image * _pixelMap;

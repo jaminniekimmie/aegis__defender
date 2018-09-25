@@ -91,7 +91,7 @@ void monsterManager::update()
 	*/
 		if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vMonster[i]->getRect()))
 		{
-
+			_playerManager->getClu()->setState(HIT);
 		}
 
 		_vMonster[i]->update();

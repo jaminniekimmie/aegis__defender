@@ -17,7 +17,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i + 5 + (rc.right - rc.left) / 2;
+				x = i + 7 + (rc.right - rc.left) * 0.5f;
 			
 				return YELLOW;
 			}
@@ -49,7 +49,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i - 5 - (rc.right - rc.left) * 0.5f;
+				x = i - 7 - (rc.right - rc.left) * 0.5f;
 
 				return YELLOW;
 			}

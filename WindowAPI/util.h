@@ -71,21 +71,3 @@ struct fPos
 	float x;
 	float y;
 };
-
-struct tagElement
-{
-	image* elementImg;
-	RECT rc;
-	float x, y;
-	float fireX, fireY;
-	float speed;
-	float angle;
-	float gravity;
-	float radius;
-	bool fire;
-	bool isActive;
-	bool isFrameImg;
-	int alpha;
-	int count;
-	int index;
-};

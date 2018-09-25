@@ -72,13 +72,13 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_bloomFlowerPos[0].x = 4385, _bloomFlowerPos[0].y = 1245;
-		_bloomFlowerPos[1].x = 4530, _bloomFlowerPos[1].y = 1245;
-		_bloomFlowerPos[2].x = 4880, _bloomFlowerPos[2].y = 1245;
-		_bloomFlowerPos[3].x = 4980, _bloomFlowerPos[3].y = 1245;
-		_bloomFlowerPos[4].x = 5325, _bloomFlowerPos[4].y = 765;
-		_bloomFlowerPos[5].x = 5664, _bloomFlowerPos[5].y = 205;
-		_bloomFlowerPos[6].x = 6134, _bloomFlowerPos[6].y = 540;
+		_bloomFlowerPos[0].x = 4355, _bloomFlowerPos[0].y = 1245;
+		_bloomFlowerPos[1].x = 4500, _bloomFlowerPos[1].y = 1245;
+		_bloomFlowerPos[2].x = 4850, _bloomFlowerPos[2].y = 1245;
+		_bloomFlowerPos[3].x = 4950, _bloomFlowerPos[3].y = 1245;
+		_bloomFlowerPos[4].x = 5300, _bloomFlowerPos[4].y = 765;
+		_bloomFlowerPos[5].x = 5635, _bloomFlowerPos[5].y = 205;
+		_bloomFlowerPos[6].x = 6105, _bloomFlowerPos[6].y = 540;
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -264,6 +264,14 @@ void objectManager::update()
 					break;
 				}
 			}
+		}
+		else if (VENT == _vObject[i]->getType())
+		{
+			//if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vObject[i]->getActionRect()))
+			//{
+			//	_playerManager->getClu()->setY(_playerManager->getClu()->getY() - 5);
+			//	_playerManager->getClu()->setOnLand(false);
+			//}
 		}
 		_vObject[i]->update();
 	}

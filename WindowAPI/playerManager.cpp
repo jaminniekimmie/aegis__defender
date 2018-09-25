@@ -239,6 +239,18 @@ void playerManager::collisionProcess()
 	else if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), TOP))// == RED)
 	{
 		_clu->setY(y);
+		_clu->setAngle(-PI_2);
+		_clu->setGravity(0.0f);
+	}
+	//if (_clu->getOnLand())
+	{
+		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
+		{
+			_clu->setX(x);
+			if (!_clu->getIsJump())
+				_clu->setState(PUSH);
+		}
 	}
 
 	if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), BOTTOM) == BLUE)
@@ -253,18 +265,6 @@ void playerManager::collisionProcess()
 			if (!_clu->getOnLand())
 				EFFECTMANAGER->play("landDust", _clu->getX(), _clu->getY() + _clu->getPlayerImage(_clu->getState())->getFrameHeight() * 0.35);
 			_clu->setOnLand(true);
-		}
-	}
-
-
-	//if (_clu->getOnLand())
-	{
-		if (COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), LEFT) ||
-			COLLISIONMANAGER->pixelCollision(_clu->getPlayerRc(), x, y, _clu->getSpeed(), _clu->getGravity(), RIGHT))
-		{
-			_clu->setX(x);
-			if (!_clu->getIsJump())
-				_clu->setState(PUSH);
 		}
 	}
 

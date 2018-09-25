@@ -39,10 +39,24 @@ void objects::render(HDC hdc)
 			_image[_state].shadow->alphaRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
 			_image[_state].img->render(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 		}
+
+		if (KEYMANAGER->isToggleKey('Y'))
+		{
+			Rectangle(hdc, _actionRc.left - CAMERAMANAGER->getCamera().left, _actionRc.top - CAMERAMANAGER->getCamera().top, _actionRc.right - CAMERAMANAGER->getCamera().left, _actionRc.bottom - CAMERAMANAGER->getCamera().top);
+		}
 	}
-	if (KEYMANAGER->isToggleKey('Y'))
+
+	for (int i = 0; i < _vElement.size(); i++)
 	{
-		Rectangle(hdc, _image[_state].rc.left - CAMERAMANAGER->getCamera().left, _image[_state].rc.top - CAMERAMANAGER->getCamera().top, _image[_state].rc.right - CAMERAMANAGER->getCamera().left, _image[_state].rc.bottom - CAMERAMANAGER->getCamera().top);
+		if (!CAMERAMANAGER->CameraIn(_vElement[i].rc)) continue;
+		if (!_vElement[i].fire) continue;
+		
+		_vElement[i].elementImg->alphaRender(hdc, _vElement[i].rc.left - CAMERAMANAGER->getCamera().left, _vElement[i].rc.top - CAMERAMANAGER->getCamera().top, _vElement[i].alpha);
+
+		//if (KEYMANAGER->isToggleKey('Y'))
+		//{
+		//	Rectangle(hdc, _vElement[i].rc.left - CAMERAMANAGER->getCamera().left, _vElement[i].rc.top - CAMERAMANAGER->getCamera().top, _vElement//[i].rc.right - CAMERAMANAGER->getCamera().left, _vElement[i].rc.bottom - CAMERAMANAGER->getCamera().top);
+		//}
 	}
 }
 
@@ -471,14 +485,16 @@ void door_elevator::init()
 
 void door_elevator::idle()
 {
-	_index = 0;
 	_image[_state].img->setFrameX(_index);
 }
 
 void door_elevator::move()
 {
 	if (_index >= _image[_state].img->getMaxFrameX())
+	{
 		_index = _image[_state].img->getMaxFrameX();
+		_state = OBJECT_IDLE;
+	}
 }
 
 void bush_spikes::init()
@@ -515,11 +531,11 @@ void vent::init()
 	_angle = PI_2;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
-	_range = 100;
+	_range = 300;
 	_oldX = _x;
 	_oldY = _y;
 	_attackCount = 0;
-	_isActive = false;
+	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
 	_isFrameImg = false;
@@ -530,10 +546,15 @@ void vent::init()
 		for (int j = 0; j < 5; j++)
 		{
 			tagElement element;
+			ZeroMemory(&element, sizeof(tagElement));
 			element.elementImg = IMAGEMANAGER->findImage("fx_smoke" + to_string(j + 1));
-			element.x = element.fireX = _x;
+			element.x = element.fireX = _x + RND->getFloat(_image[_state].img->getWidth() - element.elementImg->getWidth() * 0.5);
 			element.y = element.fireY = _y;
-
+			element.speed = RND->getFromFloatTo(3, 4);
+			element.alpha = 255;
+			element.fire = false;
+			element.rc = RectMakeCenter(element.x, element.y, element.elementImg->getWidth(), element.elementImg->getHeight());
+	
 			_vElement.push_back(element);
 		}
 	}
@@ -541,25 +562,45 @@ void vent::init()
 
 void vent::idle()
 {
-	if (_attackCount < 200)
-		_attackCount++;
-	else
-		_state = OBJECT_MOVE;
+	_actionRc = RectMake(_x, _y - _image[_state].img->getHeight() * 5, _image[_state].img->getWidth(), _image[_state].img->getHeight() * 5);
+	//if (_attackCount < 200)
+	//	_attackCount++;
+	//else
+	//{
+	//	_state = OBJECT_MOVE;
+	//	_attackCount = 0;
+	//	for (int i = 0; i < _vElement.size(); i++)
+	//		_vElement[i].fire = true;
+	//}
 }
 
 void vent::move()
 {
 	for (int i = 0; i < _vElement.size(); i++)
 	{
-		_vElement[i].x += cosf(_angle + RND->getFloat(5)) * _speed;
-		_vElement[i].y += -sinf(_angle) * _speed;
-
+		if (!_vElement[i].fire) continue;
+	
+		_vElement[i].x += cosf(_angle + RND->getFloat(5)) * _vElement[i].speed;
+		_vElement[i].y += -sinf(_angle) * _vElement[i].speed;
+		_vElement[i].rc = RectMakeCenter(_vElement[i].x, _vElement[i].y, _vElement[i].elementImg->getWidth(), _vElement[i].elementImg->getHeight());
+	
 		if (getDistance(_vElement[i].fireX, _vElement[i].fireY, _vElement[i].x, _vElement[i].y) > _range)
 		{
-			_vElement[i].x = _vElement[i].fireX;
-			_vElement[i].y = _vElement[i].fireY;
-			_state = OBJECT_IDLE;
-			_attackCount = 0;
+			_vElement[i].alpha -= 255 / _vElement[i].speed;
+
+			if (_vElement[i].alpha < 0)
+			{
+				_vElement[i].x = _vElement[i].fireX;
+				_vElement[i].y = _vElement[i].fireY;
+				_vElement[i].alpha = 255;
+				_vElement[i].fire = false;
+				_attackCount++;
+				if (_attackCount >= _vElement.size())
+				{
+					_state = OBJECT_IDLE;
+					_attackCount = 0;
+				}
+			}
 		}
 	}
 }

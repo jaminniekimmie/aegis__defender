@@ -1,12 +1,31 @@
 #pragma once
 #include "tileNode.h"
 
+struct tagElement
+{
+	image* elementImg;
+	RECT rc;
+	float x, y;
+	float fireX, fireY;
+	float speed;
+	float angle;
+	float gravity;
+	float radius;
+	bool fire;
+	bool isActive;
+	bool isFrameImg;
+	int alpha;
+	int count;
+	int index;
+};
+
 class objects
 {
 protected:
 	OBJECTTYPE _type;
 	OBJECTSTATE _state;
 	RECT _rc;
+	RECT _actionRc;
 	tagImage _image[MAXMONSTERSTATE];
 	vector<tagElement> _vElement;
 	float _x, _y;
@@ -41,6 +60,7 @@ public:
 	image* getImage(OBJECTSTATE state) { return _image[state].img; }
 	vector<tagElement> getVElement() { return _vElement; }
 	RECT getRect() { return _image[_state].rc; }
+	RECT getActionRect() { return _actionRc; }
 
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }

@@ -6,6 +6,9 @@ HRESULT stageOneScene::init(void)
 	_playerManager = new playerManager;
 	_playerManager->init();
 
+	_GUI = new GUI;
+	_GUI->init();
+
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
 
@@ -66,6 +69,8 @@ void stageOneScene::release(void)
 {
 	_playerManager->release();
 	SAFE_DELETE(_playerManager);
+	_GUI->release();
+	SAFE_DELETE(_GUI);
 	_pixelTiles->release();
 	SAFE_DELETE(_pixelTiles);
 	_pixelMap->release();
@@ -138,7 +143,8 @@ void stageOneScene::render(void)
 	RENDERMANAGER->foregroundRender(getMemDC());
 
 	//IMAGEMANAGER->render("stage1_temp", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-	IMAGEMANAGER->render("GUI_temp", getMemDC());
+	//IMAGEMANAGER->render("GUI_temp", getMemDC());
+	_GUI->render();
 
 	if (_alpha > 0)
 		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);

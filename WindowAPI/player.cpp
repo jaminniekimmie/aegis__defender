@@ -221,12 +221,12 @@ void player::hitDamage(float damage)
 void player::frameChangeLoop()
 {
 	_count++;
-
+	
 	_player[_playerState].img->setFrameY(_isLeft);
 	_player[_playerState].shadow->setFrameY(_isLeft);
 	if (_isFired)
 		_weapon[_playerState].img->setFrameY(_isLeft);
-
+	
 	if (_isLeft) // 1
 	{
 		if (_count % _frameSpeed == 0)
@@ -235,7 +235,7 @@ void player::frameChangeLoop()
 			_player[_playerState].shadow->setFrameX(_index);
 			if (_isFired)
 				_weapon[_playerState].img->setFrameX(_index);
-
+	
 			_index--;
 			
 			if (_index < 0)
