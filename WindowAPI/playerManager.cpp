@@ -20,6 +20,9 @@ HRESULT playerManager::init(void)
 	_idleMax = RND->getFromIntTo(100, 500);
 	_isStayKey_up = _isStayKey_down = false;
 
+	_player[_character]->setIsActive(true);
+	_player[!_character]->setIsActive(false);
+
 	return S_OK;
 }
 
@@ -38,9 +41,6 @@ void playerManager::release(void)
 
 void playerManager::update(void)
 {
-	_player[_character]->setIsActive(true);
-	_player[!_character]->setIsActive(false);
-
 	_bullet->update();
 	_triBullet->update();
 
@@ -55,6 +55,7 @@ void playerManager::update(void)
 	
 	//this->collisionProcess();
 	this->playerFaceDown();
+	this->playerHit();
 	this->playerLedgeGrab();
 	this->fromStateToIdle();
 	this->fromIdleToState();
@@ -67,6 +68,10 @@ void playerManager::render(void)
 
 	_player[!_character]->render();
 	_player[_character]->render();
+
+	char str[64];
+	sprintf(str, "%d", _player[_character]->getState());
+	TextOut(getMemDC(), 100, 100, str, strlen(str));
 }
 
 void playerManager::keyInput()
@@ -103,10 +108,19 @@ void playerManager::keyInput()
 			_player[_character]->setIsFaceDown(true);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_SPACE))
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		_player[_character]->setIsLedgeGrab(false);
-		this->playerJumpRise();
+		if (CAMERAMANAGER->getSwitchStart())
+		{
+			EFFECTMANAGER->play("ellipsePuff2", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.15f);
+			EFFECTMANAGER->play("regen", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.45f);
+			CAMERAMANAGER->setSwitchStart(false);
+		}
+		else
+		{
+			_player[_character]->setIsLedgeGrab(false);
+			this->playerJumpRise();
+		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
 	{
@@ -146,6 +160,9 @@ void playerManager::keyInput()
 	if (KEYMANAGER->isOnceKeyDown('I') || KEYMANAGER->isOnceKeyDown('O'))
 	{
 		_character = _character ? CLU : BART;
+		
+		_player[_character]->setIsActive(true);
+		_player[!_character]->setIsActive(false);
 	}
 }
 
@@ -441,18 +458,17 @@ void playerManager::playerBackstep()
 	float speed = 18.0f;
 	float pos = _player[_character]->getIsLeft() ? - 0.2 :  0.2;
 
-
 	if (_player[_character]->getIsBackstep())
 	{
 
 		if (_player[_character]->getState() != BACKSTEP)
 		{
+			_player[_character]->setState(BACKSTEP);
+			
 			if (_player[_character]->getIsLeft())
 				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
-
-			_player[_character]->setState(BACKSTEP);
 
 			SOUNDMANAGER->play("Clu_dashback");
 		}
@@ -970,6 +986,46 @@ void playerManager::playerBored()
 				_player[_character]->setState(THINK);
 			else if (randNo == UPSET)
 				_player[_character]->setState(UPSET);
+		}
+	}
+}
+
+void playerManager::playerHit()
+{
+	if (_player[_character]->getState() == HIT)
+	{
+		if (_player[_character]->getIsLeft())
+		{
+			if (_player[_character]->getIndex() <= 0)
+			{
+				if (_player[_character]->getIsActive())
+					_idleCount = 0;
+				_player[_character]->setIsActive(false);
+				_player[_character]->setCount(0);
+				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+			}
+		}
+		else
+		{
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			{
+				if (_player[_character]->getIsActive())
+					_idleCount = 0;
+				_player[_character]->setIsActive(false);
+				_player[_character]->setCount(0);
+				_player[_character]->setIndex(0);
+			}
+		}
+	}
+
+	if (!_player[_character]->getIsActive())
+	{
+		if (_idleCount < 200)
+			_idleCount++;
+		else
+		{
+			_player[_character]->setIsActive(true);
+			_idleCount = 0;
 		}
 	}
 }

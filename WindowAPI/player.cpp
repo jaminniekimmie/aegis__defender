@@ -301,10 +301,6 @@ void player::render(void)
 
 	//Ã¼·Â¹Ù ·»´õ
 	_hpBar->render();
-
-	char str[64];
-	sprintf(str, "%d", _weaponIcon[_weaponSwitch].alpha);
-	TextOut(getMemDC(), 100, 100, str, strlen(str));
 }
 
 void player::hitDamage(float damage)

@@ -42,6 +42,7 @@ public:
 	void playerLaugh();
 	void playerThink();
 	void playerBored();
+	void playerHit();
 	void playerUpset();
 	void bulletFire();
 	void hammer();

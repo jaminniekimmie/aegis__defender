@@ -108,13 +108,17 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
 
 	//GUI
-	_loading->loadImage("GUI_temp", "tex/UI/GUI_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_heart_red", "tex/UI/heart_red_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_heart_red_shadow", "tex/UI/heart_red_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_heart_yellow", "tex/UI/heart_yellow_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_heart_yellow_shadow", "tex/UI/heart_yellow_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_blueFlower", "tex/UI/blueFlower_UI_01.bmp", 54, 48, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_mineral", "tex/UI/mineral_UI_01.bmp", 54, 51, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_button_switch", "tex/UI/button_switch_01.bmp", 566, 45, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("GUI_icon_clu", "tex/UI/clu_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("GUI_icon_clu_shadow", "tex/UI/clu_UI_icon_shadow_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("GUI_icon_bart", "tex/UI/bart_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("GUI_icon_bart_shadow", "tex/UI/bart_UI_icon_shadow_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
 
 	//items
 	_loading->loadImage("collectibleChip_green", "tex/resource/Collectible_Chip1.bmp", 40, 36, true, RGB(255, 0, 255));

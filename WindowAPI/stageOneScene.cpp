@@ -17,7 +17,7 @@ HRESULT stageOneScene::init(void)
 
 	_playerManager->getPlayer(CLU)->setX(755);
 	_playerManager->getPlayer(CLU)->setY(1300);
-	_playerManager->getPlayer(BART)->setX(755);
+	_playerManager->getPlayer(BART)->setX(_playerManager->getPlayer(CLU)->getX() - _playerManager->getPlayer(CLU)->getPlayerImage(_playerManager->getPlayer(CLU)->getState())->getFrameWidth() * 0.5f);
 	_playerManager->getPlayer(BART)->setY(1300);
 
 	_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
@@ -29,6 +29,7 @@ HRESULT stageOneScene::init(void)
 	MONSTERMANAGER->setPlayerManager(_playerManager);
 	OBJECTMANAGER->init(1);
 	OBJECTMANAGER->setPlayerManager(_playerManager);
+	_GUI->setPlayerManager(_playerManager);
 	
 	cloud* _cloud;
 	for (int i = 0; i < 40; ++i)
@@ -92,7 +93,7 @@ void stageOneScene::update(void)
 		float startY = _playerManager->getPlayer(character)->getY() - _playerManager->getPlayer(character)->getPlayerImage(_playerManager->getPlayer(character)->getState())->getFrameHeight() / 3;
 		float destX = _playerManager->getPlayer(_playerManager->getCharacter())->getX();
 		float destY = _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3;
-		CAMERAMANAGER->CameraSwitch(startX, startY, destX, destY);
+		CAMERAMANAGER->CameraSwitch(startX, startY, destX, destY, true);
 	}
 	else
 	{
@@ -112,6 +113,7 @@ void stageOneScene::update(void)
 
 	MONSTERMANAGER->update();
 	OBJECTMANAGER->update();
+	_GUI->update();
 
 
 	//temporary
@@ -168,11 +170,13 @@ void stageOneScene::render(void)
 	MONSTERMANAGER->render(getMemDC());
 	_playerManager->render();
 	OBJECTMANAGER->render(getMemDC());
-	
+
 	RENDERMANAGER->foregroundRender(getMemDC());
 
-	//IMAGEMANAGER->render("stage1_temp", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-	//IMAGEMANAGER->render("GUI_temp", getMemDC());
+	CAMERAMANAGER->render(getMemDC());
+	if (CAMERAMANAGER->getSwitchStart())
+		_playerManager->getPlayer(_playerManager->getCharacter())->render();
+	
 	_GUI->render();
 
 	if (_alpha > 0)
@@ -209,35 +213,17 @@ void stageOneScene::cameraAdjustment()
 		}
 	}
 
-	this->playerSwitch();
-
-	if (_rcCamera.left <= 0)
+	if (_playerManager->getPlayer(_playerManager->getCharacter())->getRect().left <= 0)
 	{
-		_rcCamera.left = 0;
-		_rcCamera.right = _rcCamera.left + WINSIZEX;
+		_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameWidth() / 6);
 	}
-	else if (_rcCamera.right >= 7409)
+	else if (_playerManager->getPlayer(_playerManager->getCharacter())->getRect().right >= CAMERAMANAGER->getMaxWidth())
 	{
-		_rcCamera.left = 7409 - WINSIZEX;
-		_rcCamera.right = _rcCamera.left + WINSIZEX;
-	}
-	if (_rcCamera.top <= 0)
-	{
-		_rcCamera.top = 0;
-		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-	}
-	else if (_rcCamera.bottom >= 1760)
-	{
-		_rcCamera.top = 1760 - WINSIZEY;
-		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
+		_playerManager->getPlayer(_playerManager->getCharacter())->setX(CAMERAMANAGER->getMaxWidth() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameWidth() / 6);
 	}
 
 	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
 	CAMERAMANAGER->setCamera(_rcCamera);
-}
-
-void stageOneScene::playerSwitch()
-{
 }
 
 void stageOneScene::mapLoad(void)

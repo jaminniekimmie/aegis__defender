@@ -17,6 +17,8 @@ class monsterManager : public singletonBase<monsterManager>
 	float _firedrinkerFlyRange[3];
 	bool _isGameClear;
 	bool _isDead;
+	bool _isHit;
+	BYTE _alpha;
 public:
 	vector<monster*> getVMonster() { return _vMonster; }
 	bool getGameClear() { return _isGameClear; }

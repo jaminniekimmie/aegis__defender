@@ -164,7 +164,7 @@ void loadingBlackScene::loadingImage()
 	//BART
 	_loading->loadFrameImage("Bart_block", "tex/characters/Bart_block_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_bored", "tex/characters/Bart_bored_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Bart_bored_idle", "tex/characters/Bart_bored_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored_idle", "tex/characters/Bart_bored_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_charge", "tex/characters/Bart_charge_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_faint", "tex/characters/Bart_faint_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_faint_idle", "tex/characters/Bart_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -193,7 +193,7 @@ void loadingBlackScene::loadingImage()
 
 	_loading->loadFrameImage("Bart_block_shadow", "tex/characters/Bart_block_shadow_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_bored_shadow", "tex/characters/Bart_bored_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Bart_bored_idle_shadow", "tex/characters/Bart_bored_idle_shadow_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_bored_idle_shadow", "tex/characters/Bart_bored_idle_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_charge_shadow", "tex/characters/Bart_charge_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_faint_shadow", "tex/characters/Bart_faint_shadow_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_faint_idle_shadow", "tex/characters/Bart_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -351,7 +351,6 @@ void loadingBlackScene::loadingEffect()
 	EFFECTMANAGER->addEffect("run3", "fx_run3", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("run4", "fx_run4", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("run5", "fx_run5", 0.4f, 5, true, true);
-	EFFECTMANAGER->addEffect("solid_red", "solid_red", 0.4f, 1, true);
 	EFFECTMANAGER->addEffect("regen", "fx_regen", 0.4f, 5, true);
 	EFFECTMANAGER->addEffect("bulletPuff1", "fx_bulletPuff1", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff2", "fx_bulletPuff2", 0.4f, 5);

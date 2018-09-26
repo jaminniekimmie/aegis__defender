@@ -64,6 +64,9 @@ HRESULT monsterManager::init(int scene)
 		_isGameClear = false;
 	}
 
+	_alpha = 0;
+	_isHit = false;
+
 	return S_OK;
 }
 
@@ -91,13 +94,30 @@ void monsterManager::update()
 	*/
 		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vMonster[i]->getRect()))
 		{
-			if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() != HIT)
-				EFFECTMANAGER->play("solid_red", WINSIZEX / 2 + CAMERAMANAGER->getCamera().left, WINSIZEY / 2 + CAMERAMANAGER->getCamera().top);
+			float angle = !_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
+			float speed = 15.0f;
+			_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getX() + cosf(angle) * speed);
 			_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
+			_isHit = true;
 		}
 
 		_vMonster[i]->update();
 	}
+
+	if (_isHit)
+	{
+		if (_alpha < 90)
+			_alpha += 15;
+		else
+			_isHit = false;
+	}
+	else
+	{
+		if (_alpha > 0)
+			_alpha -= 15;
+	}
+
+
 }
 
 void monsterManager::render(HDC hdc)
@@ -107,6 +127,8 @@ void monsterManager::render(HDC hdc)
 		if (_vMonster[i]->getState() == MONSTER_DEAD) continue;
 		_vMonster[i]->render(hdc);
 	}
+
+	IMAGEMANAGER->alphaRender("solid_red", hdc, _alpha);
 }
 void monsterManager::collisionProcess()
 {
