@@ -13,7 +13,7 @@
 
 #define MAXPLAYERSTATE 34
 #define MAXMONSTERSTATE 2
-#define MAXOBJECTSTATE 2
+#define MAXOBJECTSTATE 3
 
 #define YELLOW 1
 #define RED 2

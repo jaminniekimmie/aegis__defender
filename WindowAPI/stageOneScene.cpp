@@ -15,15 +15,16 @@ HRESULT stageOneScene::init(void)
 	_pixelMap = new image;
 	_pixelMap->init("tex/map/map_pixel_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
 
-	_playerManager->getClu()->setX(755);
-	_playerManager->getClu()->setY(1300);
-	_playerManager->getBart()->setX(755);
-	_playerManager->getBart()->setY(1300);
+	//_playerManager->getClu()->setX(755);
+	//_playerManager->getClu()->setY(1300);
+	//_playerManager->getBart()->setX(755);
+	//_playerManager->getBart()->setY(1300);
+	_playerManager->getPlayer(CLU)->setX(755);
+	_playerManager->getPlayer(CLU)->setY(1300);
+	_playerManager->getPlayer(BART)->setX(755);
+	_playerManager->getPlayer(BART)->setY(1300);
 
-	if (_playerManager->getPlayerCharacter() == CLU)
-		_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
-	else if (_playerManager->getPlayerCharacter() == BART)
-		_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
 	CAMERAMANAGER->setRange(7409, 1760);
@@ -185,16 +186,13 @@ void stageOneScene::cameraAdjustment()
 	}
 	else
 	{
-		if (_playerManager->getClu()->getState() == LAND)
+		if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == LAND)
 		{
 			_rcCamera.top++;
 		}
 		else
 		{
-			if (_playerManager->getPlayerCharacter() == CLU)
-				_rcCamera = RectMakeCenter(_playerManager->getClu()->getX(), _playerManager->getClu()->getY() - _playerManager->getClu()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
-			else if (_playerManager->getPlayerCharacter() == BART)
-				_rcCamera = RectMakeCenter(_playerManager->getBart()->getX(), _playerManager->getBart()->getY() - _playerManager->getBart()->getPlayerImage(_playerManager->getClu()->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+			_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 		}
 	}
 

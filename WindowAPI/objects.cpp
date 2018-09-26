@@ -527,31 +527,34 @@ void vent::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("vent");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("vent");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("vent");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("vent");
 	_speed = 3.0f;
 	_angle = PI_2;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
-	_range = 300;
+	_range = 100;
 	_oldX = _x;
 	_oldY = _y;
 	_attackCount = 0;
-	_isActive = true;
+	_isActive = false;
 	_frameSpeed = 5;
 	_isLeft = false;
 	_isFrameImg = false;
 	_state = OBJECT_IDLE;
-
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 1; i++)
 	{
+		int rand = RND->getFloat(_image[_state].img->getWidth());
+
 		for (int j = 0; j < 5; j++)
 		{
 			tagElement element;
 			ZeroMemory(&element, sizeof(tagElement));
 			element.elementImg = IMAGEMANAGER->findImage("fx_smoke" + to_string(j + 1));
-			element.x = element.fireX = _x + RND->getFloat(_image[_state].img->getWidth() - element.elementImg->getWidth() * 0.5);
-			element.y = element.fireY = _y;
-			element.speed = RND->getFromFloatTo(3, 4);
-			element.alpha = 255;
+			element.x = element.fireX = _x + rand;
+			element.y = element.fireY = _y + rand;
+			element.speed = i + 1;
+			element.alpha = (j + 1) * 40;
 			element.fire = false;
 			element.rc = RectMakeCenter(element.x, element.y, element.elementImg->getWidth(), element.elementImg->getHeight());
 	
@@ -563,15 +566,15 @@ void vent::init()
 void vent::idle()
 {
 	_actionRc = RectMake(_x, _y - _image[_state].img->getHeight() * 5, _image[_state].img->getWidth(), _image[_state].img->getHeight() * 5);
-	//if (_attackCount < 200)
-	//	_attackCount++;
-	//else
-	//{
-	//	_state = OBJECT_MOVE;
-	//	_attackCount = 0;
-	//	for (int i = 0; i < _vElement.size(); i++)
-	//		_vElement[i].fire = true;
-	//}
+	if (_attackCount < 200)
+		_attackCount++;
+	else
+	{
+		_state = OBJECT_MOVE;
+		_attackCount = 0;
+		for (int i = 0; i < _vElement.size(); i++)
+			_vElement[i].fire = true;
+	}
 }
 
 void vent::move()
@@ -580,19 +583,19 @@ void vent::move()
 	{
 		if (!_vElement[i].fire) continue;
 	
-		_vElement[i].x += cosf(_angle + RND->getFloat(5)) * _vElement[i].speed;
+		_vElement[i].x += cosf(_angle) * _vElement[i].speed;
 		_vElement[i].y += -sinf(_angle) * _vElement[i].speed;
 		_vElement[i].rc = RectMakeCenter(_vElement[i].x, _vElement[i].y, _vElement[i].elementImg->getWidth(), _vElement[i].elementImg->getHeight());
 	
 		if (getDistance(_vElement[i].fireX, _vElement[i].fireY, _vElement[i].x, _vElement[i].y) > _range)
 		{
-			_vElement[i].alpha -= 255 / _vElement[i].speed;
+			_vElement[i].alpha -= 5;
 
 			if (_vElement[i].alpha < 0)
 			{
 				_vElement[i].x = _vElement[i].fireX;
 				_vElement[i].y = _vElement[i].fireY;
-				_vElement[i].alpha = 255;
+				_vElement[i].alpha = 150;
 				_vElement[i].fire = false;
 				_attackCount++;
 				if (_attackCount >= _vElement.size())

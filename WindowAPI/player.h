@@ -9,8 +9,8 @@
 class player : public gameNode
 {
 private:
-	PLAYERCHARACTER _playerCharacter;
-	PLAYERSTATE _playerState;
+	PLAYERCHARACTER _character;
+	PLAYERSTATE _state;
 	DIRECTION _direction;
 	RECT _rc;
 	RECT _rcLedge[2];
@@ -35,13 +35,14 @@ private:
 	bool _onLand;
 	bool _isLedgeGrab;
 	bool _isFired;
+	bool _isActive;
 	bool _weaponSwitch;
 
 	progressBar* _hpBar;		//체력바
 	float _maxHp, _currentHp;	//최대체력, 현재체력
 
 public:
-	HRESULT init(PLAYERCHARACTER playerCharacter);
+	HRESULT init(PLAYERCHARACTER character);
 	void release(void);
 	void update(void);
 	void render(void);
@@ -49,11 +50,11 @@ public:
 	//체력바 피통깍기
 	void hitDamage(float damage);
 
-	PLAYERSTATE getState() { return _playerState; }
-	RECT getPlayerRc() { return _rc; }
+	PLAYERSTATE getState() { return _state; }
+	RECT getRect() { return _rc; }
 	RECT getLedgeRc(int num) { return _rcLedge[num]; }
 	DIRECTION getDirection() { return _direction; }
-	image* getPlayerImage(PLAYERSTATE playerState) { return _player[playerState].img; }
+	image* getPlayerImage(PLAYERSTATE state) { return _player[state].img; }
 	BYTE getWeaponIsActive(bool weaponSwitch) { return _weaponIcon[weaponSwitch].isActive; }
 	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
@@ -74,10 +75,11 @@ public:
 	bool getIsFaceDown() { return _isFaceDown; }
 	bool getIsLedgeGrab() { return _isLedgeGrab; }
 	bool getIsFired() { return _isFired; }
+	bool getIsActive() { return _isActive; }
 	bool getWeaponSwitch() { return _weaponSwitch; }
 
-	void setState(PLAYERSTATE playerState) { _playerState = playerState; }
-	void setPlayerRc(RECT rc) { _rc = rc; }
+	void setState(PLAYERSTATE playerState) { _state = playerState; }
+	void setRect(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
 	void setWeaponIsActive(bool weaponSwitch, bool isActive) { _weaponIcon[weaponSwitch].isActive = isActive; }
 	void setFrameSpeed(int animationSpeed) { _frameSpeed = animationSpeed; }
@@ -99,11 +101,13 @@ public:
 	void setIsFaceDown(bool isFaceDown) { _isFaceDown = isFaceDown; }
 	void setIsLedgeGrab(bool isLedgeGrab) { _isLedgeGrab = isLedgeGrab; }
 	void setIsFired(bool isFired) { _isFired = isFired; }
+	void setIsActive(bool isActive) { _isActive = isActive; }
 	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }
 
 	void frameChangeLoop();
 	void frameChangeOnce();
 	void weaponSwitch(bool weaponSwitch);
+	void collisionProcess();
 
 	player() {}
 	~player() {}

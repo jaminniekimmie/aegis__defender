@@ -224,22 +224,30 @@ void bullet::collision()
 		{
 			_vMagazine[i].gravity = 0.0f;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, TOP))
 		{
 			_vMagazine[i].angle = PI_2 - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 
 		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, LEFT))
 		{
 			_vMagazine[i].angle = PI - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, RIGHT))
 		{
 			_vMagazine[i].angle = PI - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 	}
 
@@ -248,12 +256,16 @@ void bullet::collision()
 		float x = _vBullet[i].x;
 		float y = _vBullet[i].y;
 
-		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT))
+		//if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
+			//COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
+		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) == BLUE ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT) == BLUE)
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].x = _vBullet[i].fireX;
+			_vBullet[i].y = _vBullet[i].fireY;
 			_vBullet.erase(_vBullet.begin() + i);
 		}
 	}
@@ -453,6 +465,8 @@ void triBullet::move()
 		if (_range < distance)
 		{
 			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].x = _vBullet[i].fireX;
+			_vBullet[i].y = _vBullet[i].fireY;
 			_vBullet[i].fire = false;
 		}
 	}
@@ -516,6 +530,8 @@ void triBullet::collision()
 {
 	for (int i = 0; i < _vMagazine.size(); i++)
 	{
+		if (!_vMagazine[i].fire) continue;
+
 		float x = _vMagazine[i].x;
 		float y = _vMagazine[i].y;
 
@@ -523,36 +539,50 @@ void triBullet::collision()
 		{
 			_vMagazine[i].gravity = 0.0f;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, TOP))
 		{
 			_vMagazine[i].angle = PI_2 - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 
 		if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, LEFT))
 		{
 			_vMagazine[i].angle = PI - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 		else if (COLLISIONMANAGER->pixelCollision(_vMagazine[i].rc, x, y, _vMagazine[i].speed, _vMagazine[i].gravity, RIGHT))
 		{
 			_vMagazine[i].angle = PI - _vMagazine[i].angle;
 			_vMagazine[i].speed *= 0.8;
+			//_vMagazine[i].x = x;
+			//_vMagazine[i].y = y;
 		}
 	}
 
 	for (int i = 0; i < _vBullet.size(); i++)
 	{
+		if (!_vBullet[i].fire) continue;
+
 		float x = _vBullet[i].x;
 		float y = _vBullet[i].y;
 
-		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
-			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT))
+		//if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, BOTTOM) ||
+		//	COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, TOP) ||
+		if (COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT) ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, LEFT) == BLUE ||
+			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT) == BLUE)
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].x = _vBullet[i].fireX;
+			_vBullet[i].y = _vBullet[i].fireY;
 			_vBullet[i].fire = false;
 		}
 	}

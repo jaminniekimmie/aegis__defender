@@ -6,9 +6,8 @@
 class playerManager : public gameNode
 {
 private:
-	PLAYERCHARACTER _playerCharacter;
-	player * _clu;
-	player * _bart;
+	PLAYERCHARACTER _character;
+	player * _player[2];
 	bullet * _bullet;
 	triBullet * _triBullet;
 	int _idleCount;
@@ -21,9 +20,10 @@ public:
 	void update(void);
 	void render(void);
 
-	player * getClu() { return _clu; }
-	player * getBart() { return _bart; }
-	PLAYERCHARACTER getPlayerCharacter() { return _playerCharacter; }
+	player * getPlayer(PLAYERCHARACTER character) { return _player[character]; }
+	//player * getClu() { return _player[CLU]; }
+	//player * getBart() { return _player[BART]; }
+	PLAYERCHARACTER getCharacter() { return _character; }
 	bullet * getBullet() { return _bullet; }
 	triBullet * getTriBullet() { return _triBullet; }
 
