@@ -48,7 +48,7 @@ void effectManager::render(void)
 	}
 }
 
-void effectManager::addEffect(string effectName, const char * imageName, float effectFPS, int buffer, bool isFadeOut)
+void effectManager::addEffect(string effectName, const char * imageName, float effectFPS, int buffer, bool isFadeOut, bool isFloating)
 {
 	image* img;
 	vEffect vEffectBuffer;
@@ -57,7 +57,7 @@ void effectManager::addEffect(string effectName, const char * imageName, float e
 	for (int i = 0; i < buffer; i++)
 	{
 		vEffectBuffer.push_back(new effect);
-		vEffectBuffer[i]->init(img, effectFPS, isFadeOut);
+		vEffectBuffer[i]->init(img, effectFPS, isFadeOut, isFloating);
 	}
 
 	//이펙트버퍼 백터를 맵에 담기

@@ -44,7 +44,8 @@ public:
 	void playerBored();
 	void playerUpset();
 	void bulletFire();
-	void objectCollision();
+	void hammer();
+	void playerAttack();
 
 	playerManager() {}
 	~playerManager() {}

@@ -4,9 +4,12 @@ class cameraManager : public singletonBase<cameraManager>
 {
 	RECT _rcCamera;
 	RECT _rcTemp;
+	int _maxWidth, _maxHeight;
 	int _shakeCount;
 	bool _shakeStart;
-	int _maxWidth, _maxHeight;
+	bool _switchStart;
+	float _startX, _startY;
+	float _destX, _destY;
 public:
 	RECT getCamera() { return _rcCamera; }
 	int getMaxWidth() { return _maxWidth; }
@@ -18,6 +21,8 @@ public:
 	bool CameraIn(RECT rc);
 	void CameraShakeOngoing();
 	void CameraShake();
+	void CameraSwitch(float startX, float startY, float destX, float destY);
+	void CameraSwitchOngoing();
 
 	//카메라매니져 초기화
 	HRESULT init();

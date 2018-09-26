@@ -15,10 +15,6 @@ HRESULT stageOneScene::init(void)
 	_pixelMap = new image;
 	_pixelMap->init("tex/map/map_pixel_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
 
-	//_playerManager->getClu()->setX(755);
-	//_playerManager->getClu()->setY(1300);
-	//_playerManager->getBart()->setX(755);
-	//_playerManager->getBart()->setY(1300);
 	_playerManager->getPlayer(CLU)->setX(755);
 	_playerManager->getPlayer(CLU)->setY(1300);
 	_playerManager->getPlayer(BART)->setX(755);
@@ -86,9 +82,37 @@ void stageOneScene::release(void)
 
 void stageOneScene::update(void)
 {
+	PLAYERCHARACTER character = _playerManager->getCharacter();
+
 	_playerManager->update();
+
+	if (character != _playerManager->getCharacter())
+	{
+		float startX = _playerManager->getPlayer(character)->getX();
+		float startY = _playerManager->getPlayer(character)->getY() - _playerManager->getPlayer(character)->getPlayerImage(_playerManager->getPlayer(character)->getState())->getFrameHeight() / 3;
+		float destX = _playerManager->getPlayer(_playerManager->getCharacter())->getX();
+		float destY = _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3;
+		CAMERAMANAGER->CameraSwitch(startX, startY, destX, destY);
+	}
+	else
+	{
+		if (!_camDebug)
+		{
+			if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == LAND)
+			{
+				_rcCamera.top++;
+			}
+			else
+			{
+				_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+			}
+		}
+	}
+
+
 	MONSTERMANAGER->update();
 	OBJECTMANAGER->update();
+
 
 	//temporary
 	if (KEYMANAGER->isOnceKeyDown('Q'))
@@ -184,22 +208,8 @@ void stageOneScene::cameraAdjustment()
 			_rcCamera.bottom += 30;
 		}
 	}
-	else
-	{
-		if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == LAND)
-		{
-			_rcCamera.top++;
-		}
-		else
-		{
-			_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
-		}
-	}
 
-	if (KEYMANAGER->isOnceKeyDown('I') || KEYMANAGER->isOnceKeyDown('O'))
-	{
-		this->playerSwitch();
-	}
+	this->playerSwitch();
 
 	if (_rcCamera.left <= 0)
 	{

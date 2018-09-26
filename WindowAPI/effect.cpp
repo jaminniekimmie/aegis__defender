@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "effect.h"
 
-HRESULT effect::init(image * effectImg, float effectFPS, bool isFadeOut)
+HRESULT effect::init(image * effectImg, float effectFPS, bool isFadeOut, bool isFloating)
 {
 	//변수 초기화
 	_effectImg = effectImg;
 	_effectFPS = effectFPS;
 	_isFadeOut = isFadeOut;
+	_isFloating = isFloating;
 	_alpha = 255;
 	_isRunning = false;
 
@@ -31,10 +32,10 @@ void effect::update(void)
 	if (_isRunning)
 	{
 		if (_isFadeOut)
-		{
 			_alpha -= 5;
+		if (_isFloating)
 			_y--;
-		}
+
 		_effectAni->frameUpdate(_effectFPS);
 	}
 	//이펙트 애니메이션 종료가 되면 멈추기(_isRunning = false;)

@@ -12,10 +12,11 @@ private:
 	float _effectFPS;		//이펙트 속도
 	bool _isRunning;		//이펙트 재생중이냐?
 	bool _isFadeOut;
+	bool _isFloating;
 	bool _isTransluscent;
 
 public:
-	HRESULT init(image* effectImg, float effectFPS, bool isFadeOut);
+	HRESULT init(image* effectImg, float effectFPS, bool isFadeOut, bool isFloating);
 	void release(void);
 	void update(void);
 	void render(void);

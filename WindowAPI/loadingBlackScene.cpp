@@ -32,12 +32,11 @@ void loadingBlackScene::update(void)
 	//로딩완료후 씬변경
 	if (_loading->loadingDone())
 	{
-		_alpha += 5;
 		this->loadingEffect();
+		_alpha += 5;
+		if (_alpha >= 255)
+			SCENEMANAGER->loadScene("스테이지원");
 	}
-
-	if (_alpha >= 255)
-		SCENEMANAGER->loadScene("스테이지원");
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -171,7 +170,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Bart_faint_idle", "tex/characters/Bart_faint_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_fullCharge", "tex/characters/Bart_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_fullCharge_idle", "tex/characters/Bart_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Bart_hammer", "tex/characters/Bart_hammer_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer", "tex/characters/Bart_hammer_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_diagonal", "tex/characters/Bart_hammer_diagonal_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_idle", "tex/characters/Bart_hammer_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_idleDiagonal", "tex/characters/Bart_hammer_idleDiagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -200,7 +199,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Bart_faint_idle_shadow", "tex/characters/Bart_faint_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_fullCharge_shadow", "tex/characters/Bart_fullCharge_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_fullCharge_idle_shadow", "tex/characters/Bart_fullCharge_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Bart_hammer_shadow", "tex/characters/Bart_hammer_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Bart_hammer_shadow", "tex/characters/Bart_hammer_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_diagonal_shadow", "tex/characters/Bart_hammer_diagonal_shadow_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_idle_shadow", "tex/characters/Bart_hammer_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_hammer_idleDiagonal_shadow", "tex/characters/Bart_hammer_idleDiagonal_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
@@ -262,6 +261,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_fullCharge_front", "tex/fx/Attack_FullCharge_Front.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_back", "tex/fx/Attack_FullCharge_Back.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bloodBlob", "tex/fx/Blood_Blob_01.bmp", 324, 66, 6, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_regen", "tex/fx/Status_Regen.bmp", 224, 22, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke1", "tex/fx/Smoke_01.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke2", "tex/fx/Smoke_02.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke3", "tex/fx/Smoke_03.bmp", 59, 55, true, RGB(255, 0, 255));
@@ -344,13 +344,15 @@ void loadingBlackScene::loadingEffect()
 	EFFECTMANAGER->addEffect("jumpDust1", "fx_jumpDust1", 0.4f, 5);
 	EFFECTMANAGER->addEffect("jumpDust2", "fx_jumpDust2", 0.4f, 5);
 	EFFECTMANAGER->addEffect("jumpDust3", "fx_jumpDust3", 0.4f, 5);
-	EFFECTMANAGER->addEffect("runDust0", "fx_runDust_right", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("runDust0", "fx_runDust_right", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("runDust1", "fx_runDust_left", 0.4f, 5, true);
-	EFFECTMANAGER->addEffect("run1", "fx_run1", 0.4f, 5, true);
-	EFFECTMANAGER->addEffect("run2", "fx_run2", 0.4f, 5, true);
-	EFFECTMANAGER->addEffect("run3", "fx_run3", 0.4f, 5, true);
-	EFFECTMANAGER->addEffect("run4", "fx_run4", 0.4f, 5, true);
-	EFFECTMANAGER->addEffect("run5", "fx_run5", 0.4f, 5, true);
+	EFFECTMANAGER->addEffect("run1", "fx_run1", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("run2", "fx_run2", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("run3", "fx_run3", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("run4", "fx_run4", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("run5", "fx_run5", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("solid_red", "solid_red", 0.4f, 1, true);
+	EFFECTMANAGER->addEffect("regen", "fx_regen", 0.4f, 5, true);
 	EFFECTMANAGER->addEffect("bulletPuff1", "fx_bulletPuff1", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff2", "fx_bulletPuff2", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff3", "fx_bulletPuff3", 0.4f, 5);

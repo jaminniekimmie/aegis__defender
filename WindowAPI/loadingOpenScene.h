@@ -19,6 +19,7 @@ public:
 	void loadingImage();
 	//로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 	void loadingSound();
+	void loadingEffect();
 
 	loadingOpenScene() {}
 	~loadingOpenScene() {}

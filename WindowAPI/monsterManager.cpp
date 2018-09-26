@@ -91,6 +91,8 @@ void monsterManager::update()
 	*/
 		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vMonster[i]->getRect()))
 		{
+			if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() != HIT)
+				EFFECTMANAGER->play("solid_red", WINSIZEX / 2 + CAMERAMANAGER->getCamera().left, WINSIZEY / 2 + CAMERAMANAGER->getCamera().top);
 			_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
 		}
 

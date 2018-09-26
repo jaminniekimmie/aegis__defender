@@ -31,11 +31,12 @@ void loadingOpenScene::update(void)
 
 	//로딩완료후 씬변경
 	if (_loading->loadingDone())
+	{
+		this->loadingEffect();
 		_alpha += 5;
-	
-	if (_alpha >= 255)
-		SCENEMANAGER->loadScene("맵툴");
-
+		if (_alpha >= 255)
+			SCENEMANAGER->loadScene("맵툴");
+	}
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		float num = _loading->getLoadItem().size();
@@ -143,4 +144,8 @@ void loadingOpenScene::loadingImage()
 void loadingOpenScene::loadingSound()
 {
 	//_loading->loadSound("사운드1", "브금.mp3");
+}
+
+void loadingOpenScene::loadingEffect()
+{
 }

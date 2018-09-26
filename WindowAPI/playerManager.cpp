@@ -64,10 +64,9 @@ void playerManager::render(void)
 {
 	_bullet->render();
 	_triBullet->render(); 
-	for (int i = 0; i < 2; i++)
-	{
-		_player[i]->render();
-	}
+
+	_player[!_character]->render();
+	_player[_character]->render();
 }
 
 void playerManager::keyInput()
@@ -123,7 +122,7 @@ void playerManager::keyInput()
 	}
 	if (KEYMANAGER->isOnceKeyUp('J'))
 	{
-		this->bulletFire();
+		this->playerAttack();
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT)) // || KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D'))
 	{
@@ -1100,6 +1099,12 @@ void playerManager::bulletFire()
 	}
 }
 
-void playerManager::objectCollision()
+void playerManager::hammer()
 {
+	_player[_character]->setState(AIM_FIRE);
+}
+
+void playerManager::playerAttack()
+{
+	_character ? this->hammer() : this->bulletFire();
 }
