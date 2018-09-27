@@ -19,7 +19,7 @@ protected:
 	float _range;
 	bool _isAlive;
 	bool _isLeft;
-	bool _isHit;
+	int _statusCount;
 	int _count, _index;
 	int _frameSpeed;
 	int _hpCount;
@@ -38,7 +38,6 @@ public:
 	float getRange() { return _range; }
 	bool getIsAlive() { return _isAlive; }
 	bool getIsLeft() { return _isLeft; }
-	bool getIsHit() { return _isHit; }
 	MONSTERSTATE getState() { return _state; }
 	MONSTERTYPE getType() { return _type; }
 	hpBar* getHpBar() { return _hpBar; }
@@ -58,13 +57,13 @@ public:
 	void setIndex(int index) { _index = index; }
 	void setIsAlive(bool isAlive) { _isAlive = isAlive; }
 	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
-	void setIsHit(bool isHit) { _isHit = isHit; }
 	void setState(MONSTERSTATE state) { _state = state; }
 	void setType(MONSTERTYPE type) { _type = type; }
 
 	void frameChange();
 	void directionProcess();
 	void collisionProcess();
+	void playerAttack(int attack);
 
 	virtual void init() = 0;
 	virtual void release() = 0;
@@ -72,6 +71,7 @@ public:
 	virtual void render(HDC hdc);
 	virtual void idle() = 0;
 	virtual void move() = 0;
+	virtual void hit() = 0;
 	virtual void dead() = 0;
 };
 
@@ -82,6 +82,7 @@ private:
 	void release();
 	void idle();
 	void move();
+	void hit();
 	void dead();
 
 public:
@@ -94,6 +95,7 @@ private:
 	void release();
 	void idle();
 	void move();
+	void hit();
 	void dead();
 
 public:
@@ -106,6 +108,7 @@ private:
 	void release();
 	void idle();
 	void move();
+	void hit();
 	void dead();
 
 public:
@@ -118,6 +121,7 @@ private:
 	void release();
 	void idle();
 	void move();
+	void hit();
 	void dead();
 
 public:

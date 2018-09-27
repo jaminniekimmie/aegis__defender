@@ -237,6 +237,8 @@ void objectManager::update()
 			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getRect()))
 			{
 				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
+				SOUNDMANAGER->play("UI_collect_common");
+				//SOUNDMANAGER->play("UI_collect_bloomflower");
 				_vObject[i]->setState(OBJECT_INACTIVE);
 				break;
 			}
