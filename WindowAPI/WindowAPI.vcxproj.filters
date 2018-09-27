@@ -170,9 +170,6 @@
     <ClInclude Include="collisionManager.h">
       <Filter>GameFramework2D\매니져</Filter>
     </ClInclude>
-    <ClInclude Include="progressBar.h">
-      <Filter>GameFramework2D\체력바</Filter>
-    </ClInclude>
     <ClInclude Include="monster.h">
       <Filter>MainGame\몬스터</Filter>
     </ClInclude>
@@ -208,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>MainGame\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>GameFramework2D\체력바</Filter>
+    </ClInclude>
+    <ClInclude Include="hpBar.h">
+      <Filter>GameFramework2D\체력바</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -292,9 +295,6 @@
     <ClCompile Include="collisionManager.cpp">
       <Filter>GameFramework2D\매니져</Filter>
     </ClCompile>
-    <ClCompile Include="progressBar.cpp">
-      <Filter>GameFramework2D\체력바</Filter>
-    </ClCompile>
     <ClCompile Include="monster.cpp">
       <Filter>MainGame\몬스터</Filter>
     </ClCompile>
@@ -327,6 +327,12 @@
     </ClCompile>
     <ClCompile Include="GUI.cpp">
       <Filter>MainGame\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>GameFramework2D\체력바</Filter>
+    </ClCompile>
+    <ClCompile Include="hpBar.cpp">
+      <Filter>GameFramework2D\체력바</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

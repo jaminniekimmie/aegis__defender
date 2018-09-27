@@ -115,6 +115,12 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("GUI_blueFlower", "tex/UI/blueFlower_UI_01.bmp", 54, 48, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_mineral", "tex/UI/mineral_UI_01.bmp", 54, 51, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_button_switch", "tex/UI/button_switch_01.bmp", 566, 45, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_hp_bar_blue", "tex/UI/hpBar_blue_01.bmp", 57, 12);
+	_loading->loadImage("GUI_hp_bar_blue_frame", "tex/UI/hpBar_blue_frame_01.bmp", 57, 12, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_hp_bar_yellow", "tex/UI/hpBar_yellow_01.bmp", 57, 12);
+	_loading->loadImage("GUI_hp_bar_yellow_frame", "tex/UI/hpBar_yellow_frame_01.bmp", 57, 12, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_hp_bar_red", "tex/UI/hpBar_red_01.bmp", 57, 12);
+	_loading->loadImage("GUI_hp_bar_red_frame", "tex/UI/hpBar_red_frame_01.bmp", 57, 12, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_clu", "tex/UI/clu_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_clu_shadow", "tex/UI/clu_UI_icon_shadow_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_bart", "tex/UI/bart_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));

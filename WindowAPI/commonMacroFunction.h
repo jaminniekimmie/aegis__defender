@@ -54,3 +54,10 @@ inline void Rectangle(HDC hdc, RECT rc)
 {
 	Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
 }
+
+
+inline void Rectangle(HDC hdc, RECT rc, int camX, int camY)
+{
+	Rectangle(hdc, rc.left - camX, rc.top - camY, rc.right - camX, rc.bottom - camY);
+}
+

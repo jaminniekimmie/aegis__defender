@@ -125,6 +125,7 @@ public:
 //=============================================================
 	void rotateRender(HDC hdc, float centerX, float centerY, float angle);
 	void rotateFrameRender(HDC hdc, float centerX, float centerY, float angle);
+	void rotateAlphaRender(HDC hdc, float centerX, float centerY, float angle, BYTE alpha);
 
 //=============================================================
 //	## ¾Ö´Ï·»´õ ## 

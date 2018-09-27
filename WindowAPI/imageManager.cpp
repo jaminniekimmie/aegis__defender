@@ -267,6 +267,27 @@ void imageManager::frameRender(string strKey, HDC hdc, int destX, int destY, int
 	if (img) img->frameRender(hdc, destX, destY, currentFrameX, currentFrameY);
 }
 
+void imageManager::rotateRender(HDC hdc, string strKey, float centerX, float centerY, float angle)
+{
+	//이미지를 찾아서 그냥 이미지클래스의 함수로 렌더시키면 됨
+	image* img = findImage(strKey);
+	if (img) img->rotateRender(hdc, centerX, centerY, angle);
+}
+
+void imageManager::rotateFrameRender(HDC hdc, string strKey, float centerX, float centerY, float angle)
+{
+	//이미지를 찾아서 그냥 이미지클래스의 함수로 렌더시키면 됨
+	image* img = findImage(strKey);
+	if (img) img->rotateFrameRender(hdc, centerX, centerY, angle);
+}
+
+void imageManager::rotateAlphaRender(HDC hdc, string strKey, float centerX, float centerY, float angle, BYTE alpha)
+{
+	//이미지를 찾아서 그냥 이미지클래스의 함수로 렌더시키면 됨
+	image* img = findImage(strKey);
+	if (img) img->rotateAlphaRender(hdc, centerX, centerY, angle, alpha);
+}
+
 void imageManager::loopRender(string strKey, HDC hdc, const LPRECT drawArea, int offsetX, int offsetY)
 {
 	//이미지를 찾아서 그냥 이미지클래스의 함수로 렌더시키면 됨

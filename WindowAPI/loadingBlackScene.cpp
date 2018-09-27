@@ -261,7 +261,11 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_fullCharge_front", "tex/fx/Attack_FullCharge_Front.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_back", "tex/fx/Attack_FullCharge_Back.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_bloodBlob", "tex/fx/Blood_Blob_01.bmp", 324, 66, 6, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_regen", "tex/fx/Status_Regen.bmp", 224, 22, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_regen", "tex/fx/Status_Regen.bmp", 672, 22, 12, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_blocked_white", "tex/icons/Blocked_Large_01.bmp", 450, 54, 10, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_blocked_yellow", "tex/icons/Blocked_Large_yellow_01.bmp", 450, 54, 10, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_blocked_blue", "tex/icons/Blocked_Large_blue_01.bmp", 450, 54, 10, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_blocked_red", "tex/icons/Blocked_Large_red_01.bmp", 450, 54, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke1", "tex/fx/Smoke_01.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke2", "tex/fx/Smoke_02.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke3", "tex/fx/Smoke_03.bmp", 59, 55, true, RGB(255, 0, 255));
@@ -351,6 +355,10 @@ void loadingBlackScene::loadingEffect()
 	EFFECTMANAGER->addEffect("run3", "fx_run3", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("run4", "fx_run4", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("run5", "fx_run5", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("blocked_white", "fx_blocked_white", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("blocked_yellow", "fx_blocked_yellow", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("blocked_blue", "fx_blocked_blue", 0.4f, 5, true, true);
+	EFFECTMANAGER->addEffect("blocked_red", "fx_blocked_red", 0.4f, 5, true, true);
 	EFFECTMANAGER->addEffect("regen", "fx_regen", 0.4f, 5, true);
 	EFFECTMANAGER->addEffect("bulletPuff1", "fx_bulletPuff1", 0.4f, 5);
 	EFFECTMANAGER->addEffect("bulletPuff2", "fx_bulletPuff2", 0.4f, 5);

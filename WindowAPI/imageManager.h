@@ -61,6 +61,13 @@ public:
 	void frameRender(string strKey, HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
 
 //=============================================================
+//	## 로테이트렌더 ## (이미지 회전)
+//=============================================================
+	void rotateRender(HDC hdc, string strKey, float centerX, float centerY, float angle);
+	void rotateFrameRender(HDC hdc, string strKey, float centerX, float centerY, float angle);
+	void rotateAlphaRender(HDC hdc, string strKey, float centerX, float centerY, float angle, BYTE alpha);
+
+//=============================================================
 //	## 루프렌더 ##
 //=============================================================
 	void loopRender(string strKey, HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);

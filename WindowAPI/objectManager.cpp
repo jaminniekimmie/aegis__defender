@@ -248,7 +248,7 @@ void objectManager::update()
 				if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[i]->getRect()))
 				{
 					EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
-					_playerManager->getBullet()->getVBullet().erase(_playerManager->getBullet()->getVBullet().begin() + j);
+					_playerManager->getBullet()->removeBullet(j);
 					break;
 				}
 			}

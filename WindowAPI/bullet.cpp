@@ -278,7 +278,7 @@ void bullet::removeBullet(int index)
 
 
 //=============================================================
-//	## missile ## (missile[0] -> 배열처럼 미리 장전해두고 총알발사)
+//	## triBullet ## (triBullet[0] -> 배열처럼 미리 장전해두고 총알발사)
 //=============================================================
 HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 {

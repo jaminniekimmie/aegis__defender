@@ -1,9 +1,11 @@
 #pragma once
 #include "tileNode.h"
+#include "hpBar.h"
 
 class monster
 {
 protected:
+	hpBar * _hpBar;
 	MONSTERTYPE _type;
 	MONSTERSTATE _state;
 	RECT _rc;
@@ -17,9 +19,11 @@ protected:
 	float _range;
 	bool _isAlive;
 	bool _isLeft;
+	bool _isHit;
 	int _count, _index;
 	int _frameSpeed;
 	int _hpCount;
+	int _maxHp;
 
 public:
 	float getX() { return _x; }
@@ -34,9 +38,10 @@ public:
 	float getRange() { return _range; }
 	bool getIsAlive() { return _isAlive; }
 	bool getIsLeft() { return _isLeft; }
-	int getHpCount() { return _hpCount; }
+	bool getIsHit() { return _isHit; }
 	MONSTERSTATE getState() { return _state; }
 	MONSTERTYPE getType() { return _type; }
+	hpBar* getHpBar() { return _hpBar; }
 	image* getImage(MONSTERSTATE state) { return _image[state].img; }
 	RECT getRect() { return _image[_state].rc; }
 
@@ -53,7 +58,7 @@ public:
 	void setIndex(int index) { _index = index; }
 	void setIsAlive(bool isAlive) { _isAlive = isAlive; }
 	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
-	void setHpCount(int attackCount) { _hpCount = attackCount; }
+	void setIsHit(bool isHit) { _isHit = isHit; }
 	void setState(MONSTERSTATE state) { _state = state; }
 	void setType(MONSTERTYPE type) { _type = type; }
 
@@ -61,16 +66,19 @@ public:
 	void directionProcess();
 
 	virtual void init() = 0;
+	virtual void release() = 0;
 	virtual void update();
 	virtual void render(HDC hdc);
 	virtual void idle() = 0;
 	virtual void move() = 0;
+	virtual void dead() = 0;
 };
 
 class sandworm : public monster
 {
 private:
 	void init();
+	void release();
 	void idle();
 	void move();
 
@@ -81,8 +89,10 @@ class spiderBaby : public monster
 {
 private:
 	void init();
+	void release();
 	void idle();
 	void move();
+	void dead();
 
 public:
 };
@@ -91,8 +101,10 @@ class firedrinkerFly : public monster
 {
 private:
 	void init();
+	void release();
 	void idle();
 	void move();
+	void dead();
 
 public:
 };
@@ -101,8 +113,10 @@ class eagle : public monster
 {
 private:
 	void init();
+	void release();
 	void idle();
 	void move();
+	void dead();
 
 public:
 };

@@ -12,7 +12,7 @@
 #define PI_8 (PI / 8)		//22.5µµ
 
 #define MAXPLAYERSTATE 34
-#define MAXMONSTERSTATE 2
+#define MAXMONSTERSTATE 3
 #define MAXOBJECTSTATE 3
 
 #define YELLOW 1

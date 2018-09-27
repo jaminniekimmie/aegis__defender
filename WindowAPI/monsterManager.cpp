@@ -2,7 +2,6 @@
 #include "monsterManager.h"
 #include "playerManager.h"
 
-
 HRESULT monsterManager::init(int scene)
 {
 	_factory = new monsterFactory;
@@ -73,32 +72,110 @@ HRESULT monsterManager::init(int scene)
 void monsterManager::release()
 {
 	_vMonster.clear();
+	for (int i = 0; i < _vMonster.size(); i++)
+		_vMonster[i]->release();
 }
 
 void monsterManager::update()
 {
 	RECT rcTemp;
+	float angle;
+	float speed;
+
 	for (int i = 0; i < _vMonster.size(); i++)
 	{
-		/*if (getDistance(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
+		if (!_vMonster[i]->getIsAlive()) continue;
+		//if (getDistance(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
+		//{
+		//	if (getAngle(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager-//>getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < PI_4 * 5)
+		//	{
+		//		_vMonster[i]->setIsLeft(true);
+		//	}
+		//	else
+		//	{
+		//		_vMonster[i]->setIsLeft(false);
+		//	}
+		//}
+
+		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vMonster[i]->getRect()) 
+			&& _playerManager->getPlayer(_playerManager->getCharacter())->getIsActive() && HIT != _playerManager->getPlayer(_playerManager->getCharacter())->getState())
 		{
-			if (getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager->getClu()->getX(), _playerManager->getClu()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < PI_4 * 5)
-			{
-				_vMonster[i]->setIsLeft(true);
-			}
-			else
-			{
-				_vMonster[i]->setIsLeft(false);
-			}
-		}
-	*/
-		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vMonster[i]->getRect()))
-		{
-			float angle = !_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
-			float speed = 15.0f;
+			angle = !_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
+			speed = 15.0f;
+
 			_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getX() + cosf(angle) * speed);
 			_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
 			_isHit = true;
+		}
+
+		for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
+			{
+				angle = _playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
+				speed = 15.0f;
+
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
+				_playerManager->getBullet()->removeBullet(j);
+
+				switch (_vMonster[i]->getType())
+				{
+				case SANDWORM:
+					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
+					break;
+				case SPIDERBABY:
+					if (CLU == _playerManager->getCharacter())
+						EFFECTMANAGER->play("blocked_yellow", _vMonster[i]->getX(), _vMonster[i]->getY());
+					_vMonster[i]->setX(_vMonster[i]->getX() + cosf(angle) * speed);
+					_vMonster[i]->setIsHit(true);
+					break;
+				case FIREDRINKERFLY:
+					EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
+					_vMonster[i]->setX(_vMonster[i]->getX() + cosf(angle) * speed);
+					_vMonster[i]->setIsHit(true);
+					break;
+				default:
+					break;
+				}
+
+				break;
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
+		{
+			if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
+
+			if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
+			{
+				angle = _playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
+				speed = 15.0f;
+
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
+				_playerManager->getTriBullet()->getVBullet()[j].fire = false;
+
+				switch (_vMonster[i]->getType())
+				{
+				case SANDWORM:
+					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
+					break;
+				case SPIDERBABY:
+					if (CLU == _playerManager->getCharacter())
+						EFFECTMANAGER->play("blocked_yellow", _vMonster[i]->getX(), _vMonster[i]->getY());
+					_vMonster[i]->setX(_vMonster[i]->getX() + cosf(angle) * speed);
+					_vMonster[i]->setIsHit(true);
+					break;
+				case FIREDRINKERFLY:
+					EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
+					_vMonster[i]->setX(_vMonster[i]->getX() + cosf(angle) * speed);
+					_vMonster[i]->setIsHit(true);
+					break;
+				default:
+					break;
+				}
+
+				break;
+			}
 		}
 
 		_vMonster[i]->update();
@@ -124,7 +201,7 @@ void monsterManager::render(HDC hdc)
 {
 	for (int i = 0; i < _vMonster.size(); i++)
 	{
-		if (_vMonster[i]->getState() == MONSTER_DEAD) continue;
+		if (!_vMonster[i]->getIsAlive()) continue;
 		_vMonster[i]->render(hdc);
 	}
 
