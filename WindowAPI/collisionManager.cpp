@@ -33,7 +33,8 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				y = i + 1 + (rc.bottom - rc.top) * 0.33f;
+				//y = i + 1 + (rc.bottom - rc.top) * 0.33f;
+				y = i + 1 + (rc.bottom - rc.top) * 0.5f;
 
 				return YELLOW;
 			}
@@ -65,14 +66,16 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if ((r == 244 && g == 180 && b == 23))
 			{
-				y = i - 1 - (rc.bottom - rc.top) * 0.66f;
+				//y = i - 1 - (rc.bottom - rc.top) * 0.66f;
+				y = i - 1 - (rc.bottom - rc.top) * 0.5f;
 
 				return YELLOW;
 			}
 
 			if ((r == 58 && g == 213 && b == 255))
 			{
-				y = i - 1 - (rc.bottom - rc.top) * 0.66f;
+				//y = i - 1 - (rc.bottom - rc.top) * 0.66f;
+				y = i - 1 - (rc.bottom - rc.top) * 0.5f;
 
 				return BLUE;
 			}

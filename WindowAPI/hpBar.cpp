@@ -16,6 +16,7 @@ HRESULT hpBar::init(const char * frontImageKey, const char * backImageKey, int x
 	_rcHp = RectMakeCenter(x, y, _hpBarBack->getWidth(), _hpBarBack->getHeight());
 	_width = _hpBarBack->getWidth();
 	_isActive = false;
+	_alpha = 0;
 	_activeCount = 0;
 
 	return S_OK;
@@ -56,9 +57,9 @@ void hpBar::render(HDC hdc)
 	if (_isActive)
 	{
 		//렌더링 되는 순서에 의해서 렌더가 되니까 피통부터 렌더 시킨다
-		_hpBarBack->alphaRender(hdc, _rcHp.left, _rcHp.top, _alpha);
+		_hpBarBack->alphaRender(hdc, _rcHp.left - CAMERAMANAGER->getCamera().left, _rcHp.top - CAMERAMANAGER->getCamera().top, _alpha);
 		//앞에 보여지는 체력바 이미지
-		_hpBarFront->alphaRender(hdc, _rcHp.left, _rcHp.top, 0, 0, _width, _hpBarFront->getHeight(), _alpha);
+		_hpBarFront->alphaRender(hdc, _rcHp.left - CAMERAMANAGER->getCamera().left, _rcHp.top - CAMERAMANAGER->getCamera().top, 0, 0, _width, _hpBarFront->getHeight(), _alpha);
 	}
 }
 

@@ -64,6 +64,7 @@ public:
 
 	void frameChange();
 	void directionProcess();
+	void collisionProcess();
 
 	virtual void init() = 0;
 	virtual void release() = 0;
@@ -81,6 +82,7 @@ private:
 	void release();
 	void idle();
 	void move();
+	void dead();
 
 public:
 };

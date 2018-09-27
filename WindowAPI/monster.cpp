@@ -22,6 +22,7 @@ void monster::update()
 	_hpBar->update();
 
 	this->directionProcess();
+	this->collisionProcess();
 	this->frameChange();
 }
 
@@ -86,6 +87,23 @@ void monster::directionProcess()
 	}
 }
 
+void monster::collisionProcess()
+{
+	if (_state == MONSTER_DEAD)
+	{
+		if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM))
+		{
+			_gravity = 0.0f;
+		}
+		else
+		{
+			_gravity += 0.55f;
+			_y += _gravity;
+		}
+
+	}
+}
+
 void sandworm::init()
 {
 	_hpBar = new hpBar;
@@ -94,6 +112,8 @@ void sandworm::init()
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("Sandworm_walk");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
+	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("fx_bloodBlob");
+	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("fx_bloodBlob");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -123,6 +143,10 @@ void sandworm::move()
 {
 }
 
+void sandworm::dead()
+{
+}
+
 void spiderBaby::init()
 {
 	_hpBar = new hpBar;
@@ -131,8 +155,8 @@ void spiderBaby::init()
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("SpiderBaby_walk");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
-	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("SpiderBaby_walk");
-	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
+	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("fx_bloodBlob");
+	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("fx_bloodBlob");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -166,7 +190,7 @@ void spiderBaby::move()
 		if (_hpCount > 0)
 			_hpCount--;
 		else
-			_isAlive = false;
+			_state = MONSTER_DEAD;
 
 		_hpBar->setGauge(_hpCount, _maxHp);
 		_isHit = false;
@@ -180,6 +204,7 @@ void spiderBaby::move()
 
 void spiderBaby::dead()
 {
+
 }
 
 void firedrinkerFly::init()
@@ -190,6 +215,8 @@ void firedrinkerFly::init()
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("firedrinkerFly_fly_shadow");
 	_image[MONSTER_MOVE].img = IMAGEMANAGER->findImage("firedrinkerFly_fly");
 	_image[MONSTER_MOVE].shadow = IMAGEMANAGER->findImage("firedrinkerFly_fly_shadow");
+	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("fx_bloodBlob");
+	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("fx_bloodBlob");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -223,7 +250,7 @@ void firedrinkerFly::move()
 		if (_hpCount > 0)
 			_hpCount--;
 		else
-			_isAlive = false;
+			_state = MONSTER_DEAD;
 
 		_hpBar->setGauge(_hpCount, _maxHp);
 		_isHit = false;

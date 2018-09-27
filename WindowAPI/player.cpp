@@ -215,8 +215,8 @@ HRESULT player::init(PLAYERCHARACTER character)
 	_onLand = true;
 	_isActive = true;
 
-	_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
-	//_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
+	//_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
+	_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
 
@@ -232,7 +232,8 @@ void player::release(void)
 
 void player::update(void)
 {
-	_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
+	//_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
+	_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
 
@@ -403,6 +404,7 @@ void player::collisionProcess()
 			_gravity = 0.0f;
 			_angle = -PI_2;
 			_isJump = false;
+			
 			if (!_onLand)
 			{
 				EFFECTMANAGER->play("landDust", _x, _y + _player[_state].img->getFrameHeight() * 0.35);
