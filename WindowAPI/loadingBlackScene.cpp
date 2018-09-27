@@ -271,7 +271,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("fx_smoke3", "tex/fx/Smoke_03.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke4", "tex/fx/Smoke_04.bmp", 59, 55, true, RGB(255, 0, 255));
 	_loading->loadImage("fx_smoke5", "tex/fx/Smoke_05.bmp", 59, 55, true, RGB(255, 0, 255));
-
+	//
 	_loading->loadImage("bullet_blue", "tex/weapons/Bullet1.bmp", 16, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("Clu_gun", "tex/weapons/clu_gun_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("Clu_bow", "tex/weapons/clu_bow_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
