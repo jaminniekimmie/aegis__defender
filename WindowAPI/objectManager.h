@@ -25,6 +25,7 @@ class objectManager : public singletonBase<objectManager>
 	fPos _bushSpikesPos[1];
 	fPos _ventPos[14];
 	fPos _switchHorPos[2];
+	fPos _switchVertPos[2];
 	float _ventRange[14];
 	int _bloomFlowerCount[7];
 	int _mineralCount[1];

@@ -30,26 +30,27 @@ void objects::render(HDC hdc)
 	{
 		if (_isFrameImg)
 		{
-			_image[_state].shadow->alphaFrameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
-			_image[_state].img->frameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
+			_image[_state].shadow->alphaFrameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _index, _isLeft, 100);
+			_image[_state].img->frameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, _index, _isLeft);
 		}
 		else
 		{
-			_image[_state].shadow->alphaRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
+			_image[_state].shadow->alphaRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 100);
 			_image[_state].img->render(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 		}
 	}
 
+	if (KEYMANAGER->isToggleKey('Y'))
+	{
+		Rectangle(hdc, _actionRc.left - CAMERAMANAGER->getCamera().left, _actionRc.top - CAMERAMANAGER->getCamera().top, _actionRc.right - CAMERAMANAGER->getCamera().left, _actionRc.bottom - CAMERAMANAGER->getCamera().top);
+	}
+	
 	for (int i = 0; i < _vElement.size(); i++)
 	{
 		if (!CAMERAMANAGER->CameraIn(_vElement[i].rc)) continue;
 
 		_vElement[i].elementImg->alphaRender(hdc, _vElement[i].rc.left - CAMERAMANAGER->getCamera().left, _vElement[i].rc.top - CAMERAMANAGER->getCamera().top, _vElement[i].alpha);
 
-		//if (KEYMANAGER->isToggleKey('Y'))
-		//{
-		//	Rectangle(hdc, _vElement[i].rc.left - CAMERAMANAGER->getCamera().left, _vElement[i].rc.top - CAMERAMANAGER->getCamera().top, _vElement//[i].rc.right - CAMERAMANAGER->getCamera().left, _vElement[i].rc.bottom - CAMERAMANAGER->getCamera().top);
-		//}
 	}
 }
 
@@ -478,11 +479,14 @@ void door_elevator::init()
 
 void door_elevator::idle()
 {
+	_actionRc = RectMake(_x, _y + 11, _image[_state].img->getFrameWidth(), 60);
 	_image[_state].img->setFrameX(_index);
 }
 
 void door_elevator::move()
 {
+	_actionRc = RectMake(_x, _y, 0, 0);
+
 	if (_index >= _image[_state].img->getMaxFrameX())
 	{
 		_index = _image[_state].img->getMaxFrameX();
@@ -550,7 +554,7 @@ void vent::idle()
 		_randNo = RND->getFromIntTo(100, 200);
 		_attackCount = 0;
 
-		for (int i = 0; i < 30; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			int rand = RND->getFloat(_image[_state].img->getWidth());
 			float speed = RND->getFromFloatTo(1, 4.5);
@@ -574,7 +578,7 @@ void vent::idle()
 
 void vent::move()
 {
-	if (_range > (_actionRc.bottom - _actionRc.top))
+	if (_range > (_y - _actionRc.top))
 		_actionRc.top -= 4;
 	else
 		_actionRc.bottom--;
@@ -601,6 +605,79 @@ void vent::move()
 				}
 			}
 		}
+	}
+}
+
+void switch_hor::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("switch_hor");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("switch_hor");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("switch_hor");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("switch_hor");
+	_speed = 3.0f;
+	_angle = PI_2;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 300;
+	_oldX = _x;
+	_oldY = _y;
+	_attackCount = 0;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = true;
+	_state = OBJECT_IDLE;
+}
+
+void switch_hor::idle()
+{
+	_actionRc = RectMake(_x + 10, _y, 45, 37);
+	_image[_state].img->setFrameX(_index);
+}
+
+void switch_hor::move()
+{
+	if (_index >= _image[_state].img->getMaxFrameX())
+	{
+		_index = _image[_state].img->getMaxFrameX();
+		_image[_state].img->setFrameX(_index);
+		_state = OBJECT_IDLE;
+	}
+}
+
+void switch_vert::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("switch_vert");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("switch_vert");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("switch_vert");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("switch_vert");
+	_speed = 3.0f;
+	_angle = PI_2;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 300;
+	_oldX = _x;
+	_oldY = _y;
+	_attackCount = 0;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = true;
+	_state = OBJECT_IDLE;
+}
+
+void switch_vert::idle()
+{
+	_actionRc = RectMake(_x + 17, _y + 10, 38, 46);
+	_image[_state].img->setFrameX(_index);
+}
+
+void switch_vert::move()
+{
+	if (_index >= _image[_state].img->getMaxFrameX())
+	{
+		_index = _image[_state].img->getMaxFrameX();
+		_state = OBJECT_IDLE;
 	}
 }
 
@@ -659,6 +736,12 @@ objects * objectFactory::createObject(OBJECTTYPE type)
 		break;
 	case VENT:
 		_object = new vent;
+		break;
+	case SWITCH_HOR:
+		_object = new switch_hor;
+		break;
+	case SWITCH_VERT:
+		_object = new switch_vert;
 		break;
 	default:
 		//´©±¸³Ä ³Í??

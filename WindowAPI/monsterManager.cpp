@@ -27,10 +27,10 @@ HRESULT monsterManager::init(int scene)
 		}
 
 		_spiderBabyPos[0].x = 2990, _spiderBabyPos[0].y = 1170, _spiderBabyRange[0] = 80;
-		_spiderBabyPos[1].x = 4110, _spiderBabyPos[1].y = 585, _spiderBabyRange[1] = 205;
+		_spiderBabyPos[1].x = 4110, _spiderBabyPos[1].y = 585, _spiderBabyRange[1] = 215;
 		_spiderBabyPos[2].x = 6070, _spiderBabyPos[2].y = 100, _spiderBabyRange[2] = 80;
 		_spiderBabyPos[3].x = 6730, _spiderBabyPos[3].y = 470, _spiderBabyRange[3] = 80;
-		_spiderBabyPos[4].x = 4630, _spiderBabyPos[4].y = 940, _spiderBabyRange[4] = 80;
+		_spiderBabyPos[4].x = 4630, _spiderBabyPos[4].y = 940, _spiderBabyRange[4] = 130;
 		_spiderBabyPos[5].x = 6080, _spiderBabyPos[5].y = 1185, _spiderBabyRange[5] = 80;
 		_spiderBabyPos[6].x = 6080, _spiderBabyPos[6].y = 1185, _spiderBabyRange[6] = 80;
 		for (int i = 0; i < 7; i++)

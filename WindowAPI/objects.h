@@ -259,6 +259,26 @@ private:
 public:
 };
 
+class switch_hor : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class switch_vert : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
 class objectFactory
 {
 public:

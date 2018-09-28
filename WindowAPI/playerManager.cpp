@@ -58,17 +58,6 @@ void playerManager::update(void)
 	_triBullet->update();
 
 	this->keyInput();
-	if (KEYMANAGER->isToggleKey(VK_OEM_1))	//';'
-	{
-		this->playerFollow();
-	}
-	else
-	{
-		_saveCount = 0;
-		_saveIndex = 0;
-		_isFollowing = false;
-		_player[!_character]->setState(IDLE);
-	}
 	this->playerBackstep();
 	this->playerJumpFall();
 
@@ -184,6 +173,17 @@ void playerManager::keyInput()
 		
 		_player[_character]->setIsActive(true);
 		_player[!_character]->setIsActive(false);
+	}
+	if (KEYMANAGER->isToggleKey(VK_OEM_1))	//';'
+	{
+		this->playerFollow();
+	}
+	else
+	{
+		_saveCount = 0;
+		_saveIndex = 0;
+		_isFollowing = false;
+		_player[!_character]->setState(IDLE);
 	}
 }
 
@@ -1211,6 +1211,4 @@ void playerManager::playerFollow()
 		if (_saveCount >= 30)
 			_saveCount = 0;
 	}
-
-
 }
