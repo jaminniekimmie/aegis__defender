@@ -24,10 +24,15 @@ class objectManager : public singletonBase<objectManager>
 	fPos _doorElevatorPos[1];
 	fPos _bushSpikesPos[1];
 	fPos _ventPos[14];
+	fPos _switchHorPos[2];
+	fPos _switchVertPos[2];
+	float _ventRange[14];
 	int _bloomFlowerCount[7];
 	int _mineralCount[1];
 	int _blueFlowerCount[1];
 	bool _isGameClear;
+	bool _isHit;
+	BYTE _alpha;
 
 public:
 	vector<objects*> getVObject() { return _vObject; }

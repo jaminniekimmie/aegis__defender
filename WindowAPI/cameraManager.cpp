@@ -29,15 +29,14 @@ void cameraManager::CameraShake()
 	_shakeStart = true;
 }
 
-void cameraManager::CameraSwitch(float startX, float startY, float destX, float destY, bool effects)
+void cameraManager::CameraSwitch(float startX, float startY, float destX, float destY, bool isFade)
 {
 	_startX = startX;
 	_startY = startY;
 	_destX = destX;
 	_destY = destY;
-	_effects = _effects;
+	_isFade = _isFade;
 	_switchStart = true;
-	//_alpha = 0;
 }
 
 void cameraManager::CameraSwitchOngoing()
@@ -54,15 +53,6 @@ void cameraManager::CameraSwitchOngoing()
 			_startY += -sinf(angle) * speed;
 			if (_alpha < 180)
 				_alpha += 15;
-		}
-		else
-		{
-			//_switchStart = false;
-			//if (_effects)
-			//{
-			//	EFFECTMANAGER->play("ellipsePuff2", _destX, _destY + 58);
-			//	EFFECTMANAGER->play("regen", _destX, _destY + 90);
-			//}
 		}
 
 		RECT _rc = RectMakeCenter(_startX, _startY, WINSIZEX, WINSIZEY);
@@ -121,6 +111,7 @@ void cameraManager::update(void)
 
 void cameraManager::render(HDC hdc)
 {
-	IMAGEMANAGER->alphaRender("solid_black", hdc, _alpha);
+	if (_isFade)
+		IMAGEMANAGER->alphaRender("solid_black", hdc, _alpha);
 }
 

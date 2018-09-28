@@ -215,8 +215,8 @@ HRESULT player::init(PLAYERCHARACTER character)
 	_onLand = true;
 	_isActive = true;
 
-	_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
-	//_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
+	//_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
+	_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
 
@@ -232,8 +232,8 @@ void player::release(void)
 
 void player::update(void)
 {
-	_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
-	//_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
+	//_rc = RectMakeCenter(_x, _y + _player[_state].img->getFrameHeight() / 6, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight() / 3 * 2);
+	_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
 
@@ -284,13 +284,13 @@ void player::render(void)
 
 	if (CAMERAMANAGER->CameraIn(_rc))
 	{
-		if (_isFired)
+		if (_character == CLU && _isFired)
 			_weapon[_state].img->frameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top);
 
 		_player[_state].shadow->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player[_state].alpha * 0.3f);
 		_player[_state].img->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player[_state].alpha);
 
-		if (_weaponIcon[_weaponSwitch].isActive)
+		if (_character == CLU && _weaponIcon[_weaponSwitch].isActive)
 			_weaponIcon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - 8 - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _weaponIcon[_weaponSwitch].alpha);
 	}
 

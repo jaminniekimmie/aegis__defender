@@ -320,6 +320,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("bush_spikes_upsideDown", "tex/objects/bush_spikes_upsideDown_01.bmp", 232, 92, true, RGB(255, 0, 255));
 	_loading->loadImage("vent", "tex/objects/vent_01.bmp", 160, 80, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("door_elevator", "tex/objects/door_elevator_01.bmp", 4752, 80, 9, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("switch_hor", "tex/objects/switch_hor_01.bmp", 462, 56, 7, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("switch_vert", "tex/objects/switch_vert_01.bmp", 392, 66, 7, 1, true, RGB(255, 0, 255));
 	//11½Ã°£ ÀäÁÒ ?/
 	_loading->loadImage("sculpture_back_01", "tex/objects/sculpture_back_01.bmp", 520, 384, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_back_02", "tex/objects/sculpture_back_02.bmp", 238, 224, true, RGB(255, 0, 255));

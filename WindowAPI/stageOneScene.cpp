@@ -168,8 +168,8 @@ void stageOneScene::render(void)
 		_pixelMap->render(getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 
 	MONSTERMANAGER->render(getMemDC());
-	_playerManager->render();
 	OBJECTMANAGER->render(getMemDC());
+	_playerManager->render();
 
 	RENDERMANAGER->foregroundRender(getMemDC());
 

@@ -41,6 +41,7 @@ protected:
 	int _count, _index;
 	int _frameSpeed;
 	int _attackCount;
+	int _randNo;
 
 public:
 	float getX() { return _x; }
@@ -249,6 +250,26 @@ public:
 };
 
 class vent : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class switch_hor : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+
+public:
+};
+
+class switch_vert : public objects
 {
 private:
 	void init();

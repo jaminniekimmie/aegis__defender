@@ -66,6 +66,7 @@ public:
 	float getGravity() { return _gravity; }
 	float getSpeed() { return _speed; }
 	float getAngle() { return _angle; }
+	float getAlpha() { return _player[_state].alpha; }
 	bool getIsLeft() { return _isLeft; }
 	bool getIsJump() { return _isJump; }
 	bool getIsFall() { return _isFall; }
@@ -92,6 +93,7 @@ public:
 	void setGravity(float gravity) { _gravity = gravity; }
 	void setSpeed(float speed) { _speed = speed; }
 	void setAngle(float angle) { _angle = angle; }
+	void setAlpha(BYTE alpha) { _player[_state].alpha = alpha; }
 	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
 	void setIsJump(bool isJump) { _isJump = isJump; }
 	void setIsFall(bool isFall) { _isFall = isFall; }
