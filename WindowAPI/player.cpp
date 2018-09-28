@@ -242,7 +242,9 @@ void player::update(void)
 		if (_isActive)
 			_player[i].alpha = 255;
 		else
+		{
 			_player[i].alpha = 150;
+		}
 	}
 
 	if (_isActive)
@@ -284,13 +286,13 @@ void player::render(void)
 
 	if (CAMERAMANAGER->CameraIn(_rc))
 	{
-		if (_isFired)
+		if (_character == CLU && _isFired)
 			_weapon[_state].img->frameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top);
 
 		_player[_state].shadow->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player[_state].alpha * 0.3f);
 		_player[_state].img->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _player[_state].alpha);
 
-		if (_weaponIcon[_weaponSwitch].isActive)
+		if (_character == CLU && _weaponIcon[_weaponSwitch].isActive)
 			_weaponIcon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - 8 - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _weaponIcon[_weaponSwitch].alpha);
 	}
 

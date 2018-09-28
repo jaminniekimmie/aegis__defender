@@ -3,6 +3,19 @@
 #include "player.h"
 #include "bullet.h"			//미사일 클래스 사용하기 위해
 
+struct tagSave
+{
+	PLAYERSTATE state;
+	float x, y;
+	float angle;
+	float gravity;
+	float speed;
+	float count;
+	float index;
+	float frameSpeed;
+	bool isLeft;
+};
+
 class playerManager : public gameNode
 {
 private:
@@ -10,8 +23,11 @@ private:
 	player * _player[2];
 	bullet * _bullet;
 	triBullet * _triBullet;
+	tagSave _saveProperties[30];
 	int _idleCount;
 	int _idleMax;
+	int _saveCount, _saveIndex;
+	bool _isFollowing;
 	bool _isStayKey_up;
 	bool _isStayKey_down;
 public:
@@ -47,6 +63,7 @@ public:
 	void bulletFire();
 	void hammer();
 	void playerAttack();
+	void playerFollow();
 
 	playerManager() {}
 	~playerManager() {}

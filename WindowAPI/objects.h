@@ -41,6 +41,7 @@ protected:
 	int _count, _index;
 	int _frameSpeed;
 	int _attackCount;
+	int _randNo;
 
 public:
 	float getX() { return _x; }

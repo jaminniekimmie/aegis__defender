@@ -23,6 +23,19 @@ HRESULT playerManager::init(void)
 	_player[_character]->setIsActive(true);
 	_player[!_character]->setIsActive(false);
 
+	_saveCount = _saveIndex = 0;
+	_isFollowing = false;
+
+	for (int i = 0; i < 30; i++)
+	{
+		_saveProperties[i].state = _player[!_character]->getState();
+		_saveProperties[i].x = _player[!_character]->getX();
+		_saveProperties[i].y = _player[!_character]->getY();
+		_saveProperties[i].index = _player[!_character]->getIndex();
+		_saveProperties[i].count = _player[!_character]->getCount();
+		_saveProperties[i].isLeft = _player[!_character]->getIsLeft();
+	}
+
 	return S_OK;
 }
 
@@ -45,6 +58,17 @@ void playerManager::update(void)
 	_triBullet->update();
 
 	this->keyInput();
+	if (KEYMANAGER->isToggleKey(VK_OEM_1))	//';'
+	{
+		this->playerFollow();
+	}
+	else
+	{
+		_saveCount = 0;
+		_saveIndex = 0;
+		_isFollowing = false;
+		_player[!_character]->setState(IDLE);
+	}
 	this->playerBackstep();
 	this->playerJumpFall();
 
@@ -59,6 +83,7 @@ void playerManager::update(void)
 	this->playerLedgeGrab();
 	this->fromStateToIdle();
 	this->fromIdleToState();
+	this->playerFollow();
 }
 
 void playerManager::render(void)
@@ -68,10 +93,6 @@ void playerManager::render(void)
 
 	_player[!_character]->render();
 	_player[_character]->render();
-
-	char str[64];
-	sprintf(str, "%d", _player[_character]->getState());
-	TextOut(getMemDC(), 100, 100, str, strlen(str));
 }
 
 void playerManager::keyInput()
@@ -998,9 +1019,7 @@ void playerManager::playerHit()
 		{
 			if (_player[_character]->getIndex() <= 0)
 			{
-				if (_player[_character]->getIsActive())
-					_idleCount = 0;
-				_player[_character]->setIsActive(false);
+				_idleCount = 0;
 				_player[_character]->setCount(0);
 				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
 			}
@@ -1009,9 +1028,7 @@ void playerManager::playerHit()
 		{
 			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
 			{
-				if (_player[_character]->getIsActive())
-					_idleCount = 0;
-				_player[_character]->setIsActive(false);
+				_idleCount = 0;
 				_player[_character]->setCount(0);
 				_player[_character]->setIndex(0);
 			}
@@ -1163,4 +1180,37 @@ void playerManager::hammer()
 void playerManager::playerAttack()
 {
 	_character ? this->hammer() : this->bulletFire();
+}
+
+void playerManager::playerFollow()
+{
+	_saveProperties[_saveIndex].state = _player[_character]->getState();
+	_saveProperties[_saveIndex].x = _player[_character]->getX();
+	_saveProperties[_saveIndex].y = _player[_character]->getY();
+	_saveProperties[_saveIndex].index = _player[_character]->getIndex();
+	_saveProperties[_saveIndex].count = _player[_character]->getCount();
+	_saveProperties[_saveIndex].isLeft = _player[_character]->getIsLeft();
+
+	_saveIndex++;
+	if (_saveIndex >= 30)
+	{
+		_saveIndex = 0;
+		_isFollowing = true;
+	}
+	
+	if (_isFollowing)
+	{
+		_player[!_character]->setState(_saveProperties[_saveCount].state);
+		_player[!_character]->setX(_saveProperties[_saveCount].x);
+		_player[!_character]->setY(_saveProperties[_saveCount].y);
+		_player[!_character]->setIndex(_saveProperties[_saveCount].index);
+		_player[!_character]->setCount(_saveProperties[_saveCount].count);
+		_player[!_character]->setIsLeft(_saveProperties[_saveCount].isLeft);
+
+		_saveCount++;
+		if (_saveCount >= 30)
+			_saveCount = 0;
+	}
+
+
 }

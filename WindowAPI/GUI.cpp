@@ -56,7 +56,7 @@ void GUI::update(void)
 	_icon[_playerManager->getCharacter()].img->setFrameX(1);
 	_icon[!_playerManager->getCharacter()].img->setFrameX(0);
 
-	if (CAMERAMANAGER->getSwitchStart())
+	if (CAMERAMANAGER->getSwitchStart() && CAMERAMANAGER->getIsFade())
 	{
 		if (_button_switch.rc.top > 663)
 			_button_switch.rc.top -= 663 / 80;

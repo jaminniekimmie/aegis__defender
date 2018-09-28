@@ -48,7 +48,8 @@ HRESULT monsterManager::init(int scene)
 		_firedrinkerFlyPos[0].x = 4540, _firedrinkerFlyPos[0].y = 445, _firedrinkerFlyRange[0] = 305;
 		_firedrinkerFlyPos[1].x = 5340, _firedrinkerFlyPos[1].y = 400, _firedrinkerFlyRange[1] = 80;
 		_firedrinkerFlyPos[2].x = 5320, _firedrinkerFlyPos[2].y = 1040, _firedrinkerFlyRange[2] = 80;
-		for (int i = 0; i < 3; i++)
+		_firedrinkerFlyPos[3].x = 6150, _firedrinkerFlyPos[3].y = 800, _firedrinkerFlyRange[2] = 120;
+		for (int i = 0; i < 4; i++)
 		{
 			type = FIREDRINKERFLY;
 
@@ -107,6 +108,7 @@ void monsterManager::update()
 
 			_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getX() + cosf(angle) * speed);
 			_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
+			_playerManager->getPlayer(_playerManager->getCharacter())->setIsActive(false);
 			_isHit = true;
 		}
 
@@ -222,18 +224,7 @@ void monsterManager::update()
 		_vMonster[i]->update();
 	}
 
-	if (_isHit)
-	{
-		if (_alpha < 90)
-			_alpha += 15;
-		else
-			_isHit = false;
-	}
-	else
-	{
-		if (_alpha > 0)
-			_alpha -= 15;
-	}
+	this->collisionProcess();
 }
 
 void monsterManager::render(HDC hdc)
@@ -248,5 +239,16 @@ void monsterManager::render(HDC hdc)
 }
 void monsterManager::collisionProcess()
 {
-
+	if (_isHit)
+	{
+		if (_alpha < 90)
+			_alpha += 15;
+		else
+			_isHit = false;
+	}
+	else
+	{
+		if (_alpha > 0)
+			_alpha -= 15;
+	}
 }

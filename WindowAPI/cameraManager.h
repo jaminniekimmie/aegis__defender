@@ -8,7 +8,7 @@ class cameraManager : public singletonBase<cameraManager>
 	int _shakeCount;
 	bool _shakeStart;
 	bool _switchStart;
-	bool _effects;
+	bool _isFade;
 	float _startX, _startY;
 	float _destX, _destY;
 	BYTE _alpha;
@@ -18,6 +18,7 @@ public:
 	int getMaxWidth() { return _maxWidth; }
 	int getMaxHeight() { return _maxHeight; }
 	bool getSwitchStart() { return _switchStart; }
+	bool getIsFade() { return _isFade; }
 
 	void setCamera(RECT rc) { _rcCamera = rc; }
 	void setRange(int width, int height) { _maxWidth = width; _maxHeight = height; }
@@ -26,7 +27,7 @@ public:
 	bool CameraIn(RECT rc);
 	void CameraShakeOngoing();
 	void CameraShake();
-	void CameraSwitch(float startX, float startY, float destX, float destY, bool effects = false);
+	void CameraSwitch(float startX, float startY, float destX, float destY, bool isFade = false);
 	void CameraSwitchOngoing();
 	void CameraAdjustment();
 

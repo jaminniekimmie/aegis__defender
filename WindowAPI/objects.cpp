@@ -32,25 +32,18 @@ void objects::render(HDC hdc)
 		{
 			_image[_state].shadow->alphaFrameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
 			_image[_state].img->frameRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
-
 		}
 		else
 		{
 			_image[_state].shadow->alphaRender(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top, 80);
 			_image[_state].img->render(hdc, _x - CAMERAMANAGER->getCamera().left, _y - CAMERAMANAGER->getCamera().top);
 		}
-
-		if (KEYMANAGER->isToggleKey('Y'))
-		{
-			Rectangle(hdc, _actionRc.left - CAMERAMANAGER->getCamera().left, _actionRc.top - CAMERAMANAGER->getCamera().top, _actionRc.right - CAMERAMANAGER->getCamera().left, _actionRc.bottom - CAMERAMANAGER->getCamera().top);
-		}
 	}
 
 	for (int i = 0; i < _vElement.size(); i++)
 	{
 		if (!CAMERAMANAGER->CameraIn(_vElement[i].rc)) continue;
-		if (!_vElement[i].fire) continue;
-		
+
 		_vElement[i].elementImg->alphaRender(hdc, _vElement[i].rc.left - CAMERAMANAGER->getCamera().left, _vElement[i].rc.top - CAMERAMANAGER->getCamera().top, _vElement[i].alpha);
 
 		//if (KEYMANAGER->isToggleKey('Y'))
@@ -511,7 +504,7 @@ void bush_spikes::init()
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;
-	_isFrameImg = true;
+	_isFrameImg = false;
 	_state = OBJECT_IDLE;
 }
 
@@ -533,56 +526,63 @@ void vent::init()
 	_angle = PI_2;
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
-	_range = 100;
+	_range = 300;
 	_oldX = _x;
 	_oldY = _y;
 	_attackCount = 0;
 	_isActive = false;
 	_frameSpeed = 5;
+	_randNo = RND->getFromIntTo(100, 200);
 	_isLeft = false;
 	_isFrameImg = false;
 	_state = OBJECT_IDLE;
-	for (int i = 0; i < 1; i++)
-	{
-		int rand = RND->getFloat(_image[_state].img->getWidth());
-
-		for (int j = 0; j < 5; j++)
-		{
-			tagElement element;
-			ZeroMemory(&element, sizeof(tagElement));
-			element.elementImg = IMAGEMANAGER->findImage("fx_smoke" + to_string(j + 1));
-			element.x = element.fireX = _x + rand;
-			element.y = element.fireY = _y + rand;
-			element.speed = i + 1;
-			element.alpha = (j + 1) * 40;
-			element.fire = false;
-			element.rc = RectMakeCenter(element.x, element.y, element.elementImg->getWidth(), element.elementImg->getHeight());
-	
-			_vElement.push_back(element);
-		}
-	}
 }
 
 void vent::idle()
 {
-	_actionRc = RectMake(_x, _y - _image[_state].img->getHeight() * 5, _image[_state].img->getWidth(), _image[_state].img->getHeight() * 5);
-	if (_attackCount < 200)
+	_actionRc = RectMake(_x, _y, _image[_state].img->getWidth(), 0);
+
+	if (_attackCount < _randNo)
 		_attackCount++;
 	else
 	{
 		_state = OBJECT_MOVE;
+		_randNo = RND->getFromIntTo(100, 200);
 		_attackCount = 0;
-		for (int i = 0; i < _vElement.size(); i++)
-			_vElement[i].fire = true;
+
+		for (int i = 0; i < 30; i++)
+		{
+			int rand = RND->getFloat(_image[_state].img->getWidth());
+			float speed = RND->getFromFloatTo(1, 4.5);
+			for (int j = 0; j < 5; j++)
+			{
+				tagElement element;
+				ZeroMemory(&element, sizeof(tagElement));
+				element.elementImg = IMAGEMANAGER->findImage("fx_smoke" + to_string(j + 1));
+				element.x = element.fireX = _x + rand;
+				element.y = element.fireY = _y;
+				element.speed = speed;
+				element.alpha = (j + 1) * 20;
+				element.fire = false;
+				element.rc = RectMakeCenter(element.x, element.y, element.elementImg->getWidth(), element.elementImg->getHeight());
+
+				_vElement.push_back(element);
+			}
+		}
 	}
 }
 
 void vent::move()
 {
+	if (_range > (_actionRc.bottom - _actionRc.top))
+		_actionRc.top -= 4;
+	else
+		_actionRc.bottom--;
+
+	//_actionRc = RectMake(_x, _y - _range, _image[_state].img->getWidth(), _range);
+
 	for (int i = 0; i < _vElement.size(); i++)
 	{
-		if (!_vElement[i].fire) continue;
-	
 		_vElement[i].x += cosf(_angle) * _vElement[i].speed;
 		_vElement[i].y += -sinf(_angle) * _vElement[i].speed;
 		_vElement[i].rc = RectMakeCenter(_vElement[i].x, _vElement[i].y, _vElement[i].elementImg->getWidth(), _vElement[i].elementImg->getHeight());
@@ -591,17 +591,13 @@ void vent::move()
 		{
 			_vElement[i].alpha -= 5;
 
-			if (_vElement[i].alpha < 0)
+			if (_vElement[i].alpha <= 5)
 			{
-				_vElement[i].x = _vElement[i].fireX;
-				_vElement[i].y = _vElement[i].fireY;
-				_vElement[i].alpha = 150;
-				_vElement[i].fire = false;
-				_attackCount++;
-				if (_attackCount >= _vElement.size())
+				_vElement.erase(_vElement.begin() + i);
+
+				if (_vElement.size() == 0)
 				{
 					_state = OBJECT_IDLE;
-					_attackCount = 0;
 				}
 			}
 		}

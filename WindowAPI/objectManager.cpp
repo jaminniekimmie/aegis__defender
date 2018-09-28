@@ -200,9 +200,22 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_ventPos[0].x = 1245, _ventPos[0].y = 1422;
+		_ventPos[0].x = 1245, _ventPos[0].y = 1422, _ventRange[0] = 300;
+		_ventPos[1].x = 1985, _ventPos[1].y = 1420, _ventRange[1] = 300;
+		_ventPos[2].x = 3120, _ventPos[2].y = 1250, _ventRange[2] = 245;
+		_ventPos[3].x = 3048, _ventPos[3].y = 674, _ventRange[3] = 300;
+		_ventPos[4].x = 3363, _ventPos[4].y = 547, _ventRange[4] = 154;
+		_ventPos[5].x = 3626, _ventPos[5].y = 680, _ventRange[5] = 130;
+		_ventPos[6].x = 3608, _ventPos[6].y = 1402, _ventRange[6] = 146;
+		_ventPos[7].x = 4668, _ventPos[7].y = 1256, _ventRange[7] = 406;
+		_ventPos[8].x = 5277, _ventPos[8].y = 520, _ventRange[8] = 300;
+		_ventPos[9].x = 5989, _ventPos[9].y = 928, _ventRange[9] = 148;
+		_ventPos[10].x = 5866, _ventPos[10].y = 308, _ventRange[10] = 154;
+		_ventPos[11].x = 6588, _ventPos[11].y = 655, _ventRange[11] = 130;
+		_ventPos[12].x = 6709, _ventPos[12].y = 664, _ventRange[12] = 130;
+		_ventPos[13].x = 6831, _ventPos[13].y = 655, _ventRange[13] = 130;
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 14; i++)
 		{
 			type = VENT;
 
@@ -213,8 +226,25 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
+		_switchHorPos[0].x = 3932, _switchHorPos[0].y = 817;
+		_switchHorPos[0].x = 4588, _switchHorPos[0].y = 230;
+		
+		for (int i = 0; i < 2; i++)
+		{
+			type = SWITCH_HOR;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_switchHorPos[i].x, _switchHorPos[i].y);
+			object->init();
+
+			_vObject.push_back(object);
+		}
+
 		_isGameClear = false;
 	}
+
+	_alpha = 0;
+	_isHit = false;
 
 	return S_OK;
 }
@@ -269,14 +299,27 @@ void objectManager::update()
 		}
 		else if (VENT == _vObject[i]->getType())
 		{
-			//if (IntersectRect(&rcTemp, &_playerManager->getClu()->getPlayerRc(), &_vObject[i]->getActionRect()))
-			//{
-			//	_playerManager->getClu()->setY(_playerManager->getClu()->getY() - 5);
-			//	_playerManager->getClu()->setOnLand(false);
-			//}
+			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getActionRect()))
+			{
+				_playerManager->getPlayer(_playerManager->getCharacter())->setY(_playerManager->getPlayer(_playerManager->getCharacter())->getY() - 12);
+				_playerManager->getPlayer(_playerManager->getCharacter())->setGravity(0);
+				_playerManager->getPlayer(_playerManager->getCharacter())->setOnLand(false);
+			}
+		}
+		else if (BUSH_SPIKES == _vObject[i]->getType())
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getRect())
+				&& _playerManager->getPlayer(_playerManager->getCharacter())->getIsActive() && HIT != _playerManager->getPlayer(_playerManager->getCharacter())->getState())
+			{
+				_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
+				_playerManager->getPlayer(_playerManager->getCharacter())->setIsActive(false);
+				_isHit = true;
+			}
 		}
 		_vObject[i]->update();
 	}
+
+	this->collisionProcess();
 }
 
 void objectManager::render(HDC hdc)
@@ -288,8 +331,21 @@ void objectManager::render(HDC hdc)
 		if (OBJECT_INACTIVE == _vObject[i]->getState()) continue;
 		_vObject[i]->render(hdc);
 	}
+	IMAGEMANAGER->alphaRender("solid_red", hdc, _alpha);
 }
 
 void objectManager::collisionProcess()
 {
+	if (_isHit)
+	{
+		if (_alpha < 90)
+			_alpha += 15;
+		else
+			_isHit = false;
+	}
+	else
+	{
+		if (_alpha > 0)
+			_alpha -= 15;
+	}
 }
