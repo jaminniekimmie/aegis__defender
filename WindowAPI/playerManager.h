@@ -37,6 +37,7 @@ public:
 	void render(void);
 
 	player * getPlayer(PLAYERCHARACTER character) { return _player[character]; }
+	player * getPlayer() { return _player[_character]; }
 	//player * getClu() { return _player[CLU]; }
 	//player * getBart() { return _player[BART]; }
 	PLAYERCHARACTER getCharacter() { return _character; }

@@ -307,9 +307,9 @@ void firedrinkerFly::dead()
 	}
 
 	if (_isLeft)
-		_angle += 0.02f;
+		_angle += 0.05f;
 	else
-		_angle -= 0.02f;
+		_angle -= 0.05f;
 }
 
 void eagle::init()

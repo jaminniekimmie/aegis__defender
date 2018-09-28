@@ -114,7 +114,7 @@ void playerManager::keyInput()
 		if (_player[_character]->getOnLand())
 		{
 			if (!_player[_character]->getIsFaceDown())
-				EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 			_player[_character]->setIsFaceDown(true);
 		}
 	}
@@ -122,8 +122,8 @@ void playerManager::keyInput()
 	{
 		if (CAMERAMANAGER->getSwitchStart())
 		{
-			EFFECTMANAGER->play("ellipsePuff2", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.15f);
-			EFFECTMANAGER->play("regen", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.45f);
+			EFFECTMANAGER->play("ellipsePuff2", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.15f);
+			EFFECTMANAGER->play("regen", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.45f);
 			CAMERAMANAGER->setSwitchStart(false);
 		}
 		else
@@ -204,12 +204,12 @@ void playerManager::playerRun(bool isLeft)
 		if (oldIsLeft != _player[_character]->getIsLeft())
 		{
 			_player[_character]->setState(RUN);
-			EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+			EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 		}
 
 		if (_player[_character]->getCount() % (_player[_character]->getFrameSpeed() * 2) == 3 && _player[_character]->getState() == RUN)
 		{
-			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+			EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 		}
 	}
 }
@@ -227,7 +227,7 @@ void playerManager::playerJumpRise()
 		{
 			_player[_character]->setIsJump(true);
 			_player[_character]->setOnLand(false);
-			_player[_character]->setSpeed(15.0f);
+			_player[_character]->setSpeed(16.0f);
 			_player[_character]->setAngle(PI_2);
 			_player[_character]->setGravity(0);
 			
@@ -282,7 +282,7 @@ void playerManager::collisionProcess()
 	//		_player[_character]->setIsJump(false);
 	//		if (!_player[_character]->getOnLand())
 	//		{
-	//			EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+	//			EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 	//			SOUNDMANAGER->play("Clu_land" + to_string(RND->getFromIntTo(1, 3)));
 	//		}
 	//		_player[_character]->setOnLand(true);
@@ -315,7 +315,7 @@ void playerManager::collisionProcess()
 	//		_player[_character]->setY(y);
 	//		_player[_character]->setIsJump(false);
 	//		if (!_player[_character]->getOnLand())
-	//			EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+	//			EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 	//		_player[_character]->setOnLand(true);
 	//	}
 	//}
@@ -367,7 +367,7 @@ void playerManager::playerLand()
 		else
 			_player[_character]->setState(LAND);
 		if (_player[_character]->getIsLeft())
-			_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+			_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 		else
 			_player[_character]->setIndex(0);
 	}
@@ -377,7 +377,7 @@ void playerManager::playerLand()
 		{
 			if (_player[_character]->getIndex() <= 0)
 			{
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 				_player[_character]->setCount(0);
 
 				if (_player[_character]->getIsFired())
@@ -388,7 +388,7 @@ void playerManager::playerLand()
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_player[_character]->setIndex(0);
 				_player[_character]->setCount(0);
@@ -417,13 +417,13 @@ void playerManager::playerFaceDown()
 				_player[_character]->setCount(0);
 
 				if (_player[_character]->getIsLeft())
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 				else
 					_player[_character]->setIndex(0);
 			}
 			else if (_player[_character]->getState() == LAND)
 			{
-				if (rc.top < _player[_character]->getRect().bottom)// -_player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() / 3)
+				if (rc.top < _player[_character]->getRect().bottom)// -_player[_character]->getPlayerImage()->getFrameHeight() / 3)
 				{
 					rc.top++;
 					_player[_character]->setRect(rc);
@@ -435,7 +435,7 @@ void playerManager::playerFaceDown()
 				}
 				else
 				{
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX() - 1);
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX() - 1);
 				}
 			}
 		}
@@ -443,7 +443,7 @@ void playerManager::playerFaceDown()
 		{
 			if (_player[_character]->getState() == LAND)
 			{
-				if (rc.top > _player[_character]->getRect().bottom - _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() / 3 * 2)
+				if (rc.top > _player[_character]->getRect().bottom - _player[_character]->getPlayerImage()->getFrameHeight() / 3 * 2)
 				{
 					rc.top--;
 					_player[_character]->setRect(rc);
@@ -453,19 +453,19 @@ void playerManager::playerFaceDown()
 				{
 					if (_player[_character]->getIndex() <= 0)
 					{
-						_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+						_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 						_player[_character]->setState(IDLE);
-						rc.top = _player[_character]->getRect().bottom - _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() / 3 * 2;
+						rc.top = _player[_character]->getRect().bottom - _player[_character]->getPlayerImage()->getFrameHeight() / 3 * 2;
 						_player[_character]->setRect(rc);
 					}
 				}
 				else
 				{
-					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 					{
 						_player[_character]->setIndex(0);
 						_player[_character]->setState(IDLE);
-						rc.top = _player[_character]->getRect().bottom - _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() / 3 * 2;
+						rc.top = _player[_character]->getRect().bottom - _player[_character]->getPlayerImage()->getFrameHeight() / 3 * 2;
 						_player[_character]->setRect(rc);
 					}
 				}
@@ -487,7 +487,7 @@ void playerManager::playerBackstep()
 			_player[_character]->setState(BACKSTEP);
 			
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 
@@ -500,31 +500,31 @@ void playerManager::playerBackstep()
 	
 			if (_player[_character]->getCount() % (_player[_character]->getFrameSpeed() / 3) == 0)
 			{
-				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("run" + to_string(RND->getFromIntTo(1, 4)), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 			}
 
 			if (_player[_character]->getIsLeft())
 			{
 				if (_player[_character]->getIndex() <= 0)
 				{
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					_player[_character]->setState(FULLCHARGE_IDLE);
 					_player[_character]->setIsBackstep(false);
 					_player[_character]->setIsFired(true);
-					EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
-					EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 				}
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setIndex(0);
 					_player[_character]->setState(FULLCHARGE_IDLE);
 					_player[_character]->setIsBackstep(false);
 					_player[_character]->setIsFired(true);
-					EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
-					EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+					EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 				}
 			}
 		}
@@ -547,11 +547,11 @@ void playerManager::playerFullCharge()
 				_player[_character]->setState(AIM_DIAGONAL_FULLCHARGE);
 
 				if (_player[_character]->getIsLeft())
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 				else
 					_player[_character]->setIndex(0);
-				EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
-				EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 			}
 		}
 		else if (_player[_character]->getState() == AIM_DIAGONAL_FULLCHARGE);
@@ -567,7 +567,7 @@ void playerManager::playerFullCharge()
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setState(AIM_DIAGONAL_FULLCHARGE_IDLE);
 					_idleCount = 0;
@@ -583,7 +583,7 @@ void playerManager::playerFullCharge()
 			_player[_character]->setState(CHARGE);
 
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 		}
@@ -594,16 +594,16 @@ void playerManager::playerFullCharge()
 			if (_player[_character]->getIsLeft())
 			{
 				if (_idleCount < 40)
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 				else
 				{
 					if (_player[_character]->getIndex() <= 0)
 					{
 						_idleCount = 0;
-						_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+						_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 						_player[_character]->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
-						EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 					}
 				}
 			}
@@ -613,13 +613,13 @@ void playerManager::playerFullCharge()
 					_player[_character]->setIndex(0);
 				else
 				{
-					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 					{
 						_idleCount = 0;
 						_player[_character]->setIndex(0);
 						_player[_character]->setState(FULLCHARGE);
-						EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
-						EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_back", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+						EFFECTMANAGER->play("fullCharge_front", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 					}
 				}
 			}
@@ -631,14 +631,14 @@ void playerManager::playerFullCharge()
 				if (_player[_character]->getIndex() <= 0)
 				{
 					_player[_character]->setState(FULLCHARGE_IDLE);
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					_idleCount = 0;
 					_player[_character]->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setState(FULLCHARGE_IDLE);
 					_player[_character]->setIndex(0);
@@ -659,7 +659,7 @@ void playerManager::playerLedgeGrab()
 			_player[_character]->setState(LEDGEGRAB);
 			_player[_character]->setCount(0);
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 		}
@@ -670,13 +670,13 @@ void playerManager::playerLedgeGrab()
 				if (_player[_character]->getIndex() <= 0)
 				{
 					_player[_character]->setState(LEDGEGRAB_IDLE);
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					_player[_character]->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setState(LEDGEGRAB_IDLE);
 					_player[_character]->setIndex(0);
@@ -694,13 +694,13 @@ void playerManager::playerLedgeGrab()
 				if (_player[_character]->getIndex() <= 0)
 				{
 					_player[_character]->setState(LEDGEGRAB_RISE);
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					_player[_character]->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setState(LEDGEGRAB_RISE);
 					_player[_character]->setIndex(0);
@@ -715,13 +715,13 @@ void playerManager::playerLedgeGrab()
 				if (_player[_character]->getIndex() <= 0)
 				{
 					_player[_character]->setState(IDLE);
-					_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					_player[_character]->setCount(0);
 				}
 			}
 			else
 			{
-				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 				{
 					_player[_character]->setState(IDLE);
 					_player[_character]->setIndex(0);
@@ -762,12 +762,12 @@ void playerManager::fromStateToIdle()
 					{
 						_player[_character]->setState(AIM_DIAGONAL);
 						_player[_character]->setCount(0);
-						_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+						_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					}
 				}
 				else
 				{
-					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 					{
 						_player[_character]->setState(AIM_DIAGONAL);
 						_player[_character]->setCount(0);
@@ -800,12 +800,12 @@ void playerManager::fromStateToIdle()
 					{
 						_player[_character]->setState(AIM_IDLE);
 						_player[_character]->setCount(0);
-						_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+						_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 					}
 				}
 				else
 				{
-					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+					if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 					{
 						_player[_character]->setState(AIM_IDLE);
 						_player[_character]->setCount(0);
@@ -877,12 +877,12 @@ void playerManager::playerLaugh()
 			{
 				_player[_character]->setState(LAUGH_IDLE);
 				_player[_character]->setCount(0);
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			}
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_player[_character]->setState(LAUGH_IDLE);
 				_player[_character]->setCount(0);
@@ -926,12 +926,12 @@ void playerManager::playerThink()
 			{
 				_player[_character]->setState(THINK_IDLE);
 				_player[_character]->setCount(0);
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			}
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_player[_character]->setState(THINK_IDLE);
 				_player[_character]->setCount(0);
@@ -975,12 +975,12 @@ void playerManager::playerBored()
 			{
 				_player[_character]->setState(BORED_IDLE);
 				_player[_character]->setCount(0);
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			}
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_player[_character]->setState(BORED_IDLE);
 				_player[_character]->setCount(0);
@@ -1021,12 +1021,12 @@ void playerManager::playerHit()
 			{
 				_idleCount = 0;
 				_player[_character]->setCount(0);
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			}
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_idleCount = 0;
 				_player[_character]->setCount(0);
@@ -1037,7 +1037,7 @@ void playerManager::playerHit()
 
 	if (!_player[_character]->getIsActive())
 	{
-		if (_idleCount < 200)
+		if (_idleCount < 100)
 			_idleCount++;
 		else
 		{
@@ -1060,12 +1060,12 @@ void playerManager::playerUpset()
 			{
 				_player[_character]->setState(IDLE);
 				_player[_character]->setCount(0);
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			}
 		}
 		else
 		{
-			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX())
+			if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
 			{
 				_player[_character]->setState(IDLE);
 				_player[_character]->setCount(0);
@@ -1096,16 +1096,16 @@ void playerManager::bulletFire()
 			_player[_character]->setCount(0);
 
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 
 			if (!_player[_character]->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
 			pos = _player[_character]->getIsLeft() ? - 0.7 : 0.7;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() - 70);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 70);
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_player[_character]->getState() != AIM_DIAGONALFIRE)
@@ -1115,16 +1115,16 @@ void playerManager::bulletFire()
 			_player[_character]->setCount(0);
 
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 
 			if (!_player[_character]->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
 			pos = _player[_character]->getIsLeft() ? - 0.5f : 0.5f;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() - 50);
+			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 50);
 		}
 	}
 	else	//노대각선
@@ -1139,16 +1139,16 @@ void playerManager::bulletFire()
 			_player[_character]->setCount(0);
 
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 			
 			if (!_player[_character]->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
 			pos = _player[_character]->getIsLeft() ? - 0.7f : 0.7f;
 			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, y);
+			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_player[_character]->getState() != AIM_FIRE)
@@ -1157,17 +1157,16 @@ void playerManager::bulletFire()
 			_player[_character]->setCount(0);
 			
 			if (_player[_character]->getIsLeft())
-				_player[_character]->setIndex(_player[_character]->getPlayerImage(_player[_character]->getState())->getMaxFrameX());
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
 			else
 				_player[_character]->setIndex(0);
 				
-
 			if (!_player[_character]->getIsJump())
-				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameHeight() * 0.35);
+				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
 			pos = _player[_character]->getIsLeft() ? - 0.7f : 0.7f;
 			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage(_player[_character]->getState())->getFrameWidth() * pos, y);
+			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
 		}
 	}
 }

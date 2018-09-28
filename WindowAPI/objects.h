@@ -26,7 +26,7 @@ protected:
 	OBJECTSTATE _state;
 	RECT _rc;
 	RECT _actionRc;
-	tagImage _image[MAXMONSTERSTATE];
+	tagImage _image[MAXOBJECTSTATE];
 	vector<tagElement> _vElement;
 	float _x, _y;
 	float _destX, _destY;
@@ -55,10 +55,11 @@ public:
 	float getAngle() { return _angle; }
 	bool getIsActive() { return _isActive; }
 	bool getIsLeft() { return _isLeft; }
+	int getIndex() { return _index; }
 	int getAttackCount() { return _attackCount; }
 	OBJECTSTATE getState() { return _state; }
 	OBJECTTYPE getType() { return _type; }
-	image* getImage(OBJECTSTATE state) { return _image[state].img; }
+	image* getImage() { return _image[_state].img; }
 	vector<tagElement> getVElement() { return _vElement; }
 	RECT getRect() { return _image[_state].rc; }
 	RECT getActionRect() { return _actionRc; }

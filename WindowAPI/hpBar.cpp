@@ -56,6 +56,7 @@ void hpBar::render(HDC hdc)
 {
 	if (_isActive)
 	{
+		IMAGEMANAGER->alphaRender("GUI_hp_bar_shadow", hdc, _rcHp.left - CAMERAMANAGER->getCamera().left, _rcHp.top + 2 - CAMERAMANAGER->getCamera().top, _alpha * 0.33f);
 		//렌더링 되는 순서에 의해서 렌더가 되니까 피통부터 렌더 시킨다
 		_hpBarBack->alphaRender(hdc, _rcHp.left - CAMERAMANAGER->getCamera().left, _rcHp.top - CAMERAMANAGER->getCamera().top, _alpha);
 		//앞에 보여지는 체력바 이미지

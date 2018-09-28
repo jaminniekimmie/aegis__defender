@@ -88,9 +88,9 @@ void monsterManager::update()
 		if (!_vMonster[i]->getIsAlive()) continue;
 		//if (_vMonster[i]->getState() == MONSTER_HIT) continue;
 
-		//if (getDistance(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter//())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
+		//if (getDistance(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < _vMonster[i]->getRange())
 		//{
-		//	if (getAngle(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter//())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager->getPlayer(_playerManager->getCharacter//())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < PI_4 * /5)
+		//	if (getAngle(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) > PI_4 * 3 && getAngle(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vMonster[i]->getX(), _vMonster[i]->getY()) < PI_4 * /5)
 		//	{
 		//		_vMonster[i]->setIsLeft(false);
 		//	}
@@ -100,15 +100,15 @@ void monsterManager::update()
 		//	}
 		//}
 
-		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vMonster[i]->getRect())
-			&& _playerManager->getPlayer(_playerManager->getCharacter())->getIsActive() && HIT != _playerManager->getPlayer(_playerManager->getCharacter())->getState())
+		if (IntersectRect(&rcTemp, &_playerManager->getPlayer()->getRect(), &_vMonster[i]->getRect())
+			&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
 		{
-			angle = !_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft() * PI;
+			angle = !_playerManager->getPlayer()->getIsLeft() * PI;
 			speed = 15.0f;
 
-			_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getX() + cosf(angle) * speed);
-			_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
-			_playerManager->getPlayer(_playerManager->getCharacter())->setIsActive(false);
+			_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getX() + cosf(angle) * speed);
+			_playerManager->getPlayer()->setState(HIT);
+			_playerManager->getPlayer()->setIsActive(false);
 			_isHit = true;
 		}
 
@@ -121,7 +121,7 @@ void monsterManager::update()
 
 				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
 				_playerManager->getBullet()->removeBullet(j);
-				_vMonster[i]->setIsLeft(!_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft());
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
 
 				switch (_vMonster[i]->getType())
 				{
@@ -177,7 +177,7 @@ void monsterManager::update()
 
 				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
 				_playerManager->getTriBullet()->getVBullet()[j].fire = false;
-				_vMonster[i]->setIsLeft(!_playerManager->getPlayer(_playerManager->getCharacter())->getIsLeft());
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
 
 				switch (_vMonster[i]->getType())
 				{

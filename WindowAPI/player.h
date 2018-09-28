@@ -55,6 +55,7 @@ public:
 	RECT getLedgeRc(int num) { return _rcLedge[num]; }
 	DIRECTION getDirection() { return _direction; }
 	image* getPlayerImage(PLAYERSTATE state) { return _player[state].img; }
+	image* getPlayerImage() { return _player[_state].img; }
 	BYTE getWeaponIsActive(bool weaponSwitch) { return _weaponIcon[weaponSwitch].isActive; }
 	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }

@@ -17,10 +17,10 @@ HRESULT stageOneScene::init(void)
 
 	_playerManager->getPlayer(CLU)->setX(755);
 	_playerManager->getPlayer(CLU)->setY(1300);
-	_playerManager->getPlayer(BART)->setX(_playerManager->getPlayer(CLU)->getX() - _playerManager->getPlayer(CLU)->getPlayerImage(_playerManager->getPlayer(CLU)->getState())->getFrameWidth() * 0.5f);
+	_playerManager->getPlayer(BART)->setX(_playerManager->getPlayer(CLU)->getX() - _playerManager->getPlayer(CLU)->getPlayerImage()->getFrameWidth() * 0.5f);
 	_playerManager->getPlayer(BART)->setY(1300);
 
-	_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
 	CAMERAMANAGER->setRange(7409, 1760);
@@ -90,22 +90,22 @@ void stageOneScene::update(void)
 	if (character != _playerManager->getCharacter())
 	{
 		float startX = _playerManager->getPlayer(character)->getX();
-		float startY = _playerManager->getPlayer(character)->getY() - _playerManager->getPlayer(character)->getPlayerImage(_playerManager->getPlayer(character)->getState())->getFrameHeight() / 3;
+		float startY = _playerManager->getPlayer(character)->getY() - _playerManager->getPlayer(character)->getPlayerImage()->getFrameHeight() * 0.33f;
 		float destX = _playerManager->getPlayer(_playerManager->getCharacter())->getX();
-		float destY = _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3;
+		float destY = _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage()->getFrameHeight() * 0.33f;
 		CAMERAMANAGER->CameraSwitch(startX, startY, destX, destY, true);
 	}
 	else
 	{
 		if (!_camDebug)
 		{
-			if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == LAND)
+			if (_playerManager->getPlayer()->getState() == LAND)
 			{
 				_rcCamera.top++;
 			}
 			else
 			{
-				_rcCamera = RectMakeCenter(_playerManager->getPlayer(_playerManager->getCharacter())->getX(), _playerManager->getPlayer(_playerManager->getCharacter())->getY() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
+				_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 			}
 		}
 	}
@@ -175,7 +175,7 @@ void stageOneScene::render(void)
 
 	CAMERAMANAGER->render(getMemDC());
 	if (CAMERAMANAGER->getSwitchStart())
-		_playerManager->getPlayer(_playerManager->getCharacter())->render();
+		_playerManager->getPlayer()->render();
 	
 	_GUI->render();
 
@@ -213,13 +213,13 @@ void stageOneScene::cameraAdjustment()
 		}
 	}
 
-	if (_playerManager->getPlayer(_playerManager->getCharacter())->getRect().left <= 0)
+	if (_playerManager->getPlayer()->getRect().left <= 0)
 	{
-		_playerManager->getPlayer(_playerManager->getCharacter())->setX(_playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameWidth() / 6);
+		_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
 	}
-	else if (_playerManager->getPlayer(_playerManager->getCharacter())->getRect().right >= CAMERAMANAGER->getMaxWidth())
+	else if (_playerManager->getPlayer()->getRect().right >= CAMERAMANAGER->getMaxWidth())
 	{
-		_playerManager->getPlayer(_playerManager->getCharacter())->setX(CAMERAMANAGER->getMaxWidth() - _playerManager->getPlayer(_playerManager->getCharacter())->getPlayerImage(_playerManager->getPlayer(_playerManager->getCharacter())->getState())->getFrameWidth() / 6);
+		_playerManager->getPlayer()->setX(CAMERAMANAGER->getMaxWidth() - _playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
 	}
 
 	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);

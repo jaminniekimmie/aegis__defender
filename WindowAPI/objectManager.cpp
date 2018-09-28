@@ -209,7 +209,7 @@ HRESULT objectManager::init(int num)
 		_ventPos[6].x = 3608, _ventPos[6].y = 1402, _ventRange[6] = 146;
 		_ventPos[7].x = 4668, _ventPos[7].y = 1256, _ventRange[7] = 406;
 		_ventPos[8].x = 5277, _ventPos[8].y = 520, _ventRange[8] = 300;
-		_ventPos[9].x = 6232, _ventPos[9].y = 928, _ventRange[9] = 148;
+		_ventPos[9].x = 6227, _ventPos[9].y = 929, _ventRange[9] = 148;
 		_ventPos[10].x = 5866, _ventPos[10].y = 308, _ventRange[10] = 154;
 		_ventPos[11].x = 6588, _ventPos[11].y = 655, _ventRange[11] = 130;
 		_ventPos[12].x = 6709, _ventPos[12].y = 664, _ventRange[12] = 130;
@@ -271,6 +271,8 @@ void objectManager::release()
 void objectManager::update()
 {
 	RECT rcTemp;
+	RECT rcPlayer = _playerManager->getPlayer()->getRect();
+	int activatorCount = 0;
 
 	for (int i = 0; i < _vObject.size(); i++)
 	{
@@ -278,7 +280,7 @@ void objectManager::update()
 		
 		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= HEART_YELLOW)
 		{
-			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getRect()))
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect()))
 			{
 				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
 				SOUNDMANAGER->play("UI_collect_common");
@@ -289,51 +291,31 @@ void objectManager::update()
 		}
 		else if (BLOOMFLOWER <= _vObject[i]->getType() && _vObject[i]->getType() <= BLUEFLOWER)
 		{
-			for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
-			{
-				if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[i]->getRect()))
-				{
-					EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
-					_playerManager->getBullet()->removeBullet(j);
-					break;
-				}
-			}
-
-			for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
-			{
-				if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
-
-				if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[i]->getRect()))
-				{
-					EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
-					_playerManager->getTriBullet()->getVBullet()[j].fire = false;
-					break;
-				}
-			}
+			this->collisionBullet(i, OBJECT_MOVE);
 		}
 		else if (VENT == _vObject[i]->getType())
 		{
-			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getActionRect()))
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()))
 			{
-				_playerManager->getPlayer(_playerManager->getCharacter())->setY(_playerManager->getPlayer(_playerManager->getCharacter())->getY() - 12);
-				_playerManager->getPlayer(_playerManager->getCharacter())->setGravity(0);
-				_playerManager->getPlayer(_playerManager->getCharacter())->setIsJump(true);
-				_playerManager->getPlayer(_playerManager->getCharacter())->setOnLand(false);
+				_playerManager->getPlayer()->setY(_playerManager->getPlayer()->getY() - 12);
+				_playerManager->getPlayer()->setGravity(0);
+				_playerManager->getPlayer()->setIsJump(true);
+				_playerManager->getPlayer()->setOnLand(false);
 			}
 		}
 		else if (BUSH_SPIKES == _vObject[i]->getType())
 		{
-			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getRect())
-				&& _playerManager->getPlayer(_playerManager->getCharacter())->getIsActive() && HIT != _playerManager->getPlayer(_playerManager->getCharacter())->getState())
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect())
+				&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
 			{
-				_playerManager->getPlayer(_playerManager->getCharacter())->setState(HIT);
-				_playerManager->getPlayer(_playerManager->getCharacter())->setIsActive(false);
+				_playerManager->getPlayer()->setState(HIT);
+				_playerManager->getPlayer()->setIsActive(false);
 				_isHit = true;
 			}
 		}
 		else if (SWITCH_HOR == _vObject[i]->getType())
 		{
-			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(_playerManager->getCharacter())->getRect(), &_vObject[i]->getActionRect()) ||
+			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(CLU)->getRect(), &_vObject[i]->getActionRect()) ||
 				IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getRect(), &_vObject[i]->getActionRect()))
 			{
 				_vObject[i]->setState(OBJECT_MOVE);
@@ -343,6 +325,44 @@ void objectManager::update()
 				_vObject[i]->setState(OBJECT_IDLE);
 				_vObject[i]->setIndex(0);
 			}
+			if (_vObject[i]->getIndex() == _vObject[i]->getImage()->getMaxFrameX())
+				activatorCount++;
+		}
+		else if (SWITCH_VERT == _vObject[i]->getType())
+		{
+			OBJECTSTATE state = _vObject[i]->getState();
+			this->collisionBullet(i, OBJECT_MOVE);
+			if (state != _vObject[i]->getState() && _vObject[i]->getState() == OBJECT_MOVE)
+				CAMERAMANAGER->CameraSwitch(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vObject[i]->getX(), _vObject[i]->getY());
+
+			if (_vObject[i]->getIndex() == _vObject[i]->getImage()->getMaxFrameX())
+				activatorCount++;
+		}
+		else if (DOOR_ELEVATOR == _vObject[i]->getType())
+		{
+			this->collisionBullet(i, _vObject[i]->getState());
+
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()) && _vObject[i]->getIndex() != _vObject[i]->getImage()->getMaxFrameX())
+			{
+				if (rcPlayer.bottom >= _vObject[i]->getActionRect().top && 
+					rcPlayer.top < _vObject[i]->getActionRect().top &&
+					rcPlayer.bottom < _vObject[i]->getActionRect().bottom)
+				{
+					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().top - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5 + 1);
+					_playerManager->getPlayer()->setOnLand(true);
+					_playerManager->getPlayer()->setGravity(0);
+					_playerManager->getPlayer()->setSpeed(0);
+				}
+				else if (rcPlayer.top <= _vObject[i]->getActionRect().bottom && 
+					rcPlayer.bottom > _vObject[i]->getActionRect().bottom &&
+					rcPlayer.top > _vObject[i]->getActionRect().top)
+				{
+					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().bottom + _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5 - 1);
+				}
+			}
+
+			if (activatorCount >= 2)
+				_vObject[i]->setState(OBJECT_MOVE);
 		}
 
 		_vObject[i]->update();
@@ -359,6 +379,7 @@ void objectManager::render(HDC hdc)
 		if (OBJECT_INACTIVE == _vObject[i]->getState()) continue;
 		_vObject[i]->render(hdc);
 	}
+
 	IMAGEMANAGER->alphaRender("solid_red", hdc, _alpha);
 }
 
@@ -375,5 +396,34 @@ void objectManager::collisionProcess()
 	{
 		if (_alpha > 0)
 			_alpha -= 15;
+	}
+}
+
+void objectManager::collisionBullet(int index, OBJECTSTATE setState)
+{
+	RECT rcTemp;
+
+	for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
+	{
+		if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
+			_playerManager->getBullet()->removeBullet(j);
+			_vObject[index]->setState(setState);
+			break;
+		}
+	}
+
+	for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
+	{
+		if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
+
+		if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
+			_playerManager->getTriBullet()->getVBullet()[j].fire = false;
+			_vObject[index]->setState(setState);
+			break;
+		}
 	}
 }

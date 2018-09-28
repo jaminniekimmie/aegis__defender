@@ -35,7 +35,7 @@ void cameraManager::CameraSwitch(float startX, float startY, float destX, float 
 	_startY = startY;
 	_destX = destX;
 	_destY = destY;
-	_isFade = _isFade;
+	_isFade = isFade;
 	_switchStart = true;
 }
 
@@ -51,8 +51,13 @@ void cameraManager::CameraSwitchOngoing()
 		{
 			_startX += cosf(angle) * speed;
 			_startY += -sinf(angle) * speed;
-			if (_alpha < 180)
+			if (_isFade && _alpha < 180)
 				_alpha += 15;
+		}
+		else
+		{
+			if (!_isFade)
+				_switchStart = false;
 		}
 
 		RECT _rc = RectMakeCenter(_startX, _startY, WINSIZEX, WINSIZEY);
@@ -60,8 +65,8 @@ void cameraManager::CameraSwitchOngoing()
 	}
 	else
 	{
-		if (_alpha > 0)
-			_alpha -= 15;
+		if (_isFade && _alpha > 0)
+				_alpha -= 15;
 	}
 }
 
@@ -93,6 +98,7 @@ HRESULT cameraManager::init(void)
 {
 	_switchStart = false;
 	_shakeStart = false;
+	_isFade = false;
 	_shakeCount = 0;
 	_alpha = 0;
 	return S_OK;

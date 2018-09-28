@@ -581,7 +581,7 @@ void vent::move()
 	if (_range > (_y - _actionRc.top))
 		_actionRc.top -= 4;
 	else
-		_actionRc.bottom--;
+		_actionRc.bottom -= 1.5f;
 
 	//_actionRc = RectMake(_x, _y - _range, _image[_state].img->getWidth(), _range);
 
@@ -599,7 +599,7 @@ void vent::move()
 			{
 				_vElement.erase(_vElement.begin() + i);
 
-				if (_vElement.size() == 0)
+				if (_vElement.empty())
 				{
 					_state = OBJECT_IDLE;
 				}
