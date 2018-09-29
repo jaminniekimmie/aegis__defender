@@ -80,8 +80,10 @@ void monsterManager::release()
 void monsterManager::update()
 {
 	RECT rcTemp;
+	RECT rcPlayer = _playerManager->getPlayer()->getRect();
 	float angle, speed;
-	int smlRand, bigRand;
+	int smlRand = RND->getFromIntTo(1, 2);
+	int bigRand = RND->getFromIntTo(3, 6);
 
 	for (int i = 0; i < _vMonster.size(); i++)
 	{
@@ -100,7 +102,7 @@ void monsterManager::update()
 		//	}
 		//}
 
-		if (IntersectRect(&rcTemp, &_playerManager->getPlayer()->getRect(), &_vMonster[i]->getRect())
+		if (IntersectRect(&rcTemp, &rcPlayer, &_vMonster[i]->getRect())
 			&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
 		{
 			angle = !_playerManager->getPlayer()->getIsLeft() * PI;
@@ -110,15 +112,38 @@ void monsterManager::update()
 			_playerManager->getPlayer()->setState(HIT);
 			_playerManager->getPlayer()->setIsActive(false);
 			_isHit = true;
+			EFFECTMANAGER->play("number_red" + to_string(smlRand), _playerManager->getPlayer()->getX(), rcPlayer.top);
+			_playerManager->getPlayer()->hitDamage(smlRand);
+			break;
+		}
+
+		for (int j = 0; j < _playerManager->getBlock(CLU)->getVBlock().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getBlock(CLU)->getVBlock()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _vMonster[i]->getX(), _vMonster[i]->getY());
+				SOUNDMANAGER->play("UI_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
+				_playerManager->getBlock(CLU)->removeBlock(j);
+
+				if (SANDWORM == _vMonster[i]->getType())
+					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
+				else
+					_vMonster[i]->setState(MONSTER_DEAD);
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getBlock(BART)->getVBlock().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getBlock(BART)->getVBlock()[j].rc, &_vMonster[i]->getRect()))
+			{
+				_vMonster[i]->setIsLeft(!_vMonster[i]->getIsLeft());
+			}
 		}
 
 		for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
 		{
 			if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
 			{
-				smlRand = RND->getFromIntTo(1, 3);
-				bigRand = RND->getFromIntTo(4, 6);
-
 				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
 				_playerManager->getBullet()->removeBullet(j);
 				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
@@ -143,7 +168,7 @@ void monsterManager::update()
 					break;
 				case FIREDRINKERFLY:
 					EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
-					EFFECTMANAGER->play("number_yellow" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+					EFFECTMANAGER->play("number_red" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
 					_vMonster[i]->playerAttack(smlRand);
 					break;
 				case EAGLE:
@@ -172,9 +197,6 @@ void monsterManager::update()
 
 			if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
 			{
-				smlRand = RND->getFromIntTo(1, 3);
-				bigRand = RND->getFromIntTo(4, 6);
-
 				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
 				_playerManager->getTriBullet()->getVBullet()[j].fire = false;
 				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());

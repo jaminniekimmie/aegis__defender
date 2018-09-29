@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "hpBar.h"
+#include "mHpBar.h"
 
-HRESULT hpBar::init(const char * frontImageKey, const char * backImageKey, int x, int y)
+HRESULT mHpBar::init(const char * frontImageKey, const char * backImageKey, int x, int y)
 {
 	//체력바 위치 초기화
 	_x = x;
@@ -9,9 +9,7 @@ HRESULT hpBar::init(const char * frontImageKey, const char * backImageKey, int x
 	//체력바 이미지 초기화
 	_hpBarFront = IMAGEMANAGER->findImage(frontImageKey);
 	_hpBarBack = IMAGEMANAGER->findImage(backImageKey);
-	//_hpBarFront = IMAGEMANAGER->addImage(frontImageKey, frontImage, x, y, width, height, true, RGB(255, 0, 255));
-	//_hpBarBack = IMAGEMANAGER->addImage(backImageKey, backImage, x, y, width, height, true, RGB(255, 0, 255));
-	
+
 	//체력바 렉트 위치 및 크기 초기화
 	_rcHp = RectMakeCenter(x, y, _hpBarBack->getWidth(), _hpBarBack->getHeight());
 	_width = _hpBarBack->getWidth();
@@ -22,11 +20,11 @@ HRESULT hpBar::init(const char * frontImageKey, const char * backImageKey, int x
 	return S_OK;
 }
 
-void hpBar::release(void)
+void mHpBar::release(void)
 {
 }
 
-void hpBar::update(void)
+void mHpBar::update(void)
 {
 	if (_isActive)
 	{
@@ -52,7 +50,7 @@ void hpBar::update(void)
 	_rcHp = RectMakeCenter(_x, _y, _hpBarBack->getWidth(), _hpBarBack->getHeight());
 }
 
-void hpBar::render(HDC hdc)
+void mHpBar::render(HDC hdc)
 {
 	if (_isActive)
 	{
@@ -64,7 +62,7 @@ void hpBar::render(HDC hdc)
 	}
 }
 
-void hpBar::setGauge(float currentHp, float maxHp)
+void mHpBar::setGauge(float currentHp, float maxHp)
 {
 	_isActive = true;
 	_width = (currentHp / maxHp) * _hpBarBack->getWidth();

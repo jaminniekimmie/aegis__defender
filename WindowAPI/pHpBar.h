@@ -3,16 +3,15 @@
 //	## hpBar ## (프로그래스바 = 체력바)
 //=============================================================
 
-class hpBar
+class pHpBar
 {
 private:
 	RECT _rcHp;					//체력바 렉트
-	int _activeCount;
 	int _x, _y;					//체력바 위치좌표
-	float _width;				//체력바 가로길이
+	float _frontWidth;				//체력바 가로길이
 	float _height;				//체력바 세로길이
-	bool _isActive;
-	BYTE _alpha;
+	float _backWidth;
+	float _maxWidth;
 
 	image* _hpBarFront;	//체력바 앞 이미지
 	image* _hpBarBack;	//체력바 뒤 이미지
@@ -34,7 +33,7 @@ public:
 	//체력바 렉트 가져오기
 	RECT getRect() { return _rcHp; }
 
-	hpBar() {}
-	~hpBar() {}
+	pHpBar() {}
+	~pHpBar() {}
 };
 

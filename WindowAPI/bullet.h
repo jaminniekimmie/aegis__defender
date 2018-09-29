@@ -5,6 +5,7 @@
 struct tagBullet
 {
 	image* bulletImage;
+	image* shadowImage;
 	RECT rc;
 	BYTE alpha;
 	float x, y;
@@ -14,6 +15,7 @@ struct tagBullet
 	float gravity;
 	float radius;
 	bool fire;
+	int index;
 	int count;
 };
 
@@ -109,4 +111,41 @@ public:
 
 	triBullet() {}
 	~triBullet() {}
+};
+
+class block : public gameNode
+{
+private:
+	//ÃÑ¾Ë ±¸Á¶Ã¼¸¦ ´ãÀ» º¤ÅÍ, ¹Ýº¹ÀÚ
+	vector<tagBullet> _vBlock;
+	vector<tagBullet>::iterator _viBlock;
+
+private:
+	const char * _imageName;
+	const char * _shadowName;
+	int _frameSpeed;
+	float _speed;
+	bool _isFrameImg;
+
+public:
+	HRESULT init(const char * imageName, const char * shadowName, float speed, bool isFrameImg = false);
+	void release(void);
+	void update(void);
+	void render(void);
+
+	//ÃÑ¾Ë¹ß»ç
+	void build(float x, float y);
+	//ÃÑ¾Ë¹«ºê
+	void move(int dir);
+	//ÃÑ¾Ë»èÁ¦
+	void removeBlock(int index);
+	void activate();
+	void collision();
+	void frameChange();
+
+	vector<tagBullet> getVBlock() { return _vBlock; }
+	vector<tagBullet>::iterator getViblock() { return _viBlock; }
+
+	block() {}
+	~block() {}
 };

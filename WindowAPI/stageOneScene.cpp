@@ -6,9 +6,6 @@ HRESULT stageOneScene::init(void)
 	_playerManager = new playerManager;
 	_playerManager->init();
 
-	_GUI = new GUI;
-	_GUI->init();
-
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
 
@@ -29,7 +26,6 @@ HRESULT stageOneScene::init(void)
 	MONSTERMANAGER->setPlayerManager(_playerManager);
 	OBJECTMANAGER->init(1);
 	OBJECTMANAGER->setPlayerManager(_playerManager);
-	_GUI->setPlayerManager(_playerManager);
 	
 	cloud* _cloud;
 	for (int i = 0; i < 40; ++i)
@@ -71,8 +67,6 @@ void stageOneScene::release(void)
 {
 	_playerManager->release();
 	SAFE_DELETE(_playerManager);
-	_GUI->release();
-	SAFE_DELETE(_GUI);
 	_pixelTiles->release();
 	SAFE_DELETE(_pixelTiles);
 	_pixelMap->release();
@@ -113,7 +107,6 @@ void stageOneScene::update(void)
 
 	MONSTERMANAGER->update();
 	OBJECTMANAGER->update();
-	_GUI->update();
 
 
 	//temporary
@@ -176,8 +169,6 @@ void stageOneScene::render(void)
 	CAMERAMANAGER->render(getMemDC());
 	if (CAMERAMANAGER->getSwitchStart())
 		_playerManager->getPlayer()->render();
-	
-	_GUI->render();
 
 	if (_alpha > 0)
 		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);

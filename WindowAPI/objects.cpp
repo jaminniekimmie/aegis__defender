@@ -11,7 +11,7 @@ void objects::update()
 	case OBJECT_MOVE:
 		move();
 		break;
-	case OBJECT_INACTIVE:
+	case OBJECT_VANISH:
 		break;
 	}
 
@@ -90,6 +90,18 @@ void objects::frameChange()
 
 void objects::collisionProcess()
 {
+}
+
+void objects::playerAttack()
+{
+	_attackCount--;
+
+	if (_attackCount > 0)
+		_state = OBJECT_MOVE;
+	else
+	{
+		_state = OBJECT_VANISH;
+	}
 }
 
 void chip_green::init()
@@ -252,6 +264,8 @@ void bloomFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_redFlower");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_redFlower");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -269,16 +283,27 @@ void bloomFlower::init()
 
 void bloomFlower::idle()
 {
+	_oldX = _x;
+	_oldY = _y;
 }
 
 void bloomFlower::move()
 {
+	if (_oldY == _y)
+		_y -= 5;
+	else
+	{
+		_y = _oldY;
+		_state = OBJECT_IDLE;
+	}
 }
 
 void mineral::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -296,16 +321,27 @@ void mineral::init()
 
 void mineral ::idle()
 {
+	_oldX = _x;
+	_oldY = _y;
 }
 
 void mineral::move()
 {
+	if (_oldY == _y)
+		_y -= 5;
+	else
+	{
+		_y = _oldY;
+		_state = OBJECT_IDLE;
+	}
 }
 
 void blueFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -375,10 +411,12 @@ void door_DNA_yellow_left::init()
 
 void door_DNA_yellow_left::idle()
 {
+	_actionRc = RectMake(_x + _image[_state].img->getWidth() * 0.5f, _y, _image[_state].img->getWidth() * 0.5f, _image[_state].img->getHeight());
 }
 
 void door_DNA_yellow_left::move()
 {
+	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
 void door_DNA_yellow_right::init()
@@ -401,10 +439,12 @@ void door_DNA_yellow_right::init()
 
 void door_DNA_yellow_right::idle()
 {
+	_actionRc = RectMake(_x, _y, _image[_state].img->getWidth() * 0.5f, _image[_state].img->getHeight());
 }
 
 void door_DNA_yellow_right::move()
 {
+	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
 void door_DNA_blue_left::init()
@@ -427,10 +467,12 @@ void door_DNA_blue_left::init()
 
 void door_DNA_blue_left::idle()
 {
+	_actionRc = RectMake(_x + _image[_state].img->getWidth() * 0.5f, _y, _image[_state].img->getWidth() * 0.5f, _image[_state].img->getHeight());
 }
 
 void door_DNA_blue_left::move()
 {
+	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
 void door_DNA_blue_right::init()
@@ -453,10 +495,12 @@ void door_DNA_blue_right::init()
 
 void door_DNA_blue_right::idle()
 {
+	_actionRc = RectMake(_x, _y, _image[_state].img->getWidth() * 0.5f, _image[_state].img->getHeight());
 }
 
 void door_DNA_blue_right::move()
 {
+	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
 void door_elevator::init()
@@ -479,7 +523,7 @@ void door_elevator::init()
 
 void door_elevator::idle()
 {
-	_actionRc = RectMake(_x, _y + 11, _image[_state].img->getFrameWidth(), 60);
+	_actionRc = RectMake(_x, _y + _image[_state].img->getFrameHeight() * 0.17f, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight() * 0.66f);
 	_image[_state].img->setFrameX(_index);
 }
 
@@ -658,7 +702,7 @@ void switch_vert::init()
 	_range = 300;
 	_oldX = _x;
 	_oldY = _y;
-	_attackCount = 0;
+	_attackCount = 10;
 	_isActive = true;
 	_frameSpeed = 5;
 	_isLeft = false;

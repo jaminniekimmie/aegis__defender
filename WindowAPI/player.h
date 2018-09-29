@@ -1,7 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "tileNode.h"
-#include "progressBar.h"	//체력바 클래스 사용하기 위해
+#include "pHpBar.h"
 
 //#include "enemyManager.h"
 //적매니져 상호참조하기 위해 클래스 전방선언
@@ -11,11 +11,12 @@ class player : public gameNode
 private:
 	PLAYERCHARACTER _character;
 	PLAYERSTATE _state;
+	PLAYERWEAPON _currentWeapon;
 	DIRECTION _direction;
 	RECT _rc;
 	RECT _rcLedge[2];
 	tagImage _player[MAXPLAYERSTATE];
-	tagImage _weapon[MAXPLAYERSTATE];
+	tagImage _weapon[2][MAXPLAYERSTATE];
 	tagImage _weaponIcon[2];
 	float _x, _y;
 	float _oldX, _oldY;
@@ -38,8 +39,9 @@ private:
 	bool _isActive;
 	bool _weaponSwitch;
 
-	progressBar* _hpBar;		//체력바
-	float _maxHp, _currentHp;	//최대체력, 현재체력
+	pHpBar * _hpBar_red;		//체력바
+	pHpBar * _hpBar_yellow;		//체력바
+	float _maxHp, _currentHp, _currentMp;	//최대체력, 현재체력
 
 public:
 	HRESULT init(PLAYERCHARACTER character);
@@ -49,7 +51,15 @@ public:
 
 	//체력바 피통깍기
 	void hitDamage(float damage);
+	void addHp();
+	void addMp();
+	void frameChangeLoop();
+	void frameChangeOnce();
+	void weaponSwitch(bool weaponSwitch);
+	void collisionProcess();
 
+	pHpBar * getHpBarRed() { return _hpBar_red; }
+	pHpBar * getHpBarYellow() { return _hpBar_yellow; }
 	PLAYERSTATE getState() { return _state; }
 	RECT getRect() { return _rc; }
 	RECT getLedgeRc(int num) { return _rcLedge[num]; }
@@ -106,11 +116,6 @@ public:
 	void setIsFired(bool isFired) { _isFired = isFired; }
 	void setIsActive(bool isActive) { _isActive = isActive; }
 	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }
-
-	void frameChangeLoop();
-	void frameChangeOnce();
-	void weaponSwitch(bool weaponSwitch);
-	void collisionProcess();
 
 	player() {}
 	~player() {}

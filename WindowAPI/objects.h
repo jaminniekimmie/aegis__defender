@@ -82,6 +82,7 @@ public:
 
 	void frameChange();
 	void collisionProcess();
+	void playerAttack();
 
 	virtual void init() = 0;
 	virtual void update();

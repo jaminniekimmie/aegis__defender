@@ -158,8 +158,7 @@
     <ClInclude Include="foregroundElements.h" />
     <ClInclude Include="frameManager.h" />
     <ClInclude Include="gameNode.h" />
-    <ClInclude Include="GUI.h" />
-    <ClInclude Include="hpBar.h" />
+    <ClInclude Include="mHpBar.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="iniData.h" />
@@ -172,6 +171,7 @@
     <ClInclude Include="monsterManager.h" />
     <ClInclude Include="objectManager.h" />
     <ClInclude Include="objects.h" />
+    <ClInclude Include="pHpBar.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="progressBar.h" />
@@ -203,8 +203,7 @@
     <ClCompile Include="foregroundElements.cpp" />
     <ClCompile Include="frameManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
-    <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="hpBar.cpp" />
+    <ClCompile Include="mHpBar.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="iniData.cpp" />
@@ -217,6 +216,7 @@
     <ClCompile Include="monsterManager.cpp" />
     <ClCompile Include="objectManager.cpp" />
     <ClCompile Include="objects.cpp" />
+    <ClCompile Include="pHpBar.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="progressBar.cpp" />

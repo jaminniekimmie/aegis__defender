@@ -15,7 +15,15 @@ HRESULT playerManager::init(void)
 	
 	_triBullet = new triBullet;
 	_triBullet->init("bullet_blue", 3, 500);
+
+	_block[CLU] = new block;
+	_block[CLU]->init("dynamiteTrap_idle", "dynamiteTrap_idle_shadow", 40, true);
+
+	_block[BART] = new block;
+	_block[BART]->init("defenseBlock", "defenseBlock_shadow", 40);
 	
+	this->GUIinit();
+
 	_idleCount = 0;
 	_idleMax = RND->getFromIntTo(100, 500);
 	_isStayKey_up = _isStayKey_down = false;
@@ -23,8 +31,8 @@ HRESULT playerManager::init(void)
 	_player[_character]->setIsActive(true);
 	_player[!_character]->setIsActive(false);
 
-	_saveCount = _saveIndex = 0;
-	_isFollowing = false;
+	_saveCount = _saveIndex = _blackSolidAlpha = 0;
+	_isFollowing = _isBuild = false;
 
 	for (int i = 0; i < 30; i++)
 	{
@@ -45,6 +53,8 @@ void playerManager::release(void)
 	{
 		_player[i]->release();
 		SAFE_DELETE(_player[i]);
+		_block[i]->release();
+		SAFE_DELETE(_block[i]);
 	}
 	_bullet->release();
 	SAFE_DELETE(_bullet);
@@ -57,22 +67,25 @@ void playerManager::update(void)
 	_bullet->update();
 	_triBullet->update();
 
+	for (int i = 0; i < 2; i++)
+		_block[i]->update();
+
 	this->keyInput();
 	this->playerBackstep();
 	this->playerJumpFall();
 
-	for (int i = 0; i < 2; i++)
-	{
-		_player[i]->update();
-	}
+	_player[_character]->update();
+	_player[!_character]->update();
 	
 	//this->collisionProcess();
+	this->blockCollision();
 	this->playerFaceDown();
 	this->playerHit();
 	this->playerLedgeGrab();
 	this->fromStateToIdle();
 	this->fromIdleToState();
 	this->playerFollow();
+	this->GUIupdate();
 }
 
 void playerManager::render(void)
@@ -82,23 +95,148 @@ void playerManager::render(void)
 
 	_player[!_character]->render();
 	_player[_character]->render();
+	
+	if (_isBuild)
+	{
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _blackSolidAlpha);
+		IMAGEMANAGER->alphaRender("bomb_selectDot", getMemDC(), _player[_character]->getX() - 44 * 0.5f - 2 - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 44 * 0.33f - 2 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+
+		if (_character == CLU)
+			IMAGEMANAGER->alphaRender("bomb_text", getMemDC(), _player[_character]->getX() - 153 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+		else
+			IMAGEMANAGER->alphaRender("defenseBlock_text", getMemDC(), _player[_character]->getX() - 262 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+	}
+
+	for (int i = 0; i < 2; i++)
+		_block[i]->render();
+
+	//Ã¼·Â¹Ù ·»´õ
+	_player[_character]->getHpBarRed()->render(getMemDC());
+	_player[_character]->getHpBarYellow()->render(getMemDC());
+
+	this->GUIrender();
+}
+
+void playerManager::GUIinit()
+{
+	_blueFlower.img = IMAGEMANAGER->findImage("GUI_blueFlower");
+	_blueFlower.rc = RectMake(1163, 25, _blueFlower.img->getWidth(), _blueFlower.img->getHeight());
+	_blueFlower.isActive = true;
+	_blueFlowerCount = 3;
+	_blueFlowerMax = 3;
+	_mineral.img = IMAGEMANAGER->findImage("GUI_mineral");
+	_mineral.rc = RectMake(1163, 89, _mineral.img->getWidth(), _mineral.img->getHeight());
+	_mineral.isActive = true;
+	_mineralCount = 3;
+	_mineralMax = 3;
+
+	_icon[CLU].img = IMAGEMANAGER->findImage("GUI_icon_clu");
+	_icon[CLU].shadow = IMAGEMANAGER->findImage("GUI_icon_clu_shadow");
+	_icon[CLU].img->setFrameX(1);
+	_icon[CLU].rc = RectMake(564, 13, _icon[CLU].img->getFrameWidth(), _icon[CLU].img->getFrameHeight());
+
+	_icon[BART].img = IMAGEMANAGER->findImage("GUI_icon_bart");
+	_icon[BART].img->setFrameX(0);
+	_icon[BART].shadow = IMAGEMANAGER->findImage("GUI_icon_bart_shadow");
+	_icon[BART].rc = RectMake(_icon[CLU].rc.right + 3, 13, _icon[BART].img->getFrameWidth(), _icon[BART].img->getFrameHeight());
+
+	_button_bomb.img = IMAGEMANAGER->findImage("GUI_button_bomb");
+	_button_bomb.x = 773, _button_bomb.y = WINSIZEY;
+	_button_bomb.alpha = 0;
+	_isBuild = false;
+}
+
+void playerManager::GUIupdate()
+{
+	_icon[_character].img->setFrameX(1);
+	_icon[!_character].img->setFrameX(0);
+
+	if (_isBuild)
+	{
+		if (_button_bomb.y > 663)
+			_button_bomb.y -= 663 / 80;
+
+		if (_button_bomb.alpha < 255)
+			_button_bomb.alpha += 15;
+
+		if (_blackSolidAlpha < 180)
+			_blackSolidAlpha += 15;
+	}
+	else
+	{
+		if (_button_bomb.y < WINSIZEY)
+			_button_bomb.y += 663 / 80;
+
+		if (_button_bomb.alpha > 0)
+			_button_bomb.alpha -= 15;
+
+		if (_blackSolidAlpha > 0)
+			_blackSolidAlpha -= 15;
+	}
+}
+
+void playerManager::GUIrender()
+{
+	_button_bomb.img->alphaRender(getMemDC(), _button_bomb.x, _button_bomb.y, _button_bomb.alpha);
+
+	if (_blueFlower.isActive)
+		_blueFlower.img->render(getMemDC(), _blueFlower.rc.left, _blueFlower.rc.top);
+	if (_mineral.isActive)
+		_mineral.img->render(getMemDC(), _mineral.rc.left, _mineral.rc.top);
+
+	for (int i = 0; i < 2; i++)
+	{
+		_icon[i].shadow->alphaFrameRender(getMemDC(), _icon[i].rc.left, _icon[i].rc.top, _icon[i].img->getFrameX(), _icon[i].img->getFrameY(), 200);
+		_icon[i].img->frameRender(getMemDC(), _icon[i].rc.left, _icon[i].rc.top, _icon[i].img->getFrameX(), _icon[i].img->getFrameY());
+	}
+
+	char str[128];
+	HFONT myFont = CreateFont(30, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, "FirstFont-Bold");
+	HFONT oldFont = (HFONT)SelectObject(getMemDC(), myFont);
+	SetBkMode(getMemDC(), TRANSPARENT);
+
+	SetTextColor(getMemDC(), RGB(50, 50, 50));
+	sprintf_s(str, "%d/3", _blueFlowerCount);
+	TextOut(getMemDC(), 1195, 53, str, strlen(str));
+	SetTextColor(getMemDC(), RGB(255, 255, 255));
+	TextOut(getMemDC(), 1195, 51, str, strlen(str));
+
+	SetTextColor(getMemDC(), RGB(50, 50, 50));
+	sprintf_s(str, "%d/3", _mineralCount);
+	TextOut(getMemDC(), 1195, 118, str, strlen(str));
+	SetTextColor(getMemDC(), RGB(255, 255, 255));
+	TextOut(getMemDC(), 1195, 116, str, strlen(str));
+
+	SelectObject(getMemDC(), oldFont);
+	DeleteObject(myFont);
 }
 
 void playerManager::keyInput()
 {
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))// || KEYMANAGER->isStayKeyDown('A'))
 	{
-		this->playerRun(LEFT);
+		if (!_isBuild)
+			this->playerRun(LEFT);
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))// || KEYMANAGER->isStayKeyDown('A'))
+	{
+		if (_isBuild)
+			_block[_character]->move(LEFT);
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))// || KEYMANAGER->isStayKeyDown('D'))
 	{
-		this->playerRun(RIGHT);
+		if (!_isBuild)
+			this->playerRun(RIGHT);
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))// || KEYMANAGER->isStayKeyDown('D'))
+	{
+		if (_isBuild)
+			_block[_character]->move(RIGHT);
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_UP))// || KEYMANAGER->isStayKeyDown('W'))
 	{
 		_isStayKey_up = true;
-
-		if (_player[_character]->getOnLand())
+		if (!_isBuild && _player[_character]->getOnLand())
 		{
 			if (_player[_character]->getState() == AIM_IDLE)
 				_player[_character]->setState(AIM_DIAGONAL);
@@ -107,16 +245,28 @@ void playerManager::keyInput()
 					_player[_character]->setState(LOOKUP);
 		}
 	}
+	if (KEYMANAGER->isOnceKeyDown(VK_UP))// || KEYMANAGER->isStayKeyDown('W'))
+	{
+		if (_isBuild)
+			_block[_character]->move(TOP);
+	}
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))// || KEYMANAGER->isStayKeyDown('S'))
 	{
 		_isStayKey_down = true;
 
-		if (_player[_character]->getOnLand())
+		if (!_isBuild && _player[_character]->getOnLand())
 		{
 			if (!_player[_character]->getIsFaceDown())
 				EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 			_player[_character]->setIsFaceDown(true);
 		}
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))// || KEYMANAGER->isStayKeyDown('S'))
+	{
+		_isStayKey_down = true;
+
+		if (_isBuild)
+			_block[_character]->move(BOTTOM);
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -128,8 +278,18 @@ void playerManager::keyInput()
 		}
 		else
 		{
-			_player[_character]->setIsLedgeGrab(false);
-			this->playerJumpRise();
+			if (_isBuild)
+			{
+				if (_isBuild)
+					_block[_character]->activate();
+				_character ? _mineralCount-- : _blueFlowerCount--;
+				_isBuild = false;
+			}
+			else
+			{
+				_player[_character]->setIsLedgeGrab(false);
+				this->playerJumpRise();
+			}
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('L'))
@@ -139,6 +299,10 @@ void playerManager::keyInput()
 			_player[_character]->setIsBackstep(true);
 			_player[_character]->setCount(0);
 		}
+	}
+	if (KEYMANAGER->isOnceKeyDown('K'))
+	{
+		this->playerBuild();
 	}
 	if (KEYMANAGER->isStayKeyDown('J'))
 	{
@@ -231,7 +395,7 @@ void playerManager::playerJumpRise()
 			_player[_character]->setAngle(PI_2);
 			_player[_character]->setGravity(0);
 			
-			SOUNDMANAGER->play("Clu_jump");
+			_character ? SOUNDMANAGER->play("Clu_jump") : SOUNDMANAGER->play("Bart_jump");
 			EFFECTMANAGER->play("jumpDust" + to_string(RND->getFromIntTo(1, 3)), _player[_character]->getX(), _player[_character]->getY());
 		}
 	}
@@ -491,7 +655,7 @@ void playerManager::playerBackstep()
 			else
 				_player[_character]->setIndex(0);
 
-			SOUNDMANAGER->play("Clu_dashback");
+			_character ? SOUNDMANAGER->play("Clu_dashback") : SOUNDMANAGER->play("Bart_block");
 		}
 		else if (_player[_character]->getState() == BACKSTEP)
 		{
@@ -1181,6 +1345,29 @@ void playerManager::playerAttack()
 	_character ? this->hammer() : this->bulletFire();
 }
 
+void playerManager::playerBuild()
+{
+	if (!_isBuild)
+	{
+		if (_character == CLU)
+		{
+			if (_blueFlowerCount > 0)
+			{
+				_block[CLU]->build(_player[CLU]->getX() - 44 * 0.5f, _player[CLU]->getY() - 44 * 0.33f);
+				_isBuild = true;
+			}
+		}
+		else
+		{
+			if (_mineralCount > 0)
+			{
+				_block[BART]->build(_player[BART]->getX() - 44 * 0.5f, _player[BART]->getY() - 44 * 0.33f);
+				_isBuild = true;
+			}
+		}
+	}
+}
+
 void playerManager::playerFollow()
 {
 	_saveProperties[_saveIndex].state = _player[_character]->getState();
@@ -1209,5 +1396,67 @@ void playerManager::playerFollow()
 		_saveCount++;
 		if (_saveCount >= 30)
 			_saveCount = 0;
+	}
+}
+
+void playerManager::addBlueFlower()
+{
+	_blueFlowerCount++;
+	if (_blueFlowerCount > _blueFlowerMax)
+		_blueFlowerCount = _blueFlowerMax;
+}
+
+void playerManager::addMineral()
+{
+	_mineralCount++;
+	if (_mineralCount > _mineralMax)
+		_mineralCount = _mineralMax;
+}
+
+void playerManager::blockCollision()
+{
+	RECT rcTemp;
+	float playerWidth = _player[_character]->getRect().right - _player[_character]->getRect().left;
+
+	for (int i = 0; i < _block[BART]->getVBlock().size(); i++)
+	{
+		if (!_block[BART]->getVBlock()[i].fire) continue;
+
+		if (IntersectRect(&rcTemp, &_player[_character]->getRect(), &_block[BART]->getVBlock()[i].rc))
+		{
+			//if (-sinf(_player[_character]->getAngle()) * _player[_character]->getSpeed() + _player[_character]->getGravity() <= 0 &&
+			if (_player[_character]->getRect().bottom >= _block[BART]->getVBlock()[i].rc.top &&
+				_player[_character]->getRect().top < _block[BART]->getVBlock()[i].rc.top &&
+				_player[_character]->getRect().bottom < _block[BART]->getVBlock()[i].rc.bottom)
+			{
+				_player[_character]->setY(_block[BART]->getVBlock()[i].rc.top - _player[_character]->getPlayerImage()->getFrameHeight() * 0.5 + 1);
+				_player[_character]->setIsJump(false);
+				if (!_player[_character]->getOnLand())
+				{
+					EFFECTMANAGER->play("landDust", _player[_character]->getX(), _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
+					_character ? SOUNDMANAGER->play("Clu_land" + to_string(RND->getFromIntTo(1, 3))) : SOUNDMANAGER->play("Bart_land" + to_string(RND->getFromIntTo(1, 3)));
+				}
+				_player[_character]->setOnLand(true);
+				_player[_character]->setGravity(0);
+				_player[_character]->setSpeed(0);
+
+				break;
+			}
+
+			//if (_player[_character]->getRect().left <= _block[BART]->getVBlock()[i].rc.right &&
+			//	_player[_character]->getRect().right >_block[BART]->getVBlock()[i].rc.right &&
+			//	_player[_character]->getRect().left > _block[BART]->getVBlock()[i].rc.left &&
+			//	_player[_character]->getRect().right < _block[BART]->getVBlock()[i].rc.right &&
+			//	_player[_character]->getRect().top <= _block[BART]->getVBlock()[i].rc.bottom &&
+			//	_player[_character]->getRect().bottom >= _block[BART]->getVBlock()[i].rc.top &&
+			//	_player[_character]->getIsLeft())
+			//{
+			//	_player[_character]->setX(_block[BART]->getVBlock()[i].rc.right + playerWidth * 0.5f - 1);
+			//	if (!_player[_character]->getIsJump())
+			//		_player[_character]->setState(PUSH);
+			//
+			//	break;
+			//}
+		}
 	}
 }

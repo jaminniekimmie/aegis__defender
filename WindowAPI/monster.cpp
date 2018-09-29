@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "monster.h"
-#include "hpBar.h"
+#include "mHpBar.h"
 
 void monster::update()
 {
@@ -92,7 +92,8 @@ void monster::directionProcess()
 
 void monster::collisionProcess()
 {
-	if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM))
+	if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM) ||
+		COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM) == BLUE)
 	{
 		_gravity = 0.0f;
 		_y += (_image[_state].rc.bottom - _image[_state].rc.top) * 0.25f;
@@ -124,7 +125,7 @@ void monster::playerAttack(int attack)
 
 void sandworm::init()
 {
-	_hpBar = new hpBar;
+	_hpBar = new mHpBar;
 	_hpBar->init("GUI_hp_bar_yellow", "GUI_hp_bar_yellow_frame", _x, _y);
 	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("Sandworm_walk");
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
@@ -173,7 +174,7 @@ void sandworm::dead()
 
 void spiderBaby::init()
 {
-	_hpBar = new hpBar;
+	_hpBar = new mHpBar;
 	_hpBar->init("GUI_hp_bar_yellow", "GUI_hp_bar_yellow_frame", _x, _y);
 	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("SpiderBaby_walk");
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("SpiderBaby_walk_shadow");
@@ -240,7 +241,7 @@ void spiderBaby::dead()
 
 void firedrinkerFly::init()
 {
-	_hpBar = new hpBar;
+	_hpBar = new mHpBar;
 	_hpBar->init("GUI_hp_bar_red", "GUI_hp_bar_red_frame", _x, _y);
 	_image[MONSTER_IDLE].img = IMAGEMANAGER->findImage("firedrinkerFly_fly");
 	_image[MONSTER_IDLE].shadow = IMAGEMANAGER->findImage("firedrinkerFly_fly_shadow");
@@ -303,6 +304,7 @@ void firedrinkerFly::dead()
 	else
 	{
 		EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _x, _y);
+		SOUNDMANAGER->play("UI_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
 		_isAlive = false;
 	}
 

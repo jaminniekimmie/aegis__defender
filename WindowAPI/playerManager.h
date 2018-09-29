@@ -23,13 +23,24 @@ private:
 	player * _player[2];
 	bullet * _bullet;
 	triBullet * _triBullet;
+	block * _block[2];
 	tagSave _saveProperties[30];
+	tagImage _icon[2];
+	tagImage _blueFlower;
+	tagImage _mineral;
+	tagImage _button_bomb;
+	int _blueFlowerCount;
+	int _blueFlowerMax;
+	int _mineralCount;
+	int _mineralMax;
 	int _idleCount;
 	int _idleMax;
 	int _saveCount, _saveIndex;
+	int _blackSolidAlpha;
 	bool _isFollowing;
 	bool _isStayKey_up;
 	bool _isStayKey_down;
+	bool _isBuild;
 public:
 	HRESULT init(void);
 	void release(void);
@@ -43,7 +54,11 @@ public:
 	PLAYERCHARACTER getCharacter() { return _character; }
 	bullet * getBullet() { return _bullet; }
 	triBullet * getTriBullet() { return _triBullet; }
+	block * getBlock(PLAYERCHARACTER character) { return _block[character]; }
 
+	void GUIinit();
+	void GUIupdate();
+	void GUIrender();
 	void keyInput();
 	void playerRun(bool isLeft);
 	void playerJumpRise();
@@ -64,7 +79,12 @@ public:
 	void bulletFire();
 	void hammer();
 	void playerAttack();
+	void playerBuild();
 	void playerFollow();
+
+	void addBlueFlower();
+	void addMineral();
+	void blockCollision();
 
 	playerManager() {}
 	~playerManager() {}

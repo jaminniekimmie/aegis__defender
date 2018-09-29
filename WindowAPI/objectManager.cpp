@@ -74,8 +74,8 @@ HRESULT objectManager::init(int num)
 
 		_bloomFlowerPos[0].x = 4355, _bloomFlowerPos[0].y = 1245;
 		_bloomFlowerPos[1].x = 4500, _bloomFlowerPos[1].y = 1245;
-		_bloomFlowerPos[2].x = 4850, _bloomFlowerPos[2].y = 1245;
-		_bloomFlowerPos[3].x = 4950, _bloomFlowerPos[3].y = 1245;
+		_bloomFlowerPos[2].x = 4830, _bloomFlowerPos[2].y = 1245;
+		_bloomFlowerPos[3].x = 4920, _bloomFlowerPos[3].y = 1245;
 		_bloomFlowerPos[4].x = 5300, _bloomFlowerPos[4].y = 765;
 		_bloomFlowerPos[5].x = 5635, _bloomFlowerPos[5].y = 205;
 		_bloomFlowerPos[6].x = 6105, _bloomFlowerPos[6].y = 540;
@@ -115,7 +115,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		 _doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
+		 _doorDNAyellowLeftPos[0].x = 755, _doorDNAyellowLeftPos[0].y = 1200;
+		 //_doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -273,19 +274,30 @@ void objectManager::update()
 	RECT rcTemp;
 	RECT rcPlayer = _playerManager->getPlayer()->getRect();
 	int activatorCount = 0;
+	float angle, speed, smlRand;
 
 	for (int i = 0; i < _vObject.size(); i++)
 	{
-		if (OBJECT_INACTIVE == _vObject[i]->getState()) continue;
+		if (OBJECT_VANISH == _vObject[i]->getState()) continue;
 		
-		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= HEART_YELLOW)
+		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= ITEM_BLUEFLOWER)
 		{
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect()))
 			{
 				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
 				SOUNDMANAGER->play("UI_collect_common");
 				//SOUNDMANAGER->play("UI_collect_bloomflower");
-				_vObject[i]->setState(OBJECT_INACTIVE);
+				_vObject[i]->setState(OBJECT_VANISH);
+
+				if (HEART_RED == _vObject[i]->getType())
+					_playerManager->getPlayer()->addHp();
+				else if (HEART_YELLOW == _vObject[i]->getType())
+					_playerManager->getPlayer()->addMp();
+				else if (ITEM_BLUEFLOWER == _vObject[i]->getType())
+					;
+				else if (ITEM_MINERAL == _vObject[i]->getType())
+					;
+
 				break;
 			}
 		}
@@ -308,9 +320,17 @@ void objectManager::update()
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect())
 				&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
 			{
+				angle = !_playerManager->getPlayer()->getIsLeft() * PI;
+				speed = 15.0f;
+				smlRand = RND->getFromIntTo(1, 2);
+
+				EFFECTMANAGER->play("number_red" + to_string(smlRand), _playerManager->getPlayer()->getX(), rcPlayer.top);
+				_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getX() + cosf(angle) * speed);
+				_playerManager->getPlayer()->hitDamage(smlRand);
 				_playerManager->getPlayer()->setState(HIT);
 				_playerManager->getPlayer()->setIsActive(false);
 				_isHit = true;
+				break;
 			}
 		}
 		else if (SWITCH_HOR == _vObject[i]->getType())
@@ -338,28 +358,18 @@ void objectManager::update()
 			if (_vObject[i]->getIndex() == _vObject[i]->getImage()->getMaxFrameX())
 				activatorCount++;
 		}
+		else if (DOOR_DNA_YELLOW_LEFT <= _vObject[i]->getState() && DOOR_DNA_YELLOW_RIGHT == _vObject[i]->getState())
+		{
+			this->collisionDoor(i, CLU);
+		}
+		else if (DOOR_DNA_BLUE_LEFT == _vObject[i]->getState() && DOOR_DNA_BLUE_RIGHT >= _vObject[i]->getState())
+		{
+			this->collisionDoor(i, BART);
+		}
 		else if (DOOR_ELEVATOR == _vObject[i]->getType())
 		{
 			this->collisionBullet(i, _vObject[i]->getState());
-
-			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()) && _vObject[i]->getIndex() != _vObject[i]->getImage()->getMaxFrameX())
-			{
-				if (rcPlayer.bottom >= _vObject[i]->getActionRect().top && 
-					rcPlayer.top < _vObject[i]->getActionRect().top &&
-					rcPlayer.bottom < _vObject[i]->getActionRect().bottom)
-				{
-					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().top - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5 + 1);
-					_playerManager->getPlayer()->setOnLand(true);
-					_playerManager->getPlayer()->setGravity(0);
-					_playerManager->getPlayer()->setSpeed(0);
-				}
-				else if (rcPlayer.top <= _vObject[i]->getActionRect().bottom && 
-					rcPlayer.bottom > _vObject[i]->getActionRect().bottom &&
-					rcPlayer.top > _vObject[i]->getActionRect().top)
-				{
-					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().bottom + _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5 - 1);
-				}
-			}
+			this->collisionDoor(i, _playerManager->getCharacter());
 
 			if (activatorCount >= 2)
 				_vObject[i]->setState(OBJECT_MOVE);
@@ -376,11 +386,15 @@ void objectManager::render(HDC hdc)
 	//getMemDC() 를 못쓰니까 hdc 쓰면 된다.
 	for (int i = 0; i < _vObject.size(); i++)
 	{
-		if (OBJECT_INACTIVE == _vObject[i]->getState()) continue;
+		if (!_vObject[i]->getIsActive()) continue;
 		_vObject[i]->render(hdc);
 	}
 
 	IMAGEMANAGER->alphaRender("solid_red", hdc, _alpha);
+
+	//char str[32];
+	//sprintf(str, "%d", tempCt);
+	//TextOut(hdc, 200, 200, str, strlen(str));
 }
 
 void objectManager::collisionProcess()
@@ -409,7 +423,8 @@ void objectManager::collisionBullet(int index, OBJECTSTATE setState)
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
 			_playerManager->getBullet()->removeBullet(j);
-			_vObject[index]->setState(setState);
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
 			break;
 		}
 	}
@@ -422,8 +437,57 @@ void objectManager::collisionBullet(int index, OBJECTSTATE setState)
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
 			_playerManager->getTriBullet()->getVBullet()[j].fire = false;
-			_vObject[index]->setState(setState);
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
 			break;
+		}
+	}
+}
+
+void objectManager::collisionDoor(int index, PLAYERCHARACTER character)
+{
+	RECT rcTemp;
+	RECT rcPlayer = _playerManager->getPlayer(character)->getRect();
+	if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[index]->getActionRect()))
+	{
+		if (rcPlayer.left <= _vObject[index]->getActionRect().right &&
+			rcPlayer.right > _vObject[index]->getActionRect().right &&
+			rcPlayer.left > _vObject[index]->getActionRect().left &&
+			rcPlayer.right < _vObject[index]->getActionRect().right &&
+			rcPlayer.top <= _vObject[index]->getActionRect().bottom &&
+			rcPlayer.bottom >= _vObject[index]->getActionRect().top && 
+			_playerManager->getPlayer(character)->getIsLeft())
+		{
+			_playerManager->getPlayer(character)->setX(_vObject[index]->getActionRect().right + (rcPlayer.right - rcPlayer.left) * 0.5f - 1);
+			if (!_playerManager->getPlayer(character)->getIsJump())
+				_playerManager->getPlayer(character)->setState(PUSH);
+		}
+		else if (rcPlayer.left < _vObject[index]->getActionRect().left &&
+			rcPlayer.right >= _vObject[index]->getActionRect().left &&
+			rcPlayer.top <= _vObject[index]->getActionRect().bottom &&
+			rcPlayer.bottom >= _vObject[index]->getActionRect().top &&
+			!_playerManager->getPlayer(character)->getIsLeft())
+		{
+			_playerManager->getPlayer(character)->setX(_vObject[index]->getActionRect().left - (rcPlayer.right - rcPlayer.left) * 0.5f + 1);
+			if (!_playerManager->getPlayer(character)->getIsJump())
+				_playerManager->getPlayer(character)->setState(PUSH);
+		}
+		if (rcPlayer.left <= _vObject[index]->getActionRect().right &&
+			rcPlayer.right >= _vObject[index]->getActionRect().left &&
+			rcPlayer.bottom >= _vObject[index]->getActionRect().top &&
+			rcPlayer.top < _vObject[index]->getActionRect().top)
+		{
+			_playerManager->getPlayer(character)->setY(_vObject[index]->getActionRect().top - (rcPlayer.bottom - rcPlayer.top) * 0.75 + 1);
+			_playerManager->getPlayer(character)->setOnLand(true);
+			_playerManager->getPlayer(character)->setGravity(0);
+			_playerManager->getPlayer(character)->setSpeed(0);
+		}
+		else if (rcPlayer.left <= _vObject[index]->getActionRect().right &&
+			rcPlayer.right >= _vObject[index]->getActionRect().left &&
+			rcPlayer.top <= _vObject[index]->getActionRect().bottom &&
+			rcPlayer.bottom > _vObject[index]->getActionRect().bottom)
+		{
+			_playerManager->getPlayer(character)->setY(_vObject[index]->getActionRect().bottom + (rcPlayer.bottom - rcPlayer.top) * 0.25 + 1);
 		}
 	}
 }

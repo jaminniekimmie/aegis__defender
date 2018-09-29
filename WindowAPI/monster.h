@@ -1,11 +1,11 @@
 #pragma once
 #include "tileNode.h"
-#include "hpBar.h"
+#include "mHpBar.h"
 
 class monster
 {
 protected:
-	hpBar * _hpBar;
+	mHpBar * _hpBar;
 	MONSTERTYPE _type;
 	MONSTERSTATE _state;
 	RECT _rc;
@@ -40,7 +40,7 @@ public:
 	bool getIsLeft() { return _isLeft; }
 	MONSTERSTATE getState() { return _state; }
 	MONSTERTYPE getType() { return _type; }
-	hpBar* getHpBar() { return _hpBar; }
+	mHpBar* getHpBar() { return _hpBar; }
 	image* getImage(MONSTERSTATE state) { return _image[state].img; }
 	RECT getRect() { return _image[_state].rc; }
 

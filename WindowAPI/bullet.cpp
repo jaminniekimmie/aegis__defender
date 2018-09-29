@@ -587,3 +587,168 @@ void triBullet::collision()
 		}
 	}
 }
+
+HRESULT block::init(const char * imageName, const char * shadowName, float speed, bool isFrameImg)
+{
+	_imageName = imageName;
+	_shadowName = shadowName;
+	_speed = speed;
+	_isFrameImg = isFrameImg;
+	_frameSpeed = 5;
+
+	return S_OK;
+}
+
+void block::release(void)
+{
+}
+
+void block::update(void)
+{
+	this->collision();
+	this->frameChange();
+}
+
+void block::render(void)
+{
+	for (int i = 0; i < _vBlock.size(); i++)
+	{
+		if (!CAMERAMANAGER->CameraIn(_vBlock[i].rc)) continue;
+		if (_isFrameImg)
+		{
+			_vBlock[i].shadowImage->alphaFrameRender(getMemDC(), _vBlock[i].x - _vBlock[i].shadowImage->getFrameWidth() * 0.5f -CAMERAMANAGER->getCamera().left, _vBlock[i].y - _vBlock[i].shadowImage->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _vBlock[i].index, 0, 80);
+			_vBlock[i].bulletImage->frameRender(getMemDC(), _vBlock[i].x - _vBlock[i].bulletImage->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _vBlock[i].y - _vBlock[i].bulletImage->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _vBlock[i].index, 0);
+		}
+		else
+		{
+			_vBlock[i].shadowImage->alphaRender(getMemDC(), _vBlock[i].x - _vBlock[i].shadowImage->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _vBlock[i].y - _vBlock[i].shadowImage->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top, 80);
+			_vBlock[i].bulletImage->render(getMemDC(), _vBlock[i].x - _vBlock[i].bulletImage->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _vBlock[i].y - _vBlock[i].bulletImage->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
+		}
+	}
+}
+
+void block::build(float x, float y)
+{
+	//총알 구조체 선언
+	tagBullet block;
+	//제로메모리 또는 멤셋
+	//구조체의 변수들의 값을 한번에 0으로 초기화 시켜준다
+	ZeroMemory(&block, sizeof(tagBullet));
+	block.bulletImage = IMAGEMANAGER->findImage(_imageName);
+	block.shadowImage = IMAGEMANAGER->findImage(_shadowName);
+	block.bulletImage->setFrameX(0);
+	block.bulletImage->setFrameY(0);
+	block.x = x; //CAMERAMANAGER->getCamera().left + 620;
+	block.y = y;// CAMERAMANAGER->getCamera().top + 417 - 50;
+	block.fire = false;
+	if(_isFrameImg)
+		block.rc = RectMakeCenter(block.x, block.y, block.bulletImage->getFrameWidth() * 0.75f, block.bulletImage->getFrameHeight() * 0.75f);
+	else
+		block.rc = RectMakeCenter(block.x, block.y, block.bulletImage->getWidth() * 0.75f, block.bulletImage->getHeight() * 0.75f);
+
+	//벡터에 담기
+	_vBlock.push_back(block);
+}
+
+void block::move(int dir)
+{
+	for (int i = 0; i < _vBlock.size(); i++)
+	{
+		if (_vBlock[i].fire) continue;
+
+		if (dir == RIGHT)
+			_vBlock[i].x += _speed;
+		else if (dir == LEFT)
+			_vBlock[i].x -= _speed;
+		else if (dir == TOP)
+			_vBlock[i].y -= _speed;
+		else if (dir == BOTTOM)
+			_vBlock[i].y += _speed;
+
+		if (_isFrameImg)
+			_vBlock[i].rc = RectMakeCenter(_vBlock[i].x, _vBlock[i].y, _vBlock[i].bulletImage->getFrameWidth() * 0.75f, _vBlock[i].bulletImage->getFrameHeight() * 0.75f);
+		else
+			_vBlock[i].rc = RectMakeCenter(_vBlock[i].x, _vBlock[i].y, _vBlock[i].bulletImage->getWidth() * 0.75f, _vBlock[i].bulletImage->getHeight() * 0.75f);
+
+		break;
+	}
+}
+
+void block::removeBlock(int index)
+{
+	_vBlock.erase(_vBlock.begin() + index);
+}
+
+void block::activate()
+{
+	for (int i = 0; i < _vBlock.size(); i++)
+	{
+		if (_vBlock[i].fire) continue;
+		
+		_vBlock[i].fire = true;
+
+		break;
+	}
+}
+
+void block::collision()
+{
+	RECT rcTemp;
+
+	for (int i = 0; i < _vBlock.size(); i++)
+	{
+		if (!_vBlock[i].fire) continue;
+
+		if (COLLISIONMANAGER->pixelCollision(_vBlock[i].rc, _vBlock[i].x, _vBlock[i].y, _vBlock[i].speed, _vBlock[i].gravity, BOTTOM) ||
+			COLLISIONMANAGER->pixelCollision(_vBlock[i].rc, _vBlock[i].x, _vBlock[i].y, _vBlock[i].speed, _vBlock[i].gravity, BOTTOM) == BLUE)
+		{
+			_vBlock[i].gravity = 0.0f;
+			_vBlock[i].y += (_vBlock[i].rc.bottom - _vBlock[i].rc.top) * 0.25f;
+		}
+		else
+		{
+			_vBlock[i].gravity += 0.55f;
+			_vBlock[i].y += _vBlock[i].gravity;
+		}
+
+		float rcHeight = _vBlock[i].rc.bottom - _vBlock[i].rc.top;
+
+		for (int j = 0; j < _vBlock.size(); j++)
+		{
+			if (!_vBlock[j].fire) continue;
+			if (i == j) continue;
+			
+			if (IntersectRect(&rcTemp, &_vBlock[i].rc, &_vBlock[j].rc))
+			{
+				_vBlock[i].rc.top < _vBlock[j].rc.top ? _vBlock[i].y = _vBlock[j].rc.top - rcHeight * 0.5 + 1: _vBlock[j].y = _vBlock[i].rc.top - rcHeight * 0.5f + 1;
+
+				break;
+			}
+		}
+
+		if (_isFrameImg)
+			_vBlock[i].rc = RectMakeCenter(_vBlock[i].x, _vBlock[i].y, _vBlock[i].bulletImage->getFrameWidth() * 0.75f, _vBlock[i].bulletImage->getFrameHeight() * 0.75f);
+		else
+			_vBlock[i].rc = RectMakeCenter(_vBlock[i].x, _vBlock[i].y, _vBlock[i].bulletImage->getWidth() * 0.75f, _vBlock[i].bulletImage->getHeight() * 0.75f);
+	}
+}
+
+void block ::frameChange()
+{
+	if (_isFrameImg)
+	{
+		for (int i = 0; i < _vBlock.size(); i++)
+		{
+			if (!_vBlock[i].fire) continue;
+
+			_vBlock[i].count++;
+			if (_vBlock[i].count % _frameSpeed == 0)
+			{
+				_vBlock[i].index++;
+				if (_vBlock[i].index > _vBlock[i].bulletImage->getMaxFrameX())
+					_vBlock[i].index = 0;
+				_vBlock[i].bulletImage->setFrameX(_vBlock[i].index);
+			}
+		}
+	}
+}

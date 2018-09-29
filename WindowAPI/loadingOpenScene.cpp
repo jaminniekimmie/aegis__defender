@@ -108,13 +108,13 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
 
 	//GUI
-	_loading->loadImage("GUI_heart_red", "tex/UI/heart_red_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
-	_loading->loadImage("GUI_heart_red_shadow", "tex/UI/heart_red_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
-	_loading->loadImage("GUI_heart_yellow", "tex/UI/heart_yellow_UI_01.bmp", 27, 27, true, RGB(255, 0, 255));
-	_loading->loadImage("GUI_heart_yellow_shadow", "tex/UI/heart_yellow_UI_shadow_01.bmp", 27, 27, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_red", "tex/UI/heart_red_UI_01.bmp", 99, 24, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_yellow", "tex/UI/heart_yellow_UI_01.bmp", 99, 24, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_heart_shadow", "tex/UI/heart_shadow_UI_01.bmp", 99, 24, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_blueFlower", "tex/UI/blueFlower_UI_01.bmp", 54, 48, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_mineral", "tex/UI/mineral_UI_01.bmp", 54, 51, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_button_switch", "tex/UI/button_switch_01.bmp", 566, 45, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_button_bomb", "tex/UI/button_bomb_01.bmp", 464, 45, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_hp_bar_blue", "tex/UI/hpBar_blue_01.bmp", 57, 12);
 	_loading->loadImage("GUI_hp_bar_blue_frame", "tex/UI/hpBar_blue_frame_01.bmp", 57, 12, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_hp_bar_yellow", "tex/UI/hpBar_yellow_01.bmp", 57, 12);
@@ -122,6 +122,10 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("GUI_hp_bar_red", "tex/UI/hpBar_red_01.bmp", 57, 12);
 	_loading->loadImage("GUI_hp_bar_red_frame", "tex/UI/hpBar_red_frame_01.bmp", 57, 12, true, RGB(255, 0, 255));
 	_loading->loadImage("GUI_hp_bar_shadow", "tex/UI/hpBar_shadow_01.bmp", 57, 12);
+	_loading->loadImage("GUI_control_attack", "tex/UI/control_attack_01.bmp", 205, 45, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_control_backstep", "tex/UI/control_backstep_01.bmp", 255, 46, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_control_bomb", "tex/UI/control_bomb_01.bmp", 170, 45, true, RGB(255, 0, 255));
+	_loading->loadImage("GUI_control_move", "tex/UI/control_move_01.bmp", 226, 48, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_clu", "tex/UI/clu_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_clu_shadow", "tex/UI/clu_UI_icon_shadow_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("GUI_icon_bart", "tex/UI/bart_UI_icon_01.bmp", 148, 77, 2, 1, true, RGB(255, 0, 255));
@@ -154,7 +158,15 @@ void loadingOpenScene::loadingImage()
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)
 void loadingOpenScene::loadingSound()
 {
-	//_loading->loadSound("사운드1", "브금.mp3");
+	_loading->loadSound("UI_collect_bloomflower", "audio/ui_gen_collect_bloomflower.wav");
+	_loading->loadSound("UI_collect_common", "audio/ui_gen_collect_common.wav");
+	_loading->loadSound("UI_menu_close", "audio/ui_menu_close.wav");
+	_loading->loadSound("UI_menu_open", "audio/ui_menu_open.wav");
+	_loading->loadSound("UI_pause", "audio/ui_pause.wav");
+	_loading->loadSound("UI_explo_medium1", "audio/imp_explo_medium_01.wav");
+	_loading->loadSound("UI_explo_medium2", "audio/imp_explo_medium_02.wav");
+	_loading->loadSound("UI_explo_medium3", "audio/imp_explo_medium_03.wav");
+	_loading->loadSound("UI_explo_medium4", "audio/imp_explo_medium_04.wav");
 }
 
 void loadingOpenScene::loadingEffect()

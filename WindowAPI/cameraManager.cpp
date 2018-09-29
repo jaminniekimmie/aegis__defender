@@ -54,10 +54,13 @@ void cameraManager::CameraSwitchOngoing()
 			if (_isFade && _alpha < 180)
 				_alpha += 15;
 		}
-		else
+
+		if (_isFade)
 		{
-			if (!_isFade)
-				_switchStart = false;
+			if (_button_switch_y > 663)
+				_button_switch_y -= 663 / 80;
+			if (_button_switch_alpha < 255)
+				_button_switch_alpha += 15;
 		}
 
 		RECT _rc = RectMakeCenter(_startX, _startY, WINSIZEX, WINSIZEY);
@@ -66,7 +69,12 @@ void cameraManager::CameraSwitchOngoing()
 	else
 	{
 		if (_isFade && _alpha > 0)
-				_alpha -= 15;
+			_alpha -= 15;
+
+		if (_button_switch_y < WINSIZEY)
+			_button_switch_y += 663 / 80;
+		if (_button_switch_alpha > 0)
+			_button_switch_alpha -= 15;
 	}
 }
 
@@ -101,6 +109,9 @@ HRESULT cameraManager::init(void)
 	_isFade = false;
 	_shakeCount = 0;
 	_alpha = 0;
+
+	_button_switch_x = 671, _button_switch_y = WINSIZEY;
+	_button_switch_alpha = 0;
 	return S_OK;
 }
 
@@ -119,5 +130,7 @@ void cameraManager::render(HDC hdc)
 {
 	if (_isFade)
 		IMAGEMANAGER->alphaRender("solid_black", hdc, _alpha);
+
+	IMAGEMANAGER->alphaRender("GUI_button_switch", hdc, _button_switch_x, _button_switch_y, _button_switch_alpha);
 }
 

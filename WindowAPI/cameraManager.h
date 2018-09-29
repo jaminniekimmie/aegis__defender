@@ -4,6 +4,7 @@ class cameraManager : public singletonBase<cameraManager>
 {
 	RECT _rcCamera;
 	RECT _rcTemp;
+	float _button_switch_x, _button_switch_y;
 	int _maxWidth, _maxHeight;
 	int _shakeCount;
 	bool _shakeStart;
@@ -11,6 +12,7 @@ class cameraManager : public singletonBase<cameraManager>
 	bool _isFade;
 	float _startX, _startY;
 	float _destX, _destY;
+	BYTE _button_switch_alpha;
 	BYTE _alpha;
 
 public:
