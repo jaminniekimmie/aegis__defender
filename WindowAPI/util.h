@@ -16,8 +16,11 @@
 #define MAXOBJECTSTATE 3
 
 #define YELLOW 1
-#define RED 2
-#define BLUE 3
+#define BRIGHT_YELLOW 2
+#define RED 3
+#define BRIGHT_RED 4
+#define BLUE 5
+#define BRIGHT_BLUE 6
 
 enum PLAYERCHARACTER
 {

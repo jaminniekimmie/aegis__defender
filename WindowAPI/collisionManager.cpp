@@ -21,6 +21,20 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 			
 				return YELLOW;
 			}
+
+			if (r == 255 && g == 232 && b == 31)
+			{
+				x = i + 7 + (rc.right - rc.left) * 0.5f;
+
+				return BRIGHT_YELLOW;
+			}
+
+			if (r == 80 && g == 127 && b == 213)
+			{
+				x = i + 7 + (rc.right - rc.left) * 0.5f;
+
+				return BRIGHT_BLUE;
+			}
 		}
 		break;
 	case TOP:
@@ -53,6 +67,20 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 				x = i - 7 - (rc.right - rc.left) * 0.5f;
 
 				return YELLOW;
+			}
+
+			if (r == 255 && g == 232 && b == 31)
+			{
+				x = i - 7 - (rc.right - rc.left) * 0.5f;
+
+				return BRIGHT_YELLOW;
+			}
+
+			if (r == 80 && g == 127 && b == 213)
+			{
+				x = i - 7 - (rc.right - rc.left) * 0.5f;
+
+				return BRIGHT_BLUE;
 			}
 		}
 		break;

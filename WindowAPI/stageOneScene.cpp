@@ -55,6 +55,10 @@ HRESULT stageOneScene::init(void)
 
 	_camDebug = _sceneSwitch = false;
 	_alpha = 255;
+	_switchCount = 0;
+
+	_rcLetterBox[0] = RectMake(0, 0, WINSIZEX, 0);
+	_rcLetterBox[1] = RectMake(0, WINSIZEY, WINSIZEX, 0);
 
 	ShowCursor(true);
 
@@ -108,12 +112,25 @@ void stageOneScene::update(void)
 	MONSTERMANAGER->update();
 	OBJECTMANAGER->update();
 
-
-	//temporary
-	if (KEYMANAGER->isOnceKeyDown('Q'))
-		_sceneSwitch = true;
-
 	this->cameraAdjustment();
+
+	if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT ||
+		_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT_IDLE)
+	{
+		_switchCount++;
+		if (_switchCount > 20)
+			_sceneSwitch = true;
+
+		if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
+		{
+			_rcLetterBox[0].bottom += -sinf(-PI_2) * 5.0f;
+			_rcLetterBox[1].top += -sinf(PI_2) * 5.0f;
+		}
+	}
+	else
+	{
+		_switchCount = 0;
+	}
 	
 	if (!_sceneSwitch)
 	{
@@ -124,7 +141,7 @@ void stageOneScene::update(void)
 	{
 		_alpha += 5;
 		if (_alpha >= 255)
-			SCENEMANAGER->loadScene("맵툴");
+			SCENEMANAGER->loadScene("게임오버화면");
 	}
 }
 
@@ -169,6 +186,14 @@ void stageOneScene::render(void)
 	CAMERAMANAGER->render(getMemDC());
 	if (CAMERAMANAGER->getSwitchStart())
 		_playerManager->getPlayer()->render();
+
+	SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
+	SetDCBrushColor(getMemDC(), RGB(0, 0, 0));
+	SelectObject(getMemDC(), GetStockObject(DC_PEN));
+	SetDCPenColor(getMemDC(), RGB(0, 0, 0));
+
+	Rectangle(getMemDC(), _rcLetterBox[0]);
+	Rectangle(getMemDC(), _rcLetterBox[1]);
 
 	if (_alpha > 0)
 		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);

@@ -41,7 +41,8 @@ public:
 	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
 	void collisionProcess();
 	void collisionBullet(int index, OBJECTSTATE setState);
-	void collisionDoor(int index, PLAYERCHARACTER character);
+	void collisionDoorElevator(int index, PLAYERCHARACTER character);
+	void collisionDoorDNA(int index, PLAYERCHARACTER character);
 	//오브젝트매니져 초기화
 	HRESULT init(int num);
 	//오브젝트매니져 해제

@@ -27,6 +27,7 @@ public:
 	void setIsDead(bool isDead) { _isDead = isDead; }
 	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
 	void collisionProcess();
+	void monsterHurt();
 	//오브젝트매니져 초기화
 	HRESULT init(int scene);
 	//오브젝트매니져 해제

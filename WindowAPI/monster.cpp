@@ -20,7 +20,7 @@ void monster::update()
 		break;
 	}
 
-	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight());
+	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth() * 0.75f, _image[_state].img->getFrameHeight() * 0.75f);
 
 	_hpBar->update();
 
@@ -304,7 +304,7 @@ void firedrinkerFly::dead()
 	else
 	{
 		EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _x, _y);
-		SOUNDMANAGER->play("UI_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
+		SOUNDMANAGER->play("IMP_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
 		_isAlive = false;
 	}
 

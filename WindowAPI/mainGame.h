@@ -3,9 +3,11 @@
 /*앞으로는 씬 헤더파일만 추가해준다*/
 #include "loadingBlackScene.h"
 #include "loadingOpenScene.h"
+#include "loadingCharScene.h"
 #include "buildAMapScene.h"
 #include "stageOneScene.h"
 #include "stageTwoScene.h"
+#include "gameOverScene.h"
 
 class mainGame : public gameNode
 {

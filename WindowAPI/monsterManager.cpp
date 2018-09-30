@@ -102,8 +102,8 @@ void monsterManager::update()
 		//	}
 		//}
 
-		if (IntersectRect(&rcTemp, &rcPlayer, &_vMonster[i]->getRect())
-			&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
+		if (IntersectRect(&rcTemp, &rcPlayer, &_vMonster[i]->getRect()) && _playerManager->getPlayer()->getIsActive() && 
+			HIT != _playerManager->getPlayer()->getState() && FAINT != _playerManager->getPlayer()->getState() && FAINT_IDLE != _playerManager->getPlayer()->getState())
 		{
 			angle = !_playerManager->getPlayer()->getIsLeft() * PI;
 			speed = 15.0f;
@@ -122,7 +122,7 @@ void monsterManager::update()
 			if (IntersectRect(&rcTemp, &_playerManager->getBlock(CLU)->getVBlock()[j].rc, &_vMonster[i]->getRect()))
 			{
 				EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _vMonster[i]->getX(), _vMonster[i]->getY());
-				SOUNDMANAGER->play("UI_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
+				SOUNDMANAGER->play("IMP_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
 				_playerManager->getBlock(CLU)->removeBlock(j);
 
 				if (SANDWORM == _vMonster[i]->getType())
@@ -140,6 +140,11 @@ void monsterManager::update()
 			}
 		}
 
+		if (IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getHammerRc(), &_vMonster[i]->getRect()))
+		{
+			this->monsterHurt();
+		}
+
 		for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
 		{
 			if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
@@ -148,45 +153,8 @@ void monsterManager::update()
 				_playerManager->getBullet()->removeBullet(j);
 				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
 
-				switch (_vMonster[i]->getType())
-				{
-				case SANDWORM:
-					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
-					break;
-				case SPIDERBABY:
-					if (CLU == _playerManager->getCharacter())
-					{
-						EFFECTMANAGER->play("blocked_yellow", _vMonster[i]->getX(), _vMonster[i]->getY());
-						EFFECTMANAGER->play("number_yellow" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(smlRand);
-					}
-					else
-					{
-						EFFECTMANAGER->play("number_yellow" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(bigRand);
-					}
-					break;
-				case FIREDRINKERFLY:
-					EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
-					EFFECTMANAGER->play("number_red" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-					_vMonster[i]->playerAttack(smlRand);
-					break;
-				case EAGLE:
-					if (CLU == _playerManager->getCharacter())
-					{
-						EFFECTMANAGER->play("number_blue" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(bigRand);
-					}
-					else
-					{
-						EFFECTMANAGER->play("blocked_blue", _vMonster[i]->getX(), _vMonster[i]->getY());
-						EFFECTMANAGER->play("number_blue" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(smlRand);
-					}
-					break;
-				default:
-					break;
-				}
+				this->monsterHurt();
+
 				break;
 			}
 		}
@@ -201,45 +169,8 @@ void monsterManager::update()
 				_playerManager->getTriBullet()->getVBullet()[j].fire = false;
 				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
 
-				switch (_vMonster[i]->getType())
-				{
-				case SANDWORM:
-					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
-					break;
-				case SPIDERBABY:
-					if (CLU == _playerManager->getCharacter())
-					{
-						EFFECTMANAGER->play("blocked_yellow", _vMonster[i]->getX(), _vMonster[i]->getY());
-						EFFECTMANAGER->play("number_yellow" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(smlRand);
-					}
-					else
-					{
-						EFFECTMANAGER->play("number_yellow" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(bigRand);
-					}
-					break;
-				case FIREDRINKERFLY:
-					EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
-					EFFECTMANAGER->play("number_yellow" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-					_vMonster[i]->playerAttack(smlRand);
-					break;
-				case EAGLE:
-					if (CLU == _playerManager->getCharacter())
-					{
-						EFFECTMANAGER->play("number_blue" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(bigRand);
-					}
-					else
-					{
-						EFFECTMANAGER->play("blocked_blue", _vMonster[i]->getX(), _vMonster[i]->getY());
-						EFFECTMANAGER->play("number_blue" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
-						_vMonster[i]->playerAttack(smlRand);
-					}
-					break;
-				default:
-					break;
-				}
+				this->monsterHurt();
+
 				break;
 			}
 		}
@@ -272,5 +203,55 @@ void monsterManager::collisionProcess()
 	{
 		if (_alpha > 0)
 			_alpha -= 15;
+	}
+}
+
+void monsterManager::monsterHurt()
+{
+	int smlRand = RND->getFromIntTo(1, 2);
+	int bigRand = RND->getFromIntTo(3, 6);
+
+	for (int i = 0; i < _vMonster.size(); i++)
+	{
+		switch (_vMonster[i]->getType())
+		{
+		case SANDWORM:
+			EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
+			SOUNDMANAGER->play("Mon_Sandworm_hurt" + to_string(RND->getFromIntTo(1, 3)));
+			break;
+		case SPIDERBABY:
+			if (CLU == _playerManager->getCharacter())
+			{
+				EFFECTMANAGER->play("blocked_yellow", _vMonster[i]->getX(), _vMonster[i]->getY());
+				EFFECTMANAGER->play("number_yellow" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+				_vMonster[i]->playerAttack(smlRand);
+			}
+			else
+			{
+				EFFECTMANAGER->play("number_yellow" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+				_vMonster[i]->playerAttack(bigRand);
+			}
+			break;
+		case FIREDRINKERFLY:
+			EFFECTMANAGER->play("blocked_red", _vMonster[i]->getX(), _vMonster[i]->getY());
+			EFFECTMANAGER->play("number_red" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+			_vMonster[i]->playerAttack(smlRand);
+			break;
+		case EAGLE:
+			if (CLU == _playerManager->getCharacter())
+			{
+				EFFECTMANAGER->play("number_blue" + to_string(bigRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+				_vMonster[i]->playerAttack(bigRand);
+			}
+			else
+			{
+				EFFECTMANAGER->play("blocked_blue", _vMonster[i]->getX(), _vMonster[i]->getY());
+				EFFECTMANAGER->play("number_blue" + to_string(smlRand), _vMonster[i]->getX(), _vMonster[i]->getRect().top);
+				_vMonster[i]->playerAttack(smlRand);
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

@@ -161,6 +161,19 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_gun_fullCharge_idle", "tex/weapons/Clu_gun_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_fall", "tex/weapons/Clu_gun_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_jumpFire_rise", "tex/weapons/Clu_gun_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("Clu_bow_aim_diagonal", "tex/weapons/Clu_bow_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_aim_diagonal_fullCharge", "tex/weapons/Clu_bow_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_aim_diagonal_fullCharge_idle", "tex/weapons/Clu_bow_aim_diagonal_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_aim_diagonalFire", "tex/weapons/Clu_bow_aim_diagonalFire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_aim_fire", "tex/weapons/Clu_bow_aim_fire_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_aim_idle", "tex/weapons/Clu_bow_aim_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_charge", "tex/weapons/Clu_bow_charge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_fullCharge", "tex/weapons/Clu_bow_fullCharge_01.bmp", 116 * 5, 232, 5, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_fullCharge_idle", "tex/weapons/Clu_bow_fullCharge_idle_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_jumpFire_fall", "tex/weapons/Clu_bow_jumpFire_fall_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("Clu_bow_jumpFire_rise", "tex/weapons/Clu_bow_jumpFire_rise_01.bmp", 116 * 2, 232, 2, 2, true, RGB(255, 0, 255));
+
 	_loading->loadFrameImage("dynamiteTrap_active", "tex/weapons/DynamiteTrap_active.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("dynamiteTrap_active_shadow", "tex/weapons/DynamiteTrap_active_shadow.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("dynamiteTrap_idle", "tex/weapons/DynamiteTrap_idle.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
@@ -273,6 +286,14 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_triBulletFire_right", "tex/fx/projectileFire2_right.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_triBulletFire_diagonal_left", "tex/fx/projectileFire2_diagonal_left.bmp", 464, 117, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_triBulletFire_diagonal_right", "tex/fx/projectileFire2_diagonal_right.bmp", 464, 117, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_left", "tex/fx/projectileFire_left.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_right", "tex/fx/projectileFire_right.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_diagonal_left", "tex/fx/projectileFire3_diagonal_left.bmp", 308, 76, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_diagonal_right", "tex/fx/projectileFire3_diagonal_right.bmp", 308, 76, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_triArrowFire_left", "tex/fx/projectileFire4_left.bmp", 488, 86, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_triArrowFire_right", "tex/fx/projectileFire4_right.bmp", 488, 86, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_triArrowFire_diagonal_left", "tex/fx/projectileFire4_diagonal_left.bmp", 420, 112, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_triArrowFire_diagonal_right", "tex/fx/projectileFire4_diagonal_right.bmp", 420, 112, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_front", "tex/fx/Attack_FullCharge_Front.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_fullCharge_back", "tex/fx/Attack_FullCharge_Back.bmp", 960, 53, 10, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_regen", "tex/fx/Status_Regen.bmp", 672, 22, 12, 1, true, RGB(255, 0, 255));
@@ -315,6 +336,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("fx_smoke5", "tex/fx/Smoke_05.bmp", 59, 55, true, RGB(255, 0, 255));
 
 	_loading->loadImage("bullet_blue", "tex/weapons/Bullet1.bmp", 16, 16, true, RGB(255, 0, 255));
+	_loading->loadImage("bullet_arrow", "tex/weapons/Bullet15.bmp", 56, 10, true, RGB(255, 0, 255));
 	_loading->loadImage("Clu_gun", "tex/weapons/clu_gun_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("Clu_bow", "tex/weapons/clu_bow_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
@@ -387,6 +409,10 @@ void loadingBlackScene::loadingSound()
 	_loading->loadSound("Bart_land2", "audio/char_bart_land_02.wav");
 	_loading->loadSound("Bart_land3", "audio/char_bart_land_03.wav");
 	_loading->loadSound("Bart_block", "audio/char_bart_block.wav");
+	_loading->loadSound("Mon_Sandworm_hurt1", "audio/en_sandworm_hurt_01.wav");
+	_loading->loadSound("Mon_Sandworm_hurt2", "audio/en_sandworm_hurt_02.wav");
+	_loading->loadSound("Mon_Sandworm_hurt3", "audio/en_sandworm_hurt_03.wav");
+	_loading->loadSound("Prop_Door_DNA_enter", "audio/prop_door_dna_enter.wav");
 }
 
 void loadingBlackScene::loadingEffect()

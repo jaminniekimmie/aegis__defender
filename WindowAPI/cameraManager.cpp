@@ -39,6 +39,62 @@ void cameraManager::CameraSwitch(float startX, float startY, float destX, float 
 	_switchStart = true;
 }
 
+void cameraManager::CameraBoomerang(float startX, float startY, float destX, float destY)
+{
+	_startX = _originX = startX;
+	_startY = _originY = startY;
+	_destX = destX;
+	_destY = destY;
+	_pauseCount = 0;
+	_boomerangStart = true;
+}
+
+void cameraManager::CameraBoomerangOngoing()
+{
+	if (_boomerangStart)
+	{
+		float distance = getDistance(_startX, _startY, _destX, _destY);
+		float angle = getAngle(_startX, _startY, _destX, _destY);
+		float speed = distance / 5;
+		
+		if (speed > 1)
+		{
+			_startX += cosf(angle) * speed;
+			_startY += -sinf(angle) * speed;
+		}
+		else
+		{
+			if (_startX == _originX)
+				_boomerangStart = false;
+
+			if (_pauseCount < 40)
+				_pauseCount++;
+			else
+			{
+				_destX = _originX;
+				_destY = _originY;
+			}	
+		}
+
+		RECT _rc = RectMakeCenter(_startX, _startY, WINSIZEX, WINSIZEY);
+		this->setCamera(_rc);
+
+		if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
+		{
+			_rcLetterBox[0].bottom += -sinf(-PI_2) * 5.0f;
+			_rcLetterBox[1].top += -sinf(PI_2) * 5.0f;
+		}
+	}
+	else
+	{
+		if (_rcLetterBox[0].bottom > 0 && _rcLetterBox[1].top < WINSIZEY)
+		{
+			_rcLetterBox[0].bottom += sinf(-PI_2) * 5.0f;
+			_rcLetterBox[1].top += sinf(PI_2) * 5.0f;
+		}
+	}
+}
+
 void cameraManager::CameraSwitchOngoing()
 {
 	if (_switchStart)
@@ -106,12 +162,18 @@ HRESULT cameraManager::init(void)
 {
 	_switchStart = false;
 	_shakeStart = false;
+	_boomerangStart = false;
 	_isFade = false;
+	_pauseCount = 0;
 	_shakeCount = 0;
 	_alpha = 0;
 
 	_button_switch_x = 671, _button_switch_y = WINSIZEY;
 	_button_switch_alpha = 0;
+
+	_rcLetterBox[0] = RectMake(0, 0, WINSIZEX, 0);
+	_rcLetterBox[1] = RectMake(0, WINSIZEY, WINSIZEX, 0);
+
 	return S_OK;
 }
 
@@ -121,13 +183,22 @@ void cameraManager::release(void)
 
 void cameraManager::update(void)
 {
-	CameraShakeOngoing();
-	CameraSwitchOngoing();
-	CameraAdjustment();
+	this->CameraShakeOngoing();
+	this->CameraSwitchOngoing();
+	this->CameraBoomerangOngoing();
+	this->CameraAdjustment();
 }
 
 void cameraManager::render(HDC hdc)
 {
+	SelectObject(hdc, GetStockObject(DC_BRUSH));
+	SetDCBrushColor(hdc, RGB(0, 0, 0));
+	SelectObject(hdc, GetStockObject(DC_PEN));
+	SetDCPenColor(hdc, RGB(0, 0, 0));
+	
+	Rectangle(hdc, _rcLetterBox[0]);
+	Rectangle(hdc, _rcLetterBox[1]);
+
 	if (_isFade)
 		IMAGEMANAGER->alphaRender("solid_black", hdc, _alpha);
 

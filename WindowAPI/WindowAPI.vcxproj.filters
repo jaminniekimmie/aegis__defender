@@ -209,6 +209,12 @@
     <ClInclude Include="pHpBar.h">
       <Filter>GameFramework2D\체력바</Filter>
     </ClInclude>
+    <ClInclude Include="loadingCharScene.h">
+      <Filter>MainGame\로딩화면</Filter>
+    </ClInclude>
+    <ClInclude Include="gameOverScene.h">
+      <Filter>MainGame\스테이지</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -330,6 +336,12 @@
     </ClCompile>
     <ClCompile Include="pHpBar.cpp">
       <Filter>GameFramework2D\체력바</Filter>
+    </ClCompile>
+    <ClCompile Include="loadingCharScene.cpp">
+      <Filter>MainGame\로딩화면</Filter>
+    </ClCompile>
+    <ClCompile Include="gameOverScene.cpp">
+      <Filter>MainGame\스테이지</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

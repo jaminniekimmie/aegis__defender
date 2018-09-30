@@ -35,7 +35,7 @@ void loadingOpenScene::update(void)
 		this->loadingEffect();
 		_alpha += 5;
 		if (_alpha >= 255)
-			SCENEMANAGER->loadScene("¸ÊÅø");
+			SCENEMANAGER->loadScene("Èæ·ÎµùÈ­¸é");
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -80,6 +80,9 @@ void loadingOpenScene::loadingImage()
 {
 	string str;
 
+	//°ÔÀÓ¿À¹ö¾À
+	_loading->loadFrameImage("scene_gameOver", "tex/background/gameOver_01.bmp", WINSIZEX * 2, WINSIZEY, 2, 1, true, RGB(255, 0, 255));
+
 	//Å¸ÀÏ¸Ê
 	_loading->loadFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
@@ -95,7 +98,6 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("solid_red", "tex/background/redSolid_01.bmp", WINSIZEX, WINSIZEY);
 	_loading->loadImage("solid_black", "tex/background/blackSolid_01.bmp", WINSIZEX, WINSIZEY);
 	_loading->loadImage("textBubble_amber", "tex/characters/amber_text_bubble_01.bmp", 680, 289, true, RGB(255, 0, 255));
-	_loading->loadImage("temp", "tex/UI/build_a_map_page_01_temp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	_loading->loadImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
 	_loading->loadImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
 	_loading->loadImage("object_grass0", "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
@@ -139,10 +141,13 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("heart_red", "tex/resource/Heart_red_01.bmp", 18, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("heart_yellow", "tex/resource/Heart_yellow_01.bmp", 18, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_yellowMineral_hit", "tex/resource/Resource_Multi1_hit.bmp", 78, 88, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral_shadow", "tex/resource/Resource_Multi1_shadow.bmp", 78, 88, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_blueFlowers", "tex/resource/Resource_Multi4.bmp", 80, 82, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_blueFlowers_hit", "tex/resource/Resource_Multi4_hit.bmp", 80, 82, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_blueFlowers_shadow", "tex/resource/Resource_Multi4_shadow.bmp", 80, 82, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
+	_loading->loadImage("resource_redFlower_hit", "tex/resource/Resource_BloomFlower5_hit.bmp", 60, 60, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < 9; i++)
 	{
@@ -163,10 +168,13 @@ void loadingOpenScene::loadingSound()
 	_loading->loadSound("UI_menu_close", "audio/ui_menu_close.wav");
 	_loading->loadSound("UI_menu_open", "audio/ui_menu_open.wav");
 	_loading->loadSound("UI_pause", "audio/ui_pause.wav");
-	_loading->loadSound("UI_explo_medium1", "audio/imp_explo_medium_01.wav");
-	_loading->loadSound("UI_explo_medium2", "audio/imp_explo_medium_02.wav");
-	_loading->loadSound("UI_explo_medium3", "audio/imp_explo_medium_03.wav");
-	_loading->loadSound("UI_explo_medium4", "audio/imp_explo_medium_04.wav");
+	_loading->loadSound("IMP_explo_medium1", "audio/imp_explo_medium_01.wav");
+	_loading->loadSound("IMP_explo_medium2", "audio/imp_explo_medium_02.wav");
+	_loading->loadSound("IMP_explo_medium3", "audio/imp_explo_medium_03.wav");
+	_loading->loadSound("IMP_explo_medium4", "audio/imp_explo_medium_04.wav");
+	_loading->loadSound("UI_button_highlight1", "audio/ui_button_highlight_01.wav");
+	_loading->loadSound("UI_button_highlight2", "audio/ui_button_highlight_02.wav");
+	_loading->loadSound("UI_button_main", "audio/ui_button_main.wav");
 }
 
 void loadingOpenScene::loadingEffect()

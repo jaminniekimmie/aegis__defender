@@ -264,7 +264,7 @@ void bloomFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_redFlower");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
-	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_redFlower");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_redFlower_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
 	_speed = 8.0f;
 	_angle = 0.0f;
@@ -290,7 +290,7 @@ void bloomFlower::idle()
 void bloomFlower::move()
 {
 	if (_oldY == _y)
-		_y -= 5;
+		_y -= 10;
 	else
 	{
 		_y = _oldY;
@@ -302,7 +302,7 @@ void mineral::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
-	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_yellowMineral_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
@@ -328,7 +328,7 @@ void mineral ::idle()
 void mineral::move()
 {
 	if (_oldY == _y)
-		_y -= 5;
+		_y -= 10;
 	else
 	{
 		_y = _oldY;
@@ -340,7 +340,7 @@ void blueFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
-	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_blueFlowers_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
 	_speed = 8.0f;
 	_angle = 0.0f;
@@ -359,10 +359,19 @@ void blueFlower::init()
 
 void blueFlower::idle()
 {
+	_oldX = _x;
+	_oldY = _y;
 }
 
 void blueFlower::move()
 {
+	if (_oldY == _y)
+		_y -= 10;
+	else
+	{
+		_y = _oldY;
+		_state = OBJECT_IDLE;
+	}
 }
 
 void spawner::init()
@@ -507,6 +516,8 @@ void door_elevator::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_elevator");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("door_elevator");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("door_elevator");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("door_elevator");
 	_speed = 8.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -534,6 +545,7 @@ void door_elevator::move()
 	if (_index >= _image[_state].img->getMaxFrameX())
 	{
 		_index = _image[_state].img->getMaxFrameX();
+		_image[_state].img->setFrameX(_index);
 		_state = OBJECT_IDLE;
 	}
 }

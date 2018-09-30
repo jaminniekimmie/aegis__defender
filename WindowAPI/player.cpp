@@ -94,6 +94,18 @@ HRESULT player::init(PLAYERCHARACTER character)
 		_weapon[GUN][JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_fall");
 		_weapon[GUN][JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Clu_gun_jumpFire_rise");
 
+		_weapon[BOW][AIM_DIAGONAL].img = IMAGEMANAGER->findImage("Clu_bow_aim_diagonal");
+		_weapon[BOW][AIM_DIAGONAL_FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_bow_aim_diagonal_fullCharge");
+		_weapon[BOW][AIM_DIAGONAL_FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_bow_aim_diagonal_fullCharge_idle");
+		_weapon[BOW][AIM_DIAGONALFIRE].img = IMAGEMANAGER->findImage("Clu_bow_aim_diagonalFire");
+		_weapon[BOW][AIM_FIRE].img = IMAGEMANAGER->findImage("Clu_bow_aim_fire");
+		_weapon[BOW][AIM_IDLE].img = IMAGEMANAGER->findImage("Clu_bow_aim_idle");
+		_weapon[BOW][CHARGE].img = IMAGEMANAGER->findImage("Clu_bow_charge");
+		_weapon[BOW][FULLCHARGE].img = IMAGEMANAGER->findImage("Clu_bow_fullCharge");
+		_weapon[BOW][FULLCHARGE_IDLE].img = IMAGEMANAGER->findImage("Clu_bow_fullCharge_idle");
+		_weapon[BOW][JUMPFIRE_FALL].img = IMAGEMANAGER->findImage("Clu_bow_jumpFire_fall");
+		_weapon[BOW][JUMPFIRE_RISE].img = IMAGEMANAGER->findImage("Clu_bow_jumpFire_rise");
+
 		_weaponIcon[GUN].img = IMAGEMANAGER->findImage("Clu_gun");
 		_weaponIcon[BOW].img = IMAGEMANAGER->findImage("Clu_bow");
 	}
@@ -191,7 +203,6 @@ HRESULT player::init(PLAYERCHARACTER character)
 	_hpBar_yellow = new pHpBar;
 	_hpBar_yellow->init("GUI_heart_yellow", "GUI_heart_shadow", 22, 64);
 
-
 	//피통 초기화
 	_maxHp = _currentHp = 6;
 	_currentMp = 4;
@@ -200,6 +211,7 @@ HRESULT player::init(PLAYERCHARACTER character)
 	_state = IDLE;
 	_currentWeapon = GUN;
 	_isLeft = RIGHT;
+	_weaponSwitch = false;
 
 	_x = WINSIZEX / 2;
 	_y = TILESIZEY - WINSIZEY;
@@ -210,7 +222,7 @@ HRESULT player::init(PLAYERCHARACTER character)
 	_angle = -PI_2;
 	_speed = 16.0f;
 
-	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _weaponSwitch = _isLedgeGrab = false;
+	_isFall = _isJump = _isBackstep = _isFaceDown = _isFired = _currentWeapon = _isLedgeGrab = false;
 	_onLand = true;
 	_isActive = true;
 
@@ -218,6 +230,14 @@ HRESULT player::init(PLAYERCHARACTER character)
 	//_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4, 10, 10);
+
+	if (_character == BART)
+	{
+		if (_isLeft)
+			_rcHammer = RectMake(_x - _player[_state].img->getFrameWidth() * 0.5f, _y - _player[_state].img->getFrameHeight() * 0.5f, _player[_state].img->getFrameWidth(), _player[_state].img->getFrameHeight());
+		else
+			_rcHammer = RectMake(_x, _y - _player[_state].img->getFrameHeight() * 0.5f, _player[_state].img->getFrameWidth(), _player[_state].img->getFrameHeight());
+	}
 
 	return S_OK;
 }
@@ -237,6 +257,16 @@ void player::update(void)
 	//_rc = RectMakeCenter(_x, _y, _player[_state].img->getFrameWidth() / 3, _player[_state].img->getFrameHeight());
 	_rcLedge[0] = RectMake(_rc.left - 10, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
 	_rcLedge[1] = RectMake(_rc.right, _rc.top + _player[_state].img->getFrameHeight() / 4 , 10, 10);
+
+	if (_character == BART && _isActive && (_state == AIM_FIRE || _state == JUMPFIRE_RISE || _state == AIM_DIAGONALFIRE))
+	{
+		if (_isLeft)
+			_rcHammer = RectMake(_x - _player[_state].img->getFrameWidth() * 0.5f, _y - _player[_state].img->getFrameHeight() * 0.5f, _player[_state].img->getFrameWidth() * 0.33f, _player[_state].img->getFrameHeight());
+		else
+			_rcHammer = RectMake(_x + _player[_state].img->getFrameWidth() / 6, _y - _player[_state].img->getFrameHeight() * 0.5f, _player[_state].img->getFrameWidth() * 0.33f, _player[_state].img->getFrameHeight());
+	}
+	else
+		_rcHammer = RectMake(_x, _y, 0, 0);
 
 	_hpBar_red->setGauge(_currentHp, _maxHp);
 	_hpBar_yellow->setGauge(_currentMp, _maxHp);
@@ -265,7 +295,7 @@ void player::update(void)
 		_isFired = false;
 
 	this->frameChangeLoop();
-	this->weaponSwitch(_weaponSwitch);
+	this->weaponSwitch();
 	this->collisionProcess();
 }
 
@@ -294,15 +324,14 @@ void player::render(void)
 		_player[_state].shadow->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _index, _isLeft, _player[_state].alpha * 0.3f);
 		_player[_state].img->alphaFrameRender(getMemDC(), _x - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _index, _isLeft, _player[_state].alpha);
 
-		if (_character == CLU && _weaponIcon[_weaponSwitch].isActive)
-			_weaponIcon[_weaponSwitch].img->alphaRender(getMemDC(), _x + 30 - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - 8 - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _weaponIcon[_weaponSwitch].alpha);
+		if (_character == CLU && _weaponSwitch)
+			_weaponIcon[_currentWeapon].img->alphaRender(getMemDC(), _x + 30 - _player[_state].img->getFrameWidth() / 2 - CAMERAMANAGER->getCamera().left, _y - 8 - _player[_state].img->getFrameHeight() / 2 - CAMERAMANAGER->getCamera().top, _weaponIcon[_currentWeapon].alpha);
 	}
 
 	if (KEYMANAGER->isToggleKey('R'))
 	{
 		Rectangle(getMemDC(), _rc.left - CAMERAMANAGER->getCamera().left, _rc.top - CAMERAMANAGER->getCamera().top, _rc.right - CAMERAMANAGER->getCamera().left, _rc.bottom - CAMERAMANAGER->getCamera().top);
-		//Rectangle(getMemDC(), _rcLedge[0].left - CAMERAMANAGER->getCamera().left, _rcLedge[0].top - CAMERAMANAGER->getCamera().top, _rcLedge[0].right - CAMERAMANAGER->getCamera().left, _rcLedge[0].bottom - CAMERAMANAGER->getCamera().top);
-		//Rectangle(getMemDC(), _rcLedge[1].left - CAMERAMANAGER->getCamera().left, _rcLedge[1].top - CAMERAMANAGER->getCamera().top, _rcLedge[1].right - CAMERAMANAGER->getCamera().left, _rcLedge[1].bottom - CAMERAMANAGER->getCamera().top);
+		Rectangle(getMemDC(), _rcHammer.left - CAMERAMANAGER->getCamera().left, _rcHammer.top - CAMERAMANAGER->getCamera().top, _rcHammer.right - CAMERAMANAGER->getCamera().left, _rcHammer.bottom - CAMERAMANAGER->getCamera().top);
 	}
 }
 
@@ -374,37 +403,26 @@ void player::frameChangeOnce()
 {
 }
 
-void player::weaponSwitch(bool weaponSwitch)
+void player::weaponSwitch()
 {
-	if (weaponSwitch)
+	if (_weaponSwitch)
 	{
-		if (_weaponIcon[weaponSwitch].isActive)
+		if (_weaponCount < 50)
 		{
-			if (_weaponCount < 50)
-			{
-				if (_weaponIcon[weaponSwitch].alpha < 255)
-					_weaponIcon[weaponSwitch].alpha += 15;
-				else
-					_weaponCount++;
-			}
+			if (_weaponIcon[_currentWeapon].alpha < 255)
+				_weaponIcon[_currentWeapon].alpha += 15;
 			else
-			{
-				if (_weaponIcon[weaponSwitch].alpha > 0)
-					_weaponIcon[weaponSwitch].alpha -= 15;
-				else
-					_weaponIcon[weaponSwitch].isActive = false;
-			}
-			
+				_weaponCount++;
 		}
 		else
 		{
-			_weaponIcon[weaponSwitch].alpha = 0;
-			_weaponCount = 0;
+			if (_weaponIcon[_currentWeapon].alpha > 0)
+				_weaponIcon[_currentWeapon].alpha -= 15;
 		}
+
 	}
 	else
 	{
-		_weaponIcon[weaponSwitch].isActive = false;
 		_weaponCount = 0;
 	}
 }
@@ -433,14 +451,12 @@ void player::collisionProcess()
 		_angle = -PI_2;
 		_gravity = 0.0f;
 	}
-	//if (_onLand)
+
+	if (COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, LEFT) ||
+		COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, RIGHT))
 	{
-		if (COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, LEFT) ||
-			COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, RIGHT))
-		{
-			if (!_isJump)
-				_state = PUSH;
-		}
+		if (!_isJump)
+			_state = PUSH;
 	}
 
 	if (COLLISIONMANAGER->pixelCollision(_rc, _x, _y, _speed, _gravity, BOTTOM) == BLUE)

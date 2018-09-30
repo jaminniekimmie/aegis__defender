@@ -4,12 +4,16 @@ class cameraManager : public singletonBase<cameraManager>
 {
 	RECT _rcCamera;
 	RECT _rcTemp;
+	RECT _rcLetterBox[2];
 	float _button_switch_x, _button_switch_y;
 	int _maxWidth, _maxHeight;
 	int _shakeCount;
+	int _pauseCount;
 	bool _shakeStart;
 	bool _switchStart;
+	bool _boomerangStart;
 	bool _isFade;
+	float _originX, _originY;
 	float _startX, _startY;
 	float _destX, _destY;
 	BYTE _button_switch_alpha;
@@ -30,6 +34,8 @@ public:
 	void CameraShakeOngoing();
 	void CameraShake();
 	void CameraSwitch(float startX, float startY, float destX, float destY, bool isFade = false);
+	void CameraBoomerang(float startX, float startY, float destX, float destY);
+	void CameraBoomerangOngoing();
 	void CameraSwitchOngoing();
 	void CameraAdjustment();
 

@@ -81,6 +81,7 @@ public:
 	void playerAttack();
 	void playerBuild();
 	void playerFollow();
+	void playerFaint();
 
 	void addBlueFlower();
 	void addMineral();

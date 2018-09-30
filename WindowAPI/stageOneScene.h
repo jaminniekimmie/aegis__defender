@@ -10,12 +10,14 @@ class stageOneScene : public gameNode
 private:
 	playerManager* _playerManager;
 	tagTile _tiles[TILEX * TILEY];
+	RECT _rcLetterBox[2];
 	image * _pixelTiles;
 	image * _pixelMap;
 	RECT _rcCamera;
 	BYTE _alpha;
 	bool _camDebug;
 	bool _sceneSwitch;
+	int _switchCount;
 
 public:
 	HRESULT init(void);

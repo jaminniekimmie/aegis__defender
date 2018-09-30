@@ -177,18 +177,6 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_doorElevatorPos[0].x = 4505, _doorElevatorPos[0].y = 1093;
-
-		for (int i = 0; i < 1; i++)
-		{
-			type = DOOR_ELEVATOR;
-
-			objects* object = _factory->createObject(type);
-			object->setPosition(_doorElevatorPos[i].x, _doorElevatorPos[i].y);
-
-			_vObject.push_back(object);
-		}
-
 		_bushSpikesPos[0].x = 3630, _bushSpikesPos[0].y = 454;
 
 		for (int i = 0; i < 1; i++)
@@ -255,6 +243,18 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
+		_doorElevatorPos[0].x = 4505, _doorElevatorPos[0].y = 1093;
+
+		for (int i = 0; i < 1; i++)
+		{
+			type = DOOR_ELEVATOR;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_doorElevatorPos[i].x, _doorElevatorPos[i].y);
+
+			_vObject.push_back(object);
+		}
+
 		_isGameClear = false;
 	}
 
@@ -274,7 +274,7 @@ void objectManager::update()
 	RECT rcTemp;
 	RECT rcPlayer = _playerManager->getPlayer()->getRect();
 	int activatorCount = 0;
-	float angle, speed, smlRand;
+	float angle, speed, smlRand, centerX, centerY;
 
 	for (int i = 0; i < _vObject.size(); i++)
 	{
@@ -353,26 +353,44 @@ void objectManager::update()
 			OBJECTSTATE state = _vObject[i]->getState();
 			this->collisionBullet(i, OBJECT_MOVE);
 			if (state != _vObject[i]->getState() && _vObject[i]->getState() == OBJECT_MOVE)
-				CAMERAMANAGER->CameraSwitch(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vObject[i]->getX(), _vObject[i]->getY());
+				CAMERAMANAGER->CameraBoomerang(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vObject[i]->getX(), _vObject[i]->getY());
 
 			if (_vObject[i]->getIndex() == _vObject[i]->getImage()->getMaxFrameX())
 				activatorCount++;
 		}
-		else if (DOOR_DNA_YELLOW_LEFT <= _vObject[i]->getState() && DOOR_DNA_YELLOW_RIGHT == _vObject[i]->getState())
+		else if (DOOR_DNA_YELLOW_LEFT == _vObject[i]->getType() || DOOR_DNA_YELLOW_RIGHT == _vObject[i]->getType())
 		{
-			this->collisionDoor(i, CLU);
+			this->collisionDoorDNA(i, CLU); 
+
+			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getRect(), &_vObject[i]->getActionRect()))
+			{
+				SOUNDMANAGER->play("Prop_Door_DNA_enter");
+				break;
+			}
 		}
-		else if (DOOR_DNA_BLUE_LEFT == _vObject[i]->getState() && DOOR_DNA_BLUE_RIGHT >= _vObject[i]->getState())
+		else if (DOOR_DNA_BLUE_LEFT == _vObject[i]->getType() || DOOR_DNA_BLUE_RIGHT == _vObject[i]->getType())
 		{
-			this->collisionDoor(i, BART);
+			this->collisionDoorDNA(i, BART);
+
+			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(CLU)->getRect(), &_vObject[i]->getActionRect()))
+			{
+				SOUNDMANAGER->play("Prop_Door_DNA_enter");
+				break;
+			}
 		}
 		else if (DOOR_ELEVATOR == _vObject[i]->getType())
 		{
-			this->collisionBullet(i, _vObject[i]->getState());
-			this->collisionDoor(i, _playerManager->getCharacter());
+			centerX = _vObject[i]->getX() + _vObject[i]->getImage()->getFrameWidth() * 0.5f;
+			centerY = _vObject[i]->getY() + _vObject[i]->getImage()->getFrameHeight() * 0.5f;
 
-			if (activatorCount >= 2)
+			this->collisionBullet(i, _vObject[i]->getState());
+			this->collisionDoorElevator(i, _playerManager->getCharacter());
+
+			if (activatorCount >= 2 && _vObject[i]->getIndex() != _vObject[i]->getImage()->getMaxFrameX())
+			{
+				CAMERAMANAGER->CameraBoomerang(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), centerX, centerY);
 				_vObject[i]->setState(OBJECT_MOVE);
+			}
 		}
 
 		_vObject[i]->update();
@@ -386,14 +404,14 @@ void objectManager::render(HDC hdc)
 	//getMemDC() 를 못쓰니까 hdc 쓰면 된다.
 	for (int i = 0; i < _vObject.size(); i++)
 	{
-		if (!_vObject[i]->getIsActive()) continue;
+		if (OBJECT_VANISH == _vObject[i]->getState()) continue;
 		_vObject[i]->render(hdc);
 	}
 
 	IMAGEMANAGER->alphaRender("solid_red", hdc, _alpha);
 
 	//char str[32];
-	//sprintf(str, "%d", tempCt);
+	//sprintf(str, "%d", count);
 	//TextOut(hdc, 200, 200, str, strlen(str));
 }
 
@@ -444,7 +462,7 @@ void objectManager::collisionBullet(int index, OBJECTSTATE setState)
 	}
 }
 
-void objectManager::collisionDoor(int index, PLAYERCHARACTER character)
+void objectManager::collisionDoorDNA(int index, PLAYERCHARACTER character)
 {
 	RECT rcTemp;
 	RECT rcPlayer = _playerManager->getPlayer(character)->getRect();
@@ -453,12 +471,11 @@ void objectManager::collisionDoor(int index, PLAYERCHARACTER character)
 		if (rcPlayer.left <= _vObject[index]->getActionRect().right &&
 			rcPlayer.right > _vObject[index]->getActionRect().right &&
 			rcPlayer.left > _vObject[index]->getActionRect().left &&
-			rcPlayer.right < _vObject[index]->getActionRect().right &&
 			rcPlayer.top <= _vObject[index]->getActionRect().bottom &&
-			rcPlayer.bottom >= _vObject[index]->getActionRect().top && 
+			rcPlayer.bottom >= _vObject[index]->getActionRect().top &&
 			_playerManager->getPlayer(character)->getIsLeft())
 		{
-			_playerManager->getPlayer(character)->setX(_vObject[index]->getActionRect().right + (rcPlayer.right - rcPlayer.left) * 0.5f - 1);
+			_playerManager->getPlayer(character)->setX(_playerManager->getPlayer(character)->getX() + (rcTemp.right - rcTemp.left));
 			if (!_playerManager->getPlayer(character)->getIsJump())
 				_playerManager->getPlayer(character)->setState(PUSH);
 		}
@@ -468,10 +485,19 @@ void objectManager::collisionDoor(int index, PLAYERCHARACTER character)
 			rcPlayer.bottom >= _vObject[index]->getActionRect().top &&
 			!_playerManager->getPlayer(character)->getIsLeft())
 		{
-			_playerManager->getPlayer(character)->setX(_vObject[index]->getActionRect().left - (rcPlayer.right - rcPlayer.left) * 0.5f + 1);
+			_playerManager->getPlayer(character)->setX(_playerManager->getPlayer(character)->getX() - (rcTemp.right - rcTemp.left));
 			if (!_playerManager->getPlayer(character)->getIsJump())
 				_playerManager->getPlayer(character)->setState(PUSH);
 		}
+	}
+}
+
+void objectManager::collisionDoorElevator (int index, PLAYERCHARACTER character)
+{
+	RECT rcTemp;
+	RECT rcPlayer = _playerManager->getPlayer(character)->getRect();
+	if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[index]->getActionRect()))
+	{
 		if (rcPlayer.left <= _vObject[index]->getActionRect().right &&
 			rcPlayer.right >= _vObject[index]->getActionRect().left &&
 			rcPlayer.bottom >= _vObject[index]->getActionRect().top &&

@@ -77,11 +77,12 @@ void playerManager::update(void)
 	_player[_character]->update();
 	_player[!_character]->update();
 	
-	//this->collisionProcess();
+	this->collisionProcess();
 	this->blockCollision();
 	this->playerFaceDown();
 	this->playerHit();
 	this->playerLedgeGrab();
+	this->playerFaint();
 	this->fromStateToIdle();
 	this->fromIdleToState();
 	this->playerFollow();
@@ -92,6 +93,9 @@ void playerManager::render(void)
 {
 	_bullet->render();
 	_triBullet->render(); 
+
+	_block[CLU]->render();
+	_block[BART]->render();
 
 	_player[!_character]->render();
 	_player[_character]->render();
@@ -105,10 +109,10 @@ void playerManager::render(void)
 			IMAGEMANAGER->alphaRender("bomb_text", getMemDC(), _player[_character]->getX() - 153 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
 		else
 			IMAGEMANAGER->alphaRender("defenseBlock_text", getMemDC(), _player[_character]->getX() - 262 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+
+		_block[_character]->render();
 	}
 
-	for (int i = 0; i < 2; i++)
-		_block[i]->render();
 
 	//Ã¼·Â¹Ù ·»´õ
 	_player[_character]->getHpBarRed()->render(getMemDC());
@@ -328,8 +332,8 @@ void playerManager::keyInput()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_TAB) || KEYMANAGER->isOnceKeyDown(VK_SHIFT))
 	{
-		_player[_character]->setWeaponSwitch(!_player[_character]->getWeaponSwitch());
-		_player[_character]->setWeaponIsActive(_player[_character]->getWeaponSwitch(), true);
+		_player[_character]->setCurrentWeapon(!_player[_character]->getCurrentWeapon());
+		_player[_character]->setWeaponSwitch(true);
 	}
 	if (KEYMANAGER->isOnceKeyDown('I') || KEYMANAGER->isOnceKeyDown('O'))
 	{
@@ -1386,7 +1390,11 @@ void playerManager::playerFollow()
 	
 	if (_isFollowing)
 	{
-		_player[!_character]->setState(_saveProperties[_saveCount].state);
+		if (_saveProperties[_saveCount].state == FAINT || _saveProperties[_saveCount].state == FAINT_IDLE)
+			_player[!_character]->setState(IDLE);
+		else
+			_player[!_character]->setState(_saveProperties[_saveCount].state);
+
 		_player[!_character]->setX(_saveProperties[_saveCount].x);
 		_player[!_character]->setY(_saveProperties[_saveCount].y);
 		_player[!_character]->setIndex(_saveProperties[_saveCount].index);
@@ -1396,6 +1404,45 @@ void playerManager::playerFollow()
 		_saveCount++;
 		if (_saveCount >= 30)
 			_saveCount = 0;
+	}
+}
+
+void playerManager::playerFaint()
+{
+	if (_player[_character]->getCurrentHp() <= 0)
+	{
+		if (_player[_character]->getState() != FAINT && _player[_character]->getState() != FAINT_IDLE)
+		{
+			_player[_character]->setIsActive(true);
+			_player[_character]->setState(FAINT);
+			_player[_character]->setCount(0);
+
+			if (_player[_character]->getIsLeft())
+				_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
+			else
+				_player[_character]->setIndex(0);
+		}
+		else if (_player[_character]->getState() == FAINT)
+		{
+			if (_player[_character]->getIsLeft())
+			{
+				if (_player[_character]->getIndex() <= 0)
+				{
+					_player[_character]->setState(FAINT_IDLE);
+					_player[_character]->setCount(0);
+					_player[_character]->setIndex(_player[_character]->getPlayerImage()->getMaxFrameX());
+				}
+			}
+			else
+			{
+				if (_player[_character]->getIndex() >= _player[_character]->getPlayerImage()->getMaxFrameX())
+				{
+					_player[_character]->setState(FAINT_IDLE);
+					_player[_character]->setCount(0);
+					_player[_character]->setIndex(0);
+				}
+			}
+		}
 	}
 }
 

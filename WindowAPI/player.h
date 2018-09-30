@@ -11,10 +11,10 @@ class player : public gameNode
 private:
 	PLAYERCHARACTER _character;
 	PLAYERSTATE _state;
-	PLAYERWEAPON _currentWeapon;
 	DIRECTION _direction;
 	RECT _rc;
 	RECT _rcLedge[2];
+	RECT _rcHammer;
 	tagImage _player[MAXPLAYERSTATE];
 	tagImage _weapon[2][MAXPLAYERSTATE];
 	tagImage _weaponIcon[2];
@@ -37,6 +37,7 @@ private:
 	bool _isLedgeGrab;
 	bool _isFired;
 	bool _isActive;
+	bool _currentWeapon;
 	bool _weaponSwitch;
 
 	pHpBar * _hpBar_red;		//Ã¼·Â¹Ù
@@ -55,7 +56,7 @@ public:
 	void addMp();
 	void frameChangeLoop();
 	void frameChangeOnce();
-	void weaponSwitch(bool weaponSwitch);
+	void weaponSwitch();
 	void collisionProcess();
 
 	pHpBar * getHpBarRed() { return _hpBar_red; }
@@ -63,10 +64,10 @@ public:
 	PLAYERSTATE getState() { return _state; }
 	RECT getRect() { return _rc; }
 	RECT getLedgeRc(int num) { return _rcLedge[num]; }
+	RECT getHammerRc() { return _rcHammer; }
 	DIRECTION getDirection() { return _direction; }
 	image* getPlayerImage(PLAYERSTATE state) { return _player[state].img; }
 	image* getPlayerImage() { return _player[_state].img; }
-	BYTE getWeaponIsActive(bool weaponSwitch) { return _weaponIcon[weaponSwitch].isActive; }
 	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
 	int getCount() { return _count; }
@@ -78,6 +79,7 @@ public:
 	float getSpeed() { return _speed; }
 	float getAngle() { return _angle; }
 	float getAlpha() { return _player[_state].alpha; }
+	float getCurrentHp() { return _currentHp; }
 	bool getIsLeft() { return _isLeft; }
 	bool getIsJump() { return _isJump; }
 	bool getIsFall() { return _isFall; }
@@ -88,12 +90,11 @@ public:
 	bool getIsLedgeGrab() { return _isLedgeGrab; }
 	bool getIsFired() { return _isFired; }
 	bool getIsActive() { return _isActive; }
-	bool getWeaponSwitch() { return _weaponSwitch; }
+	bool getCurrentWeapon() { return _currentWeapon; }
 
 	void setState(PLAYERSTATE playerState) { _state = playerState; }
 	void setRect(RECT rc) { _rc = rc; }
 	void setDirection(DIRECTION direction) { _direction = direction; }
-	void setWeaponIsActive(bool weaponSwitch, bool isActive) { _weaponIcon[weaponSwitch].isActive = isActive; }
 	void setFrameSpeed(int animationSpeed) { _frameSpeed = animationSpeed; }
 	void setIndex(int index) { _index = index; }
 	void setCount(int count) { _count = count; }
@@ -115,6 +116,7 @@ public:
 	void setIsLedgeGrab(bool isLedgeGrab) { _isLedgeGrab = isLedgeGrab; }
 	void setIsFired(bool isFired) { _isFired = isFired; }
 	void setIsActive(bool isActive) { _isActive = isActive; }
+	void setCurrentWeapon(bool currentWeapon) { _currentWeapon = currentWeapon; }
 	void setWeaponSwitch(bool weaponSwitch) { _weaponSwitch = weaponSwitch; }
 
 	player() {}
