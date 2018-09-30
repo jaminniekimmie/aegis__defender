@@ -16,6 +16,12 @@ HRESULT playerManager::init(void)
 	_triBullet = new triBullet;
 	_triBullet->init("bullet_blue", 3, 500);
 
+	_arrow = new arrow;
+	_arrow->init("bullet_arrow", 10, WINSIZEX);
+
+	_triArrow = new triArrow;
+	_triArrow->init("bullet_arrow", 30, WINSIZEX);
+
 	_block[CLU] = new block;
 	_block[CLU]->init("dynamiteTrap_idle", "dynamiteTrap_idle_shadow", 40, true);
 
@@ -60,12 +66,18 @@ void playerManager::release(void)
 	SAFE_DELETE(_bullet);
 	_triBullet->release();
 	SAFE_DELETE(_triBullet);
+	_arrow->release();
+	SAFE_DELETE(_arrow);
+	_triArrow->release();
+	SAFE_DELETE(_triArrow);
 }
 
 void playerManager::update(void)
 {
 	_bullet->update();
 	_triBullet->update();
+	_arrow->update();
+	_triArrow->update();
 
 	for (int i = 0; i < 2; i++)
 		_block[i]->update();
@@ -92,7 +104,9 @@ void playerManager::update(void)
 void playerManager::render(void)
 {
 	_bullet->render();
-	_triBullet->render(); 
+	_triBullet->render();
+	_arrow->render();
+	_triArrow->render();
 
 	_block[CLU]->render();
 	_block[BART]->render();
@@ -1251,7 +1265,12 @@ void playerManager::bulletFire()
 	speed = 20.0f;
 
 	_player[_character]->setIsFired(true);
-	SOUNDMANAGER->play("Wep_Clu_rifle" + to_string(RND->getFromIntTo(1, 4)));
+
+	if (_player[_character]->getCurrentWeapon())
+		SOUNDMANAGER->play("Wep_Clu_rifle" + to_string(RND->getFromIntTo(1, 4)));
+	else
+		SOUNDMANAGER->play("Wep_Clu_bow_fire" + to_string(RND->getFromIntTo(1, 4)));
+
 	if (_isStayKey_up && _player[_character]->getState() != RUN)	//대각선
 	{
 		angle = _player[_character]->getIsLeft() ? PI_4 * 3 : PI_4;
@@ -1271,9 +1290,19 @@ void playerManager::bulletFire()
 			if (!_player[_character]->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
-			pos = _player[_character]->getIsLeft() ? - 0.7 : 0.7;
-			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 70);
+			pos = _player[_character]->getIsLeft() ? -0.7 : 0.7;
+
+			if (_player[_character]->getCurrentWeapon())
+			{
+				_triArrow->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("triArrowFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 65);
+			}
+			else
+			{
+				_triBullet->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 70);
+			}
+
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_player[_character]->getState() != AIM_DIAGONALFIRE)
@@ -1290,9 +1319,18 @@ void playerManager::bulletFire()
 			if (!_player[_character]->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
-			pos = _player[_character]->getIsLeft() ? - 0.5f : 0.5f;
-			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 50);
+			pos = _player[_character]->getIsLeft() ? -0.5f : 0.5f;
+
+			if (_player[_character]->getCurrentWeapon())
+			{
+				_arrow->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("arrowFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 45);
+			}
+			else
+			{
+				_bullet->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft() + 2), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() - 50);
+			}
 		}
 	}
 	else	//노대각선
@@ -1314,9 +1352,18 @@ void playerManager::bulletFire()
 			if (!_player[_character]->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
-			pos = _player[_character]->getIsLeft() ? - 0.7f : 0.7f;
-			_triBullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
+			pos = _player[_character]->getIsLeft() ? -0.7f : 0.7f;
+
+			if (_player[_character]->getCurrentWeapon())
+			{
+				_triArrow->fire(x, y + 5, angle, speed);
+				EFFECTMANAGER->play("triArrowFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y + 5);
+			}
+			else
+			{
+				_triBullet->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("triBulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
+			}
 			CAMERAMANAGER->CameraShake();
 		}
 		else if (_player[_character]->getState() != AIM_FIRE)
@@ -1332,9 +1379,18 @@ void playerManager::bulletFire()
 			if (!_player[_character]->getIsJump())
 				EFFECTMANAGER->play("runDust" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, _player[_character]->getY() + _player[_character]->getPlayerImage()->getFrameHeight() * 0.35);
 
-			pos = _player[_character]->getIsLeft() ? - 0.7f : 0.7f;
-			_bullet->fire(x, y, angle, speed);
-			EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
+			pos = _player[_character]->getIsLeft() ? -0.7f : 0.7f;
+
+			if (_player[_character]->getCurrentWeapon())
+			{
+				_arrow->fire(x, y + 5, angle, speed);
+				EFFECTMANAGER->play("arrowFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y + 5);
+			}
+			else
+			{
+				_bullet->fire(x, y, angle, speed);
+				EFFECTMANAGER->play("bulletFire" + to_string(_player[_character]->getIsLeft()), _player[_character]->getX() + _player[_character]->getPlayerImage()->getFrameWidth() * pos, y);
+			}
 		}
 	}
 }

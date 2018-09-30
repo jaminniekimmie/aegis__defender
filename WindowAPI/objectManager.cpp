@@ -115,8 +115,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		 _doorDNAyellowLeftPos[0].x = 755, _doorDNAyellowLeftPos[0].y = 1200;
-		 //_doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
+		 _doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
 
 		for (int i = 0; i < 1; i++)
 		{

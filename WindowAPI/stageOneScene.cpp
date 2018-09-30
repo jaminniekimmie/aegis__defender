@@ -181,6 +181,13 @@ void stageOneScene::render(void)
 	OBJECTMANAGER->render(getMemDC());
 	_playerManager->render();
 
+	for (int i = 0; i < OBJECTMANAGER->getVObject().size(); i++)
+	{
+		if (DOOR_DNA_YELLOW_LEFT > OBJECTMANAGER->getVObject()[i]->getType() ||
+			DOOR_DNA_BLUE_RIGHT < OBJECTMANAGER->getVObject()[i]->getType()) continue;
+		OBJECTMANAGER->getVObject()[i]->render(getMemDC());
+	}
+
 	RENDERMANAGER->foregroundRender(getMemDC());
 
 	CAMERAMANAGER->render(getMemDC());

@@ -23,6 +23,8 @@ private:
 	player * _player[2];
 	bullet * _bullet;
 	triBullet * _triBullet;
+	arrow * _arrow;
+	triArrow * _triArrow;
 	block * _block[2];
 	tagSave _saveProperties[30];
 	tagImage _icon[2];
@@ -54,6 +56,8 @@ public:
 	PLAYERCHARACTER getCharacter() { return _character; }
 	bullet * getBullet() { return _bullet; }
 	triBullet * getTriBullet() { return _triBullet; }
+	arrow * getArrow() { return _arrow; }
+	triArrow * getTriArrow() { return _triArrow; }
 	block * getBlock(PLAYERCHARACTER character) { return _block[character]; }
 
 	void GUIinit();

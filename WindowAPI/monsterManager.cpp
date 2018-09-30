@@ -174,6 +174,37 @@ void monsterManager::update()
 				break;
 			}
 		}
+
+		for (int j = 0; j < _playerManager->getArrow()->getVArrow().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getArrow()->getVArrow()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("arrowPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getArrow()->getVArrow()[j].rc.left, _playerManager->getArrow()->getVArrow()[j].rc.top);
+				_playerManager->getArrow()->removeArrow(j);
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt();
+
+				break;
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getTriArrow()->getVArrow().size(); j++)
+		{
+			if (!_playerManager->getTriArrow()->getVArrow()[j].fire) continue;
+
+			if (IntersectRect(&rcTemp, &_playerManager->getTriArrow()->getVArrow()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("arrowPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriArrow()->getVArrow()[j].rc.left, _playerManager->getTriArrow()->getVArrow()[j].rc.top);
+				_playerManager->getTriArrow()->getVArrow()[j].fire = false;
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt();
+
+				break;
+			}
+		}
+
 		_vMonster[i]->update();
 	}
 

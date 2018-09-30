@@ -301,19 +301,6 @@ void player::update(void)
 
 void player::render(void)
 {
-	if (_state != AIM_FIRE &&
-		_state != AIM_IDLE &&
-		_state != CHARGE &&
-		_state != FULLCHARGE &&
-		_state != FULLCHARGE_IDLE &&
-		_state != JUMPFIRE_FALL &&
-		_state != JUMPFIRE_RISE &&
-		_state != AIM_DIAGONAL &&
-		_state != AIM_DIAGONAL_FULLCHARGE &&
-		_state != AIM_DIAGONAL_FULLCHARGE_IDLE &&
-		_state != AIM_DIAGONALFIRE)
-		_isFired = false;
-
 	this->frameChangeLoop();
 
 	if (CAMERAMANAGER->CameraIn(_rc))
@@ -407,7 +394,7 @@ void player::weaponSwitch()
 {
 	if (_weaponSwitch)
 	{
-		if (_weaponCount < 50)
+		if (_weaponCount < 40)
 		{
 			if (_weaponIcon[_currentWeapon].alpha < 255)
 				_weaponIcon[_currentWeapon].alpha += 15;
@@ -418,6 +405,8 @@ void player::weaponSwitch()
 		{
 			if (_weaponIcon[_currentWeapon].alpha > 0)
 				_weaponIcon[_currentWeapon].alpha -= 15;
+			else
+				_weaponSwitch = false;
 		}
 
 	}

@@ -286,8 +286,8 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("fx_triBulletFire_right", "tex/fx/projectileFire2_right.bmp", 328, 40, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_triBulletFire_diagonal_left", "tex/fx/projectileFire2_diagonal_left.bmp", 464, 117, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_triBulletFire_diagonal_right", "tex/fx/projectileFire2_diagonal_right.bmp", 464, 117, 4, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_arrowFire_left", "tex/fx/projectileFire_left.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("fx_arrowFire_right", "tex/fx/projectileFire_right.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_left", "tex/fx/projectileFire3_left.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("fx_arrowFire_right", "tex/fx/projectileFire3_right.bmp", 384, 66, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_arrowFire_diagonal_left", "tex/fx/projectileFire3_diagonal_left.bmp", 308, 76, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_arrowFire_diagonal_right", "tex/fx/projectileFire3_diagonal_right.bmp", 308, 76, 4, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_triArrowFire_left", "tex/fx/projectileFire4_left.bmp", 488, 86, 4, 1, true, RGB(255, 0, 255));
@@ -341,6 +341,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("Clu_bow", "tex/weapons/clu_bow_float_01.bmp", 58, 56, true, RGB(255, 0, 255));
 	_loading->loadImage("magazine", "tex/weapons/magazine_01.bmp", 14, 6);
 	_loading->loadImage("dot_teal", "tex/fx/dot_teal_01.bmp", 2, 2);
+	_loading->loadImage("dot_red", "tex/fx/dot_red_01.bmp", 2, 2);
 	_loading->loadImage("dot_white", "tex/fx/dot_white_01.bmp", 2, 2);
 	_loading->loadImage("bomb_selectDot", "tex/UI/bombSelectDot_01.bmp", 44, 44, true, RGB(255, 0, 255));
 	_loading->loadImage("bomb_text", "tex/UI/bomb_text_01.bmp", 153, 48, true, RGB(255, 0, 255));
@@ -479,6 +480,14 @@ void loadingBlackScene::loadingEffect()
 	EFFECTMANAGER->addEffect("triBulletFire1", "fx_triBulletFire_left", 0.4f, 5);
 	EFFECTMANAGER->addEffect("triBulletFire2", "fx_triBulletFire_diagonal_right", 0.4f, 5);
 	EFFECTMANAGER->addEffect("triBulletFire3", "fx_triBulletFire_diagonal_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("arrowFire0", "fx_arrowFire_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("arrowFire1", "fx_arrowFire_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("arrowFire2", "fx_arrowFire_diagonal_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("arrowFire3", "fx_arrowFire_diagonal_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triArrowFire0", "fx_triArrowFire_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triArrowFire1", "fx_triArrowFire_left", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triArrowFire2", "fx_triArrowFire_diagonal_right", 0.4f, 5);
+	EFFECTMANAGER->addEffect("triArrowFire3", "fx_triArrowFire_diagonal_left", 0.4f, 5);
 	EFFECTMANAGER->addEffect("fullCharge_back", "fx_fullCharge_back", 0.4f, 5);
 	EFFECTMANAGER->addEffect("fullCharge_front", "fx_fullCharge_front", 0.4f, 5);
 }
