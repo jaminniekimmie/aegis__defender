@@ -18,13 +18,20 @@ void monster::update()
 	case MONSTER_DEAD:
 		dead();
 		break;
+	case MONSTER_ITEM:
+		item();
+		break;
 	}
 
-	_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth() * 0.75f, _image[_state].img->getFrameHeight() * 0.75f);
+	if (_isFrameImg)
+		_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getFrameWidth() * 0.75f, _image[_state].img->getFrameHeight() * 0.75f);
+	else
+		_image[_state].rc = RectMakeCenter(_x, _y, _image[_state].img->getWidth() * 0.75f, _image[_state].img->getHeight() * 0.75f);
+
 
 	_hpBar->update();
 
-	if (_state == MONSTER_DEAD) 
+	if (_state == MONSTER_DEAD || _state == MONSTER_ITEM) 
 		this->collisionProcess();
 	else
 		this->directionProcess();
@@ -42,8 +49,16 @@ void monster::render(HDC hdc)
 		}
 		else
 		{
-			_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _index, _isLeft);
-			_image[_state].shadow->alphaFrameRender(hdc, _x - _image[_state].shadow->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _index, _isLeft, 100);
+			if (_isFrameImg)
+			{
+				_image[_state].img->frameRender(hdc, _x - _image[_state].img->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _index, _isLeft);
+				_image[_state].shadow->alphaFrameRender(hdc, _x - _image[_state].shadow->getFrameWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getFrameHeight() * 0.5f - CAMERAMANAGER->getCamera().top, _index, _isLeft, 100);
+			}
+			else
+			{
+				_image[_state].img->render(hdc, _x - _image[_state].img->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top);
+				_image[_state].shadow->alphaRender(hdc, _x - _image[_state].shadow->getWidth() * 0.5f - CAMERAMANAGER->getCamera().left, _y - _image[_state].shadow->getHeight() * 0.5f - CAMERAMANAGER->getCamera().top, 100);
+			}
 		}
 		_hpBar->render(hdc);
 	}
@@ -55,31 +70,34 @@ void monster::render(HDC hdc)
 
 void monster::frameChange()
 {
-	_count++;
-	_image[_state].img->setFrameY(_isLeft);
-	_image[_state].shadow->setFrameY(_isLeft);
-	if (_isLeft)
+	if (_isFrameImg)
 	{
-		if (_count % _frameSpeed == 0)
+		_count++;
+		_image[_state].img->setFrameY(_isLeft);
+		_image[_state].shadow->setFrameY(_isLeft);
+		if (_isLeft)
 		{
-			_index--;
-			if (_index < 0)
-				_index = _image[_state].img->getMaxFrameX();
+			if (_count % _frameSpeed == 0)
+			{
+				_index--;
+				if (_index < 0)
+					_index = _image[_state].img->getMaxFrameX();
 
-			_image[_state].img->setFrameX(_index);
-			_image[_state].shadow->setFrameX(_index);
+				_image[_state].img->setFrameX(_index);
+				_image[_state].shadow->setFrameX(_index);
+			}
 		}
-	}
-	else
-	{
-		if (_count % _frameSpeed == 0)
+		else
 		{
-			_index++;
-			if (_index > _image[_state].img->getMaxFrameX())
-				_index = 0;
+			if (_count % _frameSpeed == 0)
+			{
+				_index++;
+				if (_index > _image[_state].img->getMaxFrameX())
+					_index = 0;
 
-			_image[_state].img->setFrameX(_index);
-			_image[_state].shadow->setFrameX(_index);
+				_image[_state].img->setFrameX(_index);
+				_image[_state].shadow->setFrameX(_index);
+			}
 		}
 	}
 }
@@ -96,10 +114,12 @@ void monster::collisionProcess()
 		COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM) == BLUE)
 	{
 		_gravity = 0.0f;
-		_y += (_image[_state].rc.bottom - _image[_state].rc.top) * 0.25f;
+		_speed = 0;
+		//_y += (_image[_state].rc.bottom - _image[_state].rc.top) * 0.25f;
 	}
 	else
 	{
+		_speed = 8;
 		_gravity += 0.55f;
 		_y += _gravity;
 	}
@@ -135,6 +155,8 @@ void sandworm::init()
 	_image[MONSTER_HIT].shadow = IMAGEMANAGER->findImage("Sandworm_walk_shadow");
 	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("bloodBlob");
 	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("bloodBlob");
+	_image[MONSTER_ITEM].img = IMAGEMANAGER->findImage("g_bubble");
+	_image[MONSTER_ITEM].shadow = IMAGEMANAGER->findImage("g_bubble");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -145,6 +167,7 @@ void sandworm::init()
 	_statusCount = 0;
 	_isAlive = true;
 	_isLeft = RND->getFromIntTo(0, 1);
+	_isFrameImg = true;
 	_state = MONSTER_IDLE;
 }
 
@@ -172,6 +195,10 @@ void sandworm::dead()
 {
 }
 
+void sandworm::item()
+{
+}
+
 void spiderBaby::init()
 {
 	_hpBar = new mHpBar;
@@ -184,6 +211,8 @@ void spiderBaby::init()
 	_image[MONSTER_HIT].shadow = IMAGEMANAGER->findImage("SpiderBaby_hit_shadow");
 	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("bloodBlob");
 	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->findImage("bloodBlob");
+	_image[MONSTER_ITEM].img = IMAGEMANAGER->findImage("g_bubble");
+	_image[MONSTER_ITEM].shadow = IMAGEMANAGER->findImage("g_bubble");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -196,6 +225,7 @@ void spiderBaby::init()
 	_statusCount = 0;
 	_isAlive = true;
 	_isLeft = RND->getFromIntTo(0, 1);
+	_isFrameImg = true;
 	_state = MONSTER_IDLE;
 }
 
@@ -235,8 +265,22 @@ void spiderBaby::dead()
 {
 	if ((_isLeft && _index <= 0) || (!_isLeft && _index >= _image[_state].img->getMaxFrameX()))
 	{
-		_isAlive = false;
+		_state = MONSTER_ITEM;
 	}
+}
+
+void spiderBaby::item()
+{
+	if (_isFrameImg)
+	{
+		_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+		_speed = RND->getFromFloatTo(6, 10);
+		_gravity = 0.0f;
+		_isFrameImg = false;
+	}
+
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed;
 }
 
 void firedrinkerFly::init()
@@ -251,6 +295,8 @@ void firedrinkerFly::init()
 	_image[MONSTER_HIT].shadow = IMAGEMANAGER->findImage("firedrinkerFly_hit_shadow");
 	_image[MONSTER_DEAD].img = IMAGEMANAGER->findImage("FiredrinkerFly_dead");
 	_image[MONSTER_DEAD].shadow = IMAGEMANAGER->addImage("blank", _image[MONSTER_DEAD].img->getWidth(), _image[MONSTER_DEAD].img->getHeight());
+	_image[MONSTER_ITEM].img = IMAGEMANAGER->findImage("g_bubble");
+	_image[MONSTER_ITEM].shadow = IMAGEMANAGER->findImage("g_bubble");
 	_speed = 5.0f;
 	_angle = 0.0f;
 	_gravity = 0.0f;
@@ -263,6 +309,7 @@ void firedrinkerFly::init()
 	_statusCount = 0;
 	_isAlive = true;
 	_isLeft = RND->getFromIntTo(0, 1);
+	_isFrameImg = true;
 	_state = MONSTER_IDLE;
 }
 
@@ -305,13 +352,27 @@ void firedrinkerFly::dead()
 	{
 		EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _x, _y);
 		SOUNDMANAGER->play("IMP_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
-		_isAlive = false;
+		_state = MONSTER_ITEM;
 	}
 
 	if (_isLeft)
 		_angle += 0.05f;
 	else
 		_angle -= 0.05f;
+}
+
+void firedrinkerFly::item()
+{
+	if (_isFrameImg)
+	{
+		_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+		_speed = RND->getFromFloatTo(6, 10);
+		_gravity = 0.0f;
+		_isFrameImg = false;
+	}
+
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed;
 }
 
 void eagle::init()
@@ -347,8 +408,22 @@ void eagle::dead()
 {
 	if ((_isLeft && _index <= 0) || (!_isLeft && _index >= _image[_state].img->getMaxFrameX()))
 	{
-		_isAlive = false;
+		_state = MONSTER_ITEM;
 	}
+}
+
+void eagle::item()
+{
+	if (_isFrameImg)
+	{
+		_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+		_speed = RND->getFromFloatTo(6, 10);
+		_gravity = 0.0f;
+		_isFrameImg = false;
+	}
+
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed;
 }
 
 monster * monsterFactory::createMonster(MONSTERTYPE type)

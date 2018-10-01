@@ -19,6 +19,7 @@ protected:
 	float _range;
 	bool _isAlive;
 	bool _isLeft;
+	bool _isFrameImg;
 	int _statusCount;
 	int _count, _index;
 	int _frameSpeed;
@@ -73,6 +74,7 @@ public:
 	virtual void move() = 0;
 	virtual void hit() = 0;
 	virtual void dead() = 0;
+	virtual void item() = 0;
 };
 
 class sandworm : public monster
@@ -84,6 +86,7 @@ private:
 	void move();
 	void hit();
 	void dead();
+	void item();
 
 public:
 };
@@ -97,6 +100,7 @@ private:
 	void move();
 	void hit();
 	void dead();
+	void item();
 
 public:
 };
@@ -110,6 +114,7 @@ private:
 	void move();
 	void hit();
 	void dead();
+	void item();
 
 public:
 };
@@ -123,6 +128,7 @@ private:
 	void move();
 	void hit();
 	void dead();
+	void item();
 
 public:
 };

@@ -83,6 +83,8 @@ struct tagImage
 	image* shadow;
 	BYTE alpha;
 	float x, y;
+	float gravity;
+	float speed;
 	bool isActive;
 };
 

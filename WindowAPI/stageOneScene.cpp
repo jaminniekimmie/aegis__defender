@@ -77,6 +77,8 @@ void stageOneScene::release(void)
 	SAFE_DELETE(_pixelMap);
 	RENDERMANAGER->clearBackground();
 	RENDERMANAGER->clearForeground();
+	MONSTERMANAGER->release();
+	OBJECTMANAGER->release();
 }
 
 void stageOneScene::update(void)
@@ -107,8 +109,7 @@ void stageOneScene::update(void)
 			}
 		}
 	}
-
-
+	
 	MONSTERMANAGER->update();
 	OBJECTMANAGER->update();
 
@@ -118,7 +119,7 @@ void stageOneScene::update(void)
 		_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT_IDLE)
 	{
 		_switchCount++;
-		if (_switchCount > 20)
+		if (_switchCount > 30)
 			_sceneSwitch = true;
 
 		if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
@@ -141,8 +142,12 @@ void stageOneScene::update(void)
 	{
 		_alpha += 5;
 		if (_alpha >= 255)
+		{
+			SCENEMANAGER->getCurrentScene()->release();
 			SCENEMANAGER->loadScene("게임오버화면");
+		}
 	}
+
 }
 
 void stageOneScene::render(void)

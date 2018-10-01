@@ -30,6 +30,7 @@ public:
 	gameNode* addScene(string sceneName, gameNode* scene);
 	//¾Àº¯°æ (ÇØ´ç¾À ·Îµå)
 	HRESULT loadScene(string sceneName);
+	gameNode* getCurrentScene() { return _currentScene; }
 
 	sceneManager() : _currentScene(NULL) {}
 	~sceneManager() {}

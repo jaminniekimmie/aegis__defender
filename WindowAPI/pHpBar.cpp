@@ -38,5 +38,5 @@ void pHpBar::setGauge(float currentHp, float maxHp)
 	_frontWidth = (currentHp / maxHp) * _maxWidth;
 
 	if ((int)currentHp % 2 == 0)
-		_backWidth = ((currentHp * 0.5f) / (maxHp * 0.5f)) * _maxWidth;
+		_backWidth = _frontWidth;
 }

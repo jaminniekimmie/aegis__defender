@@ -47,6 +47,7 @@ void cameraManager::CameraBoomerang(float startX, float startY, float destX, flo
 	_destY = destY;
 	_pauseCount = 0;
 	_boomerangStart = true;
+	_boomerangEnd = false;
 }
 
 void cameraManager::CameraBoomerangOngoing()
@@ -64,7 +65,7 @@ void cameraManager::CameraBoomerangOngoing()
 		}
 		else
 		{
-			if (_startX == _originX)
+			if (!_boomerangEnd && (_startX - _originX < 10 || _originX - _startX < 10))
 				_boomerangStart = false;
 
 			if (_pauseCount < 40)
@@ -73,6 +74,7 @@ void cameraManager::CameraBoomerangOngoing()
 			{
 				_destX = _originX;
 				_destY = _originY;
+				_boomerangEnd = false;
 			}	
 		}
 
@@ -163,6 +165,7 @@ HRESULT cameraManager::init(void)
 	_switchStart = false;
 	_shakeStart = false;
 	_boomerangStart = false;
+	_boomerangEnd = false;
 	_isFade = false;
 	_pauseCount = 0;
 	_shakeCount = 0;

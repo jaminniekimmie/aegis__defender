@@ -72,13 +72,13 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_bloomFlowerPos[0].x = 4355, _bloomFlowerPos[0].y = 1245;
-		_bloomFlowerPos[1].x = 4500, _bloomFlowerPos[1].y = 1245;
-		_bloomFlowerPos[2].x = 4830, _bloomFlowerPos[2].y = 1245;
-		_bloomFlowerPos[3].x = 4920, _bloomFlowerPos[3].y = 1245;
-		_bloomFlowerPos[4].x = 5300, _bloomFlowerPos[4].y = 765;
-		_bloomFlowerPos[5].x = 5635, _bloomFlowerPos[5].y = 205;
-		_bloomFlowerPos[6].x = 6105, _bloomFlowerPos[6].y = 540;
+		_bloomFlowerPos[0].x = 4355, _bloomFlowerPos[0].y = 1255;
+		_bloomFlowerPos[1].x = 4500, _bloomFlowerPos[1].y = 1255;
+		_bloomFlowerPos[2].x = 4830, _bloomFlowerPos[2].y = 1255;
+		_bloomFlowerPos[3].x = 4920, _bloomFlowerPos[3].y = 1255;
+		_bloomFlowerPos[4].x = 5300, _bloomFlowerPos[4].y = 775;
+		_bloomFlowerPos[5].x = 5635, _bloomFlowerPos[5].y = 215;
+		_bloomFlowerPos[6].x = 6105, _bloomFlowerPos[6].y = 550;
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -279,30 +279,46 @@ void objectManager::update()
 	{
 		if (OBJECT_VANISH == _vObject[i]->getState()) continue;
 		
-		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= ITEM_BLUEFLOWER)
+		if (CHIP_GREEN <= _vObject[i]->getType() && _vObject[i]->getType() <= HEART_YELLOW)
 		{
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect()))
 			{
 				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
 				SOUNDMANAGER->play("UI_collect_common");
-				//SOUNDMANAGER->play("UI_collect_bloomflower");
 				_vObject[i]->setState(OBJECT_VANISH);
 
 				if (HEART_RED == _vObject[i]->getType())
 					_playerManager->getPlayer()->addHp();
 				else if (HEART_YELLOW == _vObject[i]->getType())
 					_playerManager->getPlayer()->addMp();
-				else if (ITEM_BLUEFLOWER == _vObject[i]->getType())
-					;
-				else if (ITEM_MINERAL == _vObject[i]->getType())
-					;
 
 				break;
 			}
 		}
 		else if (BLOOMFLOWER <= _vObject[i]->getType() && _vObject[i]->getType() <= BLUEFLOWER)
 		{
-			this->collisionBullet(i, OBJECT_MOVE);
+			if (OBJECT_ITEM == _vObject[i]->getState())
+			{
+				if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect()))
+				{
+					EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vObject[i]->getX(), _vObject[i]->getY());
+					SOUNDMANAGER->play("UI_collect_bloomflower");
+					_vObject[i]->setState(OBJECT_VANISH);
+
+					if (BLOOMFLOWER == _vObject[i]->getType())
+						_playerManager->getPlayer()->addHp();
+					else if (MINERAL == _vObject[i]->getType())
+						_playerManager->addMineral();
+					else if (BLUEFLOWER == _vObject[i]->getType())
+						_playerManager->addBlueFlower();
+
+					break;
+				}
+			}
+			else
+			{
+				this->collisionBullet(i, OBJECT_MOVE);
+			}
 		}
 		else if (VENT == _vObject[i]->getType())
 		{

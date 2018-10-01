@@ -35,7 +35,10 @@ void loadingOpenScene::update(void)
 		this->loadingEffect();
 		_alpha += 5;
 		if (_alpha >= 255)
+		{
+			SCENEMANAGER->getCurrentScene()->release();
 			SCENEMANAGER->loadScene("Èæ·ÎµùÈ­¸é");
+		}
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -140,6 +143,7 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("collectibleChip_white", "tex/resource/Collectible_Chip4.bmp", 40, 36, true, RGB(255, 0, 255));
 	_loading->loadImage("heart_red", "tex/resource/Heart_red_01.bmp", 18, 16, true, RGB(255, 0, 255));
 	_loading->loadImage("heart_yellow", "tex/resource/Heart_yellow_01.bmp", 18, 16, true, RGB(255, 0, 255));
+	_loading->loadImage("g_bubble", "tex/resource/G_Bubble3.bmp", 16, 20, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral", "tex/resource/Resource_Multi1.bmp", 78, 88, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral_hit", "tex/resource/Resource_Multi1_hit.bmp", 78, 88, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_yellowMineral_shadow", "tex/resource/Resource_Multi1_shadow.bmp", 78, 88, true, RGB(255, 0, 255));
@@ -148,6 +152,8 @@ void loadingOpenScene::loadingImage()
 	_loading->loadImage("resource_blueFlowers_shadow", "tex/resource/Resource_Multi4_shadow.bmp", 80, 82, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_redFlower", "tex/resource/Resource_BloomFlower5.bmp", 60, 60, true, RGB(255, 0, 255));
 	_loading->loadImage("resource_redFlower_hit", "tex/resource/Resource_BloomFlower5_hit.bmp", 60, 60, true, RGB(255, 0, 255));
+	_loading->loadImage("item_blueFlower", "tex/resource/item_blueFlower.bmp", 36, 32, true, RGB(255, 0, 255));
+	_loading->loadImage("item_mineral", "tex/resource/item_mineral.bmp", 36, 34, true, RGB(255, 0, 255));
 
 	for (int i = 0; i < 9; i++)
 	{

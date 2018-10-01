@@ -73,8 +73,6 @@ HRESULT monsterManager::init(int scene)
 void monsterManager::release()
 {
 	_vMonster.clear();
-	for (int i = 0; i < _vMonster.size(); i++)
-		_vMonster[i]->release();
 }
 
 void monsterManager::update()
@@ -105,16 +103,25 @@ void monsterManager::update()
 		if (IntersectRect(&rcTemp, &rcPlayer, &_vMonster[i]->getRect()) && _playerManager->getPlayer()->getIsActive() && 
 			HIT != _playerManager->getPlayer()->getState() && FAINT != _playerManager->getPlayer()->getState() && FAINT_IDLE != _playerManager->getPlayer()->getState())
 		{
-			angle = !_playerManager->getPlayer()->getIsLeft() * PI;
-			speed = 15.0f;
+			if (MONSTER_ITEM == _vMonster[i]->getState())
+			{
+				EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vMonster[i]->getX(), _vMonster[i]->getY());
+				SOUNDMANAGER->play("UI_collect_common");
+				_vMonster[i]->setIsAlive(false);
+			}
+			else
+			{
+				angle = !_playerManager->getPlayer()->getIsLeft() * PI;
+				speed = 15.0f;
 
-			_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getX() + cosf(angle) * speed);
-			_playerManager->getPlayer()->setState(HIT);
-			_playerManager->getPlayer()->setIsActive(false);
-			_isHit = true;
-			EFFECTMANAGER->play("number_red" + to_string(smlRand), _playerManager->getPlayer()->getX(), rcPlayer.top);
-			_playerManager->getPlayer()->hitDamage(smlRand);
-			break;
+				_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getX() + cosf(angle) * speed);
+				_playerManager->getPlayer()->setState(HIT);
+				_playerManager->getPlayer()->setIsActive(false);
+				_isHit = true;
+				EFFECTMANAGER->play("number_red" + to_string(smlRand), _playerManager->getPlayer()->getX(), rcPlayer.top);
+				_playerManager->getPlayer()->hitDamage(smlRand);
+				break;
+			}
 		}
 
 		for (int j = 0; j < _playerManager->getBlock(CLU)->getVBlock().size(); j++)

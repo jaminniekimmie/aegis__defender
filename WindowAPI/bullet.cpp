@@ -627,7 +627,7 @@ void arrow::render(void)
 	for (_viArrow; _viArrow != _vArrow.end(); ++_viArrow)
 	{
 		if (!CAMERAMANAGER->CameraIn(_viArrow->rc)) continue;
-		_viArrow->bulletImage->rotateRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle);//, _viArrow->alpha);
+		_viArrow->bulletImage->rotateRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle);// , _viArrow->alpha);
 	}
 }
 
@@ -701,6 +701,7 @@ void arrow::move()
 	RECT rcTemp;
 
 	_viArrow = _vArrow.begin();
+
 	for (; _viArrow != _vArrow.end();)
 	{
 		_viArrow->gravity += 0.25f;
@@ -719,7 +720,10 @@ void arrow::move()
 				_viArrow->alpha -= 15;
 
 				if (_viArrow->alpha <= 0)
+				{
 					_viArrow = _vArrow.erase(_viArrow);
+					continue;
+				}
 			}
 		}
 
@@ -730,6 +734,7 @@ void arrow::move()
 		{
 			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viArrow->rc.left, _viArrow->rc.top);
 			_viArrow = _vArrow.erase(_viArrow);
+			continue;
 		}
 		else
 		{
@@ -891,7 +896,7 @@ void triArrow::render(void)
 	{
 		if (!_viArrow->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viArrow->rc)) continue;
-		_viArrow->bulletImage->rotateRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle);// , _viArrow->alpha);
+		_viArrow->bulletImage->rotateAlphaRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle, _viArrow->alpha);
 	}
 }
 

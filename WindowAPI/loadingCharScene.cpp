@@ -9,7 +9,7 @@ HRESULT loadingCharScene::init(void)
 	_rand = RND->getFromIntTo(0, 1);
 	
 	_player[_rand].x = - _player[_rand].img->getFrameWidth() * 0.5f;
-	_player[!_rand].x = _player[_rand].x - _player[_rand].img->getFrameWidth();
+	_player[!_rand].x = _player[_rand].x - _player[_rand].img->getFrameWidth() * 0.75;
 	_player[_rand].y = 400;
 	_player[!_rand].y = 400;
 
@@ -26,7 +26,7 @@ void loadingCharScene::release(void)
 
 void loadingCharScene::update(void)
 {
-	int rand = RND->getInt(10);
+	int rand = RND->getInt(20);
 	
 	if (rand)
 	{
@@ -38,7 +38,7 @@ void loadingCharScene::update(void)
 	_player[CLU].x += 5.0f;
 	_player[BART].x += 5.0f;
 
-	if (_player[!_rand].x >= WINSIZEX)
+	if (_player[!_rand].x >= WINSIZEX && _loadingCount == 100)
 		_alpha += 5;
 
 	if (_alpha >= 255)

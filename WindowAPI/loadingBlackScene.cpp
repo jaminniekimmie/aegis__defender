@@ -35,7 +35,10 @@ void loadingBlackScene::update(void)
 		this->loadingEffect();
 		_alpha += 5;
 		if (_alpha >= 255)
+		{
+			SCENEMANAGER->getCurrentScene()->release();
 			SCENEMANAGER->loadScene("스테이지원");
+		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))

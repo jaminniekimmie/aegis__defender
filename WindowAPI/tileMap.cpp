@@ -94,7 +94,10 @@ void tileMap::update(void)
 	{
 		_alpha += 5;
 		if (_alpha >= 255)
+		{
+			SCENEMANAGER->getCurrentScene()->release();
 			SCENEMANAGER->loadScene("흑로딩화면");
+		}
 	}
 }
 

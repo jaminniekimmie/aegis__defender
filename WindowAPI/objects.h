@@ -74,7 +74,7 @@ public:
 	void setSpeed(float speed) { _speed = speed; }
 	void setGravity(float gravity) { _gravity = gravity; }
 	void setIndex(int index) { _index = index; }
-	void setIsAlive(bool isActive) { _isActive = isActive; }
+	void setIsActive(bool isActive) { _isActive = isActive; }
 	void setIsLeft(bool isLeft) { _isLeft = isLeft; }
 	void setAttackCount(int attackCount) { _attackCount = attackCount; }
 	void setState(OBJECTSTATE state) { _state = state; }
@@ -83,12 +83,14 @@ public:
 	void frameChange();
 	void collisionProcess();
 	void playerAttack();
+	void removeElement();
 
 	virtual void init() = 0;
 	virtual void update();
 	virtual void render(HDC hdc);
 	virtual void idle() = 0;
 	virtual void move() = 0;
+	virtual void item() = 0;
 };
 
 class chip_green : public objects
@@ -97,6 +99,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -107,6 +110,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -117,6 +121,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -127,6 +132,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -137,6 +143,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -147,6 +154,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -157,6 +165,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -167,6 +176,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -177,6 +187,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -187,6 +198,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -197,6 +209,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -207,6 +220,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -217,6 +231,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -227,6 +242,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -237,6 +253,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -247,6 +264,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -257,6 +275,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -267,6 +286,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };
@@ -277,6 +297,7 @@ private:
 	void init();
 	void idle();
 	void move();
+	void item();
 
 public:
 };

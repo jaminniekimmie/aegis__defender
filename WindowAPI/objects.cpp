@@ -11,6 +11,9 @@ void objects::update()
 	case OBJECT_MOVE:
 		move();
 		break;
+	case OBJECT_ITEM:
+		item();
+		break;
 	case OBJECT_VANISH:
 		break;
 	}
@@ -90,6 +93,15 @@ void objects::frameChange()
 
 void objects::collisionProcess()
 {
+	if (_state == OBJECT_ITEM)
+	{
+		if (COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM) ||
+			COLLISIONMANAGER->pixelCollision(_image[_state].rc, _x, _y, _speed, _gravity, BOTTOM) == BLUE)
+		{
+			_speed = 0;
+			_gravity = 0;
+		}	
+	}
 }
 
 void objects::playerAttack()
@@ -100,8 +112,15 @@ void objects::playerAttack()
 		_state = OBJECT_MOVE;
 	else
 	{
-		_state = OBJECT_VANISH;
+		_state = OBJECT_ITEM;
 	}
+}
+
+void objects::removeElement()
+{
+	SOUNDMANAGER->play("UI_collect_bloomflower");
+	_vElement.clear();
+	_isActive = false;
 }
 
 void chip_green::init()
@@ -127,6 +146,10 @@ void chip_green::idle()
 }
 
 void chip_green::move()
+{
+}
+
+void chip_green::item()
 {
 }
 
@@ -156,6 +179,10 @@ void chip_blue::move()
 {
 }
 
+void chip_blue::item()
+{
+}
+
 void chip_purple::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("collectibleChip_purple");
@@ -179,6 +206,10 @@ void chip_purple::idle()
 }
 
 void chip_purple::move()
+{
+}
+
+void chip_purple::item()
 {
 }
 
@@ -208,6 +239,10 @@ void chip_white::move()
 {
 }
 
+void chip_white::item()
+{
+}
+
 void heart_red::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("heart_red");
@@ -231,6 +266,10 @@ void heart_red::idle()
 }
 
 void heart_red::move()
+{
+}
+
+void heart_red::item()
 {
 }
 
@@ -260,14 +299,20 @@ void heart_yellow::move()
 {
 }
 
+void heart_yellow::item()
+{
+}
+
 void bloomFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_redFlower");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
 	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_redFlower_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_redFlower");
-	_speed = 8.0f;
-	_angle = 0.0f;
+	_image[OBJECT_ITEM].img = IMAGEMANAGER->findImage("heart_red");
+	_image[OBJECT_ITEM].shadow = IMAGEMANAGER->findImage("heart_red");
+	_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+	_speed = RND->getFromFloatTo(6, 10);
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
 	_range = 0;
@@ -298,14 +343,23 @@ void bloomFlower::move()
 	}
 }
 
+void bloomFlower::item()
+{
+	_gravity += 0.55f;
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed + _gravity;
+}
+
 void mineral::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_yellowMineral");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
 	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_yellowMineral_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_yellowMineral_shadow");
-	_speed = 8.0f;
-	_angle = 0.0f;
+	_image[OBJECT_ITEM].img = IMAGEMANAGER->findImage("item_mineral");
+	_image[OBJECT_ITEM].shadow = IMAGEMANAGER->findImage("item_mineral");
+	_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+	_speed = RND->getFromFloatTo(6, 10);
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
 	_range = 0;
@@ -336,14 +390,23 @@ void mineral::move()
 	}
 }
 
+void mineral::item()
+{
+	_gravity += 0.55f;
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed + _gravity;
+}
+
 void blueFlower::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("resource_blueFlowers");
 	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
 	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("resource_blueFlowers_hit");
 	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("resource_blueFlowers_shadow");
-	_speed = 8.0f;
-	_angle = 0.0f;
+	_image[OBJECT_ITEM].img = IMAGEMANAGER->findImage("item_blueFlower");
+	_image[OBJECT_ITEM].shadow = IMAGEMANAGER->findImage("item_blueFlower");
+	_angle = RND->getFromFloatTo(PI_4, PI_4 * 3);
+	_speed = RND->getFromFloatTo(6, 10);
 	_gravity = 0.0f;
 	_count = 0, _index = 0;
 	_range = 0;
@@ -374,6 +437,13 @@ void blueFlower::move()
 	}
 }
 
+void blueFlower::item()
+{
+	_gravity += 0.55f;
+	_x += cosf(_angle) * _speed;
+	_y += -sinf(_angle) * _speed + _gravity;
+}
+
 void spawner::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("spawner");
@@ -397,6 +467,10 @@ void spawner::idle()
 }
 
 void spawner::move()
+{
+}
+
+void spawner::item()
 {
 }
 
@@ -428,6 +502,10 @@ void door_DNA_yellow_left::move()
 	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
+void door_DNA_yellow_left::item()
+{
+}
+
 void door_DNA_yellow_right::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_yellow_right");
@@ -454,6 +532,10 @@ void door_DNA_yellow_right::idle()
 void door_DNA_yellow_right::move()
 {
 	_actionRc = RectMake(_x, _y, 0, 0);
+}
+
+void door_DNA_yellow_right::item()
+{
 }
 
 void door_DNA_blue_left::init()
@@ -484,6 +566,10 @@ void door_DNA_blue_left::move()
 	_actionRc = RectMake(_x, _y, 0, 0);
 }
 
+void door_DNA_blue_left::item()
+{
+}
+
 void door_DNA_blue_right::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("door_DNA_blue_right");
@@ -510,6 +596,10 @@ void door_DNA_blue_right::idle()
 void door_DNA_blue_right::move()
 {
 	_actionRc = RectMake(_x, _y, 0, 0);
+}
+
+void door_DNA_blue_right::item()
+{
 }
 
 void door_elevator::init()
@@ -550,6 +640,10 @@ void door_elevator::move()
 	}
 }
 
+void door_elevator::item()
+{
+}
+
 void bush_spikes::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("bush_spikes_upsideDown");
@@ -573,6 +667,10 @@ void bush_spikes::idle()
 }
 
 void bush_spikes::move()
+{
+}
+
+void bush_spikes::item()
 {
 }
 
@@ -664,6 +762,10 @@ void vent::move()
 	}
 }
 
+void vent::item()
+{
+}
+
 void switch_hor::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("switch_hor");
@@ -701,6 +803,10 @@ void switch_hor::move()
 	}
 }
 
+void switch_hor::item()
+{
+}
+
 void switch_vert::init()
 {
 	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("switch_vert");
@@ -735,6 +841,10 @@ void switch_vert::move()
 		_index = _image[_state].img->getMaxFrameX();
 		_state = OBJECT_IDLE;
 	}
+}
+
+void switch_vert::item()
+{
 }
 
 objects * objectFactory::createObject(OBJECTTYPE type)

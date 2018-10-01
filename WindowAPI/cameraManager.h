@@ -12,6 +12,7 @@ class cameraManager : public singletonBase<cameraManager>
 	bool _shakeStart;
 	bool _switchStart;
 	bool _boomerangStart;
+	bool _boomerangEnd;
 	bool _isFade;
 	float _originX, _originY;
 	float _startX, _startY;
