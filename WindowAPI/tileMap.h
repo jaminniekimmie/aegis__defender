@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "tileNode.h"
+#include "backgroundElements.h"
 
 class tileMap : public gameNode
 {
@@ -76,6 +77,7 @@ public:
 	void drawRcDrag(void);
 	void cursorActionRender(void);
 	void cameraAdjustment(void);
+	void backgroundElementsInit(void);
 
 	//지형, 오브젝트 셋터
 	TERRAIN terrainSelect(int frameX, int frameY);

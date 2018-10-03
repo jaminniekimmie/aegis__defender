@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "objects.h"
 
+void objects::release()
+{
+	_vElement.clear();
+}
+
 void objects::update()
 {
 	switch (_state)
@@ -464,10 +469,12 @@ void spawner::init()
 
 void spawner::idle()
 {
+	_actionRc = RectMake(_x, _y, _image[OBJECT_IDLE].img->getWidth() * 0.25f, _image[OBJECT_IDLE].img->getHeight());
 }
 
 void spawner::move()
 {
+	_actionRc = RectMake(_x, _y, _image[OBJECT_IDLE].img->getWidth() * 0.25f, _image[OBJECT_IDLE].img->getHeight());
 }
 
 void spawner::item()
@@ -624,8 +631,12 @@ void door_elevator::init()
 
 void door_elevator::idle()
 {
-	_actionRc = RectMake(_x, _y + _image[_state].img->getFrameHeight() * 0.17f, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight() * 0.66f);
 	_image[_state].img->setFrameX(_index);
+
+	if (_index == 0)
+		_actionRc = RectMake(_x, _y + _image[_state].img->getFrameHeight() * 0.25f, _image[_state].img->getFrameWidth(), _image[_state].img->getFrameHeight() * 0.5f);
+	else
+		_actionRc = RectMake(_x, _y, 0, 0);
 }
 
 void door_elevator::move()
@@ -707,8 +718,8 @@ void vent::idle()
 		_state = OBJECT_MOVE;
 		_randNo = RND->getFromIntTo(100, 200);
 		_attackCount = 0;
-
-		for (int i = 0; i < 20; i++)
+		int elementMax = RND->getFromIntTo(5, 10);
+		for (int i = 0; i < elementMax; i++)
 		{
 			int rand = RND->getFloat(_image[_state].img->getWidth());
 			float speed = RND->getFromFloatTo(1, 4.5);

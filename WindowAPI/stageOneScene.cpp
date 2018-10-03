@@ -27,29 +27,7 @@ HRESULT stageOneScene::init(void)
 	OBJECTMANAGER->init(1);
 	OBJECTMANAGER->setPlayerManager(_playerManager);
 	
-	cloud* _cloud;
-	for (int i = 0; i < 40; ++i)
-	{
-		_cloud = new cloud;
-		_cloud->init();
-		RENDERMANAGER->addBackground(_cloud->getZ(), _cloud);
-	}
-
-	sculptures_back* _sculptures_back;
-	for (int i = 0; i < 6; ++i)
-	{
-		_sculptures_back = new sculptures_back;
-		_sculptures_back->init();
-		RENDERMANAGER->addBackground(_sculptures_back->getZ(), _sculptures_back);
-	}
-
-	sculptures_front* _sculptures_front;
-	for (int i = 0; i < 5; ++i)
-	{
-		_sculptures_front = new sculptures_front;
-		_sculptures_front->init();
-		RENDERMANAGER->addForeground(_sculptures_front->getZ(), _sculptures_front);
-	}
+	this->backgroundElementsInit();
 
 	//this->mapLoad();
 
@@ -62,7 +40,7 @@ HRESULT stageOneScene::init(void)
 
 	ShowCursor(true);
 
-	SOUNDMANAGER->play("BGM_nereisdesert");
+	SOUNDMANAGER->play("BGM_nereisdesert", true);
 
 	return S_OK;
 }
@@ -79,6 +57,7 @@ void stageOneScene::release(void)
 	RENDERMANAGER->clearForeground();
 	MONSTERMANAGER->release();
 	OBJECTMANAGER->release();
+	SOUNDMANAGER->stop("BGM_nereisdesert");
 }
 
 void stageOneScene::update(void)
@@ -86,7 +65,108 @@ void stageOneScene::update(void)
 	PLAYERCHARACTER character = _playerManager->getCharacter();
 
 	_playerManager->update();
+	MONSTERMANAGER->update();
+	OBJECTMANAGER->update();
 
+	this->cameraAdjustment(character);
+	this->sceneSwitch();
+}
+
+void stageOneScene::render(void)
+{
+	//this->tileMapRender();
+	this->mapRender();
+
+	MONSTERMANAGER->render(getMemDC());
+	OBJECTMANAGER->render(getMemDC());
+	_playerManager->render();
+
+	for (int i = 0; i < OBJECTMANAGER->getVObject().size(); i++)
+	{
+		if ((DOOR_DNA_YELLOW_LEFT > OBJECTMANAGER->getVObject()[i]->getType() ||
+			DOOR_DNA_BLUE_RIGHT < OBJECTMANAGER->getVObject()[i]->getType()) &&
+			SPAWNER != OBJECTMANAGER->getVObject()[i]->getType()) continue;
+
+		OBJECTMANAGER->getVObject()[i]->render(getMemDC());
+	}
+
+	RENDERMANAGER->foregroundRender(getMemDC());
+
+	CAMERAMANAGER->render(getMemDC());
+	if (CAMERAMANAGER->getSwitchStart()) _playerManager->getPlayer()->render();
+
+	SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
+	SetDCBrushColor(getMemDC(), RGB(0, 0, 0));
+	SelectObject(getMemDC(), GetStockObject(DC_PEN));
+	SetDCPenColor(getMemDC(), RGB(0, 0, 0));
+
+	Rectangle(getMemDC(), _rcLetterBox[0]);
+	Rectangle(getMemDC(), _rcLetterBox[1]);
+
+	if (_alpha > 0) IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
+}
+
+void stageOneScene::backgroundElementsInit()
+{
+	cloud* _cloud;
+	for (int i = 0; i < 40; ++i)
+	{
+		_cloud = new cloud;
+		_cloud->init();
+		RENDERMANAGER->addBackground(_cloud->getZ(), _cloud);
+	}
+
+	sculptures_back* _sculptures_back;
+	for (int i = 0; i < 6; ++i)
+	{
+		_sculptures_back = new sculptures_back;
+		_sculptures_back->init();
+		RENDERMANAGER->addBackground(_sculptures_back->getZ(), _sculptures_back);
+	}
+
+	autotile_lightorange* _autotile_lightorange;
+	for (int i = 0; i < 5; ++i)
+	{
+		_autotile_lightorange = new autotile_lightorange;
+		_autotile_lightorange->init();
+		RENDERMANAGER->addBackground(_autotile_lightorange->getZ(), _autotile_lightorange);
+	}
+
+	autotile_back* _autotile_back;
+	for (int i = 0; i < 5; ++i)
+	{
+		_autotile_back = new autotile_back;
+		_autotile_back->init();
+		RENDERMANAGER->addBackground(_autotile_back->getZ(), _autotile_back);
+	}
+
+	sculptures_front* _sculptures_front;
+	for (int i = 0; i < 6; ++i)
+	{
+		_sculptures_front = new sculptures_front;
+		_sculptures_front->init();
+		RENDERMANAGER->addForeground(_sculptures_front->getZ(), _sculptures_front);
+	}
+
+	autotile_orange* _autotile_orange;
+	for (int i = 0; i < 20; ++i)
+	{
+		_autotile_orange = new autotile_orange;
+		_autotile_orange->init();
+		RENDERMANAGER->addForeground(_autotile_orange->getZ(), _autotile_orange);
+	}
+
+	autotile_darkbrown* _autotile_darkbrown;
+	for (int i = 0; i < 20; ++i)
+	{
+		_autotile_darkbrown = new autotile_darkbrown;
+		_autotile_darkbrown->init();
+		RENDERMANAGER->addForeground(_autotile_darkbrown->getZ(), _autotile_darkbrown);
+	}
+}
+
+void stageOneScene::cameraAdjustment(PLAYERCHARACTER character)
+{
 	if (character != _playerManager->getCharacter())
 	{
 		float startX = _playerManager->getPlayer(character)->getX();
@@ -109,18 +189,33 @@ void stageOneScene::update(void)
 			}
 		}
 	}
-	
-	MONSTERMANAGER->update();
-	OBJECTMANAGER->update();
 
-	this->cameraAdjustment();
+	if (KEYMANAGER->isOnceKeyDown('C')) _camDebug = !_camDebug;
 
+	if (_camDebug)
+	{
+		if (KEYMANAGER->isStayKeyDown('A')) _rcCamera.left -= 30;
+		if (KEYMANAGER->isStayKeyDown('D')) _rcCamera.left += 30;
+		if (KEYMANAGER->isStayKeyDown('W')) _rcCamera.top -= 30;
+		if (KEYMANAGER->isStayKeyDown('S')) _rcCamera.top += 30;
+	}
+
+	if (_playerManager->getPlayer()->getRect().left <= 0)
+		_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
+	else if (_playerManager->getPlayer()->getRect().right >= CAMERAMANAGER->getMaxWidth())
+		_playerManager->getPlayer()->setX(CAMERAMANAGER->getMaxWidth() - _playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
+
+	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
+	CAMERAMANAGER->setCamera(_rcCamera);
+}
+
+void stageOneScene::sceneSwitch()
+{
 	if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT ||
 		_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT_IDLE)
 	{
 		_switchCount++;
-		if (_switchCount > 30)
-			_sceneSwitch = true;
+		if (_switchCount > 30) _sceneSwitch = true;
 
 		if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
 		{
@@ -132,11 +227,10 @@ void stageOneScene::update(void)
 	{
 		_switchCount = 0;
 	}
-	
+
 	if (!_sceneSwitch)
 	{
-		if (_alpha > 0)
-			_alpha -= 5;
+		if (_alpha > 0) _alpha -= 5;
 	}
 	else
 	{
@@ -147,114 +241,9 @@ void stageOneScene::update(void)
 			SCENEMANAGER->loadScene("게임오버화면");
 		}
 	}
-
 }
 
-void stageOneScene::render(void)
-{
-	//PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
-
-	//게임타일 렉트 렌더
-	//for (int i = 0; i < TILEX * TILEY; i++)
-	//{
-	//	if (!CAMERAMANAGER->CameraIn(_tiles[i].rc)) continue;
-	//	
-	//	IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-	//	IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-	//
-	//	if (_tiles[i].obj == OBJECT_NONE) continue;
-	//	IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
-	//	//IMAGEMANAGER->frameRender(_tiles[0].tileLabel, getMemDC(), 100, 100, _tiles[0].objFrameX, _tiles[0].objFrameY);
-	//	IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objFrameX, _tiles[i].objFrameY);
-	//	
-	//}
-	//if (KEYMANAGER->isToggleKey('P'))
-	//{
-	//	_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
-	//}
-
-	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-
-	RENDERMANAGER->backgroundRender(getMemDC());
-
-	IMAGEMANAGER->render("stage1_topology", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-	
-	if (KEYMANAGER->isToggleKey('P'))
-		_pixelMap->render(getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
-
-	MONSTERMANAGER->render(getMemDC());
-	OBJECTMANAGER->render(getMemDC());
-	_playerManager->render();
-
-	for (int i = 0; i < OBJECTMANAGER->getVObject().size(); i++)
-	{
-		if (DOOR_DNA_YELLOW_LEFT > OBJECTMANAGER->getVObject()[i]->getType() ||
-			DOOR_DNA_BLUE_RIGHT < OBJECTMANAGER->getVObject()[i]->getType()) continue;
-		OBJECTMANAGER->getVObject()[i]->render(getMemDC());
-	}
-
-	RENDERMANAGER->foregroundRender(getMemDC());
-
-	CAMERAMANAGER->render(getMemDC());
-	if (CAMERAMANAGER->getSwitchStart())
-		_playerManager->getPlayer()->render();
-
-	SelectObject(getMemDC(), GetStockObject(DC_BRUSH));
-	SetDCBrushColor(getMemDC(), RGB(0, 0, 0));
-	SelectObject(getMemDC(), GetStockObject(DC_PEN));
-	SetDCPenColor(getMemDC(), RGB(0, 0, 0));
-
-	Rectangle(getMemDC(), _rcLetterBox[0]);
-	Rectangle(getMemDC(), _rcLetterBox[1]);
-
-	if (_alpha > 0)
-		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
-}
-
-void stageOneScene::cameraAdjustment()
-{
-	if (KEYMANAGER->isOnceKeyDown('C'))
-		_camDebug = !_camDebug;
-
-	if (_camDebug)
-	{
-		if (KEYMANAGER->isStayKeyDown('A'))
-		{
-			_rcCamera.left -= 30;
-			_rcCamera.right -= 30;
-		}
-
-		if (KEYMANAGER->isStayKeyDown('D'))
-		{
-			_rcCamera.left += 30;
-			_rcCamera.right += 30;
-		}
-		if (KEYMANAGER->isStayKeyDown('W'))
-		{
-			_rcCamera.top -= 30;
-			_rcCamera.bottom -= 30;
-		}
-		if (KEYMANAGER->isStayKeyDown('S'))
-		{
-			_rcCamera.top += 30;
-			_rcCamera.bottom += 30;
-		}
-	}
-
-	if (_playerManager->getPlayer()->getRect().left <= 0)
-	{
-		_playerManager->getPlayer()->setX(_playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
-	}
-	else if (_playerManager->getPlayer()->getRect().right >= CAMERAMANAGER->getMaxWidth())
-	{
-		_playerManager->getPlayer()->setX(CAMERAMANAGER->getMaxWidth() - _playerManager->getPlayer()->getPlayerImage()->getFrameWidth() / 6);
-	}
-
-	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
-	CAMERAMANAGER->setCamera(_rcCamera);
-}
-
-void stageOneScene::mapLoad(void)
+void stageOneScene::tileMapLoad(void)
 {
 	HANDLE file;
 	DWORD read;
@@ -265,4 +254,38 @@ void stageOneScene::mapLoad(void)
 
 
 	CloseHandle(file);
+}
+
+void stageOneScene::tileMapRender()
+{
+	PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
+
+	//게임타일 렉트 렌더
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (!CAMERAMANAGER->CameraIn(_tiles[i].rc)) continue;
+		
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+	
+		if (_tiles[i].obj == OBJECT_NONE) continue;
+		IMAGEMANAGER->frameRender(_tiles[i].tileLabel, getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		//IMAGEMANAGER->frameRender(_tiles[0].tileLabel, getMemDC(), 100, 100, _tiles[0].objFrameX, _tiles[0].objFrameY);
+		IMAGEMANAGER->frameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		
+	}
+	if (KEYMANAGER->isToggleKey('P'))
+	{
+		_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
+	}
+}
+
+void stageOneScene::mapRender()
+{
+	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+	RENDERMANAGER->backgroundRender(getMemDC());
+	IMAGEMANAGER->render("stage1_topology", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+
+	if (KEYMANAGER->isToggleKey('P'))
+		_pixelMap->render(getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 }

@@ -40,7 +40,7 @@ public:
 
 	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
 	void collisionProcess();
-	void collisionBullet(int index, OBJECTSTATE setState);
+	void collisionBullet(int index, vector<tagBullet> bullet, OBJECTSTATE setState);
 	void collisionDoorElevator(int index, PLAYERCHARACTER character);
 	void collisionDoorDNA(int index, PLAYERCHARACTER character);
 	//오브젝트매니져 초기화

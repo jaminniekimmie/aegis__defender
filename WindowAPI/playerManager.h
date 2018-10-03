@@ -49,6 +49,8 @@ public:
 	void update(void);
 	void render(void);
 
+	void setCharacter(PLAYERCHARACTER character) { _character = character; }
+
 	player * getPlayer(PLAYERCHARACTER character) { return _player[character]; }
 	player * getPlayer() { return _player[_character]; }
 	PLAYERCHARACTER getCharacter() { return _character; }
@@ -58,9 +60,12 @@ public:
 	triArrow * getTriArrow() { return _triArrow; }
 	block * getBlock(PLAYERCHARACTER character) { return _block[character]; }
 
-	void GUIinit();
+	void setFollow();
+	void setGUI();
 	void GUIupdate();
 	void GUIrender();
+	void buildRender();
+
 	void keyInput();
 	void playerRun(bool isLeft);
 	void playerJumpRise();

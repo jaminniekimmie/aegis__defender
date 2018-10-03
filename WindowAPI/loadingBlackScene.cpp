@@ -37,7 +37,7 @@ void loadingBlackScene::update(void)
 		if (_alpha >= 255)
 		{
 			SCENEMANAGER->getCurrentScene()->release();
-			SCENEMANAGER->loadScene("스테이지원");
+			SCENEMANAGER->loadScene("맵툴");
 		}
 	}
 
@@ -81,6 +81,43 @@ void loadingBlackScene::render(void)
 //로딩이미지 함수(이곳에 이미지를 전부 넣어라)
 void loadingBlackScene::loadingImage()
 {
+	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("tile_map1", "tex/tiles/surfaceTile_93x2_1.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map2", "tex/tiles/surfaceTile_93x2_2.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map3", "tex/tiles/surfaceTile_93x2_3.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map4", "tex/tiles/surfaceTile_93x2_4.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map5", "tex/tiles/surfaceTile_93x2_5.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map6", "tex/tiles/surfaceTile_93x2_6.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map7", "tex/tiles/surfaceTile_93x2_7.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map8", "tex/tiles/surfaceTile_93x2_8.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map9", "tex/tiles/surfaceTile_93x2_9.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("tile_map10", "tex/tiles/surfaceTile_93x2_10.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("pixel_map", "tex/tiles/pixelTile_93x2_01.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("button_save", "tex/UI/button_save_01.bmp", 294, 45, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("button_load", "tex/UI/button_load_01.bmp", 288, 45, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("button_select", "tex/UI/button_select_01.bmp", 518, 45, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("button_erase", "tex/UI/button_erase_01.bmp", 408, 45, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("button_arrow1", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("button_arrow2", "tex/UI/button_arrow_01.bmp", 78, 150, 2, 2, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("cursorIcon_erase", "tex/icons/ATK_Hammer3_03_01.bmp", 108, 63, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadImage("cursorIcon_idle", "tex/icons/ATK_Hammer2_12_02.bmp", 34, 34, true, RGB(255, 0, 255));
+	_loading->loadImage("button_tile", "tex/UI/button_tile_01.bmp", 104, 36, true, RGB(255, 0, 255));
+	_loading->loadImage("character_minor", "tex/characters/character_minor_01.bmp", 443, 605, true, RGB(255, 0, 255));
+	_loading->loadImage("text_buildAMap", "tex/UI/text_build_a_map_01.bmp", 514, 92, true, RGB(255, 0, 255));
+	_loading->loadImage("textBubble_amber", "tex/characters/amber_text_bubble_01.bmp", 680, 289, true, RGB(255, 0, 255));
+	_loading->loadImage("white_tile", "tex/tiles/plain_white_tile_01.bmp", 120, 120);
+	_loading->loadImage("teal_tile", "tex/tiles/teal_tile_01.bmp", 120, 120);
+	_loading->loadImage("object_grass0", "tex/objects/Debris3_0.bmp", 102, 76, true, RGB(255, 0, 255));
+	_loading->loadImage("object_grass1", "tex/objects/Debris3_1.bmp", 114, 74, true, RGB(255, 0, 255));
+	_loading->loadImage("object_grass2", "tex/objects/Debris3_2.bmp", 120, 74, true, RGB(255, 0, 255));
+	_loading->loadImage("object_grass3", "tex/objects/Debris3_3.bmp", 114, 68, true, RGB(255, 0, 255));
+	_loading->loadImage("object_grass4", "tex/objects/Debris3_4.bmp", 100, 72, true, RGB(255, 0, 255));
+	_loading->loadImage("textBubble_desc_tile_ground", "tex/UI/description_ground_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	_loading->loadImage("textBubble_desc_tile_tree", "tex/UI/description_trees_01.bmp", 802, 252, true, RGB(255, 0, 255));
+	_loading->loadImage("textBubble_desc_tile_rock", "tex/UI/description_rocks_01.bmp", 802, 252, true, RGB(255, 0, 255));
+
 	//CLU
 	_loading->loadFrameImage("Clu_aim_diagonal", "tex/characters/Clu_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_aim_diagonal_fullCharge", "tex/characters/Clu_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
@@ -151,7 +188,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Clu_think_shadow", "tex/characters/Clu_think_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_think_idle_shadow", "tex/characters/Clu_think_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_upset_shadow", "tex/characters/Clu_upset_shadow_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
-	
+
 	//CLU weapon
 	_loading->loadFrameImage("Clu_gun_aim_diagonal", "tex/weapons/Clu_gun_aim_diagonal_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Clu_gun_aim_diagonal_fullCharge", "tex/weapons/Clu_gun_aim_diagonal_fullCharge_01.bmp", 116 * 6, 232, 6, 2, true, RGB(255, 0, 255));
@@ -181,7 +218,7 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("dynamiteTrap_active_shadow", "tex/weapons/DynamiteTrap_active_shadow.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("dynamiteTrap_idle", "tex/weapons/DynamiteTrap_idle.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("dynamiteTrap_idle_shadow", "tex/weapons/DynamiteTrap_idle_shadow.bmp", 76, 32, 2, 1, true, RGB(255, 0, 255));
-	
+
 	//BART
 	_loading->loadFrameImage("Bart_block", "tex/characters/Bart_block_01.bmp", 116 * 7, 232, 7, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_bored", "tex/characters/Bart_bored_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
@@ -240,25 +277,11 @@ void loadingBlackScene::loadingImage()
 	_loading->loadFrameImage("Bart_think_shadow", "tex/characters/Bart_think_shadow_01.bmp", 116 * 3, 232, 3, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_think_idle_shadow", "tex/characters/Bart_think_idle_shadow_01.bmp", 116 * 4, 232, 4, 2, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("Bart_upset_shadow", "tex/characters/Bart_upset_shadow_01.bmp", 116 * 9, 232, 9, 2, true, RGB(255, 0, 255));
-	
+
 	//BART Weapon
 	_loading->loadImage("defenseBlock", "tex/weapons/B1_Defense7.bmp", 40, 52, true, RGB(255, 0, 255));
 	_loading->loadImage("defenseBlock_shadow", "tex/weapons/B1_Defense7_shadow.bmp", 40, 52, true, RGB(255, 0, 255));
 
-	//MONSTERS
-	_loading->loadFrameImage("Sandworm_walk", "tex/monsters/Sandworm_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("Sandworm_walk_shadow", "tex/monsters/Sandworm_shadow_01.bmp", 8532, 328, 27, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("SpiderBaby_walk", "tex/monsters/Spider_Baby_walk_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("SpiderBaby_walk_shadow", "tex/monsters/Spider_Baby_walk_shadow_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("SpiderBaby_hit", "tex/monsters/Spider_Baby_hit_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("SpiderBaby_hit_shadow", "tex/monsters/Spider_Baby_hit_shadow_01.bmp", 300, 84, 6, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("firedrinkerFly_fly", "tex/monsters/FiredrinkerFly_fly_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("firedrinkerFly_fly_shadow", "tex/monsters/FiredrinkerFly_fly_shadow_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("firedrinkerFly_hit", "tex/monsters/FiredrinkerFly_hit_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("firedrinkerFly_hit_shadow", "tex/monsters/FiredrinkerFly_hit_shadow_01.bmp", 288, 148, 4, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("FiredrinkerFly_dead", "tex/monsters/FiredrinkerFly_dead_01.bmp", 50, 76, 1, 2, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("bloodBlob", "tex/fx/Blood_Blob_01.bmp", 324, 132, 6, 2, true, RGB(255, 0, 255));
-	
 	_loading->loadFrameImage("fx_jumpDust1", "tex/fx/JumpDust_01.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust2", "tex/fx/JumpDust_02.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("fx_jumpDust3", "tex/fx/JumpDust_03.bmp", 1080, 120, 9, 1, true, RGB(255, 0, 255));
@@ -349,44 +372,6 @@ void loadingBlackScene::loadingImage()
 	_loading->loadImage("bomb_selectDot", "tex/UI/bombSelectDot_01.bmp", 44, 44, true, RGB(255, 0, 255));
 	_loading->loadImage("bomb_text", "tex/UI/bomb_text_01.bmp", 153, 48, true, RGB(255, 0, 255));
 	_loading->loadImage("defenseBlock_text", "tex/UI/defenseBlock_text_01.bmp", 262, 51, true, RGB(255, 0, 255));
-
-	_loading->loadImage("spawner", "tex/objects/spawner_01.bmp", 136, 174, true, RGB(255, 0, 255));
-	_loading->loadImage("door_DNA_blue_left", "tex/objects/door_DNA_blue_left_01.bmp", 162, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("door_DNA_blue_right", "tex/objects/door_DNA_blue_right_01.bmp", 162, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("door_DNA_yellow_left", "tex/objects/door_DNA_yellow_left_01.bmp", 162, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("door_DNA_yellow_right", "tex/objects/door_DNA_yellow_right_01.bmp", 162, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("bush_spikes_upsideDown", "tex/objects/bush_spikes_upsideDown_01.bmp", 232, 92, true, RGB(255, 0, 255));
-	_loading->loadImage("vent", "tex/objects/vent_01.bmp", 160, 80, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("door_elevator", "tex/objects/door_elevator_01.bmp", 4752, 80, 9, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("switch_hor", "tex/objects/switch_hor_01.bmp", 462, 56, 7, 1, true, RGB(255, 0, 255));
-	_loading->loadFrameImage("switch_vert", "tex/objects/switch_vert_01.bmp", 392, 66, 7, 1, true, RGB(255, 0, 255));
-	//11시간 잤죠 ?/
-	_loading->loadImage("sculpture_back_01", "tex/objects/sculpture_back_01.bmp", 520, 384, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_back_02", "tex/objects/sculpture_back_02.bmp", 238, 224, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_back_03", "tex/objects/sculpture_back_03.bmp", 176, 306, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_back_04", "tex/objects/sculpture_back_04.bmp", 176, 324, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_back_05", "tex/objects/sculpture_back_05.bmp", 170, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_back_06", "tex/objects/sculpture_back_06.bmp", 352, 266, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_01", "tex/objects/sculpture_front_01.bmp", 176, 306, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_02", "tex/objects/sculpture_front_02.bmp", 108, 210, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_03", "tex/objects/sculpture_front_03.bmp", 170, 228, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_04", "tex/objects/sculpture_front_04.bmp", 352, 266, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_05", "tex/objects/sculpture_front_05.bmp", 178, 126, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_06", "tex/objects/sculpture_front_06.bmp", 190, 384, true, RGB(255, 0, 255));
-	_loading->loadImage("sculpture_front_07", "tex/objects/sculpture_front_07.bmp", 176, 324, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_topology", "tex/map/map_topology_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_temp", "tex/map/map_temp_01.bmp", 7409, 1760);
-
-	_loading->loadImage("Cloud1", "tex/map/Cloud1.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud2", "tex/map/Cloud2.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud3", "tex/map/Cloud3.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud4", "tex/map/Cloud4.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud5", "tex/map/Cloud5.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud6", "tex/map/Cloud6.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud7", "tex/map/Cloud7.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud8", "tex/map/Cloud8.bmp", 240, 240, true, RGB(255, 0, 255));
-	_loading->loadImage("Cloud9", "tex/map/Cloud9.bmp", 240, 240, true, RGB(255, 0, 255));
 }
 
 //로딩사운드 함수(이곳에 사운드를 전부 넣어라)
@@ -417,6 +402,11 @@ void loadingBlackScene::loadingSound()
 	_loading->loadSound("Mon_Sandworm_hurt2", "audio/en_sandworm_hurt_02.wav");
 	_loading->loadSound("Mon_Sandworm_hurt3", "audio/en_sandworm_hurt_03.wav");
 	_loading->loadSound("Prop_Door_DNA_enter", "audio/prop_door_dna_enter.wav");
+	_loading->loadSound("Prop_Button_slam", "audio/prop_button_slam.wav");
+	_loading->loadSound("IMP_explo_medium1", "audio/imp_explo_medium_01.wav");
+	_loading->loadSound("IMP_explo_medium2", "audio/imp_explo_medium_02.wav");
+	_loading->loadSound("IMP_explo_medium3", "audio/imp_explo_medium_03.wav");
+	_loading->loadSound("IMP_explo_medium4", "audio/imp_explo_medium_04.wav");
 }
 
 void loadingBlackScene::loadingEffect()

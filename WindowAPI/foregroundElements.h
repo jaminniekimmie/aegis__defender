@@ -46,3 +46,29 @@ public:
 	~sculptures_front() {}
 };
 
+class autotile_orange : public foregroundElements
+{
+public:
+	HRESULT init();
+	void release();
+	void update();
+
+	void changeImage();
+
+	autotile_orange() {}
+	~autotile_orange() {}
+};
+
+class autotile_darkbrown : public foregroundElements
+{
+public:
+	HRESULT init();
+	void release();
+	void update();
+
+	void changeImage();
+
+	autotile_darkbrown() {}
+	~autotile_darkbrown() {}
+};
+

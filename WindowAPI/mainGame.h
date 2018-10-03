@@ -4,10 +4,12 @@
 #include "loadingBlackScene.h"
 #include "loadingOpenScene.h"
 #include "loadingCharScene.h"
+#include "fakeLoadingScene.h"
 #include "buildAMapScene.h"
 #include "stageOneScene.h"
-#include "stageTwoScene.h"
+#include "titleScene.h"
 #include "gameOverScene.h"
+#include "tileTestScene.h"
 
 class mainGame : public gameNode
 {

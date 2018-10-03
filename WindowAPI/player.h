@@ -55,8 +55,10 @@ public:
 	void addHp();
 	void addMp();
 	void frameChangeLoop();
-	void frameChangeOnce();
+	void setCharacter(PLAYERCHARACTER character);
+	void setHpBar();
 	void weaponSwitch();
+	void rectUpdate();
 	void collisionProcess();
 
 	pHpBar * getHpBarRed() { return _hpBar_red; }

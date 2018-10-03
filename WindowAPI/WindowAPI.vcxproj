@@ -155,6 +155,7 @@
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="fakeLoadingScene.h" />
     <ClInclude Include="foregroundElements.h" />
     <ClInclude Include="frameManager.h" />
     <ClInclude Include="gameNode.h" />
@@ -185,12 +186,13 @@
     <ClInclude Include="singletonBase.h" />
     <ClInclude Include="soundManager.h" />
     <ClInclude Include="stageOneScene.h" />
-    <ClInclude Include="stageTwoScene.h" />
+    <ClInclude Include="tileTestScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="buildAMapScene.h" />
     <ClInclude Include="tileMap.h" />
     <ClInclude Include="tileNode.h" />
     <ClInclude Include="timeManager.h" />
+    <ClInclude Include="titleScene.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
@@ -202,6 +204,7 @@
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="fakeLoadingScene.cpp" />
     <ClCompile Include="foregroundElements.cpp" />
     <ClCompile Include="frameManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
@@ -229,7 +232,7 @@
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="soundManager.cpp" />
     <ClCompile Include="stageOneScene.cpp" />
-    <ClCompile Include="stageTwoScene.cpp" />
+    <ClCompile Include="tileTestScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -239,6 +242,7 @@
     <ClCompile Include="buildAMapScene.cpp" />
     <ClCompile Include="tileMap.cpp" />
     <ClCompile Include="timeManager.cpp" />
+    <ClCompile Include="titleScene.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="winMain.cpp" />

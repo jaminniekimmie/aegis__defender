@@ -2,8 +2,8 @@
 
 //게임화면타일 (화면 왼쪽) 
 #define TILESIZE 120
-#define TILEX 50
-#define TILEY 50
+#define TILEX 62
+#define TILEY 15
 #define TILESIZEX (TILEX * TILESIZE)
 #define TILESIZEY (TILEY * TILESIZE)
 
@@ -86,8 +86,46 @@ struct tagImage
 	float gravity;
 	float speed;
 	bool isActive;
+	int count;
 };
 
+
+struct tagElement
+{
+	image* elementImg;
+	RECT rc;
+	float x, y;
+	float fireX, fireY;
+	float speed;
+	float angle;
+	float gravity;
+	float radius;
+	bool fire;
+	bool isActive;
+	bool isFrameImg;
+	int alpha;
+	int count;
+	int index;
+};
+
+//총알 구조체
+struct tagBullet
+{
+	image* bulletImage;
+	image* shadowImage;
+	RECT rc;
+	BYTE alpha;
+	float x, y;
+	float fireX, fireY;
+	float speed;
+	float angle;
+	float gravity;
+	float radius;
+	bool fire;
+	int index;
+	int count;
+	int fadeCount;
+};
 
 //struct tagImage
 //{

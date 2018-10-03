@@ -10,6 +10,9 @@ HRESULT playerManager::init(void)
 	_player[BART] = new player;
 	_player[BART]->init(BART);
 
+	_player[_character]->setIsActive(true);
+	_player[!_character]->setIsActive(false);
+
 	_bullet = new bullet;
 	_bullet->init("bullet_blue", 3, 500);
 	
@@ -28,27 +31,12 @@ HRESULT playerManager::init(void)
 	_block[BART] = new block;
 	_block[BART]->init("defenseBlock", "defenseBlock_shadow", 40);
 	
-	this->GUIinit();
+	this->setGUI();
+	this->setFollow();
 
-	_idleCount = 0;
+	_idleCount = _blackSolidAlpha = 0;
+	_isStayKey_up = _isStayKey_down = _isBuild = false;
 	_idleMax = RND->getFromIntTo(100, 500);
-	_isStayKey_up = _isStayKey_down = false;
-
-	_player[_character]->setIsActive(true);
-	_player[!_character]->setIsActive(false);
-
-	_saveCount = _saveIndex = _blackSolidAlpha = 0;
-	_isFollowing = _isBuild = false;
-
-	for (int i = 0; i < 30; i++)
-	{
-		_saveProperties[i].state = _player[!_character]->getState();
-		_saveProperties[i].x = _player[!_character]->getX();
-		_saveProperties[i].y = _player[!_character]->getY();
-		_saveProperties[i].index = _player[!_character]->getIndex();
-		_saveProperties[i].count = _player[!_character]->getCount();
-		_saveProperties[i].isLeft = _player[!_character]->getIsLeft();
-	}
 
 	return S_OK;
 }
@@ -74,13 +62,13 @@ void playerManager::release(void)
 
 void playerManager::update(void)
 {
-	_bullet->update();
-	_triBullet->update();
-	_arrow->update();
-	_triArrow->update();
+	//_bullet->update();
+	//_triBullet->update();
+	//_arrow->update();
+	//_triArrow->update();
 
-	for (int i = 0; i < 2; i++)
-		_block[i]->update();
+	_block[_character]->update();
+	_block[!_character]->update();
 
 	this->keyInput();
 	this->playerBackstep();
@@ -113,20 +101,8 @@ void playerManager::render(void)
 
 	_player[!_character]->render();
 	_player[_character]->render();
-	
-	if (_isBuild)
-	{
-		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _blackSolidAlpha);
-		IMAGEMANAGER->alphaRender("bomb_selectDot", getMemDC(), _player[_character]->getX() - 44 * 0.5f - 2 - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 44 * 0.33f - 2 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
 
-		if (_character == CLU)
-			IMAGEMANAGER->alphaRender("bomb_text", getMemDC(), _player[_character]->getX() - 153 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
-		else
-			IMAGEMANAGER->alphaRender("defenseBlock_text", getMemDC(), _player[_character]->getX() - 262 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
-
-		_block[_character]->render();
-	}
-
+	this->buildRender();
 
 	//Ã¼·Â¹Ù ·»´õ
 	_player[_character]->getHpBarRed()->render(getMemDC());
@@ -135,7 +111,7 @@ void playerManager::render(void)
 	this->GUIrender();
 }
 
-void playerManager::GUIinit()
+void playerManager::setGUI()
 {
 	_blueFlower.img = IMAGEMANAGER->findImage("GUI_blueFlower");
 	_blueFlower.rc = RectMake(1163, 25, _blueFlower.img->getWidth(), _blueFlower.img->getHeight());
@@ -161,7 +137,6 @@ void playerManager::GUIinit()
 	_button_bomb.img = IMAGEMANAGER->findImage("GUI_button_bomb");
 	_button_bomb.x = 773, _button_bomb.y = WINSIZEY;
 	_button_bomb.alpha = 0;
-	_isBuild = false;
 }
 
 void playerManager::GUIupdate()
@@ -227,6 +202,38 @@ void playerManager::GUIrender()
 
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(myFont);
+}
+
+void playerManager::buildRender()
+{
+	if (_isBuild)
+	{
+		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _blackSolidAlpha);
+		IMAGEMANAGER->alphaRender("bomb_selectDot", getMemDC(), _player[_character]->getX() - 44 * 0.5f - 2 - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 44 * 0.33f - 2 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+
+		if (_character == CLU)
+			IMAGEMANAGER->alphaRender("bomb_text", getMemDC(), _player[_character]->getX() - 153 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+		else
+			IMAGEMANAGER->alphaRender("defenseBlock_text", getMemDC(), _player[_character]->getX() - 262 * 0.5f - CAMERAMANAGER->getCamera().left, _player[_character]->getY() - 130 - CAMERAMANAGER->getCamera().top, _button_bomb.alpha);
+
+		_block[_character]->render();
+	}
+}
+
+void playerManager::setFollow()
+{
+	_saveCount = _saveIndex = 0;
+	_isFollowing = false;
+
+	for (int i = 0; i < 30; i++)
+	{
+		_saveProperties[i].state = _player[!_character]->getState();
+		_saveProperties[i].x = _player[!_character]->getX();
+		_saveProperties[i].y = _player[!_character]->getY();
+		_saveProperties[i].index = _player[!_character]->getIndex();
+		_saveProperties[i].count = _player[!_character]->getCount();
+		_saveProperties[i].isLeft = _player[!_character]->getIsLeft();
+	}
 }
 
 void playerManager::keyInput()
@@ -373,10 +380,11 @@ void playerManager::playerRun(bool isLeft)
 {
 	float pos = _player[_character]->getIsLeft() ? 0.3 : - 0.3;
 	float angle = _player[_character]->getIsLeft() * PI;
+	float speed = 6.0f;
 	bool oldIsLeft = _player[_character]->getIsLeft();
 
 	_player[_character]->setIsLeft(isLeft);
-	_player[_character]->setX(_player[_character]->getX() + cosf(angle) * 7.0f);
+	_player[_character]->setX(_player[_character]->getX() + cosf(angle) * speed);
 	
 	if (_player[_character]->getOnLand())
 	{

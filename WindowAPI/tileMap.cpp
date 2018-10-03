@@ -5,13 +5,13 @@ HRESULT tileMap::init(void)
 {
 	string str;
 	//타일맵 이미지 초기화
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 10; i++)
 	{
 		str = "tex/tiles/surfaceTile_93x2_" + to_string(i + 1) + ".bmp";
 		IMAGEMANAGER->addFrameImage("tile_map" + to_string(i + 1), str.c_str(), 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
 	}
 
-	IMAGEMANAGER->addFrameImage("pixel_map", "tex/tiles/pixelTile_93x2_01.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("pixel_map", "tex/tiles/pixelTile_93x2_01.bmp", 11160, 240, SAMPLETILEX, SAMPLETILEY, true, RGB(255, 0, 255));*/
 
 	_pixelTiles = new image;
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
@@ -45,6 +45,9 @@ HRESULT tileMap::init(void)
 
 	_rcCamera = RectMake(0, TILESIZEY - WINSIZEY, WINSIZEX, WINSIZEY);
 	CAMERAMANAGER->setCamera(_rcCamera);
+	CAMERAMANAGER->setRange(7409, 1760);
+
+	this->backgroundElementsInit();
 
 	ShowCursor(false);
 	_cursorIcon[0].img = IMAGEMANAGER->findImage("cursorIcon_idle");
@@ -96,7 +99,7 @@ void tileMap::update(void)
 		if (_alpha >= 255)
 		{
 			SCENEMANAGER->getCurrentScene()->release();
-			SCENEMANAGER->loadScene("흑로딩화면");
+			SCENEMANAGER->loadScene("타일테스트화면");
 		}
 	}
 }
@@ -107,10 +110,12 @@ void tileMap::render(void)
 
 	SelectObject(getMemDC(), GetStockObject(NULL_BRUSH));
 	SelectObject(getMemDC(), GetStockObject(DC_PEN));
-	SetDCPenColor(getMemDC(), RGB(20, 20, 20));
+	SetDCPenColor(getMemDC(), RGB(200, 200, 200));
 	SelectObject(_pixelTiles->getMemDC(), GetStockObject(NULL_BRUSH));
 	SelectObject(_pixelTiles->getMemDC(), GetStockObject(DC_PEN));
-	SetDCPenColor(_pixelTiles->getMemDC(), RGB(20, 20, 20));
+	SetDCPenColor(_pixelTiles->getMemDC(), RGB(200, 200, 200));
+
+	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 
 	//게임타일 렉트 렌더
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -889,27 +894,23 @@ void tileMap::cameraAdjustment(void)
 		if (KEYMANAGER->isStayKeyDown('A'))
 		{
 			_rcCamera.left -= 30;
-			_rcCamera.right -= 30;
 		}
 
 		if (KEYMANAGER->isStayKeyDown('D'))
 		{
 			_rcCamera.left += 30;
-			_rcCamera.right += 30;
 		}
 		if (KEYMANAGER->isStayKeyDown('W'))
 		{
 			_rcCamera.top -= 30;
-			_rcCamera.bottom -= 30;
 		}
 		if (KEYMANAGER->isStayKeyDown('S'))
 		{
 			_rcCamera.top += 30;
-			_rcCamera.bottom += 30;
 		}
 	}
 
-	if (_rcCamera.left <= 0)
+	/*if (_rcCamera.left <= 0)
 	{
 		_rcCamera.left = 0;
 		_rcCamera.right = _rcCamera.left + WINSIZEX;
@@ -928,10 +929,15 @@ void tileMap::cameraAdjustment(void)
 	{
 		_rcCamera.top = TILESIZEY - WINSIZEY;
 		_rcCamera.bottom = _rcCamera.top + WINSIZEY;
-	}
+	}*/
 
 	_rcCamera = RectMake(_rcCamera.left, _rcCamera.top, WINSIZEX, WINSIZEY);
 	CAMERAMANAGER->setCamera(_rcCamera);
+}
+
+void tileMap::backgroundElementsInit()
+{
+
 }
 
 TERRAIN tileMap::terrainSelect(int frameX, int frameY)

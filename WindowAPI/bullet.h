@@ -1,25 +1,6 @@
 #pragma once
 #include "gameNode.h"
 
-//총알 구조체
-struct tagBullet
-{
-	image* bulletImage;
-	image* shadowImage;
-	RECT rc;
-	BYTE alpha;
-	float x, y;
-	float fireX, fireY;
-	float speed;
-	float angle;
-	float gravity;
-	float radius;
-	bool fire;
-	int index;
-	int count;
-	int fadeCount;
-};
-
 //=============================================================
 //	## bullet ## (공용총알 - 너희들이 만들면 된다)
 //=============================================================

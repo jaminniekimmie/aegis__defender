@@ -188,32 +188,6 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_ventPos[0].x = 1245, _ventPos[0].y = 1422, _ventRange[0] = 300;
-		_ventPos[1].x = 1985, _ventPos[1].y = 1420, _ventRange[1] = 300;
-		_ventPos[2].x = 3120, _ventPos[2].y = 1250, _ventRange[2] = 245;
-		_ventPos[3].x = 3048, _ventPos[3].y = 674, _ventRange[3] = 300;
-		_ventPos[4].x = 3363, _ventPos[4].y = 547, _ventRange[4] = 90;
-		_ventPos[5].x = 3626, _ventPos[5].y = 680, _ventRange[5] = 90;
-		_ventPos[6].x = 3608, _ventPos[6].y = 1402, _ventRange[6] = 146;
-		_ventPos[7].x = 4668, _ventPos[7].y = 1256, _ventRange[7] = 406;
-		_ventPos[8].x = 5277, _ventPos[8].y = 520, _ventRange[8] = 300;
-		_ventPos[9].x = 6227, _ventPos[9].y = 929, _ventRange[9] = 148;
-		_ventPos[10].x = 5866, _ventPos[10].y = 308, _ventRange[10] = 154;
-		_ventPos[11].x = 6588, _ventPos[11].y = 655, _ventRange[11] = 130;
-		_ventPos[12].x = 6709, _ventPos[12].y = 664, _ventRange[12] = 130;
-		_ventPos[13].x = 6831, _ventPos[13].y = 655, _ventRange[13] = 130;
-
-		for (int i = 0; i < 14; i++)
-		{
-			type = VENT;
-
-			objects* object = _factory->createObject(type);
-			object->setPosition(_ventPos[i].x, _ventPos[i].y);
-			//object->init();
-
-			_vObject.push_back(object);
-		}
-
 		_switchHorPos[0].x = 3932, _switchHorPos[0].y = 817;
 		_switchHorPos[1].x = 4588, _switchHorPos[1].y = 230;
 		
@@ -254,6 +228,33 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
+		_ventPos[0].x = 1245, _ventPos[0].y = 1422, _ventRange[0] = 350;
+		_ventPos[1].x = 1985, _ventPos[1].y = 1420, _ventRange[1] = 350;
+		_ventPos[2].x = 3120, _ventPos[2].y = 1250, _ventRange[2] = 295;
+		_ventPos[3].x = 3048, _ventPos[3].y = 674, _ventRange[3] = 350;
+		_ventPos[4].x = 3363, _ventPos[4].y = 547, _ventRange[4] = 95;
+		_ventPos[5].x = 3626, _ventPos[5].y = 680, _ventRange[5] = 95;
+		_ventPos[6].x = 3608, _ventPos[6].y = 1402, _ventRange[6] = 196;
+		_ventPos[7].x = 4668, _ventPos[7].y = 1256, _ventRange[7] = 456;
+		_ventPos[8].x = 5277, _ventPos[8].y = 520, _ventRange[8] = 350;
+		_ventPos[9].x = 6227, _ventPos[9].y = 929, _ventRange[9] = 198;
+		_ventPos[10].x = 5866, _ventPos[10].y = 308, _ventRange[10] = 204;
+		_ventPos[11].x = 6588, _ventPos[11].y = 655, _ventRange[11] = 180;
+		_ventPos[12].x = 6709, _ventPos[12].y = 664, _ventRange[12] = 180;
+		_ventPos[13].x = 6831, _ventPos[13].y = 655, _ventRange[13] = 180;
+
+		for (int i = 0; i < 14; i++)
+		{
+			type = VENT;
+
+			objects* object = _factory->createObject(type);
+			object->setPosition(_ventPos[i].x, _ventPos[i].y);
+			//object->init();
+
+			_vObject.push_back(object);
+		}
+
+
 		_isGameClear = false;
 	}
 
@@ -266,6 +267,9 @@ HRESULT objectManager::init(int num)
 void objectManager::release()
 {
 	_vObject.clear();
+
+	for (int i = 0; i < _vObject.size(); i++)
+		_vObject[i]->release();
 }
 
 void objectManager::update()
@@ -273,7 +277,7 @@ void objectManager::update()
 	RECT rcTemp;
 	RECT rcPlayer = _playerManager->getPlayer()->getRect();
 	int activatorCount = 0;
-	float angle, speed, smlRand, centerX, centerY;
+	float angle, speed, smlRand, centerX, centerY, targetX, targetY;
 
 	for (int i = 0; i < _vObject.size(); i++)
 	{
@@ -317,17 +321,28 @@ void objectManager::update()
 			}
 			else
 			{
-				this->collisionBullet(i, OBJECT_MOVE);
+				//this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+				//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
+				//this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
+				//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
 			}
 		}
 		else if (VENT == _vObject[i]->getType())
 		{
+			speed = 12;
+			
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()))
 			{
-				_playerManager->getPlayer()->setY(_playerManager->getPlayer()->getY() - 12);
+				if (rcPlayer.bottom - speed <= _vObject[i]->getActionRect().top)
+					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().top - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5f + 2);
+				else
+					_playerManager->getPlayer()->setY(_playerManager->getPlayer()->getY() - speed);
+
 				_playerManager->getPlayer()->setGravity(0);
 				_playerManager->getPlayer()->setIsJump(true);
 				_playerManager->getPlayer()->setOnLand(false);
+
+				//break;
 			}
 		}
 		else if (BUSH_SPIKES == _vObject[i]->getType())
@@ -345,6 +360,7 @@ void objectManager::update()
 				_playerManager->getPlayer()->setState(HIT);
 				_playerManager->getPlayer()->setIsActive(false);
 				_isHit = true;
+
 				break;
 			}
 		}
@@ -353,7 +369,11 @@ void objectManager::update()
 			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(CLU)->getRect(), &_vObject[i]->getActionRect()) ||
 				IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getRect(), &_vObject[i]->getActionRect()))
 			{
+				if (_vObject[i]->getIndex() == 0 && _vObject[i]->getCount() % _vObject[i]->getFrameSpeed() == 0)
+					SOUNDMANAGER->play("Prop_Button_slam");
 				_vObject[i]->setState(OBJECT_MOVE);
+				
+				//break;
 			}
 			else
 			{
@@ -366,9 +386,15 @@ void objectManager::update()
 		else if (SWITCH_VERT == _vObject[i]->getType())
 		{
 			OBJECTSTATE state = _vObject[i]->getState();
-			this->collisionBullet(i, OBJECT_MOVE);
+			//this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+			//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
+			//this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
+			//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
 			if (state != _vObject[i]->getState() && _vObject[i]->getState() == OBJECT_MOVE)
+			{
+				SOUNDMANAGER->play("Prop_Button_slam");
 				CAMERAMANAGER->CameraBoomerang(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), _vObject[i]->getX(), _vObject[i]->getY());
+			}
 
 			if (_vObject[i]->getIndex() == _vObject[i]->getImage()->getMaxFrameX())
 				activatorCount++;
@@ -380,6 +406,7 @@ void objectManager::update()
 			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getRect(), &_vObject[i]->getActionRect()))
 			{
 				SOUNDMANAGER->play("Prop_Door_DNA_enter");
+
 				break;
 			}
 		}
@@ -390,6 +417,7 @@ void objectManager::update()
 			if (IntersectRect(&rcTemp, &_playerManager->getPlayer(CLU)->getRect(), &_vObject[i]->getActionRect()))
 			{
 				SOUNDMANAGER->play("Prop_Door_DNA_enter");
+
 				break;
 			}
 		}
@@ -398,13 +426,32 @@ void objectManager::update()
 			centerX = _vObject[i]->getX() + _vObject[i]->getImage()->getFrameWidth() * 0.5f;
 			centerY = _vObject[i]->getY() + _vObject[i]->getImage()->getFrameHeight() * 0.5f;
 
-			this->collisionBullet(i, _vObject[i]->getState());
 			this->collisionDoorElevator(i, _playerManager->getCharacter());
 
 			if (activatorCount >= 2 && _vObject[i]->getIndex() != _vObject[i]->getImage()->getMaxFrameX())
 			{
 				CAMERAMANAGER->CameraBoomerang(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), centerX, centerY);
 				_vObject[i]->setState(OBJECT_MOVE);
+			}
+		}
+		else if (SPAWNER == _vObject[i]->getType())
+		{
+			int index;
+			centerX = _vObject[i]->getX() + _vObject[i]->getImage()->getWidth() * 0.5f;
+			centerY = _vObject[i]->getY() + _vObject[i]->getImage()->getHeight() * 0.5f;
+
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()))
+			{
+				if (_vObject[i - 1]->getType() == SPAWNER) index = i - 1;
+				else if (_vObject[i + 1]->getType() == SPAWNER) index = i + 1;
+				else return;//break;
+
+				targetX = _vObject[index]->getX() + _vObject[index]->getImage()->getWidth() * 0.5f;
+				targetY = _vObject[index]->getY() + _vObject[index]->getImage()->getHeight() * 0.5f;
+
+				CAMERAMANAGER->CameraSwitch(centerX, centerY, targetX, targetY);
+				_playerManager->getPlayer()->setX(targetX);
+				_playerManager->getPlayer()->setY(targetY);
 			}
 		}
 
@@ -446,32 +493,17 @@ void objectManager::collisionProcess()
 	}
 }
 
-void objectManager::collisionBullet(int index, OBJECTSTATE setState)
+void objectManager::collisionBullet(int index, vector<tagBullet> bullet, OBJECTSTATE setState)
 {
 	RECT rcTemp;
 
-	for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
+	for (int j = 0; j < bullet.size(); j++)
 	{
-		if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
+		if (IntersectRect(&rcTemp, &bullet[j].rc, &_vObject[index]->getRect()))
 		{
-			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
-			_playerManager->getBullet()->removeBullet(j);
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), bullet[j].rc.left, bullet[j].rc.top);
+			bullet[j].fire = false;
 			_vObject[index]->playerAttack();
-			//_vObject[index]->setState(setState);
-			break;
-		}
-	}
-
-	for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
-	{
-		if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
-
-		if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
-		{
-			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
-			_playerManager->getTriBullet()->getVBullet()[j].fire = false;
-			_vObject[index]->playerAttack();
-			//_vObject[index]->setState(setState);
 			break;
 		}
 	}
@@ -528,7 +560,7 @@ void objectManager::collisionDoorElevator (int index, PLAYERCHARACTER character)
 			rcPlayer.top <= _vObject[index]->getActionRect().bottom &&
 			rcPlayer.bottom > _vObject[index]->getActionRect().bottom)
 		{
-			_playerManager->getPlayer(character)->setY(_vObject[index]->getActionRect().bottom + (rcPlayer.bottom - rcPlayer.top) * 0.25 + 1);
+			_playerManager->getPlayer(character)->setY(_playerManager->getPlayer(character)->getY() + (rcTemp.bottom - rcTemp.top));
 		}
 	}
 }

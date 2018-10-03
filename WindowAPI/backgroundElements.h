@@ -58,3 +58,29 @@ public:
 	sculptures_back() {}
 	~sculptures_back() {}
 };
+
+class autotile_lightorange : public backgroundElements
+{
+public:
+	HRESULT init();
+	void release();
+	void update();
+
+	void changeImage();
+
+	autotile_lightorange() {}
+	~autotile_lightorange() {}
+};
+
+class autotile_back : public backgroundElements
+{
+public:
+	HRESULT init();
+	void release();
+	void update();
+
+	void changeImage();
+
+	autotile_back() {}
+	~autotile_back() {}
+};

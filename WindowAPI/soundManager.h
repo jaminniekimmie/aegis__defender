@@ -21,6 +21,7 @@ private:
 	System* _system;		//시스템 클래스
 	Sound** _sound;			//사운드 클래스
 	Channel** _channel;		//채널 클래스
+	string _currentBGM;
 
 	arrSound _mTotalSound;	//맵에 담아둘 사운드들
 
@@ -33,13 +34,15 @@ public:
 	void addSound(string keyName, string soundName, bool bgm = false, bool loop = false);
 
 	//사운드 재생
-	void play(string keyName, float volume = 1.0f);//볼륨은 0.0f ~ 1.0f
+	void play(string keyName, bool bgm = false, float volume = 1.0f);//볼륨은 0.0f ~ 1.0f
 	//사운드 정지
 	void stop(string keyName);
 	//사운드 일시정지
 	void pause(string keyName);
 	//사운드 다시재생
 	void resume(string keyName);
+
+	void setVolume(float volume);
 
 	//플레이 중이냐?
 	bool isPlaySound(string keyName);

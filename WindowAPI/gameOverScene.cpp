@@ -8,11 +8,14 @@ HRESULT gameOverScene::init(void)
 	_index = 0;
 	_sceneSwitch = false;
 
+	SOUNDMANAGER->play("BGM_gameOver", true);
+
 	return S_OK;
 }
 
 void gameOverScene::release(void)
 {
+	SOUNDMANAGER->stop("BGM_gameOver");
 }
 
 void gameOverScene::update(void)
@@ -27,10 +30,11 @@ void gameOverScene::update(void)
 		_alpha += 5;
 		if (_alpha >= 255)
 		{
+			SCENEMANAGER->getCurrentScene()->release();
 			if (_index == 0)
 				SCENEMANAGER->loadScene("캐릭터로딩화면");
 			else
-				SCENEMANAGER->loadScene("캐릭터로딩화면");
+				SCENEMANAGER->loadScene("타이틀화면");
 		}
 	}
 

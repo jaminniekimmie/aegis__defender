@@ -10,6 +10,7 @@ protected:
 	MONSTERSTATE _state;
 	RECT _rc;
 	tagImage _image[MAXMONSTERSTATE];
+	vector<tagElement> _vElement;
 	float _x, _y;
 	float _destX, _destY;
 	float _oldX, _oldY;
@@ -43,6 +44,7 @@ public:
 	MONSTERTYPE getType() { return _type; }
 	mHpBar* getHpBar() { return _hpBar; }
 	image* getImage(MONSTERSTATE state) { return _image[state].img; }
+	vector<tagElement> getVElement() { return _vElement; }
 	RECT getRect() { return _image[_state].rc; }
 
 	void setX(float x) { _x = x; }
@@ -115,11 +117,43 @@ private:
 	void hit();
 	void dead();
 	void item();
+	void render(HDC hdc);
 
 public:
 };
 
 class eagle : public monster
+{
+private:
+	void init();
+	void release();
+	void idle();
+	void move();
+	void hit();
+	void dead();
+	void item();
+
+public:
+};
+
+class thief_boomerang : public monster
+{
+private:
+	float _rotateAngle;
+private:
+	void init();
+	void release();
+	void idle();
+	void move();
+	void hit();
+	void dead();
+	void item();
+	void render(HDC hdc);
+
+public:
+};
+
+class mask : public monster
 {
 private:
 	void init();

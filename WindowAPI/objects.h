@@ -1,24 +1,6 @@
 #pragma once
 #include "tileNode.h"
 
-struct tagElement
-{
-	image* elementImg;
-	RECT rc;
-	float x, y;
-	float fireX, fireY;
-	float speed;
-	float angle;
-	float gravity;
-	float radius;
-	bool fire;
-	bool isActive;
-	bool isFrameImg;
-	int alpha;
-	int count;
-	int index;
-};
-
 class objects
 {
 protected:
@@ -55,6 +37,8 @@ public:
 	float getAngle() { return _angle; }
 	bool getIsActive() { return _isActive; }
 	bool getIsLeft() { return _isLeft; }
+	int getCount() { return _count; }
+	int getFrameSpeed() { return _frameSpeed; }
 	int getIndex() { return _index; }
 	int getAttackCount() { return _attackCount; }
 	OBJECTSTATE getState() { return _state; }
@@ -86,6 +70,7 @@ public:
 	void removeElement();
 
 	virtual void init() = 0;
+	virtual void release();
 	virtual void update();
 	virtual void render(HDC hdc);
 	virtual void idle() = 0;

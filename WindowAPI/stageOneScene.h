@@ -25,8 +25,12 @@ public:
 	void update(void);
 	void render(void);
 
-	void cameraAdjustment();
-	void mapLoad();
+	void backgroundElementsInit();
+	void cameraAdjustment(PLAYERCHARACTER character);
+	void sceneSwitch();
+	void tileMapLoad();
+	void tileMapRender();
+	void mapRender();
 
 	stageOneScene() {}
 	~stageOneScene() {}

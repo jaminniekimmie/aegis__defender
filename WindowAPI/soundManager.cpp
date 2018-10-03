@@ -87,7 +87,7 @@ void soundManager::addSound(string keyName, string soundName, bool bgm, bool loo
 	_mTotalSound.insert(make_pair(keyName, &_sound[_mTotalSound.size()]));
 }
 
-void soundManager::play(string keyName, float volume)
+void soundManager::play(string keyName, bool bgm, float volume)
 {
 	int count = 0;
 	arrSoundIter iter = _mTotalSound.begin();
@@ -102,6 +102,8 @@ void soundManager::play(string keyName, float volume)
 			_channel[count]->setVolume(volume);
 		}
 	}
+	if (bgm)
+		_currentBGM = keyName;
 }
 
 void soundManager::stop(string keyName)
@@ -144,6 +146,24 @@ void soundManager::resume(string keyName)
 			//사운드 다시재생
 			_channel[count]->setPaused(false);
 			break;
+		}
+	}
+}
+
+void soundManager::setVolume(float volume)
+{
+	int count = 0;
+
+	arrSoundIter iter = _mTotalSound.begin();
+	for (iter; iter != _mTotalSound.end(); ++iter, count++)
+	{
+		if (_currentBGM == iter->first)
+		{
+			//사운드 플레이
+			//_system->playSound(FMOD_CHANNEL_FREE, *iter->second, false, &_channel[count]);
+
+			//볼륨세팅
+			_channel[count]->setVolume(volume);
 		}
 	}
 }

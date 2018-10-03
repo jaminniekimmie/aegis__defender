@@ -10,9 +10,9 @@ HRESULT sculptures_front::init()
 {
 	this->changeImage();
 
-	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
-	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 1.5;
-	_z = RND->getInt(4) + 1;
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth()) - CAMERAMANAGER->getMaxWidth() * 0.33f;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 1.25;
+	_z = RND->getFromIntTo(6, 7) + 1;
 
 	return S_OK;
 }
@@ -29,4 +29,57 @@ void sculptures_front::changeImage()
 {
 	int c = RND->getFromIntTo(0, 6);
 	_img = IMAGEMANAGER->findImage("sculpture_front_0" + to_string(c + 1));
+}
+
+HRESULT autotile_darkbrown::init()
+{
+	this->changeImage();
+
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth()) - CAMERAMANAGER->getMaxWidth() * 0.33f;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.6;
+	_z = RND->getFromIntTo(4, 5) + 1; 
+
+
+	return S_OK;
+}
+
+void autotile_darkbrown::release()
+{
+}
+
+void autotile_darkbrown::update()
+{
+}
+
+void autotile_darkbrown::changeImage()
+{
+	int c = RND->getFromIntTo(1, 5);
+	_img = IMAGEMANAGER->findImage("autotile_darkbrown" + to_string(c));
+}
+
+HRESULT autotile_orange::init()
+{
+	this->changeImage();
+
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.88;
+	_z = RND->getFromIntTo(6, 7) + 1;
+	//ÇÃ·¹ÀÌ¾î°¡ 10ÂëÀÎ°¡?
+	//¸ÊÀÌ 9
+
+	return S_OK;
+}
+
+void autotile_orange::release()
+{
+}
+
+void autotile_orange::update()
+{
+}
+
+void autotile_orange::changeImage()
+{
+	int c = RND->getFromIntTo(1, 8);
+	_img = IMAGEMANAGER->findImage("autotile_orange" + to_string(c));
 }

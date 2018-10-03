@@ -46,25 +46,26 @@ void renderManager::backgroundRender(HDC hdc)
 void renderManager::foregroundRender(HDC hdc)
 {
 	multimap<float, foregroundElements*>::iterator iter;
+	multimap<float, foregroundElements*>::reverse_iterator rIter;
 	RECT rcTemp;
 	float centerX = CAMERAMANAGER->getCamera().left + WINSIZEX / 2, centerY = CAMERAMANAGER->getCamera().top + WINSIZEY / 2;
 	float x, y, z;
 	float width, height;
 	if (!foregroundList.empty())
 	{
-		for (iter = foregroundList.begin(); iter != foregroundList.end(); ++iter)
+		for (rIter = foregroundList.rbegin(); rIter != foregroundList.rend(); ++rIter)
 		{
-			iter->second->update();
-			width = iter->second->getImage()->getWidth();
-			height = iter->second->getImage()->getHeight();
-			z = iter->second->getZ();
+			rIter->second->update();
+			width = rIter->second->getImage()->getWidth();
+			height = rIter->second->getImage()->getHeight();
+			z = rIter->second->getZ();
 
-			x = WINSIZEX / 2 + (iter->second->getX() - centerX) * (5 - z);
-			y = WINSIZEY / 2 + (iter->second->getY() - centerY) * (5 - z);
+			x = WINSIZEX / 2 + (rIter->second->getX() - centerX) * (10 - z);
+			y = WINSIZEY / 2 + (rIter->second->getY() - centerY) * (10 - z);
 
 			if (IntersectRect(&rcTemp, &RectMake(0, 0, WINSIZEX, WINSIZEY), &RectMake(x, y, width, height)))
 			{
-				iter->second->render(x, y);
+				rIter->second->render(x, y);
 			}
 		}
 	}

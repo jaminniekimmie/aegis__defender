@@ -14,12 +14,14 @@ HRESULT mainGame::init(void)
 
 	/*씬추가*/
 	SCENEMANAGER->addScene("흑로딩화면", new loadingBlackScene);
+	SCENEMANAGER->addScene("훼이크로딩화면", new fakeLoadingScene);
 	SCENEMANAGER->addScene("오픈로딩화면", new loadingOpenScene);
 	SCENEMANAGER->addScene("캐릭터로딩화면", new loadingCharScene);
 	SCENEMANAGER->addScene("게임오버화면", new gameOverScene);
+	SCENEMANAGER->addScene("타이틀화면", new titleScene);
 	SCENEMANAGER->addScene("맵툴", new buildAMapScene);
+	SCENEMANAGER->addScene("타일테스트화면", new tileTestScene);
 	SCENEMANAGER->addScene("스테이지원", new stageOneScene);
-	SCENEMANAGER->addScene("스테이지투", new stageTwoScene);
 
 	/*현재씬 설정*/
 	SCENEMANAGER->loadScene("오픈로딩화면");
