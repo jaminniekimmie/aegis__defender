@@ -11,6 +11,16 @@ HRESULT bullet::init(const char * imageName, int bulletMax, float range)
 	_bulletMax = bulletMax;
 	_range = range;
 
+	for (int i = 0; i < _bulletMax; i++)
+	{
+		tagBullet bullet;
+		ZeroMemory(&bullet, sizeof(tagBullet));
+		bullet.bulletImage = IMAGEMANAGER->findImage(_imageName);
+
+		//벡터에 담기
+		_vBullet.push_back(bullet);
+	}
+
 	return S_OK;
 }
 
@@ -44,6 +54,7 @@ void bullet::render(void)
 	_viBullet = _vBullet.begin();
 	for (_viBullet; _viBullet != _vBullet.end(); ++_viBullet)
 	{
+		if (!_viBullet->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viBullet->rc)) continue;
 		_viBullet->bulletImage->render(getMemDC(), _viBullet->rc.left - CAMERAMANAGER->getCamera().left, _viBullet->rc.top - CAMERAMANAGER->getCamera().top);
 	}
@@ -51,23 +62,20 @@ void bullet::render(void)
 
 void bullet::fire(float x, float y, float angle, float speed)
 {
-	//총알 벡터에 담는것을 제한하자
-	if (_bulletMax < _vBullet.size() + 1) return;
-
-	tagBullet bullet;
-	ZeroMemory(&bullet, sizeof(tagBullet));
-	bullet.bulletImage = IMAGEMANAGER->findImage(_imageName);
-	bullet.speed = speed;
-	bullet.angle = angle;
-	bullet.alpha = 255;
-	bullet.x = bullet.fireX = x;
-	bullet.y = bullet.fireY = y;
-	bullet.rc = RectMakeCenter(bullet.x, bullet.y,
-		bullet.bulletImage->getWidth(),
-		bullet.bulletImage->getHeight());
-
-	//벡터에 담기
-	_vBullet.push_back(bullet);
+	for (int i = 0; i < _vBullet.size(); i++)
+	{
+		if (_vBullet[i].fire) continue;
+		_vBullet[i].fire = true;
+		_vBullet[i].bulletImage = IMAGEMANAGER->findImage(_imageName);
+		_vBullet[i].speed = speed;
+		_vBullet[i].angle = angle;
+		_vBullet[i].alpha = 255;
+		_vBullet[i].x = _vBullet[i].fireX = x;
+		_vBullet[i].y = _vBullet[i].fireY = y;
+		_vBullet[i].rc = RectMakeCenter(_vBullet[i].x, _vBullet[i].y,
+			_vBullet[i].bulletImage->getWidth(),
+			_vBullet[i].bulletImage->getHeight());
+	}
 
 
 	int randNo = RND->getFromIntTo(8, 15);
@@ -131,26 +139,22 @@ void bullet::move()
 {
 	RECT rcTemp;
 
-	_viBullet = _vBullet.begin();
-	for (; _viBullet != _vBullet.end();)
+	for (int i = 0; i < _vBullet.size(); i++)
 	{
-		_viBullet->x += cosf(_viBullet->angle) * _viBullet->speed;
-		_viBullet->y += -sinf(_viBullet->angle) * _viBullet->speed;
-		_viBullet->rc = RectMakeCenter(_viBullet->x, _viBullet->y,
-			_viBullet->bulletImage->getWidth(),
-			_viBullet->bulletImage->getHeight());
+		if (!_vBullet[i].fire) continue;
+		_vBullet[i].x += cosf(_vBullet[i].angle) * _vBullet[i].speed;
+		_vBullet[i].y += -sinf(_vBullet[i].angle) * _vBullet[i].speed;
+		_vBullet[i].rc = RectMakeCenter(_vBullet[i].x, _vBullet[i].y,
+			_vBullet[i].bulletImage->getWidth(),
+			_vBullet[i].bulletImage->getHeight());
 
 		//총알이 사거리보다 커졌을때
-		float distance = getDistance(_viBullet->fireX, _viBullet->fireY,
-			_viBullet->x, _viBullet->y);
+		float distance = getDistance(_vBullet[i].fireX, _vBullet[i].fireY,
+			_vBullet[i].x, _vBullet[i].y);
 		if (_range < distance)
 		{
-			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viBullet->rc.left, _viBullet->rc.top);
-			_viBullet = _vBullet.erase(_viBullet);
-		}
-		else
-		{
-			++_viBullet;
+			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
+			_vBullet[i].fire = false;
 		}
 	}
 
@@ -253,6 +257,7 @@ void bullet::collision()
 
 	for (int i = 0; i < _vBullet.size(); i++)
 	{
+		if (!_vBullet[i].fire) continue;
 		float x = _vBullet[i].x;
 		float y = _vBullet[i].y;
 
@@ -264,9 +269,10 @@ void bullet::collision()
 			COLLISIONMANAGER->pixelCollision(_vBullet[i].rc, x, y, _vBullet[i].speed, _vBullet[i].gravity, RIGHT) == BLUE)
 		{
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vBullet[i].rc.left, _vBullet[i].rc.top);
-			_vBullet[i].x = _vBullet[i].fireX;
-			_vBullet[i].y = _vBullet[i].fireY;
-			_vBullet.erase(_vBullet.begin() + i);
+			//_vBullet[i].x = _vBullet[i].fireX;
+			//_vBullet[i].y = _vBullet[i].fireY;
+			_vBullet[i].fire = false;
+			break;
 		}
 	}
 }
@@ -303,6 +309,19 @@ HRESULT triBullet::init(const char * imageName, int bulletMax, float range)
 		_vBullet.push_back(bullet);
 	}
 
+	for (int i = 0; i < _bulletMax; i++)
+	{
+
+		tagBullet magazine;
+		ZeroMemory(&magazine, sizeof(tagBullet));
+		magazine.bulletImage = IMAGEMANAGER->findImage("magazine");
+		magazine.alpha = 255;
+		magazine.fire = false;
+
+		//벡터에 담기
+		_vMagazine.push_back(magazine);
+	}
+
 	return S_OK;
 }
 
@@ -321,6 +340,7 @@ void triBullet::render(void)
 	_viMagazine = _vMagazine.begin();
 	for (_viMagazine; _viMagazine != _vMagazine.end(); ++_viMagazine)
 	{
+		if (!_viMagazine->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viMagazine->rc)) continue;
 		_viMagazine->bulletImage->alphaRender(getMemDC(), _viMagazine->rc.left - CAMERAMANAGER->getCamera().left, _viMagazine->rc.top - CAMERAMANAGER->getCamera().top, _viMagazine->alpha);
 	}
@@ -328,6 +348,7 @@ void triBullet::render(void)
 	_viParticle = _vParticle.begin();
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
+		if (!_viParticle->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viParticle->rc)) continue;
 		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
@@ -360,6 +381,8 @@ void triBullet::fire(float x, float y, float angle, float speed)
 			_viBullet->bulletImage->getHeight());
 	}
 
+	_viParticle = _vParticle.begin();
+	
 	int randNo = RND->getFromIntTo(10, 20);
 
 	for (int i = 0; i < randNo; i++)
@@ -382,7 +405,7 @@ void triBullet::fire(float x, float y, float angle, float speed)
 	}
 
 
-	for (int i = 0; i < randNo * 3; i++)
+	for (int i = 0; i < randNo * _bulletMax; i++)
 	{
 		tagBullet particle;
 		ZeroMemory(&particle, sizeof(tagBullet));
@@ -401,20 +424,20 @@ void triBullet::fire(float x, float y, float angle, float speed)
 		_vParticle.push_back(particle);
 	}
 
-	tagBullet magazine;
-	ZeroMemory(&magazine, sizeof(tagBullet));
-	magazine.bulletImage = IMAGEMANAGER->findImage("magazine");
-	magazine.speed = RND->getFromFloatTo(8.0f, 12.0f);
-	magazine.angle = RND->getFromIntTo(0, 1) ? PI / 3 : PI - PI / 3;
-	magazine.alpha = 255;
-	magazine.x = magazine.fireX = x;
-	magazine.y = magazine.fireY = y;
-	magazine.rc = RectMakeCenter(magazine.x, magazine.y,
-		magazine.bulletImage->getWidth(),
-		magazine.bulletImage->getHeight());
-
-	//벡터에 담기
-	_vMagazine.push_back(magazine);
+	_viMagazine = _vMagazine.begin();
+	for (_viMagazine; _viMagazine != _vMagazine.end(); ++_viMagazine)
+	{
+		_viMagazine->fire = true;
+		_viMagazine->speed = RND->getFromFloatTo(8.0f, 12.0f);
+		_viMagazine->angle = RND->getFromIntTo(0, 1) ? PI / 3 : PI - PI / 3;
+		_viMagazine->alpha = 255;
+		_viMagazine->count = 0;
+		_viMagazine->x = _viMagazine->fireX = x;
+		_viMagazine->y = _viMagazine->fireY = y;
+		_viMagazine->rc = RectMakeCenter(_viMagazine->x, _viMagazine->y,
+			_viMagazine->bulletImage->getWidth(),
+			_viMagazine->bulletImage->getHeight());
+	}
 }
 
 void triBullet::move()
@@ -479,6 +502,7 @@ void triBullet::move()
 
 	for (int i = 0; i < _vMagazine.size(); ++i)
 	{
+		if (!_vMagazine[i].fire) continue;
 		_vMagazine[i].count++;
 		_vMagazine[i].gravity += 0.55f;
 		_vMagazine[i].x += cosf(_vMagazine[i].angle) * _vMagazine[i].speed;
@@ -495,7 +519,7 @@ void triBullet::move()
 			_vMagazine[i].alpha -= 15;
 
 			if (_vMagazine[i].alpha <= 0)
-				_vMagazine.erase(_vMagazine.begin() + i);
+				_vMagazine[i].fire = false;
 		}
 	}
 }
@@ -574,12 +598,12 @@ HRESULT arrow::init(const char * imageName, int arrowMax, float range)
 	_range = range;
 	_gravity = 0;
 
+	//총알 벡터에 담는것을 제한하자
 	for (int i = 0; i < _arrowMax; i++)
 	{
 		tagBullet arrow;
 		ZeroMemory(&arrow, sizeof(tagBullet));
 		arrow.bulletImage = IMAGEMANAGER->findImage(_imageName);
-		arrow.fire = false;
 
 		//벡터에 담기
 		_vArrow.push_back(arrow);
@@ -603,6 +627,7 @@ void arrow::render(void)
 	_viParticle = _vParticle.begin();
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
+		if (!_viParticle->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viParticle->rc)) continue;
 		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
@@ -618,6 +643,9 @@ void arrow::render(void)
 
 void arrow::fire(float x, float y, float angle, float speed)
 {
+	////총알 벡터에 담는것을 제한하자
+	//if (_arrowMax < _vArrow.size() + 1) return;
+
 	_viArrow = _vArrow.begin();
 	for (_viArrow; _viArrow != _vArrow.end(); ++_viArrow)
 	{
@@ -634,6 +662,8 @@ void arrow::fire(float x, float y, float angle, float speed)
 			_viArrow->bulletImage->getWidth(),
 			_viArrow->bulletImage->getHeight());
 	}
+
+
 
 	int randNo = RND->getFromIntTo(10, 20);
 
@@ -683,47 +713,39 @@ void arrow::move()
 {
 	RECT rcTemp;
 
-	_viArrow = _vArrow.begin();
-
-	for (; _viArrow != _vArrow.end();)
+	for (int i = 0; i < _vArrow.size(); i++)
 	{
-		if (!_viArrow->fire) continue;
+		if (!_vArrow[i].fire) continue;
+		_vArrow[i].gravity += 0.25f;
+		_vArrow[i].x += cosf(_vArrow[i].angle) * _vArrow[i].speed;
+		_vArrow[i].y += -sinf(_vArrow[i].angle) * _vArrow[i].speed + _vArrow[i].gravity;
+		_vArrow[i].rc = RectMakeCenter(_vArrow[i].x, _vArrow[i].y,
+			_vArrow[i].bulletImage->getWidth(),
+			_vArrow[i].bulletImage->getHeight());
 
-		_viArrow->gravity += 0.25f;
-		_viArrow->x += cosf(_viArrow->angle) * _viArrow->speed;
-		_viArrow->y += -sinf(_viArrow->angle) * _viArrow->speed + _viArrow->gravity;
-		_viArrow->rc = RectMakeCenter(_viArrow->x, _viArrow->y,
-			_viArrow->bulletImage->getWidth(),
-			_viArrow->bulletImage->getHeight());
-
-		if (_viArrow->speed == 0)
+		if (_vArrow[i].speed == 0)
 		{
-			_viArrow->count++;
+			_vArrow[i].count++;
 
-			if (_viArrow->count > 50)
+			if (_vArrow[i].count > 50)
 			{
-				_viArrow->alpha -= 15;
+				_vArrow[i].alpha -= 15;
 
-				if (_viArrow->alpha <= 0)
+				if (_vArrow[i].alpha <= 0)
 				{
-					_viArrow->fire = false;
+					_vArrow[i].fire = false;
 					continue;
 				}
 			}
 		}
 
 		//총알이 사거리보다 커졌을때
-		float distance = getDistance(_viArrow->fireX, _viArrow->fireY,
-			_viArrow->x, _viArrow->y);
+		float distance = getDistance(_vArrow[i].fireX, _vArrow[i].fireY,
+			_vArrow[i].x, _vArrow[i].y);
 		if (_range < distance)
 		{
-			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _viArrow->rc.left, _viArrow->rc.top);
-			_viArrow->fire = false;
-			continue;
-		}
-		else
-		{
-			++_viArrow;
+			//EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _vArrow[i].rc.left, _vArrow[i].rc.top);
+			_vArrow[i].fire = false;
 		}
 	}
 
@@ -839,6 +861,7 @@ void triArrow::render(void)
 	_viParticle = _vParticle.begin();
 	for (_viParticle; _viParticle != _vParticle.end(); ++_viParticle)
 	{
+		if (!_viParticle->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viParticle->rc)) continue;
 		_viParticle->bulletImage->alphaRender(getMemDC(), _viParticle->rc.left - CAMERAMANAGER->getCamera().left, _viParticle->rc.top - CAMERAMANAGER->getCamera().top, _viParticle->alpha);
 	}
@@ -848,7 +871,7 @@ void triArrow::render(void)
 	{
 		if (!_viArrow->fire) continue;
 		if (!CAMERAMANAGER->CameraIn(_viArrow->rc)) continue;
-		_viArrow->bulletImage->rotateAlphaRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle, _viArrow->alpha);
+		_viArrow->bulletImage->rotateRender(getMemDC(), _viArrow->rc.left - CAMERAMANAGER->getCamera().left, _viArrow->rc.top - CAMERAMANAGER->getCamera().top, _viArrow->angle);// , _viArrow->alpha);
 	}
 }
 
@@ -878,7 +901,7 @@ void triArrow::fire(float x, float y, float angle, float speed)
 	{
 		tagBullet particle;
 		ZeroMemory(&particle, sizeof(tagBullet));
-		particle.bulletImage = IMAGEMANAGER->findImage("dot_red");
+		particle.bulletImage = IMAGEMANAGER->findImage("dot_teal");
 		particle.speed = speed;
 		particle.angle = angle;
 		particle.alpha = 255;
@@ -894,7 +917,7 @@ void triArrow::fire(float x, float y, float angle, float speed)
 	}
 
 
-	for (int i = 0; i < randNo * 3; i++)
+	for (int i = 0; i < randNo * _arrowMax; i++)
 	{
 		tagBullet particle;
 		ZeroMemory(&particle, sizeof(tagBullet));

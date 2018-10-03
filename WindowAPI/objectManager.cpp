@@ -321,10 +321,10 @@ void objectManager::update()
 			}
 			else
 			{
-				//this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
-				//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
-				//this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
-				//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
+				this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+				this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
+				this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
+				this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
 			}
 		}
 		else if (VENT == _vObject[i]->getType())
@@ -386,10 +386,10 @@ void objectManager::update()
 		else if (SWITCH_VERT == _vObject[i]->getType())
 		{
 			OBJECTSTATE state = _vObject[i]->getState();
-			//this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
-			//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
-			//this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
-			//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
+			this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+			this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
+			this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
+			this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
 			if (state != _vObject[i]->getState() && _vObject[i]->getState() == OBJECT_MOVE)
 			{
 				SOUNDMANAGER->play("Prop_Button_slam");

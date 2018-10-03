@@ -257,10 +257,10 @@ void monsterManager::update()
 			}
 		}
 
-		//this->collisionBullet(i, _playerManager->getBullet()->getVBullet());
-		//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet());
-		//this->collisionBullet(i, _playerManager->getArrow()->getVArrow());
-		//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow());
+		this->collisionBullet(i, _playerManager->getBullet()->getVBullet());
+		this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet());
+		this->collisionBullet(i, _playerManager->getArrow()->getVArrow());
+		this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow());
 
 		_vMonster[i]->update();
 	}

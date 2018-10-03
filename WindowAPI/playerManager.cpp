@@ -62,10 +62,10 @@ void playerManager::release(void)
 
 void playerManager::update(void)
 {
-	//_bullet->update();
-	//_triBullet->update();
-	//_arrow->update();
-	//_triArrow->update();
+	_bullet->update();
+	_triBullet->update();
+	_arrow->update();
+	_triArrow->update();
 
 	_block[_character]->update();
 	_block[!_character]->update();
