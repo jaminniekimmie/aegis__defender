@@ -10,14 +10,15 @@ HRESULT objectManager::init(int num)
 	if (num == 1)
 	{
 		OBJECTTYPE type;
+		float dif = 383;
 
-		_chipGreenPos[0].x = 1478, _chipGreenPos[0].y = 920;
-		_chipGreenPos[1].x = 2043, _chipGreenPos[1].y = 1104;
-		_chipGreenPos[2].x = 2043, _chipGreenPos[2].y = 1144;
-		_chipGreenPos[3].x = 2043, _chipGreenPos[3].y = 1184;
-		_chipGreenPos[4].x = 3427, _chipGreenPos[4].y = 370;
-		_chipGreenPos[5].x = 3427, _chipGreenPos[5].y = 450;
-		_chipGreenPos[6].x = 3895, _chipGreenPos[6].y = 610;
+		_chipGreenPos[0].x = 1478 + dif, _chipGreenPos[0].y = 920;
+		_chipGreenPos[1].x = 2043 + dif, _chipGreenPos[1].y = 1104;
+		_chipGreenPos[2].x = 2043 + dif, _chipGreenPos[2].y = 1144;
+		_chipGreenPos[3].x = 2043 + dif, _chipGreenPos[3].y = 1184;
+		_chipGreenPos[4].x = 3427 + dif, _chipGreenPos[4].y = 370;
+		_chipGreenPos[5].x = 3427 + dif, _chipGreenPos[5].y = 450;
+		_chipGreenPos[6].x = 3895 + dif, _chipGreenPos[6].y = 610;
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -29,14 +30,14 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_chipBluePos[0].x = 1965, _chipBluePos[0].y = 1360;
-		_chipBluePos[1].x = 2280, _chipBluePos[1].y = 1360;
-		_chipBluePos[2].x = 2890, _chipBluePos[2].y = 305;
-		_chipBluePos[3].x = 2890 + 44, _chipBluePos[3].y = 305;
-		_chipBluePos[4].x = 2890 + 44 * 2, _chipBluePos[4].y = 305;
-		_chipBluePos[5].x = 3545, _chipBluePos[5].y = 1365;
-		_chipBluePos[6].x = 3665, _chipBluePos[6].y = 1330;
-		_chipBluePos[7].x = 5880, _chipBluePos[7].y = 1260;
+		_chipBluePos[0].x = 1965 + dif, _chipBluePos[0].y = 1360;
+		_chipBluePos[1].x = 2280 + dif, _chipBluePos[1].y = 1360;
+		_chipBluePos[2].x = 2890 + dif, _chipBluePos[2].y = 305;
+		_chipBluePos[3].x = 2890 + dif + 44, _chipBluePos[3].y = 305;
+		_chipBluePos[4].x = 2890 + dif + 44 * 2, _chipBluePos[4].y = 305;
+		_chipBluePos[5].x = 3545 + dif, _chipBluePos[5].y = 1365;
+		_chipBluePos[6].x = 3665 + dif, _chipBluePos[6].y = 1330;
+		_chipBluePos[7].x = 5880 + dif, _chipBluePos[7].y = 1260;
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -60,7 +61,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_heartYellowPos[0].x = 3702, _heartYellowPos[0].y = 1024;
+		_heartYellowPos[0].x = 3702 + dif, _heartYellowPos[0].y = 1024;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -72,13 +73,13 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_bloomFlowerPos[0].x = 4355, _bloomFlowerPos[0].y = 1255;
-		_bloomFlowerPos[1].x = 4500, _bloomFlowerPos[1].y = 1255;
-		_bloomFlowerPos[2].x = 4830, _bloomFlowerPos[2].y = 1255;
-		_bloomFlowerPos[3].x = 4920, _bloomFlowerPos[3].y = 1255;
-		_bloomFlowerPos[4].x = 5300, _bloomFlowerPos[4].y = 775;
-		_bloomFlowerPos[5].x = 5635, _bloomFlowerPos[5].y = 215;
-		_bloomFlowerPos[6].x = 6105, _bloomFlowerPos[6].y = 550;
+		_bloomFlowerPos[0].x = 4355 + dif, _bloomFlowerPos[0].y = 1255;
+		_bloomFlowerPos[1].x = 4500 + dif, _bloomFlowerPos[1].y = 1255;
+		_bloomFlowerPos[2].x = 4830 + dif, _bloomFlowerPos[2].y = 1255;
+		_bloomFlowerPos[3].x = 4920 + dif, _bloomFlowerPos[3].y = 1255;
+		_bloomFlowerPos[4].x = 5300 + dif, _bloomFlowerPos[4].y = 775;
+		_bloomFlowerPos[5].x = 5635 + dif, _bloomFlowerPos[5].y = 215;
+		_bloomFlowerPos[6].x = 6105 + dif, _bloomFlowerPos[6].y = 550;
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -90,8 +91,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_mineralPos[0].x = 5197, _mineralPos[0].y = 521;
-		_mineralPos[1].x = 6240, _mineralPos[1].y = 518;
+		_mineralPos[0].x = 5197 + dif, _mineralPos[0].y = 521;
+		_mineralPos[1].x = 6240 + dif, _mineralPos[1].y = 518;
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -103,7 +104,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_blueFlowerPos[0].x = 6380, _blueFlowerPos[0].y = 155;
+		_blueFlowerPos[0].x = 6380 + dif, _blueFlowerPos[0].y = 155;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -115,7 +116,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		 _doorDNAyellowLeftPos[0].x = 5760, _doorDNAyellowLeftPos[0].y = 907;
+		 _doorDNAyellowLeftPos[0].x = 5760 + dif, _doorDNAyellowLeftPos[0].y = 907;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -127,7 +128,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_doorDNAyellowRightPos[0].x = 5476, _doorDNAyellowRightPos[0].y = 63;
+		_doorDNAyellowRightPos[0].x = 5476 + dif, _doorDNAyellowRightPos[0].y = 63;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -139,7 +140,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_doorDNAblueLeftPos[0].x = 5760, _doorDNAblueLeftPos[0].y = 429;
+		_doorDNAblueLeftPos[0].x = 5760 + dif, _doorDNAblueLeftPos[0].y = 429;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -151,7 +152,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_doorDNAblueRightPos[0].x = 5397, _doorDNAblueRightPos[0].y = 665;
+		_doorDNAblueRightPos[0].x = 5397 + dif, _doorDNAblueRightPos[0].y = 665;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -163,8 +164,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_spawnerPos[0].x = 4167, _spawnerPos[0].y = 331;
-		_spawnerPos[1].x = 5012, _spawnerPos[1].y = 331;
+		_spawnerPos[0].x = 4167 + dif, _spawnerPos[0].y = 331;
+		_spawnerPos[1].x = 5012 + dif, _spawnerPos[1].y = 331;
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -176,7 +177,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_bushSpikesPos[0].x = 3630, _bushSpikesPos[0].y = 454;
+		_bushSpikesPos[0].x = 3630 + dif, _bushSpikesPos[0].y = 454;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -188,8 +189,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_switchHorPos[0].x = 3932, _switchHorPos[0].y = 817;
-		_switchHorPos[1].x = 4588, _switchHorPos[1].y = 230;
+		_switchHorPos[0].x = 3932 + dif, _switchHorPos[0].y = 817;
+		_switchHorPos[1].x = 4588 + dif, _switchHorPos[1].y = 230;
 		
 		for (int i = 0; i < 2; i++)
 		{
@@ -202,8 +203,8 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_switchVertPos[0].x = 5137, _switchVertPos[0].y = 1061;
-		_switchVertPos[1].x = 5975, _switchVertPos[1].y = 712;
+		_switchVertPos[0].x = 5137 + dif, _switchVertPos[0].y = 1061;
+		_switchVertPos[1].x = 5975 + dif, _switchVertPos[1].y = 712;
 
 		for (int i = 0; i < 2; i++)
 		{
@@ -216,7 +217,7 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_doorElevatorPos[0].x = 4505, _doorElevatorPos[0].y = 1093;
+		_doorElevatorPos[0].x = 4505 + dif, _doorElevatorPos[0].y = 1093;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -228,20 +229,20 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
-		_ventPos[0].x = 1245, _ventPos[0].y = 1422, _ventRange[0] = 350;
-		_ventPos[1].x = 1985, _ventPos[1].y = 1420, _ventRange[1] = 350;
-		_ventPos[2].x = 3120, _ventPos[2].y = 1250, _ventRange[2] = 295;
-		_ventPos[3].x = 3048, _ventPos[3].y = 674, _ventRange[3] = 350;
-		_ventPos[4].x = 3363, _ventPos[4].y = 547, _ventRange[4] = 95;
-		_ventPos[5].x = 3626, _ventPos[5].y = 680, _ventRange[5] = 95;
-		_ventPos[6].x = 3608, _ventPos[6].y = 1402, _ventRange[6] = 196;
-		_ventPos[7].x = 4668, _ventPos[7].y = 1256, _ventRange[7] = 456;
-		_ventPos[8].x = 5277, _ventPos[8].y = 520, _ventRange[8] = 350;
-		_ventPos[9].x = 6227, _ventPos[9].y = 929, _ventRange[9] = 198;
-		_ventPos[10].x = 5866, _ventPos[10].y = 308, _ventRange[10] = 204;
-		_ventPos[11].x = 6588, _ventPos[11].y = 655, _ventRange[11] = 180;
-		_ventPos[12].x = 6709, _ventPos[12].y = 664, _ventRange[12] = 180;
-		_ventPos[13].x = 6831, _ventPos[13].y = 655, _ventRange[13] = 180;
+		_ventPos[0].x = 1245 + dif, _ventPos[0].y = 1422, _ventRange[0] = 350;
+		_ventPos[1].x = 1985 + dif, _ventPos[1].y = 1420, _ventRange[1] = 350;
+		_ventPos[2].x = 3120 + dif, _ventPos[2].y = 1250, _ventRange[2] = 295;
+		_ventPos[3].x = 3048 + dif, _ventPos[3].y = 674, _ventRange[3] = 350;
+		_ventPos[4].x = 3363 + dif, _ventPos[4].y = 547, _ventRange[4] = 95;
+		_ventPos[5].x = 3626 + dif, _ventPos[5].y = 680, _ventRange[5] = 95;
+		_ventPos[6].x = 3608 + dif, _ventPos[6].y = 1402, _ventRange[6] = 196;
+		_ventPos[7].x = 4668 + dif, _ventPos[7].y = 1256, _ventRange[7] = 550;
+		_ventPos[8].x = 5277 + dif, _ventPos[8].y = 520, _ventRange[8] = 350;
+		_ventPos[9].x = 6227 + dif, _ventPos[9].y = 929, _ventRange[9] = 198;
+		_ventPos[10].x = 5866 + dif, _ventPos[10].y = 308, _ventRange[10] = 204;
+		_ventPos[11].x = 6588 + dif, _ventPos[11].y = 655, _ventRange[11] = 180;
+		_ventPos[12].x = 6709 + dif, _ventPos[12].y = 664, _ventRange[12] = 180;
+		_ventPos[13].x = 6831 + dif, _ventPos[13].y = 655, _ventRange[13] = 180;
 
 		for (int i = 0; i < 14; i++)
 		{
@@ -254,8 +255,17 @@ HRESULT objectManager::init(int num)
 			_vObject.push_back(object);
 		}
 
+		
+		type = AEGIS;
+
+		objects* object = _factory->createObject(type);
+		object->setPosition(63, 614);
+		//object->init();
+
+		_vObject.push_back(object);
 
 		_isGameClear = false;
+		_clearCount = 0;
 	}
 
 	_alpha = 0;
@@ -321,17 +331,26 @@ void objectManager::update()
 			}
 			else
 			{
-				this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+				/*this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
 				this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
 				this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
-				this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
+				this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);*/
+				this->collisionBullet(i, OBJECT_MOVE);
+				if (IntersectRect(&rcTemp, &_playerManager->getPlayer(BART)->getHammerRc(), &_vObject[i]->getRect()))
+				{
+					_vObject[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+					_vObject[i]->setState(OBJECT_MOVE);
+					_vObject[i]->playerAttack();
+					break;
+				}
 			}
 		}
 		else if (VENT == _vObject[i]->getType())
 		{
 			speed = 12;
 			
-			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()))
+			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()) && 
+				_playerManager->getPlayer()->getState() != FAINT && _playerManager->getPlayer()->getState() != FAINT_IDLE)
 			{
 				if (rcPlayer.bottom - speed <= _vObject[i]->getActionRect().top)
 					_playerManager->getPlayer()->setY(_vObject[i]->getActionRect().top - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.5f + 2);
@@ -339,8 +358,12 @@ void objectManager::update()
 					_playerManager->getPlayer()->setY(_playerManager->getPlayer()->getY() - speed);
 
 				_playerManager->getPlayer()->setGravity(0);
-				_playerManager->getPlayer()->setIsJump(true);
-				_playerManager->getPlayer()->setOnLand(false);
+				//_playerManager->getPlayer()->setIsJump(true);
+				if (_playerManager->getPlayer()->getIsFired())
+					_playerManager->getPlayer()->setState(JUMPFIRE_RISE);
+				else
+					_playerManager->getPlayer()->setState(JUMP_RISE);
+				//_playerManager->getPlayer()->setOnLand(false);
 
 				//break;
 			}
@@ -348,7 +371,8 @@ void objectManager::update()
 		else if (BUSH_SPIKES == _vObject[i]->getType())
 		{
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getRect())
-				&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState())
+				&& _playerManager->getPlayer()->getIsActive() && HIT != _playerManager->getPlayer()->getState() &&
+				_playerManager->getPlayer()->getState() != FAINT && _playerManager->getPlayer()->getState() != FAINT_IDLE)
 			{
 				angle = !_playerManager->getPlayer()->getIsLeft() * PI;
 				speed = 15.0f;
@@ -386,10 +410,11 @@ void objectManager::update()
 		else if (SWITCH_VERT == _vObject[i]->getType())
 		{
 			OBJECTSTATE state = _vObject[i]->getState();
-			this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
+			/*this->collisionBullet(i, _playerManager->getBullet()->getVBullet(), OBJECT_MOVE);
 			this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet(), OBJECT_MOVE);
 			this->collisionBullet(i, _playerManager->getArrow()->getVArrow(), OBJECT_MOVE);
-			this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);
+			this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow(), OBJECT_MOVE);*/
+			this->collisionBullet(i, OBJECT_MOVE);
 			if (state != _vObject[i]->getState() && _vObject[i]->getState() == OBJECT_MOVE)
 			{
 				SOUNDMANAGER->play("Prop_Button_slam");
@@ -428,7 +453,7 @@ void objectManager::update()
 
 			this->collisionDoorElevator(i, _playerManager->getCharacter());
 
-			if (activatorCount >= 2 && _vObject[i]->getIndex() != _vObject[i]->getImage()->getMaxFrameX())
+			if (activatorCount >= 2 && _vObject[i]->getIndex() == 0)
 			{
 				CAMERAMANAGER->CameraBoomerang(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), centerX, centerY);
 				_vObject[i]->setState(OBJECT_MOVE);
@@ -442,6 +467,9 @@ void objectManager::update()
 
 			if (IntersectRect(&rcTemp, &rcPlayer, &_vObject[i]->getActionRect()))
 			{
+				float playerX = _playerManager->getPlayer()->getX();
+				float playerY = _playerManager->getPlayer()->getY();
+				
 				if (_vObject[i - 1]->getType() == SPAWNER) index = i - 1;
 				else if (_vObject[i + 1]->getType() == SPAWNER) index = i + 1;
 				else return;//break;
@@ -450,8 +478,34 @@ void objectManager::update()
 				targetY = _vObject[index]->getY() + _vObject[index]->getImage()->getHeight() * 0.5f;
 
 				CAMERAMANAGER->CameraSwitch(centerX, centerY, targetX, targetY);
+
 				_playerManager->getPlayer()->setX(targetX);
 				_playerManager->getPlayer()->setY(targetY);
+				
+				if (playerX != _playerManager->getPlayer()->getX())
+				{
+					EFFECTMANAGER->play("ellipsePuff2", _playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() + _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.15f);
+					EFFECTMANAGER->play("regen", _playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() + _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() * 0.45f);
+					_playerManager->getPlayer()->setIsActive(false);
+				}
+			}
+		}
+
+		else if (AEGIS == _vObject[i]->getType())
+		{
+			centerX = _vObject[i]->getX() + _vObject[i]->getImage()->getFrameWidth() * 0.5f;
+			centerY = _vObject[i]->getY() + _vObject[i]->getImage()->getFrameHeight() * 0.5f;
+			
+			if (activatorCount >= 3 && _vObject[i]->getIndex() == 0)
+			{
+				CAMERAMANAGER->CameraSwitch(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY(), centerX, centerY);
+				_vObject[i]->setState(OBJECT_MOVE);
+			}
+			
+			if (_vObject[i]->getIndex() != 0)
+			{
+				_clearCount++;
+				if (_clearCount > 200) _isGameClear = true;
 			}
 		}
 
@@ -504,6 +558,63 @@ void objectManager::collisionBullet(int index, vector<tagBullet> bullet, OBJECTS
 			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), bullet[j].rc.left, bullet[j].rc.top);
 			bullet[j].fire = false;
 			_vObject[index]->playerAttack();
+			break;
+		}
+	}
+}
+
+void objectManager::collisionBullet(int index, OBJECTSTATE setState)
+{
+	RECT rcTemp;
+
+	for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
+	{
+		if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
+			_playerManager->getBullet()->removeBullet(j);
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
+			break;
+		}
+	}
+
+	for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
+	{
+		if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
+
+		if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
+			_playerManager->getTriBullet()->getVBullet()[j].fire = false;
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
+			break;
+		}
+	}
+
+	for (int j = 0; j < _playerManager->getArrow()->getVArrow().size(); j++)
+	{
+		if (IntersectRect(&rcTemp, &_playerManager->getArrow()->getVArrow()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getArrow()->getVArrow()[j].rc.left, _playerManager->getArrow()->getVArrow()[j].rc.top);
+			_playerManager->getArrow()->removeArrow(j);
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
+			break;
+		}
+	}
+
+	for (int j = 0; j < _playerManager->getTriArrow()->getVArrow().size(); j++)
+	{
+		if (!_playerManager->getTriArrow()->getVArrow()[j].fire) continue;
+
+		if (IntersectRect(&rcTemp, &_playerManager->getTriArrow()->getVArrow()[j].rc, &_vObject[index]->getRect()))
+		{
+			EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriArrow()->getVArrow()[j].rc.left, _playerManager->getTriArrow()->getVArrow()[j].rc.top);
+			_playerManager->getTriArrow()->getVArrow()[j].fire = false;
+			_vObject[index]->playerAttack();
+			//_vObject[index]->setState(setState);
 			break;
 		}
 	}

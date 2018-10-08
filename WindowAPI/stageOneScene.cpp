@@ -10,9 +10,9 @@ HRESULT stageOneScene::init(void)
 	_pixelTiles->init(TILESIZEX, TILESIZEY);
 
 	_pixelMap = new image;
-	_pixelMap->init("tex/map/map_pixel_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
+	_pixelMap->init("tex/map/map_pixel_01.bmp", 7792, 1760, true, RGB(255, 0, 255));
 
-	_playerManager->getPlayer(CLU)->setX(755);
+	_playerManager->getPlayer(CLU)->setX(950);
 	_playerManager->getPlayer(CLU)->setY(1300);
 	_playerManager->getPlayer(BART)->setX(_playerManager->getPlayer(CLU)->getX() - _playerManager->getPlayer(CLU)->getPlayerImage()->getFrameWidth() * 0.5f);
 	_playerManager->getPlayer(BART)->setY(1300);
@@ -20,7 +20,7 @@ HRESULT stageOneScene::init(void)
 	_rcCamera = RectMakeCenter(_playerManager->getPlayer()->getX(), _playerManager->getPlayer()->getY() - _playerManager->getPlayer()->getPlayerImage()->getFrameHeight() / 3, WINSIZEX, WINSIZEY);
 
 	CAMERAMANAGER->setCamera(_rcCamera);
-	CAMERAMANAGER->setRange(7409, 1760);
+	CAMERAMANAGER->setRange(7792, 1760);
 	COLLISIONMANAGER->setPixelMap(_pixelMap);
 	MONSTERMANAGER->init(1);
 	MONSTERMANAGER->setPlayerManager(_playerManager);
@@ -33,6 +33,7 @@ HRESULT stageOneScene::init(void)
 
 	_camDebug = _sceneSwitch = false;
 	_alpha = 255;
+	_victoryAlpha = 0;
 	_switchCount = 0;
 
 	_rcLetterBox[0] = RectMake(0, 0, WINSIZEX, 0);
@@ -40,7 +41,7 @@ HRESULT stageOneScene::init(void)
 
 	ShowCursor(true);
 
-	SOUNDMANAGER->play("BGM_nereisdesert", true);
+	//SOUNDMANAGER->play("BGM_nereisdesert", true);
 
 	return S_OK;
 }
@@ -103,7 +104,11 @@ void stageOneScene::render(void)
 	Rectangle(getMemDC(), _rcLetterBox[0]);
 	Rectangle(getMemDC(), _rcLetterBox[1]);
 
+	_playerManager->GUIrender();
+
 	if (_alpha > 0) IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);
+
+	if (OBJECTMANAGER->getGameClear()) IMAGEMANAGER->alphaRender("scene_victory", getMemDC(), _victoryAlpha);
 }
 
 void stageOneScene::backgroundElementsInit()
@@ -211,34 +216,42 @@ void stageOneScene::cameraAdjustment(PLAYERCHARACTER character)
 
 void stageOneScene::sceneSwitch()
 {
-	if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT ||
-		_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT_IDLE)
+	if (OBJECTMANAGER->getGameClear())
 	{
-		_switchCount++;
-		if (_switchCount > 30) _sceneSwitch = true;
-
-		if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
+		if (_victoryAlpha < 255) _victoryAlpha += 15;
+		if (_alpha < 150) _alpha += 15;
+	}
+	else
+	{
+		if (_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT ||
+			_playerManager->getPlayer(_playerManager->getCharacter())->getState() == FAINT_IDLE)
 		{
-			_rcLetterBox[0].bottom += -sinf(-PI_2) * 5.0f;
-			_rcLetterBox[1].top += -sinf(PI_2) * 5.0f;
+			_switchCount++;
+			if (_switchCount > 30) _sceneSwitch = true;
+
+			if (_rcLetterBox[0].bottom < 80 && _rcLetterBox[1].top > WINSIZEY - 80)
+			{
+				_rcLetterBox[0].bottom += -sinf(-PI_2) * 5.0f;
+				_rcLetterBox[1].top += -sinf(PI_2) * 5.0f;
+			}
 		}
-	}
-	else
-	{
-		_switchCount = 0;
-	}
-
-	if (!_sceneSwitch)
-	{
-		if (_alpha > 0) _alpha -= 5;
-	}
-	else
-	{
-		_alpha += 5;
-		if (_alpha >= 255)
+		else
 		{
-			SCENEMANAGER->getCurrentScene()->release();
-			SCENEMANAGER->loadScene("게임오버화면");
+			_switchCount = 0;
+		}
+
+		if (!_sceneSwitch)
+		{
+			if (_alpha > 0) _alpha -= 5;
+		}
+		else
+		{
+			_alpha += 5;
+			if (_alpha >= 255)
+			{
+				SCENEMANAGER->getCurrentScene()->release();
+				SCENEMANAGER->loadScene("게임오버화면");
+			}
 		}
 	}
 }
@@ -282,7 +295,8 @@ void stageOneScene::tileMapRender()
 
 void stageOneScene::mapRender()
 {
-	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+	//IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+	IMAGEMANAGER->render("stage1_sky_1280", getMemDC(), 0, 0, 0, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 	RENDERMANAGER->backgroundRender(getMemDC());
 	IMAGEMANAGER->render("stage1_topology", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
 

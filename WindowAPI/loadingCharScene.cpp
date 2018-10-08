@@ -382,6 +382,8 @@ void loadingCharScene::loadingImage()
 	_loading->loadFrameImage("door_elevator", "tex/objects/door_elevator_01.bmp", 4752, 80, 9, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("switch_hor", "tex/objects/switch_hor_01.bmp", 462, 56, 7, 1, true, RGB(255, 0, 255));
 	_loading->loadFrameImage("switch_vert", "tex/objects/switch_vert_01.bmp", 392, 66, 7, 1, true, RGB(255, 0, 255));
+
+	_loading->loadFrameImage("aegis", "tex/aegis/Aegis1.bmp", 71424, 790, 62, 1, true, RGB(255, 0, 255));
 	//11½Ã°£ ÀäÁÒ ?/
 	_loading->loadImage("sculpture_back_01", "tex/objects/sculpture_back_01.bmp", 520, 384, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_back_02", "tex/objects/sculpture_back_02.bmp", 238, 224, true, RGB(255, 0, 255));
@@ -396,9 +398,9 @@ void loadingCharScene::loadingImage()
 	_loading->loadImage("sculpture_front_05", "tex/objects/sculpture_front_05.bmp", 178, 252, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_front_06", "tex/objects/sculpture_front_06.bmp", 190, 384, true, RGB(255, 0, 255));
 	_loading->loadImage("sculpture_front_07", "tex/objects/sculpture_front_07.bmp", 176, 324, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_topology", "tex/map/map_topology_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7409, 1760, true, RGB(255, 0, 255));
-	_loading->loadImage("stage1_temp", "tex/map/map_temp_01.bmp", 7409, 1760);
+	_loading->loadImage("stage1_topology", "tex/map/map_topology_01.bmp", 7792, 1760, true, RGB(255, 0, 255));
+	_loading->loadImage("stage1_sky", "tex/map/sky_01.bmp", 7792, 1760, true, RGB(255, 0, 255));
+	_loading->loadImage("stage1_sky_1280", "tex/map/sky_1280_01.bmp", 1280, 1760, true, RGB(255, 0, 255));
 
 	_loading->loadImage("Cloud1", "tex/map/Cloud1.bmp", 240, 240, true, RGB(255, 0, 255));
 	_loading->loadImage("Cloud2", "tex/map/Cloud2.bmp", 240, 240, true, RGB(255, 0, 255));

@@ -30,6 +30,7 @@ class objectManager : public singletonBase<objectManager>
 	int _bloomFlowerCount[7];
 	int _mineralCount[1];
 	int _blueFlowerCount[1];
+	int _clearCount;
 	bool _isGameClear;
 	bool _isHit;
 	BYTE _alpha;
@@ -41,6 +42,7 @@ public:
 	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
 	void collisionProcess();
 	void collisionBullet(int index, vector<tagBullet> bullet, OBJECTSTATE setState);
+	void collisionBullet(int index, OBJECTSTATE setState);
 	void collisionDoorElevator(int index, PLAYERCHARACTER character);
 	void collisionDoorDNA(int index, PLAYERCHARACTER character);
 	//오브젝트매니져 초기화

@@ -77,10 +77,7 @@ void monster::frameChange()
 				_index--;
 				if (_index < 0)
 				{
-					if (_state == MONSTER_DEAD)
-					{
-						_isAlive = false;
-					}
+					if (_state == MONSTER_DEAD) _isAlive = false;
 					_index = _image[_state].img->getMaxFrameX();
 				}
 
@@ -95,9 +92,7 @@ void monster::frameChange()
 				_index++;
 				if (_index > _image[_state].img->getMaxFrameX())
 				{
-
-					if (_state == MONSTER_DEAD)
-						_isAlive = false;
+					if (_state == MONSTER_DEAD) _isAlive = false;
 					_index = 0;
 				}
 
@@ -277,7 +272,8 @@ void spiderBaby::dead()
 {
 	if ((_isLeft && _index <= 0) || (!_isLeft && _index >= _image[_state].img->getMaxFrameX()))
 	{
-		_state = MONSTER_ITEM;
+		//_state = MONSTER_ITEM;
+		_isAlive = false;
 	}
 }
 
@@ -365,7 +361,8 @@ void firedrinkerFly::dead()
 	{
 		EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _x, _y);
 		SOUNDMANAGER->play("IMP_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
-		_state = MONSTER_ITEM;
+		//_state = MONSTER_ITEM;
+		_isAlive = false;
 	}
 
 	if (_isLeft)
@@ -540,7 +537,8 @@ void thief_boomerang::idle()
 {
 	_angle = _isLeft * PI;
 	_x += cosf(_angle) * _speed;
-	
+	_hpBar->setPosition(_x, _image[_state].rc.bottom + 15);
+
 	if (!_vElement.empty()) _vElement.clear();
 }
 
@@ -620,8 +618,10 @@ void thief_boomerang::dead()
 {
 	if ((_isLeft && _index <= 0) || (!_isLeft && _index >= _image[_state].img->getMaxFrameX()))
 	{
-		_state = MONSTER_ITEM;
+		//_state = MONSTER_ITEM;
+		_isAlive = false;
 	}
+	if (!_vElement.empty()) _vElement.clear();
 }
 
 void thief_boomerang::item()
@@ -720,7 +720,8 @@ void mask::dead()
 {
 	if ((_isLeft && _index <= 0) || (!_isLeft && _index >= _image[_state].img->getMaxFrameX()))
 	{
-		_state = MONSTER_ITEM;
+		//_state = MONSTER_ITEM;
+		_isAlive = false;
 	}
 }
 

@@ -12,7 +12,7 @@ HRESULT sculptures_front::init()
 
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth()) - CAMERAMANAGER->getMaxWidth() * 0.33f;
 	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 1.25;
-	_z = RND->getFromIntTo(6, 7) + 1;
+	_z = RND->getFromFloatTo(6.5, 6.9) + 1;
 
 	return S_OK;
 }
@@ -37,7 +37,7 @@ HRESULT autotile_darkbrown::init()
 
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth()) - CAMERAMANAGER->getMaxWidth() * 0.33f;
 	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.6;
-	_z = RND->getFromIntTo(4, 5) + 1; 
+	_z = RND->getFromFloatTo(7, 7.4) + 1; 
 
 
 	return S_OK;
@@ -61,9 +61,9 @@ HRESULT autotile_orange::init()
 {
 	this->changeImage();
 
-	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
-	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.88;
-	_z = RND->getFromIntTo(6, 7) + 1;
+	_x = RND->getInt(CAMERAMANAGER->getMaxWidth()) - CAMERAMANAGER->getMaxWidth() * 0.33f;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.85;
+	_z = RND->getFromFloatTo(7.5, 7.9) + 1;
 	//플레이어가 10쯤인가?
 	//맵이 9
 

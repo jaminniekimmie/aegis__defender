@@ -102,13 +102,7 @@ void playerManager::render(void)
 	_player[!_character]->render();
 	_player[_character]->render();
 
-	this->buildRender();
-
-	//Ã¼·Â¹Ù ·»´õ
-	_player[_character]->getHpBarRed()->render(getMemDC());
-	_player[_character]->getHpBarYellow()->render(getMemDC());
-
-	this->GUIrender();
+	//this->GUIrender();
 }
 
 void playerManager::setGUI()
@@ -170,6 +164,8 @@ void playerManager::GUIupdate()
 
 void playerManager::GUIrender()
 {
+	this->buildRender();
+
 	_button_bomb.img->alphaRender(getMemDC(), _button_bomb.x, _button_bomb.y, _button_bomb.alpha);
 
 	if (_blueFlower.isActive)
@@ -182,6 +178,10 @@ void playerManager::GUIrender()
 		_icon[i].shadow->alphaFrameRender(getMemDC(), _icon[i].rc.left, _icon[i].rc.top, _icon[i].img->getFrameX(), _icon[i].img->getFrameY(), 200);
 		_icon[i].img->frameRender(getMemDC(), _icon[i].rc.left, _icon[i].rc.top, _icon[i].img->getFrameX(), _icon[i].img->getFrameY());
 	}
+
+	//Ã¼·Â¹Ù ·»´õ
+	_player[_character]->getHpBarRed()->render(getMemDC());
+	_player[_character]->getHpBarYellow()->render(getMemDC());
 
 	char str[128];
 	HFONT myFont = CreateFont(30, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, "FirstFont-Bold");

@@ -15,6 +15,7 @@ private:
 	image * _pixelMap;
 	RECT _rcCamera;
 	BYTE _alpha;
+	BYTE _victoryAlpha;
 	bool _camDebug;
 	bool _sceneSwitch;
 	int _switchCount;

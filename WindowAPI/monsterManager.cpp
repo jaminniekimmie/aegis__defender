@@ -9,11 +9,12 @@ HRESULT monsterManager::init(int scene)
 	if (scene == 1)
 	{
 		MONSTERTYPE type;
+		float dif = 383;
 
-		_sandwormPos[0].x = 2220, _sandwormPos[0].y = 1400, _sandwormRange[0] = 350;
-		_sandwormPos[1].x = 3710, _sandwormPos[1].y = 1400, _sandwormRange[1] = 350;
-		_sandwormPos[2].x = 5900, _sandwormPos[2].y = 1500, _sandwormRange[2] = 750;
-		_sandwormPos[3].x = 5900, _sandwormPos[3].y = 1500, _sandwormRange[3] = 750;
+		_sandwormPos[0].x = 2220 + dif, _sandwormPos[0].y = 1400, _sandwormRange[0] = 350;
+		_sandwormPos[1].x = 3710 + dif, _sandwormPos[1].y = 1400, _sandwormRange[1] = 350;
+		_sandwormPos[2].x = 5900 + dif, _sandwormPos[2].y = 1500, _sandwormRange[2] = 750;
+		_sandwormPos[3].x = 5900 + dif, _sandwormPos[3].y = 1500, _sandwormRange[3] = 750;
 		for (int i = 0; i < 4; i++)
 		{
 			type = SANDWORM;
@@ -26,13 +27,13 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 
-		_spiderBabyPos[0].x = 2990, _spiderBabyPos[0].y = 1170, _spiderBabyRange[0] = 80;
-		_spiderBabyPos[1].x = 4110, _spiderBabyPos[1].y = 585, _spiderBabyRange[1] = 215;
-		_spiderBabyPos[2].x = 6070, _spiderBabyPos[2].y = 100, _spiderBabyRange[2] = 80;
-		_spiderBabyPos[3].x = 6730, _spiderBabyPos[3].y = 470, _spiderBabyRange[3] = 80;
-		_spiderBabyPos[4].x = 4630, _spiderBabyPos[4].y = 940, _spiderBabyRange[4] = 130;
-		_spiderBabyPos[5].x = 6080, _spiderBabyPos[5].y = 1185, _spiderBabyRange[5] = 320;
-		_spiderBabyPos[6].x = 6080, _spiderBabyPos[6].y = 1185, _spiderBabyRange[6] = 320;
+		_spiderBabyPos[0].x = 2990 + dif, _spiderBabyPos[0].y = 1170, _spiderBabyRange[0] = 80;
+		_spiderBabyPos[1].x = 4110 + dif, _spiderBabyPos[1].y = 585, _spiderBabyRange[1] = 215;
+		_spiderBabyPos[2].x = 6070 + dif, _spiderBabyPos[2].y = 100, _spiderBabyRange[2] = 80;
+		_spiderBabyPos[3].x = 6730 + dif, _spiderBabyPos[3].y = 470, _spiderBabyRange[3] = 80;
+		_spiderBabyPos[4].x = 4630 + dif, _spiderBabyPos[4].y = 940, _spiderBabyRange[4] = 130;
+		_spiderBabyPos[5].x = 6080 + dif, _spiderBabyPos[5].y = 1185, _spiderBabyRange[5] = 320;
+		_spiderBabyPos[6].x = 6080 + dif, _spiderBabyPos[6].y = 1185, _spiderBabyRange[6] = 320;
 		for (int i = 0; i < 7; i++)
 		{
 			type = SPIDERBABY;
@@ -45,10 +46,10 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 
-		_firedrinkerFlyPos[0].x = 4540, _firedrinkerFlyPos[0].y = 445, _firedrinkerFlyRange[0] = 305;
-		_firedrinkerFlyPos[1].x = 5340, _firedrinkerFlyPos[1].y = 400, _firedrinkerFlyRange[1] = 150;
-		_firedrinkerFlyPos[2].x = 5320, _firedrinkerFlyPos[2].y = 1040, _firedrinkerFlyRange[2] = 150;
-		_firedrinkerFlyPos[3].x = 6150, _firedrinkerFlyPos[3].y = 800, _firedrinkerFlyRange[2] = 120;
+		_firedrinkerFlyPos[0].x = 4540 + dif, _firedrinkerFlyPos[0].y = 445, _firedrinkerFlyRange[0] = 305;
+		_firedrinkerFlyPos[1].x = 5340 + dif, _firedrinkerFlyPos[1].y = 400, _firedrinkerFlyRange[1] = 150;
+		_firedrinkerFlyPos[2].x = 5320 + dif, _firedrinkerFlyPos[2].y = 1040, _firedrinkerFlyRange[2] = 150;
+		_firedrinkerFlyPos[3].x = 6170 + dif, _firedrinkerFlyPos[3].y = 800, _firedrinkerFlyRange[3] = 120;
 		for (int i = 0; i < 4; i++)
 		{
 			type = FIREDRINKERFLY;
@@ -61,8 +62,8 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 		
-		_eaglePos[0].x = 1574, _eaglePos[0].y = 930, _eagleRange[0] = 300;
-		_eaglePos[1].x = 2744, _eaglePos[1].y = 600, _eagleRange[1] = 400;
+		_eaglePos[0].x = 1574 + dif, _eaglePos[0].y = 930, _eagleRange[0] = 300;
+		_eaglePos[1].x = 2744 + dif, _eaglePos[1].y = 580, _eagleRange[1] = 400;
 		for (int i = 0; i < 2; i++)
 		{
 			type = EAGLE;
@@ -75,9 +76,9 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 
-		_thiefBoomerangPos[0].x = 3135, _thiefBoomerangPos[0].y = 935, _thiefBoomerangRange[0] = 200;
-		_thiefBoomerangPos[1].x = 4822, _thiefBoomerangPos[1].y = 582, _thiefBoomerangRange[1] = 125;
-		_thiefBoomerangPos[2].x = 6260, _thiefBoomerangPos[2].y = 575, _thiefBoomerangRange[2] = 1500;
+		_thiefBoomerangPos[0].x = 3135 + dif, _thiefBoomerangPos[0].y = 935, _thiefBoomerangRange[0] = 200;
+		_thiefBoomerangPos[1].x = 4822 + dif, _thiefBoomerangPos[1].y = 582, _thiefBoomerangRange[1] = 125;
+		//_thiefBoomerangPos[2].x = 6260 + dif, _thiefBoomerangPos[2].y = 575, _thiefBoomerangRange[2] = 1100;
 		for (int i = 0; i < 3; i++)
 		{
 			type = THIEF_BOOMERANG;
@@ -90,8 +91,8 @@ HRESULT monsterManager::init(int scene)
 			_vMonster.push_back(monster);
 		}
 
-		_maskPos[0].x = 4297, _maskPos[0].y = 700, _maskRange[0] = 145;
-		_maskPos[1].x = 6670, _maskPos[1].y = 88, _maskRange[1] = 120;
+		_maskPos[0].x = 4297 + dif, _maskPos[0].y = 700, _maskRange[0] = 145;
+		_maskPos[1].x = 6670 + dif, _maskPos[1].y = 88, _maskRange[1] = 120;
 		for (int i = 0; i < 2; i++)
 		{
 			type = MASK;
@@ -206,14 +207,17 @@ void monsterManager::update()
 		{
 			if (IntersectRect(&rcTemp, &_playerManager->getBlock(CLU)->getVBlock()[j].rc, &_vMonster[i]->getRect()))
 			{
-				EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _vMonster[i]->getX(), _vMonster[i]->getY());
+				EFFECTMANAGER->play("aerialExplosion" + to_string(RND->getFromIntTo(1, 3)), _playerManager->getBlock(CLU)->getVBlock()[j].x, _playerManager->getBlock(CLU)->getVBlock()[j].y);
 				SOUNDMANAGER->play("IMP_explo_medium" + to_string(RND->getFromIntTo(1, 4)));
 				_playerManager->getBlock(CLU)->removeBlock(j);
 
 				if (SANDWORM == _vMonster[i]->getType())
 					EFFECTMANAGER->play("blocked_white", _vMonster[i]->getX(), _vMonster[i]->getY());
 				else
+				{
+					EFFECTMANAGER->play("ellipsePuff" + to_string(RND->getFromIntTo(1, 5)), _vMonster[i]->getX(), _vMonster[i]->getY());
 					_vMonster[i]->setState(MONSTER_DEAD);
+				}
 
 				break;
 			}
@@ -257,10 +261,72 @@ void monsterManager::update()
 			}
 		}
 
-		this->collisionBullet(i, _playerManager->getBullet()->getVBullet());
-		this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet());
-		this->collisionBullet(i, _playerManager->getArrow()->getVArrow());
-		this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow());
+		//this->collisionBullet(i, _playerManager->getBullet()->getVBullet());
+		//this->collisionBullet(i, _playerManager->getTriBullet()->getVBullet());
+		//this->collisionBullet(i, _playerManager->getArrow()->getVArrow());
+		//this->collisionBullet(i, _playerManager->getTriArrow()->getVArrow());
+	
+		for (int j = 0; j < _playerManager->getBullet()->getVBullet().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getBullet()->getVBullet()[j].rc.left, _playerManager->getBullet()->getVBullet()[j].rc.top);
+				_playerManager->getBullet()->removeBullet(j);
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt(i);
+
+				break;
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getTriBullet()->getVBullet().size(); j++)
+		{
+			if (!_playerManager->getTriBullet()->getVBullet()[j].fire) continue;
+
+			if (IntersectRect(&rcTemp, &_playerManager->getTriBullet()->getVBullet()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriBullet()->getVBullet()[j].rc.left, _playerManager->getTriBullet()->getVBullet()[j].rc.top);
+				_playerManager->getTriBullet()->getVBullet()[j].fire = false;
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt(i);
+
+				break;
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getArrow()->getVArrow().size(); j++)
+		{
+			if (IntersectRect(&rcTemp, &_playerManager->getArrow()->getVArrow()[j].rc, &_vMonster[i]->getRect()))
+			{
+				if (_vMonster[i]->getState() == MONSTER_DEAD)
+					continue;
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getArrow()->getVArrow()[j].rc.left, _playerManager->getArrow()->getVArrow()[j].rc.top);
+				_playerManager->getArrow()->removeArrow(j);
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt(i);
+
+				break;
+			}
+		}
+
+		for (int j = 0; j < _playerManager->getTriArrow()->getVArrow().size(); j++)
+		{
+			if (!_playerManager->getTriArrow()->getVArrow()[j].fire) continue;
+
+			if (IntersectRect(&rcTemp, &_playerManager->getTriArrow()->getVArrow()[j].rc, &_vMonster[i]->getRect()))
+			{
+				EFFECTMANAGER->play("bulletPuff" + to_string(RND->getFromIntTo(1, 5)), _playerManager->getTriArrow()->getVArrow()[j].rc.left, _playerManager->getTriArrow()->getVArrow()[j].rc.top);
+				_playerManager->getTriArrow()->getVArrow()[j].fire = false;
+				_vMonster[i]->setIsLeft(!_playerManager->getPlayer()->getIsLeft());
+
+				this->monsterHurt(i);
+
+				break;
+			}
+		}
 
 		_vMonster[i]->update();
 	}
@@ -311,8 +377,9 @@ void monsterManager::collisionBullet(int index, vector<tagBullet> bullet)
 
 			this->monsterHurt(index);
 
-			break;
+			//break;
 		}
+		break;
 	}
 }
 

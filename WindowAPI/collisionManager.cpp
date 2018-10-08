@@ -17,23 +17,9 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i + 7 + (rc.right - rc.left) * 0.5f;
+				x = i + 6 + (rc.right - rc.left) * 0.5f;
 			
 				return YELLOW;
-			}
-
-			if (r == 255 && g == 232 && b == 31)
-			{
-				x = i + 7 + (rc.right - rc.left) * 0.5f;
-
-				return BRIGHT_YELLOW;
-			}
-
-			if (r == 80 && g == 127 && b == 213)
-			{
-				x = i + 7 + (rc.right - rc.left) * 0.5f;
-
-				return BRIGHT_BLUE;
 			}
 		}
 		break;
@@ -47,7 +33,7 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				y = i + (rc.bottom - rc.top) * 0.25f;
+				y = i + 15 + (rc.bottom - rc.top) * 0.15f;
 				//y = i + 1 + (rc.bottom - rc.top) * 0.5f;
 
 				return YELLOW;
@@ -64,23 +50,9 @@ int collisionManager::pixelCollision(RECT rc, float& x, float& y, float speed, f
 
 			if (r == 244 && g == 180 && b == 23)
 			{
-				x = i - 7 - (rc.right - rc.left) * 0.5f;
+				x = i - 6 - (rc.right - rc.left) * 0.5f;
 
 				return YELLOW;
-			}
-
-			if (r == 255 && g == 232 && b == 31)
-			{
-				x = i - 7 - (rc.right - rc.left) * 0.5f;
-
-				return BRIGHT_YELLOW;
-			}
-
-			if (r == 80 && g == 127 && b == 213)
-			{
-				x = i - 7 - (rc.right - rc.left) * 0.5f;
-
-				return BRIGHT_BLUE;
 			}
 		}
 		break;

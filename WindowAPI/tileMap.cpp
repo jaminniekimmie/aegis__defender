@@ -45,7 +45,7 @@ HRESULT tileMap::init(void)
 
 	_rcCamera = RectMake(0, TILESIZEY - WINSIZEY, WINSIZEX, WINSIZEY);
 	CAMERAMANAGER->setCamera(_rcCamera);
-	CAMERAMANAGER->setRange(7409, 1760);
+	CAMERAMANAGER->setRange(7792, 1760);
 
 	this->backgroundElementsInit();
 
@@ -874,10 +874,10 @@ void tileMap::cursorActionRender(void)
 				if (PtInRect(&_tiles[i].rc, _globalPtMouse) || IntersectRect(&rcTemp, &_rcRange, &_tiles[i].rc) || (_dragStart && IntersectRect(&rcTemp, &_rcDrag, &_tiles[i].rc)))
 				{
 					if (_ctrlSelect == CTRL_ERASER)
-						IMAGEMANAGER->alphaRender("white_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
+						IMAGEMANAGER->alphaRender("white_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 50);
 					else
 					{
-						IMAGEMANAGER->alphaRender("teal_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 30);
+						IMAGEMANAGER->alphaRender("teal_tile", getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, 50);
 						IMAGEMANAGER->alphaFrameRender("tile_map" + to_string(_sampleTileType + 1), getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
 						IMAGEMANAGER->alphaFrameRender("pixel_map", _pixelTiles->getMemDC(), _tiles[i].rc.left - CAMERAMANAGER->getCamera().left, _tiles[i].rc.top - CAMERAMANAGER->getCamera().top, _currentTile.x, _currentTile.y, 100);
 					}

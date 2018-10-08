@@ -858,6 +858,44 @@ void switch_vert::item()
 {
 }
 
+void aegis::init()
+{
+	_image[OBJECT_IDLE].img = IMAGEMANAGER->findImage("aegis");
+	_image[OBJECT_IDLE].shadow = IMAGEMANAGER->findImage("aegis");
+	_image[OBJECT_MOVE].img = IMAGEMANAGER->findImage("aegis");
+	_image[OBJECT_MOVE].shadow = IMAGEMANAGER->findImage("aegis");
+	_speed = 3.0f;
+	_angle = PI_2;
+	_gravity = 0.0f;
+	_count = 0, _index = 0;
+	_range = 300;
+	_oldX = _x;
+	_oldY = _y;
+	_attackCount = 9;
+	_isActive = true;
+	_frameSpeed = 5;
+	_isLeft = false;
+	_isFrameImg = true;
+	_state = OBJECT_IDLE;
+}
+
+void aegis::idle()
+{
+}
+
+void aegis::move()
+{
+	if (_index >= _image[_state].img->getMaxFrameX())
+	{
+		_index = _image[_state].img->getMaxFrameX();
+		_state = OBJECT_IDLE;
+	}
+}
+
+void aegis::item()
+{
+}
+
 objects * objectFactory::createObject(OBJECTTYPE type)
 {
 	objects* _object;
@@ -919,6 +957,9 @@ objects * objectFactory::createObject(OBJECTTYPE type)
 		break;
 	case SWITCH_VERT:
 		_object = new switch_vert;
+		break;
+	case AEGIS:
+		_object = new aegis;
 		break;
 	default:
 		//´©±¸³Ä ³Í??

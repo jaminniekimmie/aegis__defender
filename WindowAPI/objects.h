@@ -287,6 +287,18 @@ private:
 public:
 };
 
+class aegis : public objects
+{
+private:
+	void init();
+	void idle();
+	void move();
+	void item();
+
+public:
+};
+
+
 class objectFactory
 {
 public:

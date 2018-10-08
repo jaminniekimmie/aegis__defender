@@ -90,6 +90,8 @@ void tileTestScene::render(void)
 {
 	PatBlt(_pixelTiles->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 
+	IMAGEMANAGER->render("stage1_sky", getMemDC(), 0, 0, CAMERAMANAGER->getCamera().left, CAMERAMANAGER->getCamera().top, WINSIZEX, WINSIZEY);
+
 	//게임타일 렉트 렌더
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
@@ -109,7 +111,7 @@ void tileTestScene::render(void)
 		_pixelTiles->render(getMemDC(), -CAMERAMANAGER->getCamera().left, -CAMERAMANAGER->getCamera().top);
 	}
 
-	_playerManager->getPlayer(_playerManager->getCharacter())->render();
+	_playerManager->render();
 
 	if (_alpha > 0)
 		IMAGEMANAGER->alphaRender("solid_black", getMemDC(), _alpha);

@@ -84,7 +84,8 @@ void loadingOpenScene::loadingImage()
 	string str;
 
 	//°ÔÀÓ¿À¹ö¾À
-	_loading->loadFrameImage("scene_gameOver", "tex/background/gameOver_01.bmp", WINSIZEX * 2, WINSIZEY, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadFrameImage("scene_gameOver", "tex/UI/gameOver_01.bmp", WINSIZEX * 2, WINSIZEY, 2, 1, true, RGB(255, 0, 255));
+	_loading->loadImage("scene_victory", "tex/UI/victory_01.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
 	//GUI
 	_loading->loadImage("solid_red", "tex/background/redSolid_01.bmp", WINSIZEX, WINSIZEY);

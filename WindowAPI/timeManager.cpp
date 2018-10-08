@@ -95,19 +95,19 @@ void timeManager::update(float lockFPS)
 
 void timeManager::render(HDC hdc)
 {
-	char str[256];
-	//글자배경모드
-	SetBkMode(hdc, TRANSPARENT);
-	//글자색상
-	SetTextColor(hdc, RGB(0, 255, 0));
-	
-	//FPS
-	sprintf(str, "FPS: %d", _frameRate);
-	TextOut(hdc, 0, 0, str, strlen(str));
-	//전체시간
-	sprintf(str, "WorldTime: %.2f", _worldTime);
-	TextOut(hdc, 0, 20, str, strlen(str));
-	//한프레임당 경과시간
-	sprintf(str, "ElapsedTime: %.4f", _timeElapsed);
-	TextOut(hdc, 0, 40, str, strlen(str));
+	//char str[256];
+	////글자배경모드
+	//SetBkMode(hdc, TRANSPARENT);
+	////글자색상
+	//SetTextColor(hdc, RGB(0, 255, 0));
+	//
+	////FPS
+	//sprintf(str, "FPS: %d", _frameRate);
+	//TextOut(hdc, 0, 0, str, strlen(str));
+	////전체시간
+	//sprintf(str, "WorldTime: %.2f", _worldTime);
+	//TextOut(hdc, 0, 20, str, strlen(str));
+	////한프레임당 경과시간
+	//sprintf(str, "ElapsedTime: %.4f", _timeElapsed);
+	//TextOut(hdc, 0, 40, str, strlen(str));
 }

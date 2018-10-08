@@ -10,7 +10,7 @@ HRESULT cloud::init()
 {
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth() * 1.5) - CAMERAMANAGER->getMaxWidth() * 0.5;
 	_y = RND->getInt(CAMERAMANAGER->getMaxHeight()) - CAMERAMANAGER->getMaxHeight();
-	_z = RND->getFromIntTo(0, 8) + 0;
+	_z = RND->getFromFloatTo(0, 8) + 0;
 	_speed = 0.5f;
 
 	this->changeImage();
@@ -43,8 +43,8 @@ HRESULT sculptures_back::init()
 	this->changeImage();
 
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth());
-	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight();
-	_z = RND->getFromIntTo(5, 7) + 1;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 2;
+	_z = RND->getFromFloatTo(7.5, 7.9) + 1;
 
 	return S_OK;
 }
@@ -68,8 +68,8 @@ HRESULT autotile_lightorange::init()
 	this->changeImage();
 
 	_x = RND->getInt(CAMERAMANAGER->getMaxWidth() * 1.5) - CAMERAMANAGER->getMaxWidth();
-	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 0.66;
-	_z = RND->getFromIntTo(4, 6) + 1;
+	_y = CAMERAMANAGER->getMaxHeight() - _img->getHeight() * 1.75;
+	_z = RND->getFromFloatTo(7, 7.4) + 1;
 	_speed = 0.5f;
 
 	return S_OK;
@@ -85,7 +85,7 @@ void autotile_lightorange::update()
 
 void autotile_lightorange::changeImage()
 {
-	int c = RND->getFromIntTo(1, 8);
+	int c = RND->getFromFloatTo(1, 8);
 	_img = IMAGEMANAGER->findImage("autotile_lightorange" + to_string(c));
 }
 
